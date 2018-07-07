@@ -8,7 +8,7 @@ export default class AsySorUtils{
  * user信息
  * @param {*} info 
  */
-saveUser(info){
+static saveUser(info){
     AsyncStorage.setItem('userInfo',JSON.stringify(info),(error)=>{
         if (error) {
             DialogUtils.showToast("保存异常"+error.message)
@@ -18,7 +18,7 @@ saveUser(info){
     });
 }
 
-getUser(){
+static getUser(){
     AsyncStorage.getItem('userInfo',(error,result)=>{
         if (!error) {
             console.log(result);

@@ -6,6 +6,7 @@ import {
     StyleSheet,
     Text,
     View,
+    ActivityIndicator,
 } from 'react-native';
 import { Overlay, Toast,ActionSheet } from "teaset";
 

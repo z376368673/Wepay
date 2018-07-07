@@ -12,7 +12,7 @@ import NavigationBar from "../../common/NavigationBar";
 import HttpUtils from '../../util/HttpUtils';
 import BaseUrl from '../../util/BaseUrl';
 import DialogUtils from '../../util/DialogUtils';
-
+import AsySorUtils from "../../dao/AsySorUtils"
 /**
  * 登陆页面
  */
@@ -93,6 +93,7 @@ export default class LoginPage extends BaseComponent {
             </View>
         );
     }
+
     /**
      *  点击事件 
      * @param {*} type 
@@ -125,13 +126,16 @@ export default class LoginPage extends BaseComponent {
             if (result.code===1) {
                 DialogUtils.showToast("登陆成功")
                 this.props.navigation.navigate('SettingView');
+                AsySorUtils.saveUser(result.data)
             }else{
                 DialogUtils.showToast(result.msg)
             }
             DialogUtils.hideLoading()
         })
         .catch(error => {
+            DialogUtils.hideLoading()
            DialogUtils.showToast("服务器繁忙")
+           AsySorUtils.saveUser("result.data")
         })
     }
 
