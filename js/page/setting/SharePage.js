@@ -5,10 +5,13 @@ import {
     View,
     Image,
     TouchableOpacity,
+    UIManager,
 } from 'react-native';
+
 import BaseComponent, {BaseStyles, mainColor, window_width} from "../BaseComponent";
 import NavigationBar from "../../common/NavigationBar";
 import QRCode from "react-native-qrcode";
+import DialogUtils from '../../util/DialogUtils';
 /**
  * 分享好友
  */
@@ -20,7 +23,18 @@ export default class SharePage extends BaseComponent {
             text: 'app下载地址'+"当前用户id",
         }
     }
-
+    /**
+     * 保存图片
+     * @param {*} view 
+     */
+    saveImgBy(view){
+        UIManager.takeSnapshot(view,{format: 'png', quality: 1}).then(
+            (uri)=>{ DialogUtils.showToast(uri)}
+        )
+        //  ReactNative.takeSnapshot(view,{format: 'png', quality: 1}).then(
+        //     (uri)=>{ DialogUtils.showToast(uri)}
+        // )
+    }
     render() {
         return (
             <View style={[BaseStyles.container_column, {backgroundColor: mainColor}]}>
@@ -30,7 +44,7 @@ export default class SharePage extends BaseComponent {
                     rightView={NavigationBar.getRightStyle_Text('保存二维码', {
                         fontSize: 16,
                         color: "#fff"
-                    }, () => this.onClicks(0))}
+                    }, () => this.saveImgBy(this.qrCode))}
                 />
                 <View style={{
                     height: 400,
@@ -45,6 +59,8 @@ export default class SharePage extends BaseComponent {
                     {/*生成二维码*/}
                     <View style={{marginTop: 40,}}>
                         <QRCode
+                            //ref='qrCode'
+                            ref={qrCode=>this.qrCode=qrCode}
                             value={this.state.text}
                             size={window_width / 2}
                             bgColor='black'
@@ -76,7 +92,11 @@ export default class SharePage extends BaseComponent {
     }
 
     onClicks(type) {
-
+        switch(type){
+            case "save_img":
+           
+            break
+        }
     }
 }
 export const styles = StyleSheet.create({

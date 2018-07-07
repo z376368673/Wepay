@@ -1,12 +1,14 @@
-const BaseUrl = ''
+const BaseUrl = 'http://192.168.0.105:8080/wepay'
 
 export default class HttpUtils {
 
     static getData(url) {
+        console.log(url)
         return new Promise((resolve, reject) => {
             fetch(url)
                 .then(response => response.json())
                 .then(result => {
+                    console.log(JSON.stringify(result))
                     resolve(result);
                 })
                 .catch(error => {
@@ -16,6 +18,7 @@ export default class HttpUtils {
     }
 
     static postData(url, data) {
+        console.log(url+JSON.stringify(data))
         return new Promise((resolve, reject) => {
             fetch(url, {
                 method: 'POST',
@@ -27,6 +30,7 @@ export default class HttpUtils {
             })
                 .then(response => response.json())
                 .then(result => {
+                    console.log(JSON.stringify(result))
                     resolve(result);
                 })
                 .catch(error => {

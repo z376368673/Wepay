@@ -87,15 +87,16 @@ export default class SettingView extends BaseComponent {
             case "share":
                 this.props.navigation.navigate('SharePage');
                 break
-            case "password"://修改 登陆密码/支付密码
+            case "password1"://修改 登陆密码
                 this.props.navigation.navigate('ModifyPassWord',{
                     type:0,
                 });
                 break
-            case "password"://修改 登陆密码/支付密码
+            case "password2"://修改 支付密码
                 this.props.navigation.navigate('ModifyPassWord',{
                     type:1,
                 });
+                break
             case "notice"://公告
                 this.props.navigation.navigate('NoticeList',{
                     type:1,
@@ -185,9 +186,9 @@ export default class SettingView extends BaseComponent {
                             () => this.onClicks("share"))}
                         <View style={[BaseStyles.container_center, {marginTop: 12}]}/>
                         {ViewUtils.getSettingItem(require('../../../res/images/denglumima.png'), '登陆密码', '点击修改',
-                            () => this.onClicks("password"))}
+                            () => this.onClicks("password1"))}
                         {ViewUtils.getSettingItem(require('../../../res/images/zhifumima.png'), '支付密码', '点击修改',
-                            () => this.onClicks("password"))}
+                            () => this.onClicks("password2"))}
                         <View style={[BaseStyles.container_center, {marginTop: 12}]}/>
                         {ViewUtils.getSettingItem1(require('../../../res/images/gonggao.png'), '公告', false,
                             () => this.onClicks("notice"))}

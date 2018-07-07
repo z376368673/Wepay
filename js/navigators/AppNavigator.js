@@ -25,15 +25,24 @@ import MyNoticeList from "../page/setting/MyNoticeList";
 import AddressList from "../page/setting/AddressList";
 import EditAddress from "../page/setting/EditAddress";
 import Complaint from "../page/setting/Complaint";
-
-
+import RegisterPage from "../page/setting/RegisterPage";
+import LoginPage from "../page/setting/LoginPage";
 
 
 export default AppNavigator = createStackNavigator({
+    
+    LoginPage: {//登陆
+        screen: LoginPage
+    },
+
+    RegisterPage: {//注册
+        screen: RegisterPage
+    },
 
     SettingView: {//设置
         screen: SettingView
     },
+
     HomePage: {//首页
         screen: HomePage
     },
