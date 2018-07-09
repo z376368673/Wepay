@@ -13,8 +13,8 @@ import BaseComponent, {BaseStyles} from "./BaseComponent";
 import ViewUtils from "../util/ViewUtils";
 import {Carousel} from 'teaset';
 import Utils from "../util/Utils";
-
-
+import DialogUtils from '../util/DialogUtils';
+ 
 const screen_width = Utils.getWidth();
 export default class HomePage extends BaseComponent {
     constructor(props) {
@@ -27,8 +27,16 @@ export default class HomePage extends BaseComponent {
             headImg: require('../../res/images/touxiang-xiao.png'),
         }
     }
-
-
+    componentDidMount() {
+        Utils.getLocation((coords)=>{
+            Utils.getCityInfoBy(
+                JSON.stringify(coords.longitude), 
+                JSON.stringify(coords.latitude),
+                (addressComponent)=>{
+                    DialogUtils.showToast(addressComponent.formatted_address)
+            })
+        })
+      }
 
     _itemView(callback, img, text) {
         return <TouchableOpacity

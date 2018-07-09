@@ -31,6 +31,10 @@ import LoginPage from "../page/setting/LoginPage";
 
 export default AppNavigator = createStackNavigator({
     
+    HomePage: {//首页
+        screen: HomePage
+    },
+
     LoginPage: {//登陆
         screen: LoginPage
     },
@@ -41,10 +45,6 @@ export default AppNavigator = createStackNavigator({
 
     SettingView: {//设置
         screen: SettingView
-    },
-
-    HomePage: {//首页
-        screen: HomePage
     },
 
     YueOrIntegralRecord: {// 余额,积分记录

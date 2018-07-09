@@ -17,7 +17,7 @@ export default class DialogUtils {
      * @param {*} confirm  确定按钮回调
      * @param {*} cancel 取消按钮回调
      */
-    static showPop(text, confirm, cancel) {
+    static showPop(text, confirm, cancel,Text1,Text2) {
         let overlayView = (
             <Overlay.PopView
                 style={{ alignItems: 'center', justifyContent: 'center', padding: 40 }}
@@ -31,8 +31,8 @@ export default class DialogUtils {
                         <Text style={{ fontSize: 18, color: "#333" }}>{text}</Text>
                     </View>
                     {/* 按钮 */}
-                    <View style={{ backgroundColor: "#f0f0f0", height: 1 }} />
-                    <View style={{ justifyContent: "center", alignItems: "center", height: 50, flexDirection: "row", }}>
+                    <View style={{ backgroundColor: "#e0e0e0", height: 1 }} />
+                    <View style={{ justifyContent: "center", alignItems: "center", height: 60, flexDirection: "row", }}>
                         <TouchableOpacity
                             style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
                             onPress={() => {
@@ -40,9 +40,9 @@ export default class DialogUtils {
                                 cancel? cancel() : {}
                             }}
                         >
-                            <Text style={{ fontSize: 20, color: "#333" }}>取消</Text>
+                            <Text style={{ fontSize: 20, color: "#333" }}>{Text2?Text2:"取消"}</Text>
                         </TouchableOpacity>
-                        <View style={{ width: 1, backgroundColor: "#f0f0f0", height: 50 }} />
+                        <View style={{ width: 1, backgroundColor: "#e0e0e0", height: 60 }} />
                         <TouchableOpacity
                             style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
                             onPress={() => {
@@ -50,7 +50,7 @@ export default class DialogUtils {
                                     confirm? confirm() : {}
                             }}
                         >
-                            <Text style={{ fontSize: 20, color: "#333" }}>确定</Text>
+                            <Text style={{ fontSize: 20, color: "#333" }}>{Text1?Text1:"确定"}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

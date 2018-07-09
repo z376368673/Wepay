@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     StyleSheet,
     Text,
@@ -7,11 +7,12 @@ import {
     View,
     TouchableOpacity,
 } from 'react-native';
-import BaseComponent, {BaseStyles, mainColor} from "../BaseComponent";
+import BaseComponent, { BaseStyles, mainColor } from "../BaseComponent";
 import NavigationBar from "../../common/NavigationBar";
 import ViewUtils from "../../util/ViewUtils";
 import DialogUtils from '../../util/DialogUtils';
 import SYImagePicker from 'react-native-syan-image-picker'
+import Utils from '../../util/Utils';
 
 
 export default class SettingView extends BaseComponent {
@@ -21,13 +22,13 @@ export default class SettingView extends BaseComponent {
             userId: '123456',
             xinyong: 5,
             headImg: require('../../../res/images/touxiang-xiao.png'),
-            nickname:"哈哈",
+            nickname: "哈哈",
             photos: [],//选择的照片
         }
     }
 
 
-   
+
 
 
     /**
@@ -38,7 +39,7 @@ export default class SettingView extends BaseComponent {
     handleAsyncSelectPhoto = async () => {
         SYImagePicker.removeAllPhoto()
         try {
-            const photos = await SYImagePicker.asyncShowImagePicker({imageCount: 1, isCrop: true, showCropCircle: false});
+            const photos = await SYImagePicker.asyncShowImagePicker({ imageCount: 1, isCrop: true, showCropCircle: false });
             photos.map((photo, index) => {
                 let source = { uri: photo.uri };
                 if (photo.enableBase64) {
@@ -54,7 +55,7 @@ export default class SettingView extends BaseComponent {
             })
         } catch (err) {
             // 取消选择，err.message为"取消"
-           // alert(err,photos)
+            // alert(err,photos)
         }
     };
 
@@ -63,49 +64,56 @@ export default class SettingView extends BaseComponent {
      * @param type 点击标识
      */
     onClicks(type) {
-        switch (type){
+        switch (type) {
             case "headImg"://修改头像
-                 this.handleAsyncSelectPhoto()
+                this.handleAsyncSelectPhoto()
                 break
             case "nickname"://修改昵称
-                this.props.navigation.navigate('ModifyNickName',{
-                    userName:this.state.nickname,
-                    callbacks:(name)=>{this.getCallBackValue(name)}
+                this.props.navigation.navigate('ModifyNickName', {
+                    userName: this.state.nickname,
+                    callbacks: (name) => { this.getCallBackValue(name) }
                 });
                 break
             case "language"://多语言
                 DialogUtils.showPop("请选择语言",
-                ()=>DialogUtils.showToast("你点击了确定"),
-                ()=>DialogUtils.showToast("你点击了取消")
+                    () => DialogUtils.showToast("你点击了确定"),
+                    () => DialogUtils.showToast("你点击了取消")
                 );
                 break
             case "bankName"://我的银行卡
-                this.props.navigation.navigate('BankCardList',{
-                    title:"我的银行卡",
+                this.props.navigation.navigate('BankCardList', {
+                    title: "我的银行卡",
                 });
                 break
             case "share":
                 this.props.navigation.navigate('SharePage');
                 break
             case "password1"://修改 登陆密码
-                this.props.navigation.navigate('ModifyPassWord',{
-                    type:0,
+                this.props.navigation.navigate('ModifyPassWord', {
+                    type: 0,
                 });
                 break
             case "password2"://修改 支付密码
-                this.props.navigation.navigate('ModifyPassWord',{
-                    type:1,
+                this.props.navigation.navigate('ModifyPassWord', {
+                    type: 1,
                 });
                 break
             case "notice"://公告
-                this.props.navigation.navigate('NoticeList',{
-                    type:1,
+                this.props.navigation.navigate('NoticeList', {
+                    type: 1,
                 });
                 break
             case "geren"://个人消息
-                this.props.navigation.navigate('MyNoticeList',{
-                    type:1,
+                this.props.navigation.navigate('MyNoticeList', {
+                    type: 1,
                 });
+                break
+            case "store"://我的店铺
+                DialogUtils.showPop("您还没有开通店铺，请先认证才能申请开店",
+                    () => DialogUtils.showToast("你点击了去认证"),
+                    () => DialogUtils.showToast("你点击了取消"),
+                    "去认证", "取消"
+                );
                 break
             case "address"://地址管理
                 this.props.navigation.navigate('AddressList');
@@ -114,9 +122,9 @@ export default class SettingView extends BaseComponent {
                 this.props.navigation.navigate('Complaint');
                 break
             case "version"://版本管理
-                 DialogUtils.showPop("您已经是最新版本了",()=>{
-                     DialogUtils.showToast("检查完毕");
-                 });
+                DialogUtils.showPop("您已经是最新版本了", () => {
+                    DialogUtils.showToast("检查完毕");
+                });
                 break
         }
     }
@@ -134,12 +142,12 @@ export default class SettingView extends BaseComponent {
         for (let i = 0; i < value; i++) {
             views.push(<Image
                 key={i}
-                style={{width: width, height: width / 4 * 3, marginLeft: 5}}
+                style={{ width: width, height: width / 4 * 3, marginLeft: 5 }}
                 source={require('../../../res/images/xin.png')}
             />)
         }
-        let view = <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={{color: "#333", fontSize: fontSize,}}>信用: </Text>
+        let view = <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={{ color: "#333", fontSize: fontSize, }}>信用: </Text>
             {views}
         </View>
         return view;
@@ -153,57 +161,57 @@ export default class SettingView extends BaseComponent {
                     navigation={this.props.navigation}
                 />
                 <ScrollView>
-                    <View style={[BaseStyles.container_column, {backgroundColor: '#f1f1f1'}]}>
+                    <View style={[BaseStyles.container_column, { backgroundColor: '#f1f1f1' }]}>
                         <TouchableOpacity
                             activeOpacity={1}
                             onPress={() => this.onClicks("headImg")}
                         >
                             <View
-                                style={[styles.container_row, {alignItems: 'center', padding: 10,}]}
+                                style={[styles.container_row, { alignItems: 'center', padding: 10, }]}
                             >
                                 <Image source={this.state.headImg}
-                                       style={styles.headImg}/>
-                                <View style={{flex: 1, marginLeft: 10}}>
-                                    <Text style={{color: "#333", fontSize: 16,}}>
+                                    style={styles.headImg} />
+                                <View style={{ flex: 1, marginLeft: 10 }}>
+                                    <Text style={{ color: "#333", fontSize: 16, }}>
                                         UUID:{this.state.userId ? this.state.userId : "123456"}
                                     </Text>
                                     {this.getCreditView(this.state.xinyong, 16, 15)}
                                 </View>
-                                <Text style={{color: "#666", fontSize: 16, marginRight: 10}}>
+                                <Text style={{ color: "#666", fontSize: 16, marginRight: 10 }}>
                                     更换头像
                                 </Text>
                             </View></TouchableOpacity>
-                        <View style={[BaseStyles.container_center, {marginTop: 12}]}/>
+                        <View style={[BaseStyles.container_center, { marginTop: 12 }]} />
                         {ViewUtils.getSettingItem(require('../../../res/images/nicheng.png'), '昵称', this.state.nickname,
                             () => this.onClicks("nickname"))}
                         {ViewUtils.getSettingItem(require('../../../res/images/duoyuyan.png'), '多语言', '中文',
                             () => this.onClicks("language"))}
-                        <View style={[BaseStyles.container_center, {marginTop: 12}]}/>
+                        <View style={[BaseStyles.container_center, { marginTop: 12 }]} />
                         {ViewUtils.getSettingItem1(require('../../../res/images/yinghangka.png'), '银行卡', false,
                             () => this.onClicks("bankName"))}
-                        <View style={[BaseStyles.container_center, {marginTop: 12}]}/>
+                        <View style={[BaseStyles.container_center, { marginTop: 12 }]} />
                         {ViewUtils.getSettingItem1(require('../../../res/images/fenxiang.png'), '分享', false,
                             () => this.onClicks("share"))}
-                        <View style={[BaseStyles.container_center, {marginTop: 12}]}/>
+                        <View style={[BaseStyles.container_center, { marginTop: 12 }]} />
                         {ViewUtils.getSettingItem(require('../../../res/images/denglumima.png'), '登陆密码', '点击修改',
                             () => this.onClicks("password1"))}
                         {ViewUtils.getSettingItem(require('../../../res/images/zhifumima.png'), '支付密码', '点击修改',
                             () => this.onClicks("password2"))}
-                        <View style={[BaseStyles.container_center, {marginTop: 12}]}/>
+                        <View style={[BaseStyles.container_center, { marginTop: 12 }]} />
                         {ViewUtils.getSettingItem1(require('../../../res/images/gonggao.png'), '公告', false,
                             () => this.onClicks("notice"))}
                         {ViewUtils.getSettingItem1(require('../../../res/images/gonggao.png'), '个人信息', false,
                             () => this.onClicks("geren"))}
 
-                        <View style={[BaseStyles.container_center, {marginTop: 12}]}/>
+                        <View style={[BaseStyles.container_center, { marginTop: 12 }]} />
                         {ViewUtils.getSettingItem1(require('../../../res/images/dianpu.png'), '我的店铺', false,
-                            () => this.onClicks(9))}
+                            () => this.onClicks("store"))}
                         {ViewUtils.getSettingItem1(require('../../../res/images/wodedingdan.png'), '我的订单', false,
                             () => this.onClicks(10))}
                         {ViewUtils.getSettingItem1(require('../../../res/images/dizhiguanli.png'), '地址管理', false,
                             () => this.onClicks("address"))}
-                    
-                        <View style={[BaseStyles.container_center, {marginTop: 12}]}/>
+
+                        <View style={[BaseStyles.container_center, { marginTop: 12 }]} />
                         {ViewUtils.getSettingItem1(require('../../../res/images/tousujianyi.png'), '投诉建议', false,
                             () => this.onClicks("Complaint"))}
                         {ViewUtils.getSettingItem(require('../../../res/images/banben.png'), '版本', '1.0.0',
@@ -211,12 +219,12 @@ export default class SettingView extends BaseComponent {
                         {ViewUtils.getSettingItem1(require('../../../res/images/guanyu.png'), '关于', false,
                             () => this.onClicks(14))}
 
-                        <View style={[BaseStyles.container_center, {marginTop: 25}]}/>
+                        <View style={[BaseStyles.container_center, { marginTop: 25 }]} />
                         <TouchableOpacity
                             style={styles.logoutView}
-                            onPress={()=>this.onClicks(66)}
+                            onPress={() => this.onClicks(66)}
                         >
-                            <Text style={{fontSize: 18, color: mainColor,}}>退出登陆</Text>
+                            <Text style={{ fontSize: 18, color: mainColor, }}>退出登陆</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>

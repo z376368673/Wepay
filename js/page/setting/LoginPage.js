@@ -111,6 +111,7 @@ export default class LoginPage extends BaseComponent {
             })
                 break
             case 2://登陆
+                //this.props.navigation.navigate('HomePage');
                 this.loginByPwd();
                 break
         }

@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 
 import Button from "teaset/components/Button/Button";
-
+import DialogUtils from "../util/DialogUtils"
 export default class BaseComponent extends Component {
     constructor(props) {
         super(props);
