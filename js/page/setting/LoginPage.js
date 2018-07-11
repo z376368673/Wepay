@@ -21,10 +21,10 @@ export default class LoginPage extends BaseComponent {
         super(props);
         this.state = {
             text: '13923044417',
-            pwd:'1424024195',
+            pwd:'123456',
         }
     }
-
+    
     render() {
         return (
             <View style={[BaseStyles.container_column, { backgroundColor: mainColor }]}>
@@ -121,13 +121,15 @@ export default class LoginPage extends BaseComponent {
      */
     loginByPwd(){
         DialogUtils.showLoading("");
-        HttpUtils.getData(BaseUrl.loginUrl(this.state.text,this.state.pwd))
+        let url =  BaseUrl.loginUrl(this.state.text,this.state.pwd)
+        HttpUtils.getData(url)
         .then(result => {
-            alert(JSON.stringify(result))
             if (result.code===1) {
+                alert(JSON.stringify(result.data))
                 DialogUtils.showToast("登陆成功")
-                this.props.navigation.navigate('SettingView');
-                AsySorUtils.saveUser(result.data)
+                AsySorUtils.saveUser(result.data,()=>{
+                    this.props.navigation.navigate('HomePage');
+                })
             }else{
                 DialogUtils.showToast(result.msg)
             }
@@ -135,8 +137,7 @@ export default class LoginPage extends BaseComponent {
         })
         .catch(error => {
             DialogUtils.hideLoading()
-           DialogUtils.showToast("服务器繁忙")
-           AsySorUtils.saveUser("result.data")
+            DialogUtils.showToast("服务器繁忙"+error.message)
         })
     }
 
@@ -156,6 +157,7 @@ export const styles = StyleSheet.create({
         borderColor: "#fff",
         paddingLeft: 15,
         paddingRight: 15,
+        height:50,
         borderWidth: 1,
         marginTop: 15,
         marginLeft: 20,

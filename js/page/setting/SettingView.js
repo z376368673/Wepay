@@ -21,15 +21,20 @@ export default class SettingView extends BaseComponent {
         this.state = {
             userId: '123456',
             xinyong: 5,
-            headImg: require('../../../res/images/touxiang-xiao.png'),
             nickname: "哈哈",
             photos: [],//选择的照片
+            headImg:require('../../../res/images/touxiang-xiao.png'),
         }
+        this.getUserInfo((userInfo)=>{
+            this.setState({
+                headImg:{uri:userInfo.imgHead},
+                nickname:userInfo.username,
+                userId:userInfo.account,
+                xinyong:userInfo.userCredit,
+                sessionId:userInfo.sessionId,
+            })
+        })
     }
-
-
-
-
 
     /**
      * 使用方式sync/await
@@ -71,6 +76,7 @@ export default class SettingView extends BaseComponent {
             case "nickname"://修改昵称
                 this.props.navigation.navigate('ModifyNickName', {
                     userName: this.state.nickname,
+                    sessionId:this.state.sessionId,
                     callbacks: (name) => { this.getCallBackValue(name) }
                 });
                 break
@@ -109,10 +115,12 @@ export default class SettingView extends BaseComponent {
                 });
                 break
             case "store"://我的店铺
-                DialogUtils.showPop("您还没有开通店铺，请先认证才能申请开店",
-                    () => DialogUtils.showToast("你点击了去认证"),
-                    () => DialogUtils.showToast("你点击了取消"),
-                    "去认证", "取消"
+                DialogUtils.showPop("您还没有开通店铺，是否去申请店铺",
+                    () => {
+                        this.props.navigation.navigate('ApplyStore');
+                    },
+                    () => { },
+                    "去申请", "取消"
                 );
                 break
             case "address"://地址管理

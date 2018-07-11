@@ -4570,6 +4570,12 @@ react-native-htmlview@^0.12.0:
     entities "^1.1.1"
     htmlparser2-without-node-native "^3.9.2"
 
+react-native-image-progress@^1.1.1:
+  version "1.1.1"
+  resolved "http://registry.npm.taobao.org/react-native-image-progress/download/react-native-image-progress-1.1.1.tgz#95bbe0875c7ebd54286df69cb37b598b94c54eb0"
+  dependencies:
+    prop-types "^15.5.10"
+
 react-native-parallax-scroll-view@^0.21.0:
   version "0.21.2"
   resolved "http://registry.npm.taobao.org/react-native-parallax-scroll-view/download/react-native-parallax-scroll-view-0.21.2.tgz#07d5a28389a88abf66c7a1321cb002ff33e99087"

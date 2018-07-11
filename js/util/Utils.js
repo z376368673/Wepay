@@ -65,9 +65,8 @@ export default class Utils {
                     "\n海拔：" + location.coords.altitude +
                     "\n海拔准确度：" + location.coords.altitudeAccuracy +
                     "\n时间戳：" + location.timestamp;
-                let longitude = JSON.stringify(location.coords.longitude);//精度
-                let latitude = JSON.stringify(location.coords.latitude);//纬度
-                DialogUtils.showToast(location.coords.longitude) 
+                // let longitude = JSON.stringify(location.coords.longitude);//精度
+                // let latitude = JSON.stringify(location.coords.latitude);//纬度 
                 callback(location.coords)
             },
             (error) => { DialogUtils.showToast("getLocation:"+error.message) },
@@ -81,12 +80,9 @@ export default class Utils {
           * @param {*} latitude 
           */
    static getCityInfoBy(longitude, latitude, callback) {
-        fetch('http://restapi.amap.com/v3/geocode/regeo?key=fa3631399663a81636a9c6e66a4fc0b1&location=' + longitude + ',' + latitude + '')
+        fetch('http://restapi.amap.com/v3/geocode/regeo?key=7905a31aeab2f2134f1a6a06f6b63e79&location=' + longitude + ',' + latitude + '')
             .then((response) => response.json())
             .then((responseBody) => {
-                let city = responseBody.regeocode.addressComponent.province;
-                let district = responseBody.regeocode.addressComponent.district;
-                let township = responseBody.regeocode.addressComponent.township;
                 if (responseBody.status == 1) {
                     callback(responseBody.regeocode.addressComponent)
                 } else {

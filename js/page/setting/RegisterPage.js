@@ -153,6 +153,7 @@ export const styles = StyleSheet.create({
         backgroundColor: "#129481",
         borderRadius: 3,
         borderColor: "#fff",
+        height:50,
         paddingLeft: 15,
         paddingRight: 15,
         borderWidth: 1,

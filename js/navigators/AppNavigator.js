@@ -27,24 +27,27 @@ import EditAddress from "../page/setting/EditAddress";
 import Complaint from "../page/setting/Complaint";
 import RegisterPage from "../page/setting/RegisterPage";
 import LoginPage from "../page/setting/LoginPage";
+import ApplyStore from "../page/store/ApplyStore";
+import MyStore from "../page/store/MyStore";
+
 
 
 export default AppNavigator = createStackNavigator({
-    
-    HomePage: {//首页
-        screen: HomePage
+   
+    SettingView: {//设置
+        screen: SettingView
     },
-
     LoginPage: {//登陆
         screen: LoginPage
     },
-
+    HomePage: {//首页
+        screen: HomePage
+    },
+    MyStore: {//我的店铺
+        screen: MyStore
+    },
     RegisterPage: {//注册
         screen: RegisterPage
-    },
-
-    SettingView: {//设置
-        screen: SettingView
     },
 
     YueOrIntegralRecord: {// 余额,积分记录
@@ -81,10 +84,6 @@ export default AppNavigator = createStackNavigator({
     SaoSaoView: {//扫一扫界面
         screen: SaoSaoView
     },
-    // SettingView: {//设置
-    //     screen: SettingView
-    // },
-
     ModifyNickName: {//修改昵称
         screen: ModifyNickName
     },
@@ -123,10 +122,15 @@ export default AppNavigator = createStackNavigator({
     Complaint: {//投诉建议
         screen: Complaint
     },
+
+    ApplyStore: {//店铺申请认证
+        screen: ApplyStore
+    },
     
     Welcome: {//欢迎页 
         screen: Welcome
     },
+    
 }, {
     navigationOptions: {
         header: null

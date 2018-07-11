@@ -9,12 +9,27 @@ import {
 
 import Button from "teaset/components/Button/Button";
 import DialogUtils from "../util/DialogUtils"
+import AsySorUtils from '../dao/AsySorUtils';
 export default class BaseComponent extends Component {
+    userInfo = null
     constructor(props) {
         super(props);
     }
+
+    upDataUserInfo(newUser,params){
+        AsySorUtils.saveUser(newUser,() => params())
+    }
+    getUserInfo=(params)=>{
+        AsySorUtils.getUser((user) => {
+            if (user) {
+                params(user)
+            } else {
+                DialogUtils.showToast("获取用户信息失败")
+            }
+        })
+    }
     getCallBackValue = (params) => this.setState(params)
-    
+
 }
 const { height, width } = Dimensions.get('window');
 export const mainColor = '#48b1a3';

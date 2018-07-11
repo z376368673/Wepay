@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     StyleSheet,
     Text,
@@ -9,53 +9,92 @@ import {
     TouchableOpacity,
     StatusBar, Platform,
 } from 'react-native';
-import BaseComponent, {BaseStyles} from "./BaseComponent";
+import BaseComponent, { BaseStyles } from "./BaseComponent";
 import ViewUtils from "../util/ViewUtils";
-import {Carousel} from 'teaset';
+import { Carousel } from 'teaset';
 import Utils from "../util/Utils";
 import DialogUtils from '../util/DialogUtils';
- 
+import AsySorUtils from '../dao/AsySorUtils';
+import BaseUrl from '../util/BaseUrl';
+import HttpUtils from '../util/HttpUtils';
+
+
 const screen_width = Utils.getWidth();
 export default class HomePage extends BaseComponent {
     constructor(props) {
         super(props);
+        AsySorUtils.getUser((user) => {
+            if(user){
+            this.setState({
+                userId:user.account ,
+                yue: user.cangkuNum ,
+                jifen: user.fengmiNum,
+                xinyong: user.userCredit ,
+                headImg: {uri: user.imgHead} ,
+            })}else{
+                DialogUtils.showToast("获取用户信息失败")
+            }
+        })
         this.state = {
-            userId: '123456',
-            yue: 0,
-            jifen: 0,
+            userId:  "1234567",
+            yue:  0,
+            jifen:  0,
             xinyong: 5,
-            headImg: require('../../res/images/touxiang-xiao.png'),
+            headImg:null,
+            bannerArray: []
         }
     }
     componentDidMount() {
-        Utils.getLocation((coords)=>{
-            Utils.getCityInfoBy(
-                JSON.stringify(coords.longitude), 
-                JSON.stringify(coords.latitude),
-                (addressComponent)=>{
-                    DialogUtils.showToast(addressComponent.formatted_address)
+        this.getBanner();
+    }
+    setImgToBanner(bannerArray) {
+        var views = []
+        bannerArray.forEach(element => {
+            views.push(
+                <TouchableOpacity onPress={() => { alert(JSON.stringify(element)) }}>
+                    <Image style={{ width: screen_width, height: screen_width / 4 }}
+                        resizeMode='cover' source={{ uri: element.pic }} />
+                </TouchableOpacity>)
+        });
+        return views;
+    }
+    /**
+     * 获取banner图片
+     */
+    getBanner() {
+        let url = BaseUrl.getBanner()
+        HttpUtils.getData(url)
+            .then(result => {
+                if (result.code === 1) {
+                    this.setState({
+                        bannerArray: result.data
+                    })
+                } else {
+                    DialogUtils.showToast(result.msg)
+                }
             })
-        })
-      }
-
+            .catch(error => {
+                DialogUtils.showToast("加载图片失败" + error.message)
+            })
+    }
     _itemView(callback, img, text) {
         return <TouchableOpacity
             activeOpacity={0.8}
             onPress={callback}
         >
             <View style={[BaseStyles.container_column,
-                {
-                    width: screen_width / 3 - 1,
-                    height: screen_width / 3 - 1,
-                }, styles.itemView]}>
+            {
+                width: screen_width / 3 - 1,
+                height: screen_width / 3 - 1,
+            }, styles.itemView]}>
                 <Image source={img}
-                       style={styles.itemImage}/>
-                <Text style={{fontSize: 18, color: '#333', marginTop: 10}}>{text}</Text>
+                    style={styles.itemImage} />
+                <Text style={{ fontSize: 18, color: '#333', marginTop: 10 }}>{text}</Text>
             </View>
         </TouchableOpacity>
     }
-    _StatusBar(statusBarColor){
-        return <View  style={{height:20}}>
+    _StatusBar(statusBarColor) {
+        return<View style={{ height: 20 ,backgroundColor:statusBarColor}}>
             <StatusBar
                 animated={true} //指定状态栏的变化是否应以动画形式呈现。目前支持这几种样式：backgroundColor, barStyle和hidden
                 hidden={false}  //是否隐藏状态栏。
@@ -79,18 +118,18 @@ export default class HomePage extends BaseComponent {
                                 onPress={() => this.onClicks(11)}
                             >
                                 <View
-                                    style={[BaseStyles.container_row, {alignItems: 'center'}]}
+                                    style={[BaseStyles.container_row, { alignItems: 'center' }]}
                                 >
                                     <Image source={this.state.headImg}
-                                           style={styles.headImg}/>
-                                    <View style={{flex: 1, marginLeft: 10}}>
+                                        style={styles.headImg} />
+                                    <View style={{ flex: 1, marginLeft: 10 }}>
                                         <Text style={styles.text}>
                                             UUID:{this.state.userId ? this.state.userId : "123456"}
                                         </Text>
                                         {ViewUtils.getCreditView(this.state.xinyong, 16, 15)}
                                     </View>
-                                    <Image style={{width: 30, height: 30, borderRadius: 15}}
-                                           source={require('../../res/images/shezhi.png')}
+                                    <Image style={{ width: 30, height: 30, borderRadius: 15 }}
+                                        source={require('../../res/images/shezhi.png')}
                                     />
                                 </View></TouchableOpacity>
 
@@ -104,12 +143,12 @@ export default class HomePage extends BaseComponent {
                                     justifyContent: 'center',
                                     alignItems: 'center',
                                 }]}>
-                                <Image
-                                    style={{width: 100, height: 100, marginLeft: 2}}
-                                    source={require('../../res/images/saoma.png')}
-                                />
-                                <Text style={{fontSize: 18, color: '#fff', marginTop: 10}}>扫 码 支 付</Text>
-                            </View></TouchableOpacity>
+                                    <Image
+                                        style={{ width: 100, height: 100, marginLeft: 2 }}
+                                        source={require('../../res/images/saoma.png')}
+                                    />
+                                    <Text style={{ fontSize: 18, color: '#fff', marginTop: 10 }}>扫 码 支 付</Text>
+                                </View></TouchableOpacity>
 
 
                             {/* 余额积分布局*/}
@@ -122,32 +161,28 @@ export default class HomePage extends BaseComponent {
                                     activeOpacity={0.8}
                                     onPress={() => this.onClicks(13)}
                                 >
-                                    <View style={{flexDirection: 'column',}}>
-                                        <Text style={{fontSize: 16, color: '#fff'}}>余额</Text>
-                                        <Text style={{fontSize: 16, color: '#fff'}}>￥{this.state.yue}</Text>
+                                    <View style={{ flexDirection: 'column', alignItems: "center" }}>
+                                        <Text style={{ fontSize: 16, color: '#fff' }}>余额</Text>
+                                        <Text style={{ fontSize: 16, color: '#fff' }}>￥{this.state.yue}</Text>
                                     </View></TouchableOpacity>
-                                <View style={{height: 30, width: 0.5, backgroundColor: '#fff'}}/>
+                                <View style={{ height: 30, width: 0.5, backgroundColor: '#fff' }} />
                                 <TouchableOpacity
                                     activeOpacity={0.8}
                                     onPress={() => this.onClicks(14)}
                                 >
-                                    <View style={{flexDirection: 'column',}}>
-                                        <Text style={{fontSize: 16, color: '#fff'}}>积分</Text>
-                                        <Text style={{fontSize: 16, color: '#fff'}}>￥{this.state.jifen}</Text>
+                                    <View style={{ flexDirection: 'column', alignItems: "center" }}>
+                                        <Text style={{ fontSize: 16, color: '#fff' }}>积分</Text>
+                                        <Text style={{ fontSize: 16, color: '#fff' }}>￥{this.state.jifen}</Text>
                                     </View></TouchableOpacity>
                             </View>
                         </View>
-
                         <Carousel
-                            style={{width: screen_width,height:screen_width / 4}}
-                            control={()=>{return <Carousel.Control />}}
-                            /* onLayout={e => this.setState({width: e.nativeEvent.layout.width})}*/
+                            style={{ width: screen_width, height: screen_width / 4 }}
+                            control={() => { return <Carousel.Control /> }}
                         >
-                            <Image style={{width: screen_width, height: screen_width / 4}} resizeMode='cover' source={require('../../res/images/touxiang-xiao.png')} />
-                            <Image style={{width: screen_width, height: screen_width / 4}} resizeMode='cover' source={require('../../res/images/shezhi.png')} />
+                            {this.setImgToBanner(this.state.bannerArray)}
                         </Carousel>
-
-                        <View style={[BaseStyles.container_row, {flexWrap: 'wrap', }]}>
+                        <View style={[BaseStyles.container_row, { flexWrap: 'wrap', }]}>
                             {this._itemView(() => this.onClicks(1), require('../../res/images/zhuanchu.png'), "转出")}
                             {this._itemView(() => this.onClicks(2), require('../../res/images/zhuanru.png'), "转入")}
                             {this._itemView(() => this.onClicks(3), require('../../res/images/mairu.png'), "买入")}
@@ -169,10 +204,10 @@ export default class HomePage extends BaseComponent {
                 this.props.navigation.navigate('SaoSaoView');
                 break;
             case 13:
-                this.props.navigation.navigate('YueOrIntegralRecord',{type:0});
+                this.props.navigation.navigate('YueOrIntegralRecord', { type: 0 });
                 break;
             case 14:
-                this.props.navigation.navigate('YueOrIntegralRecord',{type:1});
+                this.props.navigation.navigate('YueOrIntegralRecord', { type: 1 });
                 break;
             case 1:
                 this.props.navigation.navigate('ZhuanChu');
@@ -208,7 +243,7 @@ const styles = StyleSheet.create({
         height: 50,
         borderRadius: 25,
         borderColor: '#fff',
-        borderWidth: 2
+        borderWidth: 1
     },
     itemView: {
         flexWrap: 'wrap',

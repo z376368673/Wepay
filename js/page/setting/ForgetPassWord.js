@@ -140,6 +140,7 @@ export const styles = StyleSheet.create({
         marginTop: 15,
         marginLeft:20,
         marginRight:20,
+        height:50,
     },
     itemTextInput: {
         flex: 1,
