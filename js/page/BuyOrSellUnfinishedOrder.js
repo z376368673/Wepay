@@ -1,16 +1,16 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     StyleSheet,
     Text,
     View,
     TouchableOpacity,
 } from 'react-native';
-import BaseComponent, {BaseStyles, mainColor} from "./BaseComponent";
+import BaseComponent, { BaseStyles, mainColor } from "./BaseComponent";
 import NavigationBar from "../common/NavigationBar";
 import Utils from "../util/Utils";
 import RefreshFlatList from "../common/RefreshFlatList";
 import HttpUtils from "../util/HttpUtils";
-import {SegmentedBar,Label} from 'teaset';
+import { SegmentedBar, Label } from 'teaset';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 /**
@@ -41,29 +41,29 @@ export default class BuyOrSellUnfinishedOrder extends BaseComponent {
     }
     onSegmentedBarChange(index) {
         if (index != this.state.activeIndex) {
-            this.setState({activeIndex: index});
+            this.setState({ activeIndex: index });
             this._refreshData(index)
         }
     }
 
     renderCustomItems() {
-        let {activeIndex} = this.state;
+        let { activeIndex } = this.state;
         return this.barItems.map((item, index) => {
             let isActive = index == activeIndex;
             let tintColor = isActive ? mainColor : '#333';
             return (
-                <View key={index} style={{padding: 15, alignItems: 'center'}}>
-                    <Text style={{fontSize:17,color: tintColor, paddingTop: 4}} >{item}</Text>
+                <View key={index} style={{ padding: 15, alignItems: 'center' }}>
+                    <Text style={{ fontSize: 17, color: tintColor, paddingTop: 4 }} >{item}</Text>
                 </View>
             );
         });
     }
 
     render() {
-        const {navigation} = this.props;
+        const { navigation } = this.props;
         const type = navigation.state.params.type ? navigation.state.params.type : 0;
-        let title = type===0?"买入":"卖出"
-        let {justifyItem, indicatorType, indicatorPosition, animated, autoScroll,  activeIndex} = this.state;
+        let title = type === 0 ? "买入" : "卖出"
+        let { justifyItem, activeIndex } = this.state;
         let barItems = this.barItems;
         return (
             <View style={BaseStyles.container_column}>
@@ -72,21 +72,18 @@ export default class BuyOrSellUnfinishedOrder extends BaseComponent {
                     navigation={this.props.navigation}
                 />
                 <SegmentedBar
-                    justifyItem={justifyItem}
-                    //indicatorType={indicatorType}
-                    //indicatorPosition={indicatorPosition}
+                    justifyItem={"fixed"}
                     indicatorLineColor={mainColor}
                     indicatorLineWidth={2}
                     indicatorPositionPadding={5}
-                    //animated={animated}
-                    //autoScroll={autoScroll}
                     activeIndex={activeIndex}
                     onChange={index => this.onSegmentedBarChange(index)}
-                   >
+                >
                     {this.renderCustomItems()}
                 </SegmentedBar>
 
-                <View style={{flex: 1, backgroundColor: "#fff"}}>
+                <View style={{ flex: 1, backgroundColor: "#fff" }}>
+
                     <RefreshFlatList
                         ref={refList => this.refList = refList}
                         onRefreshs={() => {
@@ -95,7 +92,8 @@ export default class BuyOrSellUnfinishedOrder extends BaseComponent {
                         onLoadData={() => {
                             this._onLoadData()
                         }}
-                        renderItem={(items) => this._getBuyOrSellItem(items)}/>
+                        renderItem={(items) => this._getBuyOrSellItem(items)} />
+
                 </View>
             </View>
         );
@@ -134,8 +132,8 @@ export default class BuyOrSellUnfinishedOrder extends BaseComponent {
             <TouchableOpacity onPress={() => {
                 // alert('点击')
             }}>
-                <View style={{flexDirection: 'column',}}>
-                    <Text style={{color: "#333333", fontSize: 20,}}>{items.item ? items.item.name : "name"}</Text>
+                <View style={{ flexDirection: 'column', }}>
+                    <Text style={{ color: "#333333", fontSize: 20, }}>{items.item ? items.item.name : "name"}</Text>
                     <Text style={{
                         color: "#666666",
                         marginTop: 5,

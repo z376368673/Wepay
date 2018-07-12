@@ -58,14 +58,14 @@ export default class LoginPage extends BaseComponent {
                     <TouchableOpacity onPress={() => this.onClicks(0)} style={{ height: 50, justifyContent: 'center' }}>
                         <Text style={{
                             fontSize: 15,
-                            color: "#d15",
+                            color: "#d11",
                             marginRight: 20
                         }}>注 册</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.onClicks(1)} style={{ height: 50, justifyContent: 'center' }}>
                         <Text style={{
                             fontSize: 15,
-                            color: "#d15",
+                            color: "#d11",
                             marginRight: 20
                         }}>忘记密码</Text>
                     </TouchableOpacity>

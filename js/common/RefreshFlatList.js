@@ -77,23 +77,32 @@ export default class RefreshFlatList extends Component {
         });
     }
 
+    getKeys(){
+        var keys = [];
+        this.state.dataArray.map((index)=>{
+            keys.push(index)
+        })
+        return keys;
+    }
     render() {
         const {onRefreshs, onLoadData,...other} = this.props
+
         return <View style={styles.container}>
             <FlatList
                  {...other}
                 //renderItem={other.renderItem}
                 //设置数据
                 data={this.state.dataArray}
+                keyExtractor={(items)=>items.index}
                 //  renderItem={(items) => this.props.renderRow(items)}
                 refreshControl={
                     <RefreshControl
                         //Android下只有一个 colors 是转圈的颜色
-                        colors={['#d15', '#000']}
+                        colors={['#d11', '#000']}
                         //ios 下 可以设置标题，转圈颜色，标题颜色
                         title={'Loading...'}
-                        tintColor={'#d15'}
-                        titleColor={'#d15'}
+                        tintColor={'#d11'}
+                        titleColor={'#d11'}
                         //刷新状态 false:隐藏，true:显示
                         refreshing={this.state.isRefresh}
                         //刷新触发的后执行的方法
@@ -118,12 +127,12 @@ export default class RefreshFlatList extends Component {
                     size={'large'}
                     animating={true}
                 />
-                <Text style={{color: '#d15', fontSize: 15, margin: 10}}>加载更多</Text>
+                <Text style={{color: '#d11', fontSize: 15, margin: 10}}>加载更多</Text>
             </View>;
         } else {
             return <View/>
             // return <View style={styles.indicatorContainer}>
-            //     <Text style={{color: '#d15', fontSize: 15, margin: 10}}>{this.state.dataArray ? "" : "没有数据了"}</Text>
+            //     <Text style={{color: '#d11', fontSize: 15, margin: 10}}>{this.state.dataArray ? "" : "没有数据了"}</Text>
             // </View>;
         }
     }

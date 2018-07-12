@@ -111,7 +111,7 @@ export default class ApplyStore extends BaseComponent {
                         <View style={{ flexDirection: 'row', padding: 10, backgroundColor: "#fff", marginBottom: 8, }}>
                             <Text style={{
                                 alignSelf: "center",
-                                color: '#d15',
+                                color: '#d11',
                                 fontSize: 14,
                             }}>*请在认真填写申请资料</Text>
                         </View>

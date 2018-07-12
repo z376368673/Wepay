@@ -7,6 +7,7 @@ import {
     TouchableOpacity,
     Image,
     Button,
+    ImageBackground,
 } from 'react-native';
 import BaseComponent, { BaseStyles, mainColor, window_width } from "../BaseComponent";
 import NavigationBar from "../../common/NavigationBar";
@@ -57,40 +58,73 @@ export default class MyStore extends BaseComponent {
             style={{
                 backgroundColor: '#fff',
                 alignItems: 'center',
-                marginTop: 5,
-                marginBottom: 5,
-                marginLeft: 20,
-                marginRight: 20,
-                borderRadius: 5,
+                marginBottom: 8,
                 flexDirection: 'row',
                 padding: 10
             }}>
             <Image
-                style={{ width: 50, height: 50, marginLeft: 5 }}
+                style={{ width: 80, height: 80, }}
                 source={require("../../../res/images/banben.png")} />
-            <View style={{ flexDirection: 'column', flex: 1, marginLeft: 10, marginRight: 10 }}>
+            <View style={{ flexDirection: 'column', flex: 1, marginLeft: 10, }}>
                 <Text
                     style={{ color: "#333333", fontSize: 18 }}>{data.index} {data.item ? data.item.name : "name"}</Text>
-                <Text style={{
-                    color: "#666666",
-                    marginTop: 5,
-                    fontSize: 15,
-                }}>{data.item ? data.item.description : "description"}</Text>
+                <View style={{ flexDirection: 'row', marginTop: 5 }}>
+                    <Text style={{
+                        color: "#d11",
+                        fontSize: 15,
+                    }}>￥{124}</Text>
+                    <Text style={{
+                        color: "#888",
+                        fontSize: 15,
+                        marginLeft: 30,
+                    }}>库存:{3}</Text>
+                </View>
+
+                <View style={{ flexDirection: "row-reverse", backgroundColor: "#fff", marginTop: 5 }}>
+                    <TouchableOpacity
+                        style={{
+                            marginRight: 5,
+                            paddingTop: 8,
+                            paddingBottom: 8,
+                            paddingLeft: 15,
+                            paddingRight: 15,
+                            borderRadius: 15,
+                            alignItems: "center",
+                            justifyContent: "center",
+                            backgroundColor: mainColor,
+                            marginLeft: 10,
+                        }}
+                        onPress={() => this.onClickDelect(data)}>
+                        <Text style={{
+                            color: "#fff",
+                            fontSize: 15,
+                        }}>上架</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={{
+                            marginRight: 5,
+                            paddingTop: 5,
+                            paddingBottom: 5,
+                            paddingLeft: 8,
+                            paddingRight: 8,
+                            borderRadius: 15,
+                            borderColor: "#ccc",
+                            borderWidth: 0.5,
+                            alignItems: "center",
+                            justifyContent: "center"
+                        }}
+                        onPress={() => this.onClickDelect(data)}>
+                        <Text style={{
+                            color: "#333",
+                            fontSize: 15,
+                        }}>编辑商品</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
-            <TouchableOpacity
-                onPress={() => this.onClickDelect(data)}>
-                <Text style={{
-                    marginRight: 5,
-                    paddingTop: 8,
-                    paddingBottom: 8,
-                    paddingLeft: 15,
-                    paddingRight: 15,
-                    borderRadius: 5,
-                    borderWidth: 1,
-                    borderColor: "#cccccc"
-                }}>删除</Text>
-            </TouchableOpacity>
         </View>
+    }
+    onClickDelect(data) {
+
     }
     render() {
         return (
@@ -131,13 +165,18 @@ export default class MyStore extends BaseComponent {
                             <Text style={{ fontSize: 16, color: '#fff' }}>总收益</Text>
                         </View></TouchableOpacity>
                 </View>
-                <View style={{ flex: 1, marginTop: 10, paddingTop: 10, backgroundColor: "#f1f1f1" }}>
+                <View style={{ flex: 1, backgroundColor: "#f1f1f1" }}>
                     <RefreshFlatList2
                         ref={refList => this.refList = refList}
                         renderItem={(items) => this._getBuyOrSellItem(items)}
                         onRefreshs={() => this._refreshData()}
                     />
                 </View>
+                <TouchableOpacity onPress={()=>this.onClicks("add")}>
+                    <View style={{ flexDirection: "row", backgroundColor: mainColor, height: 48, justifyContent: "center", alignItems: "center" }}>
+                        <Text style={{ fontSize: 20, color: "#fff" }}>+ </Text><Text style={{ fontSize: 15, color: "#fff" }}>添加商品</Text>
+                    </View>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -146,17 +185,13 @@ export default class MyStore extends BaseComponent {
         alert(index)
         switch (index) {
             case 1:
-
                 break;
             case 2:
-
                 break;
             case 3:
-
                 break;
-
-            case 5:
-                alert("卖出中心")
+            case "add":
+            this.props.navigation.navigate('BankCardList');
                 break;
             default:
                 break;

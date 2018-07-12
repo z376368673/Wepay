@@ -148,7 +148,7 @@ export default class ViewUtils {
 
     static getSettingItem1(img, text, isShow, callback) {
         //公告和个人消息里的红点，
-        let dian = isShow ? <View style={{width: 10, height: 10, tintColor: "#d15"}}/> : null;
+        let dian = isShow ? <View style={{width: 10, height: 10, tintColor: "#d11"}}/> : null;
         return <TouchableOpacity
             onPress={callback}
         >

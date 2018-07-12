@@ -72,7 +72,7 @@ export default class Complaint extends BaseComponent {
                 <View style={{ flexDirection: 'row', padding: 10, backgroundColor: "#fff" }}>
                     <Text style={{
                         alignSelf: "center",
-                        color: '#d15',
+                        color: '#d11',
                         fontSize: 16,
                     }}>请在下方输入您的宝贵意见</Text>
                     <Text style={{

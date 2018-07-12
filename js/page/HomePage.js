@@ -188,7 +188,7 @@ export default class HomePage extends BaseComponent {
                             {this._itemView(() => this.onClicks(3), require('../../res/images/mairu.png'), "买入")}
                             {this._itemView(() => this.onClicks(4), require('../../res/images/maichu.png'), "卖出")}
                             {this._itemView(() => this.onClicks(5), require('../../res/images/shuzi.png'), "数字资产")}
-                            {this._itemView(() => this.onClicks(5), require('../../res/images/shangcheng.png'), "商城")}
+                            {this._itemView(() => this.onClicks(6), require('../../res/images/shangcheng.png'), "商城")}
                         </View>
                     </View>
                 </ScrollView></View>
@@ -221,7 +221,13 @@ export default class HomePage extends BaseComponent {
             case 4:
                 this.props.navigation.navigate('SellPage');
                 break;
-            default:
+                case 5://数字资产
+                this.props.navigation.navigate('SellPage');
+                break;
+                case 6://商城
+                this.props.navigation.navigate('StoreMall');
+                break;
+            default://
                 break
         }
     }

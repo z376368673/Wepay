@@ -60,7 +60,7 @@ export default class ModifyPassWord extends BaseComponent {
                     <View style={{height: 50, justifyContent: 'center', alignItems: 'flex-end',}}>
                         <Text style={{
                             fontSize: 15,
-                            color: "#d15",
+                            color: "#d11",
                             marginRight: 20
                         }}> 忘记{this.state.type === 0 ? "登陆" : "支付"}密码</Text></View>
                 </TouchableOpacity>

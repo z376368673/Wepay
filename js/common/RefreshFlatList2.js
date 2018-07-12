@@ -86,11 +86,11 @@ export default class RefreshFlatList extends Component {
                 refreshControl={
                     <RefreshControl
                         //Android下只有一个 colors 是转圈的颜色
-                        colors={['#d15', '#000']}
+                        colors={['#d11', '#000']}
                         //ios 下 可以设置标题，转圈颜色，标题颜色
                         title={'Loading...'}
-                        tintColor={'#d15'}
-                        titleColor={'#d15'}
+                        tintColor={'#d11'}
+                        titleColor={'#d11'}
                         //刷新状态 false:隐藏，true:显示
                         refreshing={this.state.isRefresh}
                         //刷新触发的后执行的方法

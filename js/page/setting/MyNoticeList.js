@@ -111,7 +111,7 @@ export default class MyNoticeList extends BaseComponent{
                         fontSize: 18,
                     }}>消息标题</Text>
                     {data.index > 0 ?
-                        <View style={{backgroundColor: "#d15", width: 8, height: 8, borderRadius: 4, marginLeft: 5}}/> :
+                        <View style={{backgroundColor: "#d11", width: 8, height: 8, borderRadius: 4, marginLeft: 5}}/> :
                         <View/>}
                 </View>
                 <Text style={{
