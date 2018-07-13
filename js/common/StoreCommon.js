@@ -6,11 +6,10 @@ import {
     TouchableOpacity,
     Image,
 } from 'react-native';
-import BaseComponent, { BaseStyles, mainColor, window_width } from "../BaseComponent";
-import HttpUtils from "../../util/HttpUtils";
-import BaseUrl from "../../util/BaseUrl";
-import RefreshFlatList from "../../common/RefreshFlatList.js"
-import Utils from '../../util/Utils';
+import BaseComponent, { BaseStyles, mainColor, window_width } from "../page/BaseComponent";
+import HttpUtils from "../util/HttpUtils";
+import RefreshFlatList from "./RefreshFlatList.js"
+import Utils from '../util/Utils';
 
 //订单公用类（相当于Fragment）
 const window_w = Utils.getWidth();
@@ -103,7 +102,7 @@ export default class OrderCommon extends BaseComponent {
                 onPress={(item) => this.goDetails(item)}>
                 <Image
                     style={{ width: window_w / 2 - 4, height: window_w / 2, }}
-                    source={require("../../../res/images/default_shop.png")} />
+                    source={require("../../res/images/default_shop.png")} />
             </TouchableOpacity>
 
             <View style={{ flexDirection: 'column', padding: 5, height: 60, justifyContent: "center", alignContent: "center" }}>
@@ -143,7 +142,7 @@ export default class OrderCommon extends BaseComponent {
             }}>
             <Image
                 style={{ width: 60, height: 60, borderWidth: 1, borderRadius: 30, borderColor: "#d11" }}
-                source={require("../../../res/images/banben.png")} />
+                source={require("../../res/images/banben.png")} />
             <View style={{ flexDirection: 'column', flex: 1, marginLeft: 10, }}>
                 <Text
                     style={{ color: "#333333", fontSize: 18 }}>{data.index} {data.item ? data.item.name : "name"}</Text>

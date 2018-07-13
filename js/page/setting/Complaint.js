@@ -6,6 +6,9 @@ import BaseComponent, { BaseStyles, mainColor } from "../BaseComponent";
 import { rethrow } from 'rsvp';
 import SYImagePicker from 'react-native-syan-image-picker'
 import Utils from '../../util/Utils';
+import DialogUtils from '../../util/DialogUtils';
+import HttpUtils from '../../util/HttpUtils';
+import BaseUrl from '../../util/BaseUrl';
 
 /**
  * 投诉建议
@@ -16,9 +19,18 @@ export default class Complaint extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
-            text: '其输入您的意见',
+            text: '请输入您的意见',
             photos:[],
+            sessionId:null,
         }
+
+        this.getUserInfo((userInfo)=>{
+            this.setState({
+                 headImg:{uri:userInfo.imgHead},
+                sessionId:userInfo.sessionId,
+            })
+        })
+
         this.navigation = this.props.navigation;
     }
 
@@ -59,7 +71,25 @@ export default class Complaint extends BaseComponent {
                 />
             )
         })
+    }
 
+    /**
+     * 上传图片
+     */
+    uploadImg(){
+        alert(JSON.stringify(this.state.photos))
+        let url =  BaseUrl.getComplaintUrl()
+        /** sessionId   contents  file */
+        HttpUtils.uploadImage(url,{sessionId:this.state.sessionId,contents:this.state.text},
+            this.state.photos,(result)=>{
+            if(result.code===1){
+                DialogUtils.showMsg("提交成功，我们会认真审查您的建议/投诉,请耐心等待!","知道了",()=>{
+                     this.props.navigation.goBack()
+                });
+            }else{
+                DialogUtils.showToast(result.msg)
+            }
+        })
     }
 
     render() {
@@ -104,9 +134,12 @@ export default class Complaint extends BaseComponent {
                     {this.createImg(this.state.photos)}
                     <Image style={{
                         alignSelf: "center",
-                        width:60,height: 60,
+                        width:width_w,height: width_w,
+                        marginLeft:10,
+                        borderColor:"#ddd",
+                        borderWidth: 0.5,
                     }}
-                    source={require("../../../res/images/new.png")}
+                    source={require("../../../res/images/addimg.png")}
                     />
                 </View>
                 </TouchableOpacity>
@@ -135,6 +168,13 @@ export default class Complaint extends BaseComponent {
     }
     onClicks() {
         //this.props.navigation.goBack()
+        if(this.state.text.length<10){
+            DialogUtils.showToast("意见描述不少于10个字...")
+        }else if(this.state.photos.length<1){
+            DialogUtils.showToast("最少上传一张照片...")
+        }else{
+            this.uploadImg()
+        }
     }
 }
 export const styles = StyleSheet.create({

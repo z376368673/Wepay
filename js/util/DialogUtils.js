@@ -11,11 +11,14 @@ import {
 import { Overlay, Toast,ActionSheet } from "teaset";
 
 export default class DialogUtils {
+     
     /**
      * 消息对话框
      * @param {*} text 提示类容 
-     * @param {*} confirm  确定按钮回调
+     * @param {*} confirm 确定按钮回调
      * @param {*} cancel 取消按钮回调
+     * @param {*} Text1 确定按钮文字
+     * @param {*} Text2 取消按钮文字
      */
     static showPop(text, confirm, cancel,Text1,Text2) {
         let overlayView = (
@@ -51,6 +54,45 @@ export default class DialogUtils {
                             }}
                         >
                             <Text style={{ fontSize: 20, color: "#333" }}>{Text1?Text1:"确定"}</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Overlay.PopView>
+        );
+        Overlay.show(overlayView);
+    }
+
+
+    /**
+     * 消息提示框
+     * @param {*} text 提示类容 
+     * @param {*} confirm  按钮回调
+     * @param {*} confirmText  按钮文字
+     */
+    static showMsg(text, confirmText,confirm,) {
+        let overlayView = (
+            <Overlay.PopView
+                style={{ alignItems: 'center', justifyContent: 'center', padding: 40 }}
+                type={"zoomIn"}//动画效果
+                modal={false}//点击任意区域消失 
+                ref={v => this.overlayPopView = v}
+            >
+                <View style={{ backgroundColor: "#fff", minWidth: 300, minHeight: 100, flexDirection: 'column', borderRadius: 15 }}>
+                    {/* 内容 */}
+                    <View style={{ minHeight: 100, justifyContent: "center", alignItems: "center", padding: 25 }}>
+                        <Text style={{ fontSize: 18, color: "#333" }}>{text}</Text>
+                    </View>
+                    {/* 按钮 */}
+                    <View style={{ backgroundColor: "#e0e0e0", height: 1 }} />
+                    <View style={{ justifyContent: "center", alignItems: "center", height: 60, flexDirection: "row", }}>
+                        <TouchableOpacity
+                            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+                            onPress={() => {
+                                this.overlayPopView && this.overlayPopView.close(),
+                                    confirm? confirm() : {}
+                            }}
+                        >
+                            <Text style={{ fontSize: 20, color: "#333" }}>{confirmText?confirmText:"确定"}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

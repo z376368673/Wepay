@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     StyleSheet,
     Text,
@@ -7,9 +7,12 @@ import {
     TouchableOpacity,
     Button,
 } from 'react-native';
-import BaseComponent, {BaseStyles, mainColor, window_width} from "../BaseComponent";
+import BaseComponent, { BaseStyles, mainColor, window_width } from "../BaseComponent";
 import NavigationBar from "../../common/NavigationBar";
-
+import BaseUrl from '../../util/BaseUrl';
+import DialogUtils from '../../util/DialogUtils';
+import HttpUtils from '../../util/HttpUtils';
+import CountDownView from '../../common/CountDownView';
 
 /**
  * 注册页面
@@ -19,26 +22,32 @@ export default class RegisterPage extends BaseComponent {
         super(props);
         //const {type} = this.props.navigation.state.params
         this.state = {
-            text: '18629448593',
+            phone: '18991040413',
+            code: "10086",//当前验证码
+            sms: null,//短信验证码
+            pwd: null,//第一次密码
+            pwdAgain: null,//第二次密码
+            recommendPhone: null,//推荐人手机号
+            paymentPwd: null, //支付密码
         }
     }
 
     render() {
         return (
-            <View style={[BaseStyles.container_column, {backgroundColor: mainColor}]}>
+            <View style={[BaseStyles.container_column, { backgroundColor: mainColor }]}>
                 <NavigationBar
-                    title={ "Wepay用户注册"}
+                    title={"Wepay用户注册"}
                     navigation={this.props.navigation}
                 />
                 <View style={styles.itemView}>
                     <TextInput
                         style={styles.itemTextInput}
                         placeholder={'请输入手机号码'}
-                        //defaultValue={userName}
+                        defaultValue={this.state.phone}
                         placeholderTextColor={'#fff'}
                         underlineColorAndroid='transparent'
-                        keyboardType={ "numeric"}
-                        onChangeText={(text) => this.setState({text: text})}/>
+                        keyboardType={"numeric"}
+                        onChangeText={(text) => this.setState({ text: text })} />
                 </View>
 
                 <View style={styles.itemView}>
@@ -48,10 +57,11 @@ export default class RegisterPage extends BaseComponent {
                         placeholderTextColor={'#fff'}
                         underlineColorAndroid='transparent'
                         keyboardType={"numeric"}
-                        onChangeText={(text) => this.setState({text: text})}/>
-                    <TouchableOpacity onPress={()=>this.onClicks(0)}>
-                    <Text style={{fontSize: 18, color: "#EAC100", padding:5}}>
-                    获取验证码</Text></TouchableOpacity>
+                        onChangeText={(text) => this.setState({ text: text })} />
+                        <CountDownView codeText={"获取验证码"} 
+                            callBack={(code)=>this.setState({sms:code})}
+                            textStyle={{marginRight:-15,padding:10}}
+                        />
                 </View>
 
                 <View style={styles.itemView}>
@@ -63,7 +73,7 @@ export default class RegisterPage extends BaseComponent {
                         underlineColorAndroid='transparent'
                         secureTextEntry={true}
                         keyboardType={"default"}
-                        onChangeText={(text) => this.setState({text: text})}/>
+                        onChangeText={(text) => this.setState({ text: text })} />
                 </View>
 
                 <View style={styles.itemView}>
@@ -75,7 +85,7 @@ export default class RegisterPage extends BaseComponent {
                         secureTextEntry={true}
                         underlineColorAndroid='transparent'
                         keyboardType={"default"}
-                        onChangeText={(text) => this.setState({text: text})}/>
+                        onChangeText={(text) => this.setState({ text: text })} />
                 </View>
                 <View style={styles.itemView}>
                     <TextInput
@@ -84,8 +94,8 @@ export default class RegisterPage extends BaseComponent {
                         //defaultValue={userName}
                         placeholderTextColor={'#fff'}
                         underlineColorAndroid='transparent'
-                        keyboardType={ "numeric"}
-                        onChangeText={(text) => this.setState({text: text})}/>
+                        keyboardType={"numeric"}
+                        onChangeText={(text) => this.setState({ text: text })} />
                 </View>
                 <View style={styles.itemView}>
                     <TextInput
@@ -94,8 +104,8 @@ export default class RegisterPage extends BaseComponent {
                         //defaultValue={userName}
                         placeholderTextColor={'#fff'}
                         underlineColorAndroid='transparent'
-                        keyboardType={ "numeric"}
-                        onChangeText={(text) => this.setState({text: text})}/>
+                        keyboardType={"numeric"}
+                        onChangeText={(text) => this.setState({ text: text })} />
                 </View>
 
                 <TouchableOpacity
@@ -121,12 +131,9 @@ export default class RegisterPage extends BaseComponent {
             </View>
         );
     }
-
+    
     onClicks(type) {
         switch (type) {
-            case 0://发送验证码
-
-                break
             case 1://确定
                 // this.props.navigation.navigate('ModifyNickName', {
                 //     userName: this.state.nickname,
@@ -153,13 +160,13 @@ export const styles = StyleSheet.create({
         backgroundColor: "#129481",
         borderRadius: 3,
         borderColor: "#fff",
-        height:50,
+        height: 50,
         paddingLeft: 15,
         paddingRight: 15,
         borderWidth: 1,
         marginTop: 15,
-        marginLeft:20,
-        marginRight:20,
+        marginLeft: 20,
+        marginRight: 20,
     },
     itemTextInput: {
         flex: 1,

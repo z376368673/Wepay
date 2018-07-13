@@ -24,6 +24,7 @@ export default class HomePage extends BaseComponent {
     constructor(props) {
         super(props);
         AsySorUtils.getUser((user) => {
+            alert(JSON.stringify(user))
             if(user){
             this.setState({
                 userId:user.account ,
@@ -31,6 +32,7 @@ export default class HomePage extends BaseComponent {
                 jifen: user.fengmiNum,
                 xinyong: user.userCredit ,
                 headImg: {uri: user.imgHead} ,
+               
             })}else{
                 DialogUtils.showToast("获取用户信息失败")
             }

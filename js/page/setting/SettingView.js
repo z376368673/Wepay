@@ -13,6 +13,8 @@ import ViewUtils from "../../util/ViewUtils";
 import DialogUtils from '../../util/DialogUtils';
 import SYImagePicker from 'react-native-syan-image-picker'
 import Utils from '../../util/Utils';
+import HttpUtils from '../../util/HttpUtils';
+import BaseUrl from '../../util/BaseUrl';
 
 
 export default class SettingView extends BaseComponent {
@@ -50,19 +52,32 @@ export default class SettingView extends BaseComponent {
                 if (photo.enableBase64) {
                     source = { uri: photo.base64 };
                 }
+                let imgs = [photo];
+                this.uploadImage(imgs)
+            })
+        } catch (err) {
+            DialogUtils.showToast(err.message)
+            // 取消选择，err.message为"取消"
+             alert(err.message)
+        }
+    };
+
+    /**
+     * 上传照片
+     * @param {*} imgs 
+     */
+    uploadImage(imgs){
+       let url =  BaseUrl.getUpdataHeadUrl()
+        HttpUtils.uploadImage(url,{sessionId:this.state.sessionId},imgs,(result)=>{
+            if(result.code===1){
                 this.setState({
                     headImg: source
                 })
-            })
-            // 选择成功
-            this.setState({
-                photos: [...this.state.photos, ...photos]
-            })
-        } catch (err) {
-            // 取消选择，err.message为"取消"
-            // alert(err,photos)
-        }
-    };
+            }else{
+                DialogUtils.showToast(result.msg)
+            }
+        })
+    }
 
     /**
      * 点击事件
@@ -122,6 +137,9 @@ export default class SettingView extends BaseComponent {
                     () => { },
                     "去申请", "取消"
                 );
+                break
+                case "order"://地址管理
+                this.props.navigation.navigate('MyOrder');
                 break
             case "address"://地址管理
                 this.props.navigation.navigate('AddressList');
@@ -215,7 +233,7 @@ export default class SettingView extends BaseComponent {
                         {ViewUtils.getSettingItem1(require('../../../res/images/dianpu.png'), '我的店铺', false,
                             () => this.onClicks("store"))}
                         {ViewUtils.getSettingItem1(require('../../../res/images/wodedingdan.png'), '我的订单', false,
-                            () => this.onClicks(10))}
+                            () => this.onClicks("order"))}
                         {ViewUtils.getSettingItem1(require('../../../res/images/dizhiguanli.png'), '地址管理', false,
                             () => this.onClicks("address"))}
 

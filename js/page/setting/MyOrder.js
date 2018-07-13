@@ -1,21 +1,12 @@
 import React, { Component } from 'react';
 import {
     StyleSheet,
-    Text,
     View,
-    TextInput,
-    TouchableOpacity,
-    Image,
-    Button,
-    ImageBackground,
 } from 'react-native';
 import BaseComponent, { BaseStyles, mainColor, window_width } from "../BaseComponent";
 import NavigationBar from "../../common/NavigationBar";
 import ScrollableTabView ,{ScrollableTabBar} from "react-native-scrollable-tab-view"
-import HttpUtils from "../../util/HttpUtils";
-import BaseUrl from "../../util/BaseUrl";
-import RefreshFlatList from "../../common/RefreshFlatList2.js"
-import OrderCommon from "./OrderCommon"
+import OrderCommon from "../../common/OrderCommon"
 //我的店铺
 
 export default class MyOrder extends BaseComponent {

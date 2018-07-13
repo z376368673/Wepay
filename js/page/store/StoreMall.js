@@ -17,7 +17,7 @@ import { SegmentedBar } from 'teaset';
 import RefreshFlatList from "../../common/RefreshFlatList.js"
 import Utils from '../../util/Utils';
 import ScrollableTabView ,{ScrollableTabBar} from "react-native-scrollable-tab-view"
-import OrderCommon from './OrderCommon';
+import OrderCommon from '../../common/OrderCommon';
 
 //购物中心
 const window_w = Utils.getWidth();
@@ -97,8 +97,8 @@ export default class MyStore extends BaseComponent {
                     {this.renderCustomItems()}
                 </SegmentedBar>
                    <View style={{ flex: 1, backgroundColor: "#f1f1f1" }}>
-                  {this.state.activeIndex===0?<OrderCommon tabLabel='商品' numColumns={2}/>:<View/>  } 
-                  {this.state.activeIndex===1?<OrderCommon tabLabel='商铺' numColumns={1}/>:<View/>  } 
+                  {this.state.activeIndex===0?<StoreCommon tabLabel='商品' numColumns={2}/>:<View/>  } 
+                  {this.state.activeIndex===1?<StoreCommon tabLabel='商铺' numColumns={1}/>:<View/>  } 
                         {/* <RefreshFlatList
                             ref={refList => this.refList = refList}
                             numColumns={this.state.activeIndex === 0?2:1}
@@ -113,7 +113,7 @@ export default class MyStore extends BaseComponent {
     onClicks(index) {
         switch (index) {
             case 1:
-            this.props.navigation.navigate('MyOrder');
+            this.props.navigation.navigate('MyStoreOrder');
                 break;
             case 2:
                 break;

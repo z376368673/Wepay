@@ -125,7 +125,6 @@ export default class LoginPage extends BaseComponent {
         HttpUtils.getData(url)
         .then(result => {
             if (result.code===1) {
-                alert(JSON.stringify(result.data))
                 DialogUtils.showToast("登陆成功")
                 AsySorUtils.saveUser(result.data,()=>{
                     this.props.navigation.navigate('HomePage');

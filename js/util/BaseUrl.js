@@ -73,6 +73,29 @@ export default class BaseUrl {
     static updateUserName(sessionId,userName) {
         return url + "/user/updateUserName?sessionId="+sessionId+"&userName="+userName;
     }
-
+    /**
+     * 获取验证码
+     * @param {*} mobile 
+     * @returns     "code": 1,
+                    "msg": "",
+                    "data": 537461
+     */
+    static getVerificationCodeUrl(mobile) {
+        return url + "/user/sendCode?mobile=" + mobile
+    }
+    /**
+     * 获取上传头像url 
+     * POST
+     */
+    static getUpdataHeadUrl() {
+        return url + "/user/updateImgHead"
+    }
+      /**
+     * 获取提交建议的 url 
+     * POST
+     */
+    static getComplaintUrl() {
+        return url + "/opinions/add"
+    }
 }
 

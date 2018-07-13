@@ -32,21 +32,29 @@ import MyStore from "../page/store/MyStore";
 import AddShop from "../page/store/AddShop";
 import StoreMall from "../page/store/StoreMall";
 import StoreDetails from "../page/store/StoreDetails";
-import MyOrder from "../page/store/MyOrder";
+import MyStoreOrder from "../page/store/MyStoreOrder";
+import MyOrder from "../page/setting/MyOrder";
 
 
 export default AppNavigator = createStackNavigator({
+    LoginPage: {//登陆
+        screen: LoginPage
+    },
+    SettingView: {//设置
+        screen: SettingView
+    },
+    
     StoreMall: {//商城首页
         screen: StoreMall
     },
     MyOrder: {//我的订单
         screen: MyOrder
     },
+    MyStoreOrder: {//店铺订单
+        screen: MyStoreOrder
+    },
     HomePage: {//首页
         screen: HomePage
-    },
-    LoginPage: {//登陆
-        screen: LoginPage
     },
    
     StoreDetails: {//商品详情
@@ -58,9 +66,7 @@ export default AppNavigator = createStackNavigator({
     MyStore: {//我的店铺
         screen: MyStore
     },
-    SettingView: {//设置
-        screen: SettingView
-    },
+   
    
    
     RegisterPage: {//注册
