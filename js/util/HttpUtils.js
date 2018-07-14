@@ -13,20 +13,28 @@ export default class HttpUtils {
                 })
                 .catch(error => {
                     reject(error);
+                    alert("error:"+JSON.stringify(error))
                 })
         })
     }
 
     static postData(url, data) {
         console.log(url + JSON.stringify(data))
+        var formData = new FormData();
+        for (const key in data) {
+            formData.append(key,data[key]);
+        }
         return new Promise((resolve, reject) => {
             fetch(url, {
                 method: 'POST',
-                header: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data),
+                // header: {
+                //     'Accept': 'application/json',
+                //     'Content-Type': 'application/json',
+                //     //'charset':'UTF-8'
+                // },
+                // body: JSON.stringify(data),
+                header:{},
+                body:formData,
             })
                 .then(response => response.json())
                 .then(result => {
@@ -35,6 +43,7 @@ export default class HttpUtils {
                 })
                 .catch(error => {
                     reject(error);
+                    alert("error:"+JSON.stringify(error))
                 })
         })
     }
@@ -58,7 +67,6 @@ export default class HttpUtils {
             let file = { uri: imgAry[i].uri, type: imgAry[i].mime, name: arr[arr.length - 1] };   //这里的key(uri和type和name)不能改变,
             formData.append("file", file);   //这里的files就是后台需要的key
             //这里的files就是后台需要的key
-          
         }
         for (const key in obj) {
             formData.append(key, obj[key]);  
@@ -77,7 +85,8 @@ export default class HttpUtils {
         })
         .catch((error) => {
                 DialogUtils.hideLoading()
-                DialogUtils.showToast("上传失败")
+                DialogUtils.showToast("上传失败"+error.message)
+                alert("error:"+error.message)
             });
     }
 

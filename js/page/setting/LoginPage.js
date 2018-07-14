@@ -13,10 +13,14 @@ import HttpUtils from '../../util/HttpUtils';
 import BaseUrl from '../../util/BaseUrl';
 import DialogUtils from '../../util/DialogUtils';
 import AsySorUtils from "../../dao/AsySorUtils"
+import {inject, observer} from 'mobx-react';
+import UserInfo from '../../model/UserInfo';
+
 /**
  * 登陆页面
  */
-export default class LoginPage extends BaseComponent {
+ //@inject('AppStore')
+ export default class LoginPage extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -24,7 +28,6 @@ export default class LoginPage extends BaseComponent {
             pwd:'123456',
         }
     }
-    
     render() {
         return (
             <View style={[BaseStyles.container_column, { backgroundColor: mainColor }]}>
@@ -126,8 +129,13 @@ export default class LoginPage extends BaseComponent {
         .then(result => {
             if (result.code===1) {
                 DialogUtils.showToast("登陆成功")
+               //let state = new  AppState() 
                 AsySorUtils.saveUser(result.data,()=>{
-                    this.props.navigation.navigate('HomePage');
+                    UserInfo.userInfo=result.data
+                    //alert(JSON.stringify(this.userInfo))
+                    //Mobx保存方式
+                    //this.props.AppStore.setUserInfo(result.data)
+                     this.props.navigation.navigate('HomePage');
                 })
             }else{
                 DialogUtils.showToast(result.msg)

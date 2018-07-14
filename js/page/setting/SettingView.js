@@ -15,11 +15,13 @@ import SYImagePicker from 'react-native-syan-image-picker'
 import Utils from '../../util/Utils';
 import HttpUtils from '../../util/HttpUtils';
 import BaseUrl from '../../util/BaseUrl';
+import { inject } from 'mobx-react';
 
-
+@inject('AppStore')
 export default class SettingView extends BaseComponent {
     constructor(props) {
         super(props);
+        this.userInfo = this.props.AppStore.userInfo;
         this.state = {
             userId: '123456',
             xinyong: 5,
@@ -27,17 +29,17 @@ export default class SettingView extends BaseComponent {
             photos: [],//选择的照片
             headImg:require('../../../res/images/touxiang-xiao.png'),
         }
-        this.getUserInfo((userInfo)=>{
-            this.setState({
-                headImg:{uri:userInfo.imgHead},
-                nickname:userInfo.username,
-                userId:userInfo.account,
-                xinyong:userInfo.userCredit,
-                sessionId:userInfo.sessionId,
-            })
+        this.userInfo = this.getUserInfo()
+    }
+    componentDidMount(){
+        this.setState({
+            headImg:{uri:this.userInfo.imgHead},
+            nickname:this.userInfo.username,
+            userId:this.userInfo.account,
+            xinyong:this.userInfo.userCredit,
+            sessionId:this.userInfo.sessionId,
         })
     }
-
     /**
      * 使用方式sync/await
      * 相册参数暂时只支持默认参数中罗列的属性；
@@ -52,6 +54,7 @@ export default class SettingView extends BaseComponent {
                 if (photo.enableBase64) {
                     source = { uri: photo.base64 };
                 }
+                this.source = source;
                 let imgs = [photo];
                 this.uploadImage(imgs)
             })
@@ -70,8 +73,9 @@ export default class SettingView extends BaseComponent {
        let url =  BaseUrl.getUpdataHeadUrl()
         HttpUtils.uploadImage(url,{sessionId:this.state.sessionId},imgs,(result)=>{
             if(result.code===1){
+                DialogUtils.showToast("上传成功")
                 this.setState({
-                    headImg: source
+                    headImg: this.source
                 })
             }else{
                 DialogUtils.showToast(result.msg)

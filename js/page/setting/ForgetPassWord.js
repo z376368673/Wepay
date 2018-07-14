@@ -9,6 +9,10 @@ import {
 } from 'react-native';
 import BaseComponent, {BaseStyles, mainColor, window_width} from "../BaseComponent";
 import NavigationBar from "../../common/NavigationBar";
+import DialogUtils from '../../util/DialogUtils';
+import CountDownView from '../../common/CountDownView';
+import BaseUrl from '../../util/BaseUrl';
+import HttpUtils from '../../util/HttpUtils';
 
 
 /**
@@ -19,9 +23,52 @@ export default class ModifyPassWord extends BaseComponent {
         super(props);
         const {type} = this.props.navigation.state.params
         this.state = {
-            text: '18629448593',
+            phone: "18629448593",
+            code: "",//当前验证码
+            sms: "10086",//短信验证码
+            pwd: "",//第一次密码
+            pwdAgain: "",//第二次密码
             type: type,
         }
+    }
+    onClicks(type) {
+        switch (type) {
+            case 1://确定
+                if(this.state.code!==this.state.sms){
+                    DialogUtils.showMsg("验证码不正确")
+                }else if(this.state.pwd.length<6){
+                    DialogUtils.showMsg("密码不能小于6位")
+                }else if(this.state.pwd!==this.state.pwdAgain){
+                    DialogUtils.showMsg("两次密码不相等,请重新输入")
+                }else{
+                    this.sumbit()
+                }
+                break
+        }
+    }
+    sumbit(){
+        if(this.state.type==0){
+            this.url = BaseUrl.getForgotPwdUrl()
+        }else{
+            this.url = BaseUrl.getForgotPayPwdUrl()
+        }
+        DialogUtils.showLoading();
+        //+"?mobile="+this.state.phone+"&newPwd="+this.state.pwdAgain
+        HttpUtils.postData(this.url,
+            {mobile:this.state.phone,newPwd:this.state.pwdAgain})
+        .then(result => {
+            if (result.code===1) {
+                DialogUtils.showToast("修改成功")
+                this.props.navigation.goBack()
+            }else{
+                DialogUtils.showToast(result.msg)
+            }
+            DialogUtils.hideLoading()
+        })
+        .catch(error => {
+            DialogUtils.hideLoading()
+            DialogUtils.showToast("服务器繁忙"+error.message)
+        })
     }
 
     render() {
@@ -35,11 +82,11 @@ export default class ModifyPassWord extends BaseComponent {
                     <TextInput
                         style={styles.itemTextInput}
                         placeholder={'请输入手机号码'}
-                        //defaultValue={userName}
+                        defaultValue={this.state.phone}
                         placeholderTextColor={'#fff'}
                         underlineColorAndroid='transparent'
                         keyboardType={this.state.type === 0 ? "default" : "numeric"}
-                        onChangeText={(text) => this.setState({text: text})}/>
+                        onChangeText={(text) => this.setState({phone: text})}/>
                 </View>
 
                 <View style={styles.itemView}>
@@ -49,10 +96,12 @@ export default class ModifyPassWord extends BaseComponent {
                         placeholderTextColor={'#fff'}
                         underlineColorAndroid='transparent'
                         keyboardType={this.state.type === 0 ? "default" : "numeric"}
-                        onChangeText={(text) => this.setState({text: text})}/>
-                    <TouchableOpacity onPress={()=>this.onClicks(0)}>
-                    <Text style={{fontSize: 18, color: "#EAC100", padding:5}}>
-                    获取验证码</Text></TouchableOpacity>
+                        onChangeText={(text) => this.setState({code: text})}/>
+                   <CountDownView codeText={"获取验证码"} 
+                            phone = {this.state.phone}
+                            callBack={(code)=>this.setState({sms:code})}
+                            textStyle={{marginRight:-15,padding:10}}
+                        />
                 </View>
 
                 <View style={styles.itemView}>
@@ -64,7 +113,7 @@ export default class ModifyPassWord extends BaseComponent {
                         underlineColorAndroid='transparent'
                         secureTextEntry={true}
                         keyboardType={this.state.type === 0 ? "default" : "numeric"}
-                        onChangeText={(text) => this.setState({text: text})}/>
+                        onChangeText={(text) => this.setState({pwd: text})}/>
                 </View>
 
                 <View style={styles.itemView}>
@@ -76,7 +125,7 @@ export default class ModifyPassWord extends BaseComponent {
                         secureTextEntry={true}
                         underlineColorAndroid='transparent'
                         keyboardType={this.state.type === 0 ? "default" : "numeric"}
-                        onChangeText={(text) => this.setState({text: text})}/>
+                        onChangeText={(text) => this.setState({pwdAgain: text})}/>
                 </View>
 
                 <TouchableOpacity
@@ -103,23 +152,7 @@ export default class ModifyPassWord extends BaseComponent {
         );
     }
 
-    onClicks(type) {
-        switch (type) {
-            case 0://发送验证码
-
-                break
-            case 1://确定
-                // this.props.navigation.navigate('ModifyNickName', {
-                //     userName: this.state.nickname,
-                //     callbacks: (name) => {
-                //         this.getCallBackValue(name)
-                //     }
-                // });
-                break
-        }
-        //this.props.navigation.goBack()
-        //this.navigation.state.params.callbacks({nickname: this.state.text})
-    }
+   
 }
 export const styles = StyleSheet.create({
     container_center: {

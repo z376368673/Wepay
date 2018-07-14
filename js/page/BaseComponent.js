@@ -6,30 +6,24 @@ import {
     Text,
     View,
 } from 'react-native';
-
-import Button from "teaset/components/Button/Button";
 import DialogUtils from "../util/DialogUtils"
 import AsySorUtils from '../dao/AsySorUtils';
+import { inject } from 'mobx-react';
+import user from '../model/UserInfo';
 export default class BaseComponent extends Component {
-    userInfo = null
     constructor(props) {
         super(props);
     }
-
-    upDataUserInfo(newUser,params){
-        AsySorUtils.saveUser(newUser,() => params())
+    getUser(){
+        return  user;
     }
-    getUserInfo=(params)=>{
-        AsySorUtils.getUser((user) => {
-            if (user) {
-                params(user)
-            } else {
-                DialogUtils.showToast("获取用户信息失败")
-            }
-        })
+    getUserInfo(){
+        return  user.userInfo;
+    }
+    getSessionId(){
+        return  user.sessionId;
     }
     getCallBackValue = (params) => this.setState(params)
-
 }
 const { height, width } = Dimensions.get('window');
 export const mainColor = '#48b1a3';

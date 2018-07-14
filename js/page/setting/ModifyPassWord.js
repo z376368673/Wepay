@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     StyleSheet,
     Text,
@@ -7,8 +7,11 @@ import {
     TouchableOpacity,
     Button,
 } from 'react-native';
-import BaseComponent, {BaseStyles, mainColor, window_width} from "../BaseComponent";
+import BaseComponent, { BaseStyles, mainColor, window_width } from "../BaseComponent";
 import NavigationBar from "../../common/NavigationBar";
+import BaseUrl from '../../util/BaseUrl';
+import DialogUtils from '../../util/DialogUtils';
+import HttpUtils from '../../util/HttpUtils';
 
 
 
@@ -18,16 +21,67 @@ import NavigationBar from "../../common/NavigationBar";
 export default class ModifyPassWord extends BaseComponent {
     constructor(props) {
         super(props);
-        const {type} = this.props.navigation.state.params
+        const { type } = this.props.navigation.state.params
         this.state = {
-            text: '18629448593',
-            type:type,
+            pwd: "",//第一次密码
+            pwdAgain: "",//第二次密码
+            type: type,
         }
+        //this.userInfo.sessionId
+    }
+
+    onClicks(type) {
+        switch (type) {
+            case 0://忘记密码
+                this.props.navigation.navigate('ForgetPassWord', {
+                    type: this.state.type
+                })
+                break
+            case 1://确定
+            this.sumbit();
+                // this.props.navigation.navigate('ModifyNickName', {
+                //     userName: this.state.nickname,
+                //     callbacks: (name) => {
+                //         this.getCallBackValue(name)
+                //     }
+                // });
+                break
+        }
+        //this.props.navigation.goBack()
+        //this.navigation.state.params.callbacks({nickname: this.state.text})
+    }
+
+    sumbit(){
+        if (this.state.type === 0) {
+            this.url = BaseUrl.getUpdateLoginPwdUrl()
+        } else {
+            this.url = BaseUrl.getUpdatePayPwdUrl()
+        }
+        DialogUtils.showLoading();
+        HttpUtils.postData(this.url,
+            {
+                sessionId: this.userInfo.sessionId,
+                oldPwd: this.state.pwd,
+                newPwd: this.state.pwdAgain
+            })
+            .then(result => {
+                if (result.code === 1) {
+                    DialogUtils.showToast("修改成功")
+                    this.props.navigation.goBack()
+                } else {
+                    DialogUtils.showToast(result.msg)   
+                }
+                DialogUtils.hideLoading()
+            })
+            .catch(error => {
+                DialogUtils.hideLoading()
+                DialogUtils.showToast("服务器繁忙" + error.message)
+            })
     }
 
     render() {
         return (
-            <View style={[BaseStyles.container_column, {backgroundColor: "#f1f1f1"}]}>
+            <View style={[BaseStyles.container_column, { backgroundColor: "#f1f1f1" }]}>
                 <NavigationBar
                     title={this.state.type === 0 ? "修改登陆密码" : "修改支付密码"}
                     navigation={this.props.navigation}
@@ -41,8 +95,9 @@ export default class ModifyPassWord extends BaseComponent {
                         //defaultValue={userName}
                         placeholderTextColor={'#999'}
                         underlineColorAndroid='transparent'
+                        secureTextEntry={true}
                         keyboardType={this.state.type === 0 ? "default" : "numeric"}
-                        onChangeText={(text) => this.setState({text: text})}/>
+                        onChangeText={(text) => this.setState({ pwd: text })} />
                 </View>
                 <View style={styles.itemView}>
                     <Text style={styles.itemText}>
@@ -52,12 +107,13 @@ export default class ModifyPassWord extends BaseComponent {
                         placeholder={'请输入新密码'}
                         //defaultValue={userName}
                         placeholderTextColor={'#999'}
+                        secureTextEntry={true}
                         underlineColorAndroid='transparent'
                         keyboardType={this.state.type === 0 ? "default" : "numeric"}
-                        onChangeText={(text) => this.setState({text: text})}/>
+                        onChangeText={(text) => this.setState({ pwdAgain: text })} />
                 </View>
-                <TouchableOpacity onPress={()=>this.onClicks(0)}>
-                    <View style={{height: 50, justifyContent: 'center', alignItems: 'flex-end',}}>
+                <TouchableOpacity onPress={() => this.onClicks(0)}>
+                    <View style={{ height: 50, justifyContent: 'center', alignItems: 'flex-end', }}>
                         <Text style={{
                             fontSize: 15,
                             color: "#d11",
@@ -88,25 +144,7 @@ export default class ModifyPassWord extends BaseComponent {
         );
     }
 
-    onClicks(type) {
-        switch (type) {
-            case 0://忘记密码
-                this.props.navigation.navigate('ForgetPassWord',{
-                    type:this.state.type
-                })
-                break
-            case 1://确定
-                this.props.navigation.navigate('ModifyNickName', {
-                    userName: this.state.nickname,
-                    callbacks: (name) => {
-                        this.getCallBackValue(name)
-                    }
-                });
-                break
-        }
-        //this.props.navigation.goBack()
-        //this.navigation.state.params.callbacks({nickname: this.state.text})
-    }
+
 }
 export const styles = StyleSheet.create({
     container_center: {

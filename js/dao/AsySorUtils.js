@@ -38,6 +38,7 @@ static getUser(callback){
         }else{
             callback(undefined) ;
         }
+        return result
     })
 }
 }

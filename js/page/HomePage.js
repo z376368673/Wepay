@@ -17,26 +17,12 @@ import DialogUtils from '../util/DialogUtils';
 import AsySorUtils from '../dao/AsySorUtils';
 import BaseUrl from '../util/BaseUrl';
 import HttpUtils from '../util/HttpUtils';
-
+import UserInfo from '../model/UserInfo';
 
 const screen_width = Utils.getWidth();
 export default class HomePage extends BaseComponent {
     constructor(props) {
         super(props);
-        AsySorUtils.getUser((user) => {
-            alert(JSON.stringify(user))
-            if(user){
-            this.setState({
-                userId:user.account ,
-                yue: user.cangkuNum ,
-                jifen: user.fengmiNum,
-                xinyong: user.userCredit ,
-                headImg: {uri: user.imgHead} ,
-               
-            })}else{
-                DialogUtils.showToast("获取用户信息失败")
-            }
-        })
         this.state = {
             userId:  "1234567",
             yue:  0,
@@ -48,6 +34,16 @@ export default class HomePage extends BaseComponent {
     }
     componentDidMount() {
         this.getBanner();
+        //alert(JSON.stringify(UserInfo.userInfo()))
+        //userInfo = UserInfo.userInfo();
+        this.userInfo = this.getUserInfo()
+        this.setState({
+            userId:this.userInfo.account ,
+            yue: this.userInfo.cangkuNum ,
+            jifen: this.userInfo.fengmiNum,
+            xinyong: this.userInfo.userCredit ,
+            headImg: {uri: this.userInfo.imgHead} ,
+        })
     }
     setImgToBanner(bannerArray) {
         var views = []

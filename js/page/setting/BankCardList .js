@@ -13,7 +13,8 @@ import HttpUtils from "../../util/HttpUtils";
 import {getBankCardIcon} from "../../model/BankCardModel";
 import RefreshFlatList2 from "../../common/RefreshFlatList2";
 import AddBankCard from "./AddBankCard";
-
+import BaseUrl from '../../util/BaseUrl';
+import DialogUtils from '../../util/DialogUtils';
 const URL = 'https://api.github.com/search/repositories?q=';
 /**
  * 我的银行卡
@@ -24,6 +25,7 @@ export default class BankCardList extends BaseComponent {
     constructor(props) {
         super(props);
         this.index = 1
+        this.userInfo = this.getUserInfo()
     }
     //界面加载完成
     componentDidMount() {
@@ -42,7 +44,7 @@ export default class BankCardList extends BaseComponent {
                 <View style={{flex: 1, marginTop: 10, paddingTop: 10, backgroundColor: "#f1f1f1"}}>
                     <RefreshFlatList2
                         ref={refList => this.refList = refList}
-                        renderItem={(items) => this._getBuyOrSellItem(items)}
+                        renderItem={(items) => this._getBankCardItem(items)}
                         onRefreshs={() => this._refreshData()}
                         footerView={() => this.getFootView()}
                     />
@@ -53,16 +55,19 @@ export default class BankCardList extends BaseComponent {
     //刷新数据
     _refreshData(value) {
         this.refList.refreshStar()
-        HttpUtils.getData(URL + value)
+        let url =  BaseUrl.getUserBankListUrl(this.userInfo.sessionId)
+        HttpUtils.getData(url)
             .then(result => {
-                var arr = [];
-                for (let i = 0; i < 3; i++) {
-                    arr.push(result.items[i])
+                alert(JSON.stringify(result))
+                if(result.code===1){
+                    this.refList.setData(result.data)
+                }else{
+                     DialogUtils.showToast(result.msg)   
                 }
-                this.refList.setData(arr)
             })
             .catch(error => {
                 this.refList.setData([])
+                DialogUtils.showToast("error:"+error.message)   
             })
     }
 
@@ -99,7 +104,7 @@ export default class BankCardList extends BaseComponent {
      * @returns {*}
      * @private
      */
-    _getBuyOrSellItem(data) {
+    _getBankCardItem(data) {
         return <View
             key={data.item.index}
             style={{

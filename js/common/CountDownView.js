@@ -17,6 +17,7 @@ export default class CountDownView extends Component {
         }
     }
     static defaultProps = {
+        phone:undefined,
         viewStyle:{},
         textStyle:{},
         callBack:()=>{},
@@ -55,7 +56,7 @@ export default class CountDownView extends Component {
      * 获取验证码
      */
     getVerificationCode() {
-        let url = BaseUrl.getVerificationCodeUrl(this.state.phone);
+        let url = BaseUrl.getVerificationCodeUrl(this.props.phone);
         //设置不可点击
         this.setState({
             disabled: true,

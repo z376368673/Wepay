@@ -37,13 +37,18 @@ import MyOrder from "../page/setting/MyOrder";
 
 
 export default AppNavigator = createStackNavigator({
+   
     LoginPage: {//登陆
         screen: LoginPage
     },
+    
+    HomePage: {//首页
+        screen: HomePage
+    },
+   
     SettingView: {//设置
         screen: SettingView
     },
-    
     StoreMall: {//商城首页
         screen: StoreMall
     },
@@ -53,9 +58,7 @@ export default AppNavigator = createStackNavigator({
     MyStoreOrder: {//店铺订单
         screen: MyStoreOrder
     },
-    HomePage: {//首页
-        screen: HomePage
-    },
+    
    
     StoreDetails: {//商品详情
         screen: StoreDetails
@@ -66,8 +69,6 @@ export default AppNavigator = createStackNavigator({
     MyStore: {//我的店铺
         screen: MyStore
     },
-   
-   
    
     RegisterPage: {//注册
         screen: RegisterPage

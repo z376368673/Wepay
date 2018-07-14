@@ -84,6 +84,21 @@ export default class BaseUrl {
         return url + "/user/sendCode?mobile=" + mobile
     }
     /**
+     * 用户注册
+     *  
+     * POST
+     * @param {*} mobile 
+     * @param {*} username 用户昵称
+     * @param {*} referrer 推荐人UID/手机号
+     * @param {*} loginPwd 登录密码
+     * @param {*} safetyPwd 交易密码
+     * @return  1 
+     */
+    static getRegisterUrl()  {
+        return url + "/user/register"
+    }
+
+    /**
      * 获取上传头像url 
      * POST
      */
@@ -96,6 +111,74 @@ export default class BaseUrl {
      */
     static getComplaintUrl() {
         return url + "/opinions/add"
+    }
+
+    /**
+     * 忘记密码
+     * 
+     * POST
+     * @param {*} mobile 
+     * @param {*} newPwd 
+     * @return  1 
+     */
+    static getForgotPwdUrl()  {
+        return url + "/user/forgotPwd"
+    }
+    /**
+     * 忘记支付密码
+     * 
+     * POST
+     * @param {*} mobile 
+     * @param {*} newPwd 
+     * @return  1 
+     */
+    static getForgotPayPwdUrl()  {
+        return url + "/user/forgotPayPwd"
+    }
+
+    /**
+     * 修改支付密码
+     *  
+     * POST
+     * @param {*} sessionId 
+     * @param {*} oldPwd 旧密码
+     * @param {*} newPwd 新密码
+     * @return  1 
+     */
+    static getUpdatePayPwdUrl()  {
+        return url + "/user/updatePayPwd"
+    }
+
+      /**
+     * 修改登录密码
+     *  
+     * POST
+     * @param {*} sessionId 
+     * @param {*} oldPwd 旧密码
+     * @param {*} newPwd 新密码
+     * @return  1 
+     */
+    static getUpdateLoginPwdUrl()  {
+        return url + "/user/updateLoginPwd"
+    }
+
+     /**
+     * 获取银行卡列表
+     * @param {*} sessionId 
+     * @return  
+     *     "id": 58,
+            "cardId": 3,
+            "userId": 3058,
+            "isDefault": 0,
+            "addTime": "1524528135",
+            "holdName": "杨稳",
+            "cardNumber": "6222084000007207445",
+            "openCard": "中国工商银行兴东支行",
+            "banqGenre": "中国工商银行",
+            "banqImg": "http://tz.hxksky.com/wepay/upload/zggsyh.png"
+     */
+    static getUserBankListUrl(sessionId)  {
+        return url + "/bank/userBank?sessionId="+sessionId;
     }
 }
 

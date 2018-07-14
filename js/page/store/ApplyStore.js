@@ -28,7 +28,6 @@ export default class ApplyStore extends BaseComponent {
         this.items = [
             '全部',
           ];
-        this.navigation = this.props.navigation;
     }
     componentDidMount(){
         Utils.getLocation((coords)=>{

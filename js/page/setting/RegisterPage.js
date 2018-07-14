@@ -22,15 +22,78 @@ export default class RegisterPage extends BaseComponent {
         super(props);
         //const {type} = this.props.navigation.state.params
         this.state = {
-            phone: '18991040413',
-            code: "10086",//当前验证码
-            sms: null,//短信验证码
-            pwd: null,//第一次密码
-            pwdAgain: null,//第二次密码
-            recommendPhone: null,//推荐人手机号
-            paymentPwd: null, //支付密码
+            nickName: "",
+            phone: '18629448593',
+            code: "",//当前验证码
+            sms: "10086",//短信验证码
+            pwd: "",//第一次密码
+            pwdAgain: "",//第二次密码
+            recommendPhone: "",//推荐人手机号
+            paymentPwd: "", //支付密码
         }
     }
+    /**
+     * 注册
+     */
+    sumbit() {
+        this.url = BaseUrl.getRegisterUrl()
+        DialogUtils.showLoading();
+        HttpUtils.postData(this.url,
+            {
+                mobile: this.state.phone,
+                username: this.state.nickName,
+                referrer: this.state.recommendPhone,
+                loginPwd: this.state.pwdAgain,
+                safetyPwd: this.state.paymentPwd,
+            })
+            .then(result => {
+                if (result.code === 1) {
+                    DialogUtils.showToast("注册成功")
+                    this.props.navigation.goBack()
+                } else {
+                    DialogUtils.showToast(result.msg)
+                }
+                DialogUtils.hideLoading()
+            })
+            .catch(error => {
+                DialogUtils.hideLoading()
+                DialogUtils.showToast("注册失败")
+            })
+    }
+
+
+    onClicks(type) {
+        switch (type) {
+            case 1://确定
+                if (this.state.nickName.length < 1) {
+                    DialogUtils.showMsg("请输入昵称")
+                } else if (this.state.phone.length !== 11) {
+                    DialogUtils.showMsg("请输入11位手机号")
+                } else if (this.state.code!==this.state.sms) {
+                    DialogUtils.showMsg("验证码不正确")
+                } else if (this.state.pwd.length  < 6) {
+                    DialogUtils.showMsg("请输入6位以上的密码")
+                } else if (this.state.pwd !== this.state.pwdAgain) {
+                    DialogUtils.showMsg("两次输入的密码不一致")
+                } else if (this.state.recommendPhone.length  !== 11) {
+                    DialogUtils.showMsg("请输入11位推荐人手机号")
+                } else if (this.state.paymentPwd.length  !== 6) {
+                    DialogUtils.showMsg("请输入6位交易密码")
+                } else {
+                    this.sumbit()
+                }
+                // this.props.navigation.navigate('ModifyNickName', {
+                //     userName: this.state.nickname,
+                //     callbacks: (name) => {
+                //         this.getCallBackValue(name)
+                //     }
+                // });
+                break
+        }
+        //this.props.navigation.goBack()
+        //this.navigation.state.params.callbacks({nickname: this.state.text})
+    }
+
 
     render() {
         return (
@@ -39,6 +102,16 @@ export default class RegisterPage extends BaseComponent {
                     title={"Wepay用户注册"}
                     navigation={this.props.navigation}
                 />
+
+                <View style={styles.itemView}>
+                    <TextInput
+                        style={styles.itemTextInput}
+                        placeholder={'请输入您的昵称'}
+                        placeholderTextColor={'#fff'}
+                        underlineColorAndroid='transparent'
+                        keyboardType={"numeric"}
+                        onChangeText={(text) => this.setState({ nickName: text })} />
+                </View>
                 <View style={styles.itemView}>
                     <TextInput
                         style={styles.itemTextInput}
@@ -47,7 +120,7 @@ export default class RegisterPage extends BaseComponent {
                         placeholderTextColor={'#fff'}
                         underlineColorAndroid='transparent'
                         keyboardType={"numeric"}
-                        onChangeText={(text) => this.setState({ text: text })} />
+                        onChangeText={(text) => this.setState({ phone: text })} />
                 </View>
 
                 <View style={styles.itemView}>
@@ -57,11 +130,12 @@ export default class RegisterPage extends BaseComponent {
                         placeholderTextColor={'#fff'}
                         underlineColorAndroid='transparent'
                         keyboardType={"numeric"}
-                        onChangeText={(text) => this.setState({ text: text })} />
-                        <CountDownView codeText={"获取验证码"} 
-                            callBack={(code)=>this.setState({sms:code})}
-                            textStyle={{marginRight:-15,padding:10}}
-                        />
+                        onChangeText={(text) => this.setState({ code: text })} />
+                    <CountDownView codeText={"获取验证码"}
+                        phone={this.state.phone}
+                        callBack={(code) => this.setState({ sms: code })}
+                        textStyle={{ marginRight: -15, padding: 10 }}
+                    />
                 </View>
 
                 <View style={styles.itemView}>
@@ -73,7 +147,7 @@ export default class RegisterPage extends BaseComponent {
                         underlineColorAndroid='transparent'
                         secureTextEntry={true}
                         keyboardType={"default"}
-                        onChangeText={(text) => this.setState({ text: text })} />
+                        onChangeText={(text) => this.setState({ pwd: text })} />
                 </View>
 
                 <View style={styles.itemView}>
@@ -85,7 +159,7 @@ export default class RegisterPage extends BaseComponent {
                         secureTextEntry={true}
                         underlineColorAndroid='transparent'
                         keyboardType={"default"}
-                        onChangeText={(text) => this.setState({ text: text })} />
+                        onChangeText={(text) => this.setState({ pwdAgain: text })} />
                 </View>
                 <View style={styles.itemView}>
                     <TextInput
@@ -95,7 +169,7 @@ export default class RegisterPage extends BaseComponent {
                         placeholderTextColor={'#fff'}
                         underlineColorAndroid='transparent'
                         keyboardType={"numeric"}
-                        onChangeText={(text) => this.setState({ text: text })} />
+                        onChangeText={(text) => this.setState({ recommendPhone: text })} />
                 </View>
                 <View style={styles.itemView}>
                     <TextInput
@@ -105,7 +179,7 @@ export default class RegisterPage extends BaseComponent {
                         placeholderTextColor={'#fff'}
                         underlineColorAndroid='transparent'
                         keyboardType={"numeric"}
-                        onChangeText={(text) => this.setState({ text: text })} />
+                        onChangeText={(text) => this.setState({ paymentPwd: text })} />
                 </View>
 
                 <TouchableOpacity
@@ -131,21 +205,9 @@ export default class RegisterPage extends BaseComponent {
             </View>
         );
     }
-    
-    onClicks(type) {
-        switch (type) {
-            case 1://确定
-                // this.props.navigation.navigate('ModifyNickName', {
-                //     userName: this.state.nickname,
-                //     callbacks: (name) => {
-                //         this.getCallBackValue(name)
-                //     }
-                // });
-                break
-        }
-        //this.props.navigation.goBack()
-        //this.navigation.state.params.callbacks({nickname: this.state.text})
-    }
+
+   
+
 }
 export const styles = StyleSheet.create({
     container_center: {
