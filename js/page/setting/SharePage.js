@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     StyleSheet,
     Text,
@@ -6,9 +6,10 @@ import {
     Image,
     TouchableOpacity,
     UIManager,
+    ImageBackground
 } from 'react-native';
 
-import BaseComponent, {BaseStyles, mainColor, window_width} from "../BaseComponent";
+import BaseComponent, { BaseStyles, mainColor, window_width } from "../BaseComponent";
 import NavigationBar from "../../common/NavigationBar";
 import QRCode from "react-native-qrcode";
 import DialogUtils from '../../util/DialogUtils';
@@ -20,16 +21,16 @@ export default class SharePage extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
-            text: 'app下载地址'+"当前用户id",
+            text: 'app下载地址' + "当前用户id",
         }
     }
     /**
      * 保存图片
      * @param {*} view 
      */
-    saveImgBy(view){
-        UIManager.takeSnapshot(view,{format: 'png', quality: 1}).then(
-            (uri)=>{ DialogUtils.showToast(uri)}
+    saveImgBy(view) {
+        UIManager.takeSnapshot(view, { format: 'png', quality: 1 }).then(
+            (uri) => { DialogUtils.showToast(uri) }
         )
         //  ReactNative.takeSnapshot(view,{format: 'png', quality: 1}).then(
         //     (uri)=>{ DialogUtils.showToast(uri)}
@@ -37,7 +38,7 @@ export default class SharePage extends BaseComponent {
     }
     render() {
         return (
-            <View style={[BaseStyles.container_column, {backgroundColor: mainColor}]}>
+            <View style={[BaseStyles.container_column, { backgroundColor: mainColor }]}>
                 <NavigationBar
                     title='分享好友'
                     navigation={this.props.navigation}
@@ -47,55 +48,55 @@ export default class SharePage extends BaseComponent {
                     }, () => this.saveImgBy(this.qrCode))}
                 />
                 <View style={{
-                    height: 400,
+                   // backgroundColor: mainColor,
+                     height:390,
                     alignItems: 'center',
-                    marginStart: 55,
-                    marginEnd: 55,
+                    flexDirection: "column",
                     marginTop: 30,
-                    backgroundColor: '#fff',
-                    flexDirection: 'column',
-                    borderRadius: 10,
                 }}>
-                    {/*生成二维码*/}
-                    <View style={{marginTop: 40,}}>
+                    <Image source={require("../../../res/images/erweima-bg.png")}
+                        style={{ flex: 1, position: "absolute", resizeMode: Image.resizeMode.contain, }}/>
+                        {/*生成二维码*/}
+                    <View style={{ marginTop: 40, top: 20, }}>
                         <QRCode
                             //ref='qrCode'
-                            ref={qrCode=>this.qrCode=qrCode}
+                            ref={qrCode => this.qrCode = qrCode}
                             value={this.state.text}
                             size={window_width / 2}
                             bgColor='black'
-                            fgColor='white'/>
-                    </View>
-
-                    <View style={{flexDirection: 'row',}}>
-                        <Image source={require("../../../res/images/yuandian.png")}
-                               style={{flex: 1, height: 30, marginTop: 30, marginBottom: 40}}/>
+                            fgColor='white' />
                     </View>
                     <Text
-                        style={{color: '#333', fontSize: 20,  zIndex: 1, bottom: 20}}>
+                        style={{
+                            color: '#333',
+                            //position: 'relative', top: 90,
+                            position: "absolute", bottom: 30,
+                            fontSize: 20,
+                        }}>
                         扫一扫，向我付款</Text>
                 </View>
+
                 <TouchableOpacity
-                    onPress={()=>{this.onClicks(1)}}
-                    style={{alignSelf: "center", position: "absolute", zIndex: 1, bottom: 95}}>
-                    <Text style={{color: '#FFF', fontSize: 20, borderColor: "#fff", borderBottomWidth: 1,}}>
+                    onPress={() => { this.onClicks(1) }}
+                    style={{ alignSelf: "center", position: "absolute", zIndex: 1, bottom: 95 }}>
+                    <Text style={{ color: '#FFF', fontSize: 20, borderColor: "#fff", borderBottomWidth: 1, }}>
                         复制Wepay下载地址</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    onPress={()=>{this.onClicks(2)}}
-                    style={{alignSelf: "center", position: "absolute", zIndex: 1, bottom: 50}}>
-                    <Text style={{color: '#FFF', fontSize: 20,}}>分享记录</Text>
+                    onPress={() => { this.onClicks(2) }}
+                    style={{ alignSelf: "center", position: "absolute", zIndex: 1, bottom: 50 }}>
+                    <Text style={{ color: '#FFF', fontSize: 20, }}>分享记录</Text>
                 </TouchableOpacity>
-            </View>
+            </View >
         );
     }
 
     onClicks(type) {
-        switch(type){
+        switch (type) {
             case "save_img":
-           
-            break
+
+                break
         }
     }
 }

@@ -3988,16 +3988,16 @@ mkdirp@^0.5.0, mkdirp@^0.5.1:
   dependencies:
     minimist "0.0.8"
 
-mobx-react@^5.2.3:
+mobx-react@^5.1.0:
   version "5.2.3"
   resolved "http://registry.npm.taobao.org/mobx-react/download/mobx-react-5.2.3.tgz#cdf6141c2fe63377c5813cbd254e8ce0d4676631"
   dependencies:
     hoist-non-react-statics "^2.5.0"
     react-lifecycles-compat "^3.0.2"
 
-mobx@^5.0.3:
-  version "5.0.3"
-  resolved "http://registry.npm.taobao.org/mobx/download/mobx-5.0.3.tgz#53b97f2a0f9b0dd7774c96249f81bf2d513d8e1c"
+"mobx@^4.3.1 ":
+  version "4.3.1"
+  resolved "http://registry.npm.taobao.org/mobx/download/mobx-4.3.1.tgz#334e5aab4916b1d43f0faf3605a64b1b4b3ccb8d"
 
 morgan@^1.9.0:
   version "1.9.0"
@@ -4702,6 +4702,10 @@ react-native-parallax-scroll-view@^0.21.0:
   resolved "http://registry.npm.taobao.org/react-native-parallax-scroll-view/download/react-native-parallax-scroll-view-0.21.2.tgz#07d5a28389a88abf66c7a1321cb002ff33e99087"
   dependencies:
     prop-types "^15.6.0"
+
+react-native-picker@^4.3.7:
+  version "4.3.7"
+  resolved "http://registry.npm.taobao.org/react-native-picker/download/react-native-picker-4.3.7.tgz#9842e8c62ff0d8b676e9514d9f9172413c0518a8"
 
 react-native-qrcode@^0.2.6:
   version "0.2.6"

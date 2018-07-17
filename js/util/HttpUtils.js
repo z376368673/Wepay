@@ -13,7 +13,7 @@ export default class HttpUtils {
                 })
                 .catch(error => {
                     reject(error);
-                    alert("error:"+JSON.stringify(error))
+                    alert("error:"+JSON.stringify(error.message))
                 })
         })
     }
@@ -43,7 +43,7 @@ export default class HttpUtils {
                 })
                 .catch(error => {
                     reject(error);
-                    alert("error:"+JSON.stringify(error))
+                    alert("error:"+JSON.stringify(error.message))
                 })
         })
     }

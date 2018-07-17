@@ -21,6 +21,7 @@ import ModifyPassWord from "../page/setting/ModifyPassWord";
 import ForgetPassWord from "../page/setting/ForgetPassWord";
 import NoticeList from "../page/setting/NoticeList";
 import NoticDetails from "../page/setting/NoticDetails";
+import MyNoticDetails from "../page/setting/MyNoticDetails";
 import MyNoticeList from "../page/setting/MyNoticeList";
 import AddressList from "../page/setting/AddressList";
 import EditAddress from "../page/setting/EditAddress";
@@ -38,10 +39,15 @@ import MyOrder from "../page/setting/MyOrder";
 
 export default AppNavigator = createStackNavigator({
    
+
     LoginPage: {//登陆
         screen: LoginPage
     },
     
+    AddBankCard: {//添加银行卡
+        screen: AddBankCard
+    },
+
     HomePage: {//首页
         screen: HomePage
     },
@@ -59,6 +65,9 @@ export default AppNavigator = createStackNavigator({
         screen: MyStoreOrder
     },
     
+    SharePage: {//分享好友
+        screen: SharePage
+    },
    
     StoreDetails: {//商品详情
         screen: StoreDetails
@@ -114,12 +123,8 @@ export default AppNavigator = createStackNavigator({
     BankCardList: {//我的银行卡
         screen: BankCardList
     },
-    AddBankCard: {//添加银行卡
-        screen: AddBankCard
-    },
-    SharePage: {//分享好友
-        screen: SharePage
-    },
+  
+   
 
     ModifyPassWord: {//修改 登陆/支付 密码
         screen: ModifyPassWord
@@ -133,10 +138,12 @@ export default AppNavigator = createStackNavigator({
     MyNoticeList: {//个人消息列表
         screen: MyNoticeList
     },
-    NoticDetails: {//消息详情
+    NoticDetails: {//公告详情
         screen: NoticDetails
     },
-
+    MyNoticDetails: {//个人消息详情
+        screen: MyNoticDetails
+    },
     AddressList: {//地址管理
         screen: AddressList
     },

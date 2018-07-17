@@ -13,12 +13,12 @@ import HttpUtils from "../../util/HttpUtils";
 import RefreshFlatList2 from "../../common/RefreshFlatList2";
 import { Checkbox } from "teaset"
 import DialogUtils from '../../util/DialogUtils';
+import BaseUrl from '../../util/BaseUrl';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 /**
  * 地址管理
  */
-
 
 const width = Utils.getWidth()
 export default class AddressList extends BaseComponent {
@@ -28,6 +28,7 @@ export default class AddressList extends BaseComponent {
         this.state = {
             selectIndex: 0,
         }
+        this.userInfo = this.getUserInfo()
     }
 
     //界面加载完成
@@ -77,18 +78,21 @@ export default class AddressList extends BaseComponent {
     }
 
     //刷新数据
-    _refreshData(value) {
+    _refreshData() {
         this.refList.refreshStar()
-        HttpUtils.getData(URL + value)
+        let url =  BaseUrl.getAddressList(this.userInfo.sessionId)
+        HttpUtils.getData(url)
             .then(result => {
-                var arr = [];
-                for (let i = 0; i < 15; i++) {
-                    arr.push(result.items[i])
+                //alert(JSON.stringify(result))
+                if(result.code===1){
+                    this.refList.setData(result.data)
+                }else{
+                     DialogUtils.showToast(result.msg)   
                 }
-                this.refList.setData(arr)
             })
-            .catch(error => {
+            .catch(error => {   
                 this.refList.setData([])
+                DialogUtils.showToast("error:"+error.message)   
             })
     }
 
@@ -101,6 +105,7 @@ export default class AddressList extends BaseComponent {
      */
     _getBuyOrSellItem(data) {
         let isChecked = this.state.selectIndex === data.index ? true : false;
+        if(data.item)
         return <TouchableOpacity>
         <View
             key={data.item.index}
@@ -120,12 +125,12 @@ export default class AddressList extends BaseComponent {
                     flex: 1,
                     color: "#333",
                     fontSize: 18,
-                }}>消息标题</Text>
+                }}>{data.item.name}</Text>
                 <Text style={{
                     color: "#333",
                     fontSize: 18,
                     flexDirection: "row-reverse"
-                }}>18792463256</Text>
+                }}>{data.item.telephone}</Text>
             </View>
             <Text style={{
                 color: "#666666",
@@ -133,19 +138,20 @@ export default class AddressList extends BaseComponent {
                 marginTop: 15
             }}
                 numberOfLines={1}
-            >{data.item ? data.item.description : "description"}</Text>
+            >{data.item ? data.item.address : "地址详细信息"}</Text>
             <View style={{ flexDirection: "row", justifyContent: "center", marginTop: 15 }}>
                 <View style={{ flex: 1, padding: 10 }}>
                     <Checkbox
+                        disabled={true}
                         title='默认地址'
                         size='md'
-                        checked={isChecked}
-                        onChange={value => this.defaultAddress(data)}
+                        checked={data.item.zt===1?true:false}
+                        //onChange={value =>this.defaultAddress(data.item)}
                     />
                 </View>
                 <View style={{ flex: 1, alignItems: "flex-end", flexDirection: "row-reverse", }}>
                     <TouchableOpacity
-                        onPress={() => this.editCallBack(data)}>
+                        onPress={() => this.editCallBack(data.item)}>
                     <Text style={{
                             color: "#666666",
                             fontSize: 16,
@@ -154,7 +160,7 @@ export default class AddressList extends BaseComponent {
                         }}>编辑</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        onPress={() => this.delCallBack(data)}>
+                        onPress={() => this.delDialog(data.item)}>
                         <Text style={{
                             color: "#666666",
                             fontSize: 16,
@@ -168,24 +174,48 @@ export default class AddressList extends BaseComponent {
         </TouchableOpacity>
     }
 
-    /**
+      /**
+     * 确认删除提示框
+     * @param {*} address 
+     */
+    delDialog(address){
+        DialogUtils.showPop("您确认要删除此银行卡？一旦删除,将不可恢复！",
+        ()=>this.delCallBack(address),
+        ()=>{},"删除","取消")
+    }
+
+     /**
      * 删除地址
      * @param {*} data 
      */
-    delCallBack(data) {
-        DialogUtils.showDownSheet(["删除"],()=>{
-            DialogUtils.showToast("删除此地址");
-        });
+    delCallBack(address){
+        DialogUtils.showLoading()
+        let url =  BaseUrl.delAddressUrl(this.userInfo.sessionId,address.addressId)
+        HttpUtils.getData(url)
+        .then(result => {
+            DialogUtils.hideLoading();
+            if(result.code===1){
+                DialogUtils.showToast("删除成功")  
+                this._refreshData()
+            }else{
+                 DialogUtils.showToast(result.msg)   
+            }
+        })
+        .catch(error => {   
+            DialogUtils.hideLoading()
+        })
     }
+
+
     /**
      * 编辑地址
      * @param {*} data 
      */
     editCallBack(data) {
         this.props.navigation.navigate('EditAddress',{
-            addrss:data,
+            addrssInfo:data,
             editCallBack:()=>{
-                DialogUtils.showToast("刷新界面");
+                this._refreshData()
             }
         })
     }
@@ -193,7 +223,12 @@ export default class AddressList extends BaseComponent {
      * 添加新地址
      */
     addAddress() {
-        this.props.navigation.navigate('EditAddress')
+        this.props.navigation.navigate('EditAddress',{
+            addrssInfo:null,
+            editCallBack:()=>{
+                this._refreshData()
+            }
+        })
     }
     /**
      * 设置默认地址

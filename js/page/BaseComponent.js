@@ -11,6 +11,7 @@ import AsySorUtils from '../dao/AsySorUtils';
 import { inject } from 'mobx-react';
 import user from '../model/UserInfo';
 export default class BaseComponent extends Component {
+    
     constructor(props) {
         super(props);
     }

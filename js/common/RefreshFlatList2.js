@@ -40,6 +40,9 @@ export default class RefreshFlatList extends Component {
         });
     }
 
+    delData(){
+       
+    }
     /**
      * 初次设置数据
      * @param data

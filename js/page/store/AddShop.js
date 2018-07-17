@@ -16,7 +16,7 @@ export default class AddShop extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
-            shopName:null,
+            shopName:"",
             shopPrice:0,
             shopNum:0,
             shopImage: require("../../../res/images/addimg.png"),

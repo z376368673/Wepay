@@ -21,9 +21,10 @@ export default class NoticDetails extends BaseComponent {
         this.newsID = params.id ? params.id :0;
         this.state = {
             textInfo: "正在加载信息...",
-            title:"公告"
+            title:"信息详情"
         }
     }
+
     componentDidMount() {
         this.getData(this.newsID)
     }
@@ -34,7 +35,7 @@ export default class NoticDetails extends BaseComponent {
    */
     getData(id) {
         DialogUtils.showLoading()
-        this.url = BaseUrl.getSystemgNewsDetails(this.userInfo.sessionId, id)
+        this.url = BaseUrl.getNewsDetails(this.userInfo.sessionId, id)
         HttpUtils.getData(this.url)
             .then(result => {
                 DialogUtils.hideLoading();

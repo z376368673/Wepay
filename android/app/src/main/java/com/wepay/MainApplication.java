@@ -3,6 +3,11 @@ package com.wepay;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.oblador.vectoricons.VectorIconsPackage;
+import com.reactlibrary.RNSyanImagePickerPackage;
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
+import com.beefe.picker.PickerViewPackage;
+import com.microsoft.codepush.react.CodePush;
 import com.reactlibrary.BuildConfig;
 import com.reactlibrary.RNSyanImagePickerPackage;
 import com.facebook.react.ReactNativeHost;
@@ -17,6 +22,12 @@ public class MainApplication extends Application implements ReactApplication {
 
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+
+        @Override
+        protected String getJSBundleFile() {
+        return CodePush.getJSBundleFile();
+        }
+    
     @Override
     public boolean getUseDeveloperSupport() {
       return BuildConfig.DEBUG;
@@ -26,7 +37,11 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-          new RNSyanImagePickerPackage()
+            new VectorIconsPackage(),
+            new RNSyanImagePickerPackage(),
+            new SplashScreenReactPackage(),
+            new PickerViewPackage(),
+            new CodePush(null, getApplicationContext(), BuildConfig.DEBUG)
       );
     }
 

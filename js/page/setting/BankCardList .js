@@ -52,20 +52,23 @@ export default class BankCardList extends BaseComponent {
             </View>
         );
     }
+
+  
+
     //刷新数据
-    _refreshData(value) {
+    _refreshData() {
         this.refList.refreshStar()
         let url =  BaseUrl.getUserBankListUrl(this.userInfo.sessionId)
         HttpUtils.getData(url)
             .then(result => {
-                alert(JSON.stringify(result))
+                //alert(JSON.stringify(result))
                 if(result.code===1){
                     this.refList.setData(result.data)
                 }else{
                      DialogUtils.showToast(result.msg)   
                 }
             })
-            .catch(error => {
+            .catch(error => {   
                 this.refList.setData([])
                 DialogUtils.showToast("error:"+error.message)   
             })
@@ -120,18 +123,18 @@ export default class BankCardList extends BaseComponent {
             }}>
             <Image
                 style={{width: 50, height: 50, marginLeft: 5}}
-                source={getBankCardIcon(data.index)}/>
+                source={{uri:data.item.banqImg}}/>
             <View style={{flexDirection: 'column', flex: 1, marginLeft: 10, marginRight: 10}}>
                 <Text
-                    style={{color: "#333333", fontSize: 18}}>{data.index} {data.item ? data.item.name : "name"}</Text>
+                    style={{color: "#333333", fontSize: 18}}>{data.item ? data.item.banqGenre : "银行卡名称未知"}</Text>
                 <Text style={{
                     color: "#666666",
                     marginTop: 5,
                     fontSize: 15,
-                }}>{data.item ? data.item.description : "description"}</Text>
+                }}>{data.item ? data.item.cardNumber : "0000"}</Text>
             </View>
             <TouchableOpacity
-                onPress={()=>this.onClickDelect(data)}>
+                onPress={()=>this.delDialog(data.item.id)}>
                 <Text style={{
                     marginRight: 5,
                     paddingTop: 8,
@@ -145,18 +148,43 @@ export default class BankCardList extends BaseComponent {
             </TouchableOpacity>
         </View>
     }
+    /**
+     * 去添加银行卡
+     */
+    onClickAddBankCard() {
+        this.props.navigation.navigate("AddBankCard",{
+            callback:()=>this._refreshData()
+        })
+    }
+      /**
+     * 确认删除提示框
+     * @param {*} id 
+     */
+    delDialog(id){
+        DialogUtils.showPop("您确认要删除此银行卡？一旦删除,将不可恢复！",
+        ()=>this.delBankCard(id),
+        ()=>{},"删除","取消")
+    }
 
     /**
      * 删除银行卡
      * @returns {undefined}
      */
-    onClickDelect() {
-        return undefined;
-    }
-    /**
-     * 去添加银行卡
-     */
-    onClickAddBankCard() {
-        this.props.navigation.navigate("AddBankCard")
+    delBankCard(id){
+        DialogUtils.showLoading()
+        let url =  BaseUrl.delBankCardUrl(this.userInfo.sessionId,id)
+        HttpUtils.getData(url)
+        .then(result => {
+            DialogUtils.hideLoading();
+            if(result.code===1){
+                DialogUtils.showToast("删除成功")  
+                this._refreshData()
+            }else{
+                 DialogUtils.showToast(result.msg)   
+            }
+        })
+        .catch(error => {   
+            DialogUtils.hideLoading()
+        })
     }
 }

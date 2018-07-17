@@ -11,6 +11,8 @@ import NavigationBar from "../../common/NavigationBar";
 import Utils from "../../util/Utils";
 import HttpUtils from "../../util/HttpUtils";
 import RefreshFlatList from "../../common/RefreshFlatList";
+import DialogUtils from '../../util/DialogUtils';
+import BaseUrl from '../../util/BaseUrl';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 /**
@@ -20,9 +22,11 @@ const URL = 'https://api.github.com/search/repositories?q=';
 
 const width = Utils.getWidth()
 export default class MyNoticeList extends BaseComponent{
+    pageIndex = 1;
     constructor(props) {
         super(props);
         this.index = 1
+        this.userInfo = this.getUserInfo()
     }
 
     //界面加载完成
@@ -42,6 +46,7 @@ export default class MyNoticeList extends BaseComponent{
                     <RefreshFlatList
                         ref={refList => this.refList = refList}
                         renderItem={(items) => this._getBuyOrSellItem(items)}
+                        isDownLoad={true}
                         onRefreshs={() => this._refreshData()}
                         onLoadData={() => this._onLoadData()}
                     />
@@ -50,34 +55,52 @@ export default class MyNoticeList extends BaseComponent{
         );
     }
 
+   
     //加载更多数据
     _onLoadData() {
-        this.refList.addData([])
+        this.getData(false)
     }
-
-    //刷新数据
-    _refreshData(value) {
-        this.refList.refreshStar()
-        HttpUtils.getData(URL + value)
+    /**
+     * 获取数据
+     * @param {*} isRefesh  是否刷新
+     * @param {*} pageIndex 
+     */
+    getData(isRefesh) {
+        let url = BaseUrl.getNews(this.userInfo.sessionId, this.pageIndex)
+        HttpUtils.getData(url)
             .then(result => {
-                var arr = [];
-                for (let i = 0; i < 3; i++) {
-                    arr.push(result.items[i])
+                //alert(JSON.stringify(result))
+                if (result.code === 1) {
+                    if (isRefesh) {
+                        this.refList.setData(result.data)
+                    } else {
+                        this.refList.addData(result.data)
+                        this.pageIndex += 1
+                    }
+                } else {
+                    DialogUtils.showToast(result.msg)
                 }
-                this.refList.setData(arr)
             })
             .catch(error => {
                 this.refList.setData([])
+                DialogUtils.showToast("error:" + error.message)
             })
+    }
+    //刷新数据
+    _refreshData() {
+        this.refList.refreshStar()
+        this.pageIndex = 1;
+        this.getData(true)
     }
 
     /**
      * 进入详情
-     * @param data
+     * @param news
      */
-    onClick(data) {
-        this.props.navigation.navigate('NoticDetails',{
-            type:1,
+    onClick(news) {
+        this.props.navigation.navigate('MyNoticDetails', {
+            title:news.title,
+            id:news.id,
         })
     }
 
@@ -88,8 +111,9 @@ export default class MyNoticeList extends BaseComponent{
      * @private
      */
     _getBuyOrSellItem(data) {
+        if(data.item)
         return <TouchableOpacity
-            onPress={() => this.onClick(data)}>
+            onPress={() => this.onClick(data.item)}>
             <View
                 key={data.item.index}
                 style={{
@@ -109,8 +133,8 @@ export default class MyNoticeList extends BaseComponent{
                         color: "#333",
                         marginTop: 5,
                         fontSize: 18,
-                    }}>消息标题</Text>
-                    {data.index > 0 ?
+                    }}>{data.item.title}</Text>
+                    {data.item.status===0?
                         <View style={{backgroundColor: "#d11", width: 8, height: 8, borderRadius: 4, marginLeft: 5}}/> :
                         <View/>}
                 </View>
@@ -119,13 +143,13 @@ export default class MyNoticeList extends BaseComponent{
                     marginTop: 5,
                     fontSize: 16, }}
                       numberOfLines={1}
-                >{data.item ? data.item.description : "description"}</Text>
+                >{data.item ? data.item.content : "暂无内容"}</Text>
                 <View style={{alignItems: "flex-end"}}>
                     <Text style={{
                         color: "#666666",
                         marginTop: 5,
                         fontSize: 16,
-                    }}>{"2018/06/30 16:53"}</Text>
+                    }}>{Utils.formatDateTime(data.item.createTime)}</Text>
                 </View>
             </View>
         </TouchableOpacity>

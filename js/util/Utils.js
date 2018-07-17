@@ -1,5 +1,5 @@
 import DialogUtils from './DialogUtils';
-
+import area from "../../res/raw/area.json"
 export default class Utils {
 
     static getWidth() {
@@ -69,7 +69,7 @@ export default class Utils {
                 // let latitude = JSON.stringify(location.coords.latitude);//纬度 
                 callback(location.coords)
             },
-            (error) => { DialogUtils.showToast("getLocation:"+error.message) },
+            (error) => { DialogUtils.showToast("getLocation:" + error.message) },
             { enableHighAccuracy: true, timeout: 5000, maximumAge: 5000 }
         );
     }
@@ -79,7 +79,7 @@ export default class Utils {
           * @param {*} longitude 
           * @param {*} latitude 
           */
-   static getCityInfoBy(longitude, latitude, callback) {
+    static getCityInfoBy(longitude, latitude, callback) {
         fetch('http://restapi.amap.com/v3/geocode/regeo?key=7905a31aeab2f2134f1a6a06f6b63e79&location=' + longitude + ',' + latitude + '')
             .then((response) => response.json())
             .then((responseBody) => {
@@ -89,8 +89,43 @@ export default class Utils {
                     DialogUtils.showToast('定位失败')
                 }
             }).catch((error) => {
-                DialogUtils.showToast("getCityInfoBy:"+error.message);
+                DialogUtils.showToast("getCityInfoBy:" + error.message);
             })
     };
 
+    static formatDateTime(inputTime) {
+        var date = new Date(inputTime);
+        var y = date.getFullYear();
+        var m = date.getMonth() + 1;
+        m = m < 10 ? ('0' + m) : m;
+        var d = date.getDate();
+        d = d < 10 ? ('0' + d) : d;
+        var h = date.getHours();
+        h = h < 10 ? ('0' + h) : h;
+        var minute = date.getMinutes();
+        var second = date.getSeconds();
+        minute = minute < 10 ? ('0' + minute) : minute;
+        second = second < 10 ? ('0' + second) : second;
+        return y + '/' + m + '/' + d + ' ' + h + ':' + minute + ':' + second;
+    }
+
+    /**
+     *   获取省市区数据
+     */
+    static createPCA() {
+        let data = [];
+        let len = area.length;
+        for (let i = 0; i < len; i++) {
+            let city = [];
+            for (let j = 0, cityLen = area[i]['city'].length; j < cityLen; j++) {
+                let _city = {};
+                _city[area[i]['city'][j]['name']] = area[i]['city'][j]['area'];
+                city.push(_city);
+            }
+            let _data = {};
+            _data[area[i]['name']] = city;
+            data.push(_data);
+        }
+        return data;
+    }
 }
