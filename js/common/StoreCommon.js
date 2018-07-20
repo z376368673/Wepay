@@ -14,7 +14,7 @@ import Utils from '../util/Utils';
 //订单公用类（相当于Fragment）
 const window_w = Utils.getWidth();
 export const KEYS =[""]
-export default class OrderCommon extends BaseComponent {
+export default class StoreCommon extends BaseComponent {
     constructor(props) {
         super(props);
         this.tabLabel = this.props.tabLabel;

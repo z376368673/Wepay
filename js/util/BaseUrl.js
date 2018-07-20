@@ -1,4 +1,4 @@
-const url = 'http://192.168.0.105:8080/wepay'
+const url = 'http://192.168.0.105:8081/wepay'
 
 export default class BaseUrl {
 
@@ -25,6 +25,24 @@ export default class BaseUrl {
      */
     static loginUrl(phone, pwd) {
         return url + "/user/login?account=" + phone + "&password=" + pwd
+    }
+    /**
+     *  获取设置界面是否有新消息  其他字段几乎没用
+     *  
+     * @returns
+        1	code	是	状态码 
+        2	msg	是	错误信息
+        3	data	是	数据(code=1返回数据)
+        3.1	userid		用户id
+        3.2	mobile		手机号/账号
+        3.3	username		用户名
+        3.4	userCredit		用户星级
+        3.5	imgHead		头像网络地址
+        3.6	newMessage		是否有新消息1.是，0.否
+     * @param {*} sessionId 
+     */
+    static getuserInfoUrl(sessionId) {
+        return url + "/user/userCenter?sessionId=" + sessionId;
     }
 
     /**
@@ -99,16 +117,23 @@ export default class BaseUrl {
     }
 
     /**
-     * 获取上传头像url 
+     * 用户上传头像url 
      * POST
+     * 
+     * sessionId	是	token	String
+     * file	是	File图片文件	file
      */
     static getUpdataHeadUrl() {
         return url + "/user/updateImgHead"
     }
     /**
-   * 获取提交建议的 url 
-   * POST
-   */
+      * 提交建议的 url 
+      * POST
+      * 
+      * sessionId	是	token	            String
+      * file	    是	File图片文件	      file
+      * contents	是	投诉内容（100字以内）	String
+      */
     static getComplaintUrl() {
         return url + "/opinions/add"
     }
@@ -305,58 +330,180 @@ export default class BaseUrl {
     static delAddressUrl(sessionId, addressId) {
         return url + "/address/delete?sessionId=" + sessionId + "&addressId=" + addressId;
     }
-    
- /**
-  * 添加地址
-  * 
-  * @param {*} sessionId 
-  * @param {*} memberId   用户id
-  * @param {*} name 
-  * @param {*} telephone    电话号
-  * @param {*} provinceId   省
-  * @param {*} cityId       市
-  * @param {*} countryId   区/县
-  * @param {*} address   详细地址
-  * @param {*} zt 
-  */
-   static putAddress(sessionId, memberId,name, telephone, provinceId, cityId,countryId,address,zt) {
-    return url + "/address/add?sessionId=" + sessionId 
-    + "&memberId=" + memberId 
-    + "&name=" + name 
-    + "&telephone=" + telephone 
-    + "&provinceId=" + provinceId 
-    + "&cityId=" + cityId 
-    + "&countryId=" + countryId 
-    + "&address=" + address 
-    + "&zt=" + zt ;
-}
 
-/**
-  * 编辑地址
-  * 
-  * @param {*} sessionId 
-  * @param {*} addressId   地址id
-  * @param {*} memberId   用户id
-  * @param {*} name 
-  * @param {*} telephone    电话号
-  * @param {*} provinceId   省
-  * @param {*} cityId       市
-  * @param {*} countryId   区/县
-  * @param {*} address   详细地址
-  * @param {*} zt 
-  */
- static editAddress(sessionId, addressId,memberId,name, telephone, provinceId, cityId,countryId,address,zt) {
-    return url + "/address/update?sessionId=" + sessionId 
-    + "&addressId=" + addressId 
-    + "&memberId=" + memberId 
-    + "&name=" + name 
-    + "&telephone=" + telephone 
-    + "&provinceId=" + provinceId 
-    + "&cityId=" + cityId 
-    + "&countryId=" + countryId 
-    + "&address=" + address 
-    + "&zt=" + zt ;
-}
+    /**
+     * 添加地址
+     * 
+     * @param {*} sessionId 
+     * @param {*} memberId   用户id
+     * @param {*} name 
+     * @param {*} telephone    电话号
+     * @param {*} provinceId   省
+     * @param {*} cityId       市
+     * @param {*} countryId   区/县
+     * @param {*} address   详细地址
+     * @param {*} zt 
+     */
+    static putAddress(sessionId, memberId, name, telephone, provinceId, cityId, countryId, address, zt) {
+        return url + "/address/add?sessionId=" + sessionId
+            + "&memberId=" + memberId
+            + "&name=" + name
+            + "&telephone=" + telephone
+            + "&provinceId=" + provinceId
+            + "&cityId=" + cityId
+            + "&countryId=" + countryId
+            + "&address=" + address
+            + "&zt=" + zt;
+    }
+
+    /**
+      * 编辑地址
+      * 
+      * @param {*} sessionId 
+      * @param {*} addressId   地址id
+      * @param {*} memberId   用户id
+      * @param {*} name 
+      * @param {*} telephone    电话号
+      * @param {*} provinceId   省
+      * @param {*} cityId       市
+      * @param {*} countryId   区/县
+      * @param {*} address   详细地址
+      * @param {*} zt 
+      */
+    static editAddress(sessionId, addressId, memberId, name, telephone, provinceId, cityId, countryId, address, zt) {
+        return url + "/address/update?sessionId=" + sessionId
+            + "&addressId=" + addressId
+            + "&memberId=" + memberId
+            + "&name=" + name
+            + "&telephone=" + telephone
+            + "&provinceId=" + provinceId
+            + "&cityId=" + cityId
+            + "&countryId=" + countryId
+            + "&address=" + address
+            + "&zt=" + zt;
+    }
+
+
+    /**
+     * 转出-获取转入用户的信息
+     * 
+     * @param {*} sessionId 
+     * @param {*} account  对方账户 手机号
+     * 
+     * @returns
+     *  1	code	是	状态码 
+        2	msg	    是	错误信息
+        3	data	是	数据(code=1返回数据)
+        3.1	userid		    用户id
+        3.2	mobile		    手机号
+        3.3	username		用户名
+        3.4	userCredit		用户星级
+        3.5	imgHead		    头像地址
+        3.6	newMessage		暂时没用
+     */
+
+    static getUserBy(sessionId,account) {
+        return url + "/tranMoney/getUser?sessionId=" + sessionId+"&account="+account
+    }
+
+
+   /**
+     * 转出-余额转出
+     * POST
+     * @param {*} sessionId 
+     * @param {*} payId   支付会员id
+     * @param {*} getId   收入方id
+     * @param {*} getNums    转出数 
+     * @param {*} mobile   手机后4位
+     * @param {*} safetyPwd       交易密码
+     * 
+     * @returns code 1,0
+     */
+    static tranOutMoney() {
+        return url + "/store/outMoney"
+    }
+
+
+    /**
+     * 获取转出-获取转出记录
+     * @param {*} sessionId 
+     * @param {*} pageIndex 
+     *  // 1	code	是	状态码 
+        // 2	msg	是	错误信息
+        // 3	data	是	数据(code=1返回集合数据)
+        // 3.1	id		转出记录id
+        // 3.2	payId		支付人id
+        // 3.3	getId		对方id
+        // 3.4	getNums		转账总金额
+        // 3.5	getTime		转账时间
+        // 3.6	getType		类型 0-转账
+        // 3.7	username		对方用户名
+        // 3.8	imgHead		对方头像（需要添加前缀如：如http://tz.hxksky.com/wepay/upload/
+     */
+    static getOutRecord(sessionId, pageIndex) {
+        return url + "/tranMoney/outRecord?sessionId=" + sessionId
+            + "&pageIndex=" + pageIndex;
+    }
+    /**
+     * 转入-获取转入记录
+     * 
+     * @param {*} sessionId 
+     * @param {*} pageIndex 
+     * 返回参数与转出一样
+     */
+    static getInRecord(sessionId, pageIndex) {
+        return url + "/tranMoney/inRecord?sessionId=" + sessionId
+            + "&pageIndex=" + pageIndex;
+    }
+
+
+    /**
+     * 积分兑换
+     * @param {*} sessionId 
+     * @param {*} exchangeMoney 需要兑换余额 
+     * @param {*} safetyPwd 交易密码 
+     * 请求方式:POST
+     */
+    static creditsExchange() {
+        return url + "/store/creditsExchange?" 
+    }
+
+    /**
+     * 积分记录
+     * @param {*} sessionId 
+     * @param {*} pageIndex 
+     */
+    static getExchangeRecordJ(sessionId, pageIndex) {
+        return url + "/tranMoney/exchangeRecord?sessionId=" + sessionId
+            + "&pageIndex=" + pageIndex;
+    }
+    /**
+     * 余额记录
+     * @param {*} sessionId 
+     * @param {*} pageIndex 
+     */
+    static getExchangeRecordY(sessionId, pageIndex) {
+        return url + "/tranMoney/exchangeRecord?sessionId=" + sessionId
+            + "&pageIndex=" + pageIndex;
+    }
+
+
+    /**
+     * 卖出-创建卖出订单
+     * 
+     * POST
+     * 
+     * @param:
+     * sessionId	是	token	String
+     * exchangeMoney 是	需要卖出余额	int
+     * safetyPwd     是	交易密码	String
+     * describe     是	描述	String
+     * bankId      是	银行卡id	int
+     */
+    static createOutOrder() {
+        return url + "/store/createOutOrder";
+    }
+
 
 }
 

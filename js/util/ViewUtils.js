@@ -13,100 +13,9 @@ import {
     Text,
     View,
 } from 'react-native';
-import {BaseStyles, window_width} from "../page/BaseComponent";
-
+import { BaseStyles, window_width, mainColor } from "../page/BaseComponent";
+import { Theme, Overlay, Button } from 'teaset';
 export default class ViewUtils {
-    /**
-     * 获取设置页的Item
-     * @param callBack 单击item的回调
-     * @param icon 左侧图标
-     * @param text 显示的文本
-     * @param tintStyle 图标着色
-     * @param expandableIco 右侧图标
-     * @return {XML}
-     */
-    // static getSettingItem(callBack, icon, text, tintStyle, expandableIco) {
-    //     return (
-    //         <TouchableHighlight
-    //             onPress={callBack}>
-    //             <View style={[styles.setting_item_container]}>
-    //                 <View style={{alignItems: 'center', flexDirection: 'row'}}>
-    //                     {icon ?
-    //                         <Image source={icon} resizeMode='stretch'
-    //                                style={[{opacity: 1, width: 16, height: 16, marginRight: 10,}, tintStyle]}/> :
-    //                         <View style={{opacity: 1, width: 16, height: 16, marginRight: 10,}}/>
-    //                     }
-    //                     <Text>{text}</Text>
-    //                 </View>
-    //                 <Image source={expandableIco ? expandableIco : require('../../res/images/ic_tiaozhuan.png')}
-    //                        style={[{
-    //                            marginRight: 10,
-    //                            height: 22,
-    //                            width: 22,
-    //                            alignSelf: 'center',
-    //                            opacity: 1
-    //                        }, tintStyle]}/>
-    //             </View>
-    //         </TouchableHighlight>
-    //     )
-    // }
-
-    // static getLeftButton(callBack) {
-    //     return <TouchableOpacity
-    //         style={{padding: 8}}
-    //         onPress={callBack}>
-    //         <Image
-    //             style={{width: 26, height: 26,}}
-    //             source={require('../../res/images/ic_arrow_back_white_36pt.png')}/>
-    //     </TouchableOpacity>
-    // }
-
-    // static getRightButton(title, callBack) {
-    //     return <TouchableOpacity
-    //         style={{alignItems: 'center',}}
-    //         onPress={callBack}>
-    //         <View style={{marginRight: 10}}>
-    //             <Text style={{fontSize: 20, color: '#FFFFFF',}}>{title}</Text>
-    //         </View>
-    //     </TouchableOpacity>
-    // }
-
-    /**
-     * 获取更多按钮
-     * @param callBack
-     * @returns {XML}
-     */
-    // static getMoreButton(callBack) {
-    //     return <TouchableHighlight
-    //         underlayColor={'transparent'}
-    //         ref="moreMenuButton"
-    //         style={{padding: 5}}
-    //         onPress={callBack}
-    //     >
-    //         <View style={{paddingRight: 8}}>
-    //             <Image
-    //                 style={{width: 24, height: 24,}}
-    //                 source={require('../../res/images/ic_more_vert_white_48pt.png')}
-    //             />
-    //         </View>
-    //     </TouchableHighlight>
-    // }
-
-    /**
-     * 获取分享按钮
-     * @param callBack
-     * @returns {XML}
-     */
-    // static getShareButton(callBack) {
-    //     return <TouchableHighlight
-    //         underlayColor={'transparent'}
-    //         onPress={callBack}
-    //     >
-    //         <Image
-    //             style={{width: 20, height: 20,opacity:0.9,marginRight:10,tintColor:'white'}}
-    //             source={require('../../res/images/ic_share.png')}/>
-    //     </TouchableHighlight>
-    // }
     static getLineView(lineHeight, color) {
         lineHeight = lineHeight ? lineHeight : 1.5;
         color = color ? color : '#f0f0f0';
@@ -116,60 +25,74 @@ export default class ViewUtils {
             flexDirection: 'column',
             marginLeft: 15,
             marginRight: 15
-        }}/>
+        }} />
 
     }
-
+    /**
+     * 设置界面item
+     * 
+     * @param {*} img 
+     * @param {*} text 
+     * @param {*} text2 
+     * @param {*} callback 
+     */
     static getSettingItem(img, text, text2, callback) {
         return <TouchableOpacity
             onPress={callback}
         >
             <View style={[BaseStyles.container_center,
-                {flexDirection: 'row', backgroundColor: "#fff", padding: 10}]}>
+            { flexDirection: 'row', backgroundColor: "#fff", padding: 10 }]}>
                 <Image source={img}
-                       style={{
-                           width: 40,
-                           height: 40,
-                           borderRadius: 20,
-                           marginLeft: 10
-                       }}/>
-                <Text style={{color: "#333", fontSize: 16, marginLeft: 10, flex: 1}}>{text} </Text>
-                <Text style={{color: "#888", fontSize: 16,}}>{text2}</Text>
+                    style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        marginLeft: 10
+                    }} />
+                <Text style={{ color: "#333", fontSize: 16, marginLeft: 10, flex: 1 }}>{text} </Text>
+                <Text style={{ color: "#888", fontSize: 16, }}>{text2}</Text>
                 <Image source={require('../../res/images/ic_tiaozhuan.png')}
-                       style={{
-                           width: 30,
-                           height: 30,
-                           tintColor: "#888"
-                       }}/>
+                    style={{
+                        width: 30,
+                        height: 30,
+                        tintColor: "#888"
+                    }} />
             </View>
         </TouchableOpacity>
     }
 
-
+    /**
+    * 设置界面item2
+    * 
+    * @param {*} img 
+    * @param {*} text 
+    * @param {*} text2 
+    * @param {*} callback 
+    */
     static getSettingItem1(img, text, isShow, callback) {
-        //公告和个人消息里的红点，
-        let dian = isShow ? <View style={{width: 10, height: 10, tintColor: "#d11"}}/> : null;
+
         return <TouchableOpacity
             onPress={callback}
         >
             <View style={[BaseStyles.container_center,
-                {flexDirection: 'row', backgroundColor: "#fff", padding: 10}]}>
+            { flexDirection: 'row', backgroundColor: "#fff", padding: 10 }]}>
                 <Image source={img}
-                       style={{
-                           width: 40,
-                           height: 40,
-                           borderRadius: 20,
-                           marginLeft: 10
-                       }}/>
-                <Text style={{color: "#333", fontSize: 16, marginLeft: 10, flex: 1}}>{text} </Text>
-                {dian}
+                    style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        marginLeft: 10
+                    }} />
+                <Text style={{ color: "#333", fontSize: 16, marginLeft: 10, flex: 1 }}>{text} </Text>
+                {/* //公告和个人消息里的红点，       */}
+                {isShow ? <View style={{ backgroundColor: "#d11", width: 6, height: 6, borderRadius: 3 }}></View> : null}
                 <Image source={require('../../res/images/ic_tiaozhuan.png')}
 
-                       style={{
-                           width: 30,
-                           height: 30,
-                           tintColor: "#888"
-                       }}/>
+                    style={{
+                        width: 30,
+                        height: 30,
+                        tintColor: "#888"
+                    }} />
             </View>
         </TouchableOpacity>
     }
@@ -188,18 +111,36 @@ export default class ViewUtils {
         for (let i = 0; i < value; i++) {
             views.push(<Image
                 key={i}
-                style={{width: width, height: width / 4 * 3, marginLeft: 5}}
+                style={{ width: width, height: width / 4 * 3, marginLeft: 5 }}
                 source={require('../../res/images/xin.png')}
             />)
         }
-        let view = <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={{color: "#fff", fontSize: fontSize,}}>信用: </Text>
+        let view = <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={{ color: "#fff", fontSize: fontSize, }}>信用: </Text>
             {views}
         </View>
         return view;
     }
 
-
+    // static showPassWordInput(onComplete) {
+    //     let width = require('Dimensions').get('window').width
+    //     let height = require('Dimensions').get('window').height
+    //     let overlayView = (
+    //         <Overlay.PullView side={'bottom'} modal={true} ref={v => this.overlayPullView = v}>
+    //             <View style={{minWidth: width, minHeight: 100, justifyContent: 'center', alignItems: 'center' }}>
+    //                <PassNumInput 
+    //                 onClose={()=>this.overlayPullView?this.overlayPullView.close():null}
+    //                 onComplete={pwd=>{
+    //                     onComplete(pwd)
+    //                 }}
+    //                 onChangePassWord={(pwd,len)=>{}}
+    //                />
+    //             </View>
+    //         </Overlay.PullView>
+    //     );
+    //     if(!overlayView.isShow)
+    //     Overlay.show(overlayView);
+    // }
 
 }
 

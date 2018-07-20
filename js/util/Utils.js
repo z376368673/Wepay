@@ -93,7 +93,8 @@ export default class Utils {
             })
     };
 
-    static formatDateTime(inputTime) {
+    static formatDateTime(inputTime,symbol) {
+        let sb = symbol?symbol:'/'
         var date = new Date(inputTime);
         var y = date.getFullYear();
         var m = date.getMonth() + 1;
@@ -106,7 +107,7 @@ export default class Utils {
         var second = date.getSeconds();
         minute = minute < 10 ? ('0' + minute) : minute;
         second = second < 10 ? ('0' + second) : second;
-        return y + '/' + m + '/' + d + ' ' + h + ':' + minute + ':' + second;
+        return y + sb + m + sb+ d + ' ' + h + ':' + minute + ':' + second;
     }
 
     /**

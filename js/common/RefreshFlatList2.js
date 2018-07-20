@@ -85,6 +85,7 @@ export default class RefreshFlatList extends Component {
                 //renderItem={other.renderItem}
                 //设置数据
                 data={this.state.dataArray}
+                keyExtractor={(item, index) => index.toString()}
                 //  renderItem={(items) => this.props.renderRow(items)}
                 refreshControl={
                     <RefreshControl

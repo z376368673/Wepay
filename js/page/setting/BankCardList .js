@@ -24,6 +24,7 @@ const width = Utils.getWidth()
 export default class BankCardList extends BaseComponent {
     constructor(props) {
         super(props);
+        this.navigation = this.props.navigation;
         this.index = 1
         this.userInfo = this.getUserInfo()
     }
@@ -108,7 +109,13 @@ export default class BankCardList extends BaseComponent {
      * @private
      */
     _getBankCardItem(data) {
-        return <View
+        return <TouchableOpacity onPress={()=>{
+          let  exis =  this.navigation.state.params.selectBank
+          if(exis){
+            this.navigation.state.params.selectBank(data.item)
+            this.props.navigation.goBack()
+          }
+        }}><View
             key={data.item.index}
             style={{
                 backgroundColor: '#fff',
@@ -147,6 +154,7 @@ export default class BankCardList extends BaseComponent {
                 }}>删除</Text>
             </TouchableOpacity>
         </View>
+        </TouchableOpacity>
     }
     /**
      * 去添加银行卡

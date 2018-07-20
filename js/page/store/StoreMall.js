@@ -14,10 +14,8 @@ import NavigationBar from "../../common/NavigationBar";
 import HttpUtils from "../../util/HttpUtils";
 import BaseUrl from "../../util/BaseUrl";
 import { SegmentedBar } from 'teaset';
-import RefreshFlatList from "../../common/RefreshFlatList.js"
 import Utils from '../../util/Utils';
-import ScrollableTabView ,{ScrollableTabBar} from "react-native-scrollable-tab-view"
-import OrderCommon from '../../common/OrderCommon';
+import StoreCommon from '../../common/StoreCommon';
 
 //购物中心
 const window_w = Utils.getWidth();

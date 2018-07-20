@@ -22,35 +22,31 @@ export default class ModifyNickName extends BaseComponent {
         super(props);
         this.navigation = this.props.navigation;
         const { userName, sessionId } = this.props.navigation.state.params
+        this.userInfo = this.getUserInfo();
         this.state = {
-            userInfo:null,
+            userInfo:this.userInfo,
             userName: userName,
             sessionId: sessionId,
         }
-        this.getUserInfo((userInfo)=>{
-            this.setState({
-                userInfo:userInfo,
-            })
-        })
     }
 
 
 
     /**
-     * 获取banner图片
+     * 修改昵称
      */
     updateUserName() {
         DialogUtils.showLoading()
+        //alert(this.state.userName)
         let url = BaseUrl.updateUserName(this.state.sessionId,this.state.userName )
         HttpUtils.getData(url)
             .then(result => {
                 if (result.code === 1) {
                     //更新用户本地信息
-                    this.upDataUserInfo(this.state.userInfo,()=>{
-                        //这个nickname 是上一个界面里 
-                        this.navigation.state.params.callbacks({ nickname: this.state.userName })
-                        this.props.navigation.goBack()
-                    })
+                      //这个nickname 是上一个界面里 
+                      this.userInfo.userName = this.state.userName;
+                      this.navigation.state.params.callbacks({ nickname: this.state.userName })
+                      this.props.navigation.goBack()
                     DialogUtils.showToast("修改成功")
                 } else {
                     DialogUtils.showToast(result.msg)

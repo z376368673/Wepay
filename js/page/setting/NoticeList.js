@@ -14,7 +14,6 @@ import RefreshFlatList from "../../common/RefreshFlatList";
 import BaseUrl from '../../util/BaseUrl';
 import DialogUtils from '../../util/DialogUtils';
 
-const URL = 'https://api.github.com/search/repositories?q=';
 /**
  * 公告
  */
@@ -132,7 +131,7 @@ export default class NoticeList extends BaseComponent {
                             marginTop: 5,
                             fontSize: 18,
                         }}>{data.item.title}</Text>
-                        <View style={{ backgroundColor: "#d11", width: 8, height: 8, borderRadius: 4, marginLeft: 5 }} />
+                        {/* <View style={{ backgroundColor: "#d11", width: 8, height: 8, borderRadius: 4, marginLeft: 5 }} /> */}
                     </View>
                     <Text style={{
                         color: "#666666",

@@ -24,10 +24,10 @@ export default class ZhuanRu extends BaseComponent {
                 <NavigationBar
                     title='转入'
                     navigation={this.props.navigation}
-                    rightView={NavigationBar.getRightStyle_Text('保存二维码', {
-                        fontSize: 16,
-                        color: "#fff"
-                    }, () => this.onClicks(6))}
+                    // rightView={NavigationBar.getRightStyle_Text('保存二维码', {
+                    //     fontSize: 16,
+                    //     color: "#fff"
+                    // }, () => this.onClicks(6))}
                 />
                 <View style={{
                     justifyContent: 'center',
@@ -51,6 +51,7 @@ export default class ZhuanRu extends BaseComponent {
                     </View>
                 </View>
                 <TouchableOpacity
+                onPress={()=>this.onClicks("inRecord")}
                     style={{
                         alignSelf: "center",
                         color: '#FFF',
@@ -70,7 +71,13 @@ export default class ZhuanRu extends BaseComponent {
     }
 
     onClicks(type) {
-
+        switch(type){
+            case "inRecord":
+            this.props.navigation.navigate('TranMoneyRecord',{
+                tranType:"in",
+            });
+            break;
+        }
     }
 }
 export const styles = StyleSheet.create({

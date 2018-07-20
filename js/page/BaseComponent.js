@@ -10,21 +10,36 @@ import DialogUtils from "../util/DialogUtils"
 import AsySorUtils from '../dao/AsySorUtils';
 import { inject } from 'mobx-react';
 import user from '../model/UserInfo';
+import { PullPicker } from 'teaset';
 export default class BaseComponent extends Component {
     
     constructor(props) {
         super(props);
+       // this.navigation = this.props.navigation;
+       //this.props.navigation.navigate('name');
+       // this.props.navigation.goBack()
     }
+ 
     getUser(){
         return  user;
     }
-    getUserInfo(){
+    //获取用户信息
+     getUserInfo(){
+        if(user.userInfo===null){
+            //下面的方法不同步 很烦 正在找方法
+            return  this.userInfo =async()=> await JSON.parse(AsyncStorage.getItem('userInfo'))
+        } 
         return  user.userInfo;
     }
+     //获取用户信息 sessionId
     getSessionId(){
         return  user.sessionId;
     }
     getCallBackValue = (params) => this.setState(params)
+    //获取图片拼接的地址，有些图片不需要拼接
+    getImgUrl(){
+        return "http://tz.hxksky.com/wepay/upload/"
+    }
 }
 const { height, width } = Dimensions.get('window');
 export const mainColor = '#48b1a3';

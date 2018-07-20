@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     StyleSheet,
     Text,
@@ -7,7 +7,7 @@ import {
     TouchableOpacity,
     Button,
 } from 'react-native';
-import BaseComponent, {BaseStyles, mainColor, window_width} from "./BaseComponent";
+import BaseComponent, { BaseStyles, mainColor, window_width } from "./BaseComponent";
 import NavigationBar from "../common/NavigationBar";
 import QRCode from "react-native-qrcode";
 import ExcIntegral from "./ExcIntegral";
@@ -17,20 +17,20 @@ export default class ZhuanRu extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
-            text: '18629448593',
+            account: "18629448593",
         }
     }
 
     render() {
         return (
-            <View style={[BaseStyles.container_column, {backgroundColor: "#f1f1f1"}]}>
+            <View style={[BaseStyles.container_column, { backgroundColor: "#f1f1f1" }]}>
                 <NavigationBar
                     title='转出'
                     navigation={this.props.navigation}
                     rightView={NavigationBar.getRightStyle_Text('转出记录', {
                         fontSize: 16,
                         color: "#fff"
-                    }, () => this.onClicks(1))}
+                    }, () => this.onClicks("outRecord"))}
                 />
                 <View style={[{
                     flexDirection: 'row',
@@ -44,29 +44,30 @@ export default class ZhuanRu extends BaseComponent {
                         fontSize: 18,
                     }}> 对方账户：</Text>
                     <TextInput
-                        style={{height: 40,flex:1,fontSize: 16,color:'#333',marginLeft:8}}
-                        placeholder ={'请输入手机号码/UID'}
+                        style={{ height: 40, flex: 1, fontSize: 16, color: '#333', marginLeft: 8 }}
+                        placeholder={'请输入手机号码/UID'}
                         placeholderTextColor={'#999'}
+                        defaultValue={this.state.account}
                         underlineColorAndroid='transparent'
                         keyboardType='numeric'
-                        onChangeText={(text) => this.setState({text})}
+                        onChangeText={(text) => this.setState({ account: text })}
                         //失去焦点时
-                        onBlur={()=>this.onClicks(4)}
+                        onBlur={() => this.onClicks(4)}
                     />
                 </View>
                 <TouchableOpacity
                     activeOpacity={0.8}
                     style={{
-                        height:45,
-                        marginTop:40,
-                        marginLeft:15,
-                        marginRight:15,
-                        borderRadius:8,
+                        height: 45,
+                        marginTop: 40,
+                        marginLeft: 15,
+                        marginRight: 15,
+                        borderRadius: 8,
                         justifyContent: 'center',
                         alignItems: 'center',
-                        backgroundColor:mainColor,
+                        backgroundColor: mainColor,
                     }}
-                    onPress={()=>this.onClicks(2)}
+                    onPress={() => this.onClicks(2)}
                 >
                     <Text style={{
                         alignSelf: "center",
@@ -77,16 +78,16 @@ export default class ZhuanRu extends BaseComponent {
                 <TouchableOpacity
                     activeOpacity={0.8}
                     style={{
-                        height:45,
-                        marginTop:20,
-                        marginLeft:15,
-                        marginRight:10,
-                        borderRadius:8,
+                        height: 45,
+                        marginTop: 20,
+                        marginLeft: 15,
+                        marginRight: 10,
+                        borderRadius: 8,
                         justifyContent: 'center',
                         alignItems: 'center',
-                        backgroundColor:'#2ac988',
+                        backgroundColor: '#2ac988',
                     }}
-                    onPress={()=>this.onClicks(3)}
+                    onPress={() => this.onClicks(3)}
                 >
                     <Text style={{
                         alignSelf: "center",
@@ -99,14 +100,21 @@ export default class ZhuanRu extends BaseComponent {
     }
 
     onClicks(index) {
-        alert(index)
         switch (index) {
-            case 1:
+            case "outRecord":
+                this.props.navigation.navigate('TranMoneyRecord', {
+                    tranType: "out",
+                });
                 break;
             case 2:
+                this.props.navigation.navigate('ZhuanChuNext', {
+                    account: this.state.account,
+                });
                 break;
             case 3:
-                this.props.navigation.navigate('ExcIntegral');
+                this.props.navigation.navigate('ExcIntegral', {
+                    account: this.state.account,
+                });
                 break;
             default:
                 break;

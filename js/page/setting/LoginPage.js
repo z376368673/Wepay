@@ -13,19 +13,20 @@ import HttpUtils from '../../util/HttpUtils';
 import BaseUrl from '../../util/BaseUrl';
 import DialogUtils from '../../util/DialogUtils';
 import AsySorUtils from "../../dao/AsySorUtils"
-import {inject, observer} from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import UserInfo from '../../model/UserInfo';
+import ViewUtils from '../../util/ViewUtils';
 
 /**
  * 登陆页面
  */
- //@inject('AppStore')
- export default class LoginPage extends BaseComponent {
+//@inject('AppStore')
+export default class LoginPage extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
             text: '13923044417',
-            pwd:'123456',
+            pwd: '123456',
         }
     }
     render() {
@@ -109,9 +110,9 @@ import UserInfo from '../../model/UserInfo';
                 });
                 break
             case 1://忘记密码
-            this.props.navigation.navigate('ForgetPassWord',{
-                type:0
-            })
+                this.props.navigation.navigate('ForgetPassWord', {
+                    type: 0
+                })
                 break
             case 2://登陆
                 //this.props.navigation.navigate('HomePage');
@@ -122,30 +123,30 @@ import UserInfo from '../../model/UserInfo';
     /**
      * 登陆
      */
-    loginByPwd(){
+    loginByPwd() {
         DialogUtils.showLoading("");
-        let url =  BaseUrl.loginUrl(this.state.text,this.state.pwd)
+        let url = BaseUrl.loginUrl(this.state.text, this.state.pwd)
         HttpUtils.getData(url)
-        .then(result => {
-            if (result.code===1) {
-                DialogUtils.showToast("登陆成功")
-               //let state = new  AppState() 
-                AsySorUtils.saveUser(result.data,()=>{
-                    UserInfo.userInfo=result.data
-                    //alert(JSON.stringify(this.userInfo))
-                    //Mobx保存方式
-                    //this.props.AppStore.setUserInfo(result.data)
-                     this.props.navigation.navigate('HomePage');
-                })
-            }else{
-                DialogUtils.showToast(result.msg)
-            }
-            DialogUtils.hideLoading()
-        })
-        .catch(error => {
-            DialogUtils.hideLoading()
-            DialogUtils.showToast("服务器繁忙"+error.message)
-        })
+            .then(result => {
+                if (result.code === 1) {
+                    DialogUtils.showToast("登陆成功")
+                    //let state = new  AppState() 
+                    AsySorUtils.saveUser(result.data, () => {
+                        UserInfo.userInfo = result.data
+                        //alert(JSON.stringify(this.userInfo))
+                        //Mobx保存方式
+                        //this.props.AppStore.setUserInfo(result.data)
+                        this.props.navigation.navigate('HomePage');
+                    })
+                } else {
+                    DialogUtils.showToast(result.msg)
+                }
+                DialogUtils.hideLoading()
+            })
+            .catch(error => {
+                DialogUtils.hideLoading()
+                DialogUtils.showToast("服务器繁忙" + error.message)
+            })
     }
 
 }
@@ -164,7 +165,7 @@ export const styles = StyleSheet.create({
         borderColor: "#fff",
         paddingLeft: 15,
         paddingRight: 15,
-        height:50,
+        height: 50,
         borderWidth: 1,
         marginTop: 15,
         marginLeft: 20,

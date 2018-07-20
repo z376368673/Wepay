@@ -6,6 +6,9 @@ import SettingView from "../page/setting/SettingView";
 import SaoSaoView from "../page/SaoSaoView";
 import ZhuanRu from "../page/ZhuanRu";
 import ZhuanChu from "../page/ZhuanChu";
+import ZhuanChuNext from "../page/ZhuanChuNext";
+
+import TranMoneyRecord from "../page/TranMoneyRecord";
 import BuyPage from "../page/BuyPage";
 import SellPage from "../page/SellPage";
 import ExcIntegral from "../page/ExcIntegral";
@@ -35,15 +38,16 @@ import StoreMall from "../page/store/StoreMall";
 import StoreDetails from "../page/store/StoreDetails";
 import MyStoreOrder from "../page/store/MyStoreOrder";
 import MyOrder from "../page/setting/MyOrder";
-
+import PassNumInput from "../common/PassNumInput";
 
 export default AppNavigator = createStackNavigator({
-   
-
+    // PassNumInput: {//密码输入
+    //     screen: PassNumInput
+    // },
     LoginPage: {//登陆
         screen: LoginPage
     },
-    
+   
     AddBankCard: {//添加银行卡
         screen: AddBankCard
     },
@@ -96,9 +100,18 @@ export default AppNavigator = createStackNavigator({
     ZhuanRu: { //转入
         screen: ZhuanRu
     },
+  
     ZhuanChu: {//转出
         screen: ZhuanChu
     },
+    ZhuanChuNext: {//转出 下一步
+        screen: ZhuanChuNext
+    },
+
+    TranMoneyRecord: { //转入转出记录
+        screen: TranMoneyRecord
+    },
+
     ExcIntegral: {//兑换积分
         screen: ExcIntegral
     },
@@ -159,42 +172,64 @@ export default AppNavigator = createStackNavigator({
     },
     
     Welcome: {//欢迎页 
-        screen: Welcome
+        screen: Welcome,
+        path:'app/homeTwo',//使用url导航时用到, 如 web app 和 Deep Linking
+        //navigationOptions: {}  // 此处设置了, 会覆盖组件内的`static navigationOptions`设置. 具体参数详见下文
     },
     
 }, {
+    //initialRouteName: 'LoginPage', // 默认显示界面
+    mode: 'card',
     navigationOptions: {
-        header: null
+        header: null,
+        cardStack: {
+            gesturesEnabled: true  // 是否允许右滑返回，在iOS上默认为true，在Android上默认为false
+        }
     }
 })
 
-// export  const HomeTabNavigator = createBottomTabNavigator({
-//     One:PageOne,
-//     Two:PageTwo,
-//     Three:PageThree,
-//     Four:PageFour,
-// },{
-//     navigationOptions: ({ navigation }) => ({
-//         headerMode: 'none',
-//         tabBarIcon: ({ focused, tintColor }) => {
-//             const { routeName } = navigation.state;
-//             let iconName;
-//             if (routeName === 'One') {
-//                 iconName = `ios-information-circle${focused ? '' : '-outline'}`;
-//             } else if (routeName === 'Two') {
-//                 iconName = `ios-options${focused ? '' : '-outline'}`;
-//             } else if (routeName === 'Three') {
-//                 iconName = `ios-albums${focused ? '' : '-outline'}`;
-//             } else if (routeName === 'Four') {
-//                 iconName = `ios-apps${focused ? '' : '-outline'}`;
-//             }
-//             // You can return any component that you like here! We usually use an
-//             // icon component from react-native-vector-icons
-//             return <Ionicons name={iconName} size={25} color={tintColor} />;
-//         },
-//     }),
-//     tabBarOptions: {
-//         activeTintColor: 'red',
-//         inactiveTintColor: '#000',
-//     },
-//})
+// navigation
+// 在StackNavigator中注册后的组件都有navigation这个属性. navigation又有5个参数:navigate, goBack, state, setParams, dispatch, 可以在组件下console.log一下this.props就能看到.
+// this.props.navigation.navigate('Two', { name: 'two' }): push下一个页面
+// routeName: 注册过的目标路由名称
+// params: 传递的参数
+// action: 如果该界面是一个navigator的话，将运行这个sub-action
+// this.props.navigation.goBack(): 返回上一页
+// this.props.navigation.state: 每个界面通过这去访问它的router，state其中包括了：
+// routeName: 路由名
+// key: 路由身份标识
+// params: 参数
+// this.props.navigation.setParams: 该方法允许界面更改router中的参数，可以用来动态的更改导航栏的内容
+// this.props.navigation.dispatch: 可以dispatch一些action，主要支持的action有：
+
+// Navigate:
+//   import { NavigationActions } from 'react-navigation'
+//   const navigationAction = NavigationActions.navigate({
+//     routeName: 'Profile',
+//     params: {},
+//     // navigate can have a nested navigate action that will be run inside the child router
+//     action: NavigationActions.navigate({ routeName: 'SubProfileRoute'})
+//   })
+//   this.props.navigation.dispatch(navigationAction)
+
+
+// Reset: Reset方法会清除原来的路由记录，添加上新设置的路由信息, 可以指定多个action，index是指定默认显示的那个路由页面, 注意不要越界了
+//   import { NavigationActions } from 'react-navigation'
+//   const resetAction = NavigationActions.reset({
+//     index: 0,
+//     actions: [
+//       NavigationActions.navigate({ routeName: 'Profile'}),
+//       NavigationActions.navigate({ routeName: 'Two'})
+//     ]
+//   })
+//   this.props.navigation.dispatch(resetAction)
+
+
+// SetParams: 为指定的router更新参数，该参数必须是已经存在于router的param中
+//   import { NavigationActions } from 'react-navigation'
+//   const setParamsAction = NavigationActions.setParams({
+//     params: {}, // these are the new params that will be merged into the existing route params
+//     // The key of the route that should get the new params
+//     key: 'screen-123',
+//   })
+//   this.props.navigation.dispatch(setParamsAction)

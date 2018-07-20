@@ -17,21 +17,23 @@ import HttpUtils from '../../util/HttpUtils';
 import BaseUrl from '../../util/BaseUrl';
 import { inject } from 'mobx-react';
 
-@inject('AppStore')
+//@inject('AppStore')
 export default class SettingView extends BaseComponent {
     constructor(props) {
         super(props);
-        this.userInfo = this.props.AppStore.userInfo;
+        //this.userInfo = this.props.AppStore.userInfo;
         this.state = {
             userId: '123456',
             xinyong: 5,
             nickname: "哈哈",
             photos: [],//选择的照片
             headImg:require('../../../res/images/touxiang-xiao.png'),
+            newMessage:0,
         }
         this.userInfo = this.getUserInfo()
     }
     componentDidMount(){
+        this.isNewMessage();
         this.setState({
             headImg:{uri:this.userInfo.imgHead},
             nickname:this.userInfo.username,
@@ -40,6 +42,28 @@ export default class SettingView extends BaseComponent {
             sessionId:this.userInfo.sessionId,
         })
     }
+
+   /**
+     * 获取设置界面的消息状态
+     */
+    isNewMessage(){
+        let url =  BaseUrl.getuserInfoUrl(this.userInfo.sessionId)
+        HttpUtils.getData(url)
+        .then(result => {
+            if (result.code===1) {
+                this.info = result.data
+                this.setState({
+                    newMessage:this.info.newMessage,
+                })
+            }else{
+                DialogUtils.showToast(result.msg)
+            }
+        })
+        .catch(error => {
+            DialogUtils.showToast("服务器繁忙"+error.message)
+        })
+    }
+
     /**
      * 使用方式sync/await
      * 相册参数暂时只支持默认参数中罗列的属性；
@@ -230,8 +254,8 @@ export default class SettingView extends BaseComponent {
                         <View style={[BaseStyles.container_center, { marginTop: 12 }]} />
                         {ViewUtils.getSettingItem1(require('../../../res/images/gonggao.png'), '公告', false,
                             () => this.onClicks("notice"))}
-                        {ViewUtils.getSettingItem1(require('../../../res/images/gonggao.png'), '个人信息', false,
-                            () => this.onClicks("geren"))}
+                        {ViewUtils.getSettingItem1(require('../../../res/images/gonggao.png'), '个人信息', 
+                        this.state.newMessage===1?true:false, () => this.onClicks("geren"))}
 
                         <View style={[BaseStyles.container_center, { marginTop: 12 }]} />
                         {ViewUtils.getSettingItem1(require('../../../res/images/dianpu.png'), '我的店铺', false,

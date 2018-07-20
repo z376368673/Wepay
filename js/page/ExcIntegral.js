@@ -11,16 +11,51 @@ import BaseComponent, {BaseStyles, mainColor, window_width} from "./BaseComponen
 import NavigationBar from "../common/NavigationBar";
 import QRCode from "react-native-qrcode";
 import ViewUtils from "../util/ViewUtils";
+import BaseUrl from '../util/BaseUrl';
+import DialogUtils from '../util/DialogUtils';
+import HttpUtils from '../util/HttpUtils';
+import PassWordInput from '../common/PassNumInput';
 //兑换积分
-
 export default class ExcIntegral extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
-            text: '18629448593',
+            exchangeMoney:0,
             yue: 0,
             jifen: 0,
         }
+        //this.account =  this.navigation.state.params.account;
+        this.userInfo = this.getUserInfo();
+    }
+    componentDidMount(){
+        this.setState({
+            yue:this.userInfo.cangkuNum,
+            jifen:this.userInfo.fengmiNum,
+        })
+    }
+     /**
+     * 积分兑换
+     */
+    creditsExchange(safetyPwd){
+        DialogUtils.showLoading()
+        let url =  BaseUrl.creditsExchange()
+        HttpUtils.postData(url,{
+            sessionId: this.userInfo.sessionId,
+            exchangeMoney: this.state.exchangeMoney,
+            safetyPwd: safetyPwd,
+        })
+        .then(result => {
+            if (result.code===1) {
+               DialogUtils.showMsg("兑换成功")
+            }else{
+               DialogUtils.showToast(result.msg)
+            }
+            DialogUtils.hideLoading()
+        })
+        .catch(error => {
+            DialogUtils.hideLoading()
+            DialogUtils.showToast("服务器繁忙"+error.message)
+        })
     }
 
     render() {
@@ -32,7 +67,7 @@ export default class ExcIntegral extends BaseComponent {
                     rightView={NavigationBar.getRightStyle_Text('兑换记录', {
                         fontSize: 16,
                         color: "#fff"
-                    }, () => this.onClicks(1))}
+                    }, () => this.onClicks("record"))}
                 />
 
                 {/* 余额积分布局*/}
@@ -41,22 +76,21 @@ export default class ExcIntegral extends BaseComponent {
                     alignItems: 'center',
                     justifyContent: 'space-around',
                     padding: 10,
+                    paddingTop:30,
                     backgroundColor:mainColor
                 }]}>
                     <TouchableOpacity
                         activeOpacity={0.8}
-                        onPress={() => this.onClicks(2)}
                     >
-                        <View style={{flexDirection: 'column',}}>
+                        <View style={{flexDirection: 'column',alignItems: "center" }}>
                             <Text style={{fontSize: 16, color: '#fff'}}>余额</Text>
                             <Text style={{fontSize: 16, color: '#fff'}}>￥{this.state.yue}</Text>
                         </View></TouchableOpacity>
                     <View style={{height: 30, width: 0.5, backgroundColor: '#fff'}}/>
                     <TouchableOpacity
                         activeOpacity={0.8}
-                        onPress={() => this.onClicks(3)}
                     >
-                        <View style={{flexDirection: 'column',}}>
+                        <View style={{flexDirection: 'column',alignItems: "center" }}>
                             <Text style={{fontSize: 16, color: '#fff'}}>积分</Text>
                             <Text style={{fontSize: 16, color: '#fff'}}>￥{this.state.jifen}</Text>
                         </View></TouchableOpacity>
@@ -84,9 +118,9 @@ export default class ExcIntegral extends BaseComponent {
                         placeholderTextColor={'#999'}
                         underlineColorAndroid='transparent'
                         keyboardType='numeric'
-                        onChangeText={(text) => this.setState({text})}
+                        onChangeText={(text) => this.setState({exchangeMoney:text})}
                         //失去焦点时
-                        onBlur={()=>this.onClicks(4)}
+                        // onBlur={()=>this.onClicks(4)}
                     />
                 </View>
 
@@ -108,7 +142,7 @@ export default class ExcIntegral extends BaseComponent {
                         alignItems: 'center',
                         backgroundColor:mainColor,
                     }}
-                    onPress={()=>this.onClicks(5)}
+                    onPress={()=>this.onClicks("sumbit")}
                 >
                     <Text style={{
                         alignSelf: "center",
@@ -121,20 +155,18 @@ export default class ExcIntegral extends BaseComponent {
     }
 
     onClicks(index) {
-        alert(index)
         switch (index) {
-            case 1:
-
+            case "record": //兑换记录
+                this.props.navigation.navigate('YueOrIntegralRecord', { type: 1 });
                 break;
-            case 2:
-
-                break;
-            case 3:
-
-                break;
-          
-            case 5:
-                alert("卖出中心")
+            case "sumbit"://确定兑换
+            if(this.state.exchangeMoney<100||this.state.exchangeMoney%100!==0){
+                DialogUtils.showMsg("请输入大于等于100的整数倍")
+            }else{
+                PassWordInput.showPassWordInput((safetyPwd)=>{
+                    this.creditsExchange(safetyPwd)
+                 })
+            }
                 break;
             default:
                 break;

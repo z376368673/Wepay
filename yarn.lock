@@ -4697,6 +4697,13 @@ react-native-image-progress@^1.1.1:
   dependencies:
     prop-types "^15.5.10"
 
+react-native-modalbox@^1.6.0:
+  version "1.6.0"
+  resolved "http://registry.npm.taobao.org/react-native-modalbox/download/react-native-modalbox-1.6.0.tgz#ee353a2d568715a2b10db8eeb91132fb1f45952b"
+  dependencies:
+    create-react-class "^15.6.0"
+    prop-types "^15.5.10"
+
 react-native-parallax-scroll-view@^0.21.0:
   version "0.21.2"
   resolved "http://registry.npm.taobao.org/react-native-parallax-scroll-view/download/react-native-parallax-scroll-view-0.21.2.tgz#07d5a28389a88abf66c7a1321cb002ff33e99087"
