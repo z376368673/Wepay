@@ -31,12 +31,10 @@ export default class HomePage extends BaseComponent {
             headImg:null,
             bannerArray: []
         }
+        this.userInfo = this.getUserInfo()
     }
     componentDidMount() {
         this.getBanner();
-        //alert(JSON.stringify(UserInfo.userInfo()))
-        //userInfo = UserInfo.userInfo();
-        this.userInfo = this.getUserInfo()
         this.setState({
             userId:this.userInfo.account ,
             yue: this.userInfo.cangkuNum ,
@@ -125,7 +123,7 @@ export default class HomePage extends BaseComponent {
                                         <Text style={styles.text}>
                                             UUID:{this.state.userId ? this.state.userId : "123456"}
                                         </Text>
-                                        {ViewUtils.getCreditView(this.state.xinyong, 16, 15)}
+                                        {ViewUtils.getCreditView(this.state.xinyong, 16, 15,"#fff")}
                                     </View>
                                     <Image style={{ width: 30, height: 30, borderRadius: 15 }}
                                         source={require('../../res/images/shezhi.png')}
@@ -148,7 +146,6 @@ export default class HomePage extends BaseComponent {
                                     />
                                     <Text style={{ fontSize: 18, color: '#fff', marginTop: 10 }}>扫 码 支 付</Text>
                                 </View></TouchableOpacity>
-
 
                             {/* 余额积分布局*/}
                             <View style={[BaseStyles.container_row, {

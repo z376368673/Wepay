@@ -18,6 +18,7 @@ import CheckMoney from "../common/CheckMoney";
 import BaseUrl from '../util/BaseUrl';
 import DialogUtils from '../util/DialogUtils';
 import HttpUtils from '../util/HttpUtils';
+import PassWordInput from '../common/PassNumInput';
 
 
 export default class SellPage extends BaseComponent {
@@ -32,9 +33,7 @@ export default class SellPage extends BaseComponent {
             bankCardNum:"",
             userName:"请选择银行卡",
 
-            safetyPwd:"",
-
-            text:"",//描述
+            describe:"",//描述
         }
         this.userInfo = this.getUserInfo();
     }
@@ -57,16 +56,16 @@ export default class SellPage extends BaseComponent {
     /**
      * 创建订单
      */
-   creatOrder() {
-        DialogUtils.showLoading();
+   creatOrder(safetyPwd) {
+       DialogUtils.showLoading();
        this.url = BaseUrl.createOutOrder()
        HttpUtils.postData(this.url,
            {
                 sessionId:this.userInfo.sessionId,
                 exchangeMoney: this.state.selectedValue,
-                describe: this.state.text,
+                describe: this.state.describe,
                 bankId: this.state.bankCardID,
-                safetyPwd: this.state.safetyPwd,
+                safetyPwd: safetyPwd,
            })
            .then(result => {
                if (result.code === 1) {
@@ -136,7 +135,7 @@ export default class SellPage extends BaseComponent {
                                 placeholderTextColor={'#999'}
                                 underlineColorAndroid='transparent'
                                 keyboardType='numeric'
-                                onChangeText={(text) => this.setState({text:text})}
+                                onChangeText={(text) => this.setState({describe:text})}
                             //失去焦点时
                             //onBlur={this.onClicks("onBlur")}
                             /></KeyboardAvoidingView>
@@ -168,7 +167,7 @@ export default class SellPage extends BaseComponent {
     onClicks(type) {
         switch(type){
             case "creatOrder":
-            this.creatOrder();
+            PassWordInput.showPassWordInput((safetyPwd)=>this.creatOrder(safetyPwd))
             break;
         }
     }
@@ -176,8 +175,13 @@ export default class SellPage extends BaseComponent {
     _rightClick(view) {
         this.show(view, 'end')
     }
-    onSelected(index, value) {
 
+    onSelected(index, value) {
+       this.state.seleIndex = index
+       this.setState({
+        seleIndex:index,
+        selectedValue:value,
+       })
     }
     _menuClick(index) {
         switch (index) {

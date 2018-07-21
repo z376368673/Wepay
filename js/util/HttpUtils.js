@@ -43,7 +43,7 @@ export default class HttpUtils {
                 })
                 .catch(error => {
                     reject(error);
-                    alert("error:"+JSON.stringify(error.message))
+                    DialogUtils.showMsg(JSON.stringify(error.message))
                 })
         })
     }

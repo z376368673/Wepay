@@ -15,7 +15,7 @@ import BaseUrl from '../util/BaseUrl';
 import DialogUtils from '../util/DialogUtils';
 
 /**
- * 转出记录
+ * 转出 转入 记录
  */
 const width = Utils.getWidth()
 export default class TranMoneyRecord extends BaseComponent {

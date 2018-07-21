@@ -78,7 +78,7 @@ export default class StoreCommon extends BaseComponent {
             this.refList.addData(this.state.dataArray)
         }, 2000)
     }
-    /**
+        /** 商品
           * 绘制itemView
           * @param data
           * @returns {*}
@@ -124,7 +124,7 @@ export default class StoreCommon extends BaseComponent {
         </View>
     }
 
-    /**
+        /**商铺
           * 绘制itemView
           * @param data
           * @returns {*}
@@ -132,7 +132,6 @@ export default class StoreCommon extends BaseComponent {
           */
     _getStoreMall(data) {
         return <View
-            key={data.item.index}
             style={{
                 backgroundColor: '#fff',
                 alignItems: 'center',

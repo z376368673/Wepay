@@ -115,7 +115,7 @@ export default class LoginPage extends BaseComponent {
                 })
                 break
             case 2://登陆
-                //this.props.navigation.navigate('HomePage');
+                // this.props.navigation.navigate('HomePage');
                 this.loginByPwd();
                 break
         }
@@ -129,14 +129,16 @@ export default class LoginPage extends BaseComponent {
         HttpUtils.getData(url)
             .then(result => {
                 if (result.code === 1) {
-                    DialogUtils.showToast("登陆成功")
+                    //alert(JSON.stringify(result))
                     //let state = new  AppState() 
                     AsySorUtils.saveUser(result.data, () => {
                         UserInfo.userInfo = result.data
-                        //alert(JSON.stringify(this.userInfo))
+                        //alert("userInfo:"+JSON.stringify(UserInfo.userInfo))
                         //Mobx保存方式
                         //this.props.AppStore.setUserInfo(result.data)
                         this.props.navigation.navigate('HomePage');
+                        //this.props.navigation.navigate('SettingView');
+                        DialogUtils.showToast("登陆成功")
                     })
                 } else {
                     DialogUtils.showToast(result.msg)

@@ -183,30 +183,6 @@ export default class SettingView extends BaseComponent {
         }
     }
 
-
-    /**
-     * 显示信用值的View
-     * @param value
-     * @param fontSize
-     * @param width
-     * @returns {*}
-     */
-    getCreditView(value, fontSize, width) {
-        var views = [];
-        for (let i = 0; i < value; i++) {
-            views.push(<Image
-                key={i}
-                style={{ width: width, height: width / 4 * 3, marginLeft: 5 }}
-                source={require('../../../res/images/xin.png')}
-            />)
-        }
-        let view = <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ color: "#333", fontSize: fontSize, }}>信用: </Text>
-            {views}
-        </View>
-        return view;
-    }
-
     render() {
         return (
             <View style={BaseStyles.container}>
@@ -229,7 +205,7 @@ export default class SettingView extends BaseComponent {
                                     <Text style={{ color: "#333", fontSize: 16, }}>
                                         UUID:{this.state.userId ? this.state.userId : "123456"}
                                     </Text>
-                                    {this.getCreditView(this.state.xinyong, 16, 15)}
+                                    {ViewUtils.getCreditView(this.state.xinyong, 16, 15,"#333")}
                                 </View>
                                 <Text style={{ color: "#666", fontSize: 16, marginRight: 10 }}>
                                     更换头像

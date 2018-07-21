@@ -501,7 +501,7 @@ export default class BaseUrl {
      * bankId      是	银行卡id	int
      */
     static createOutOrder() {
-        return url + "/store/createOutOrder";
+        return url + "/trans/createOutOrder";
     }
 
 

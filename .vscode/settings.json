@@ -1,3 +1,6 @@
 {
-    "javascript.implicitProjectConfig.experimentalDecorators": false
+    "javascript.implicitProjectConfig.experimentalDecorators": false,
+     // 以像素为单位控制字号。
+    "editor.fontSize": 14,
+    "files.autoSave": "onFocusChange",
 }

@@ -44,20 +44,18 @@ export default AppNavigator = createStackNavigator({
     // PassNumInput: {//密码输入
     //     screen: PassNumInput
     // },
+   
     LoginPage: {//登陆
         screen: LoginPage
     },
-   
-    AddBankCard: {//添加银行卡
-        screen: AddBankCard
-    },
-
     HomePage: {//首页
         screen: HomePage
     },
-   
     SettingView: {//设置
         screen: SettingView
+    },
+    AddBankCard: {//添加银行卡
+        screen: AddBankCard
     },
     StoreMall: {//商城首页
         screen: StoreMall
@@ -178,7 +176,8 @@ export default AppNavigator = createStackNavigator({
     },
     
 }, {
-    //initialRouteName: 'LoginPage', // 默认显示界面
+   // initialRouteName: 'LoginPage', // 默认显示界面
+    initialRouteName: 'BuyOrSellCentre', // 默认显示界面
     mode: 'card',
     navigationOptions: {
         header: null,

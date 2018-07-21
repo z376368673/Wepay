@@ -106,41 +106,22 @@ export default class ViewUtils {
      * @param width 信誉图片大小
      * @returns {*}
      */
-    static getCreditView(value, fontSize, width) {
+    static getCreditView(value, fontSize, width,textColor) {
         var views = [];
+        if(value>5)value=5;
         for (let i = 0; i < value; i++) {
             views.push(<Image
                 key={i}
-                style={{ width: width, height: width / 4 * 3, marginLeft: 5 }}
+                style={{ width: width, height: width / 4 * 3, marginLeft: 2}}
                 source={require('../../res/images/xin.png')}
             />)
         }
         let view = <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ color: "#fff", fontSize: fontSize, }}>信用: </Text>
+            <Text style={{ color: textColor?textColor:"#fff", fontSize: fontSize, }}>信用: </Text>
             {views}
         </View>
         return view;
     }
-
-    // static showPassWordInput(onComplete) {
-    //     let width = require('Dimensions').get('window').width
-    //     let height = require('Dimensions').get('window').height
-    //     let overlayView = (
-    //         <Overlay.PullView side={'bottom'} modal={true} ref={v => this.overlayPullView = v}>
-    //             <View style={{minWidth: width, minHeight: 100, justifyContent: 'center', alignItems: 'center' }}>
-    //                <PassNumInput 
-    //                 onClose={()=>this.overlayPullView?this.overlayPullView.close():null}
-    //                 onComplete={pwd=>{
-    //                     onComplete(pwd)
-    //                 }}
-    //                 onChangePassWord={(pwd,len)=>{}}
-    //                />
-    //             </View>
-    //         </Overlay.PullView>
-    //     );
-    //     if(!overlayView.isShow)
-    //     Overlay.show(overlayView);
-    // }
 
 }
 
