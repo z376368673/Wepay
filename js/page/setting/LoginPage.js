@@ -16,7 +16,7 @@ import AsySorUtils from "../../dao/AsySorUtils"
 import { inject, observer } from 'mobx-react';
 import UserInfo from '../../model/UserInfo';
 import ViewUtils from '../../util/ViewUtils';
-
+import  SplashScreen from "react-native-splash-screen"
 /**
  * 登陆页面
  */
@@ -28,6 +28,9 @@ export default class LoginPage extends BaseComponent {
             text: '13923044417',
             pwd: '123456',
         }
+    }
+    componentDidMount(){
+        SplashScreen.hide();
     }
     render() {
         return (

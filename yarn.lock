@@ -4746,9 +4746,9 @@ react-native-sortable-listview@^0.2.6:
   version "0.2.8"
   resolved "http://registry.npm.taobao.org/react-native-sortable-listview/download/react-native-sortable-listview-0.2.8.tgz#0d514fa73eb406a46baea96aa38a71e40257af90"
 
-react-native-splash-screen@^3.0.6:
-  version "3.0.9"
-  resolved "http://registry.npm.taobao.org/react-native-splash-screen/download/react-native-splash-screen-3.0.9.tgz#5cdd026ae414d60cd86bcaa897bffacd16395bed"
+react-native-splash-screen@^3.1.0:
+  version "3.1.0"
+  resolved "http://registry.npm.taobao.org/react-native-splash-screen/download/react-native-splash-screen-3.1.0.tgz#9636f83d711dadded27167cdc3dc6aa98ec222ee"
 
 react-native-swiper@^1.5.13:
   version "1.5.13"
