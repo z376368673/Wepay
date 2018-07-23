@@ -31,9 +31,9 @@ export default class ZhuanChuNext extends BaseComponent {
             mobile4:"",//手机号后四位
         }
         this.userInfo = this.getUserInfo();
-       
         //接受上个界面传来的账户 （手机号）
         this.account =  this.navigation.state.params?this.navigation.state.params.account:"18629448593";
+       // alert(this.account)
     }
 
     componentDidMount(){

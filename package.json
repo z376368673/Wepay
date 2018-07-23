@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "GitHubTrending": "^2.0.0",
+    "ac-qrcode": "^1.0.1",
     "babel-preset-react-native": "4.0.0",
     "babylon": "^6.18.0",
     "mobx": "^4.3.1 ",
@@ -34,6 +35,7 @@
     "react-native-vector-icons": "^4.6.0",
     "react-navigation": "^2.2.3",
     "react-timer-mixin": "^0.13.3",
+    "rnpm": "^1.9.0",
     "teaset": "^0.5.8"
   },
   "devDependencies": {

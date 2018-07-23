@@ -3,13 +3,13 @@ package com.wepay;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.oblador.vectoricons.VectorIconsPackage;
+import com.lwansbrough.RCTCamera.RCTCameraPackage;
 import com.reactlibrary.RNSyanImagePickerPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.beefe.picker.PickerViewPackage;
 import com.microsoft.codepush.react.CodePush;
+import com.oblador.vectoricons.VectorIconsPackage;
 import com.reactlibrary.BuildConfig;
-import com.reactlibrary.RNSyanImagePickerPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -37,6 +37,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            //new RCTCameraPackage(),
+            new RCTCameraPackage(),
             new VectorIconsPackage(),
             new RNSyanImagePickerPackage(),
             new SplashScreenReactPackage(),

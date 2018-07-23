@@ -11,6 +11,7 @@ import AsySorUtils from '../dao/AsySorUtils';
 import { inject } from 'mobx-react';
 import user from '../model/UserInfo';
 import { PullPicker } from 'teaset';
+import  SplashScreen from "react-native-splash-screen"
 export default class BaseComponent extends Component {
     
     constructor(props) {
@@ -19,7 +20,10 @@ export default class BaseComponent extends Component {
        //this.props.navigation.navigate('name');
        // this.props.navigation.goBack()
     }
- 
+    componentDidMount(){
+       // SplashScreen.hide();
+    }
+
     getUser(){
         return  user;
     }

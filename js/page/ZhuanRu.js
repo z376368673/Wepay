@@ -14,7 +14,7 @@ export default class ZhuanRu extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
-            text: '你啥都扫不到',
+            text: "18629448593",
         }
     }
 
