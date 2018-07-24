@@ -35,6 +35,7 @@ import ApplyStore from "../page/store/ApplyStore";
 import MyStore from "../page/store/MyStore";
 import AddShop from "../page/store/AddShop";
 import StoreMall from "../page/store/StoreMall";
+import SearchStore from "../page/store/SearchStore";
 import StoreDetails from "../page/store/StoreDetails";
 import MyStoreOrder from "../page/store/MyStoreOrder";
 import MyOrder from "../page/setting/MyOrder";
@@ -59,6 +60,9 @@ export default AppNavigator = createStackNavigator({
     },
     StoreMall: {//商城首页
         screen: StoreMall
+    },
+    SearchStore: {//搜索界面
+        screen: SearchStore
     },
     MyOrder: {//我的订单
         screen: MyOrder
@@ -177,7 +181,7 @@ export default AppNavigator = createStackNavigator({
     
 }, {
     //initialRouteName: 'LoginPage', // 默认显示界面
-    initialRouteName: 'HomePage', // 默认显示界面
+    initialRouteName: 'StoreMall', // 默认显示界面
     mode: 'card',
     navigationOptions: {
         header: null,

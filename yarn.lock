@@ -4793,9 +4793,9 @@ react-lifecycles-compat@^3, react-lifecycles-compat@^3.0.2, react-lifecycles-com
   version "3.0.4"
   resolved "http://registry.npm.taobao.org/react-lifecycles-compat/download/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
 
-react-native-camera@^1.1.5:
-  version "1.1.5"
-  resolved "http://registry.npm.taobao.org/react-native-camera/download/react-native-camera-1.1.5.tgz#a033a80b73fb1d56c2459a829f65a6f8f1a7328c"
+react-native-camera@^0.7.0:
+  version "0.7.0"
+  resolved "http://registry.npm.taobao.org/react-native-camera/download/react-native-camera-0.7.0.tgz#a033a80b73fb1d56c2459a829f65a6f8f1a7328c"
 
 react-native-check-box@^2.0.2:
   version "2.1.0"

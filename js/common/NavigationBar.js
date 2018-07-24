@@ -83,10 +83,12 @@ export default class NavigationBar extends Component {
 
     //如果titleView 没有传过来 则 默认为Text 并赋值为 title
     _titleViews() {
-        if (this.props.titleView)
-            return this.props.titleView;
-        let view = <Text style={[styles.titleText, {color: "#fff",}]}>{this.props.title}</Text>
-        return view;
+        if (this.props.titleView){
+            return this.props.titleView();
+        }else{
+            let view = <Text style={[styles.titleText, {color: "#fff",}]}>{this.props.title}</Text>
+            return view;
+        }
     }
 
     //定义左边按钮 左边布局，一般都是返回按钮
@@ -110,7 +112,7 @@ export default class NavigationBar extends Component {
     //左边默认返回组件 返回按钮
     getLeftDefault() {
         return <TouchableOpacity
-            style={styles.leftContainer}
+            style={[{ paddingRight: 20,},styles.leftContainer]}
             onPress={() => {
                 this.props.navigation.goBack(null);
             }}
@@ -143,6 +145,8 @@ export default class NavigationBar extends Component {
         </TouchableOpacity>
     }
 
+
+
     //导航右边更多按钮
     static getRightStyle_More(callBack) {
         return <TouchableOpacity
@@ -153,8 +157,23 @@ export default class NavigationBar extends Component {
             }}
         >
             <Image
-                style={{width: 30,height: 30,}}
+                style={{width: 25,height: 25,}}
                 source={require('../../res/images/ic_more_vert_white_48pt.png')}/>
+        </TouchableOpacity>
+    }
+
+    //导航右边更多按钮
+    static getRightStyle_View(imgPath,callBack) {
+        return <TouchableOpacity
+            style={{ flexDirection: 'row',alignItems: 'center',}}
+            ref={v=>this.more=v}
+            onPress={()=>{
+                callBack(this.more)
+            }}
+        >
+            <Image
+                style={{width: 25,height: 25,}}
+                source={imgPath}/>
         </TouchableOpacity>
     }
 
@@ -175,6 +194,7 @@ const styles = StyleSheet.create({
     titleViewContainer: {
         justifyContent: 'center',
         alignItems: 'center',
+        alignSelf: 'center',
         position: 'absolute',//布局方式 绝对布局
         left: 40,
         right: 40,
@@ -186,7 +206,6 @@ const styles = StyleSheet.create({
         // alignItems:'center',
         position: 'absolute',//布局方式 绝对布局
         left: 10,
-        right: 250,
         top: 0,
         bottom: 0,
     },
@@ -196,7 +215,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         position: 'absolute',//布局方式 绝对布局
-        left: 250,
         right: 10,
         top: 0,
         bottom: 0,

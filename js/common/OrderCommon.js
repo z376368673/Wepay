@@ -9,7 +9,7 @@ import {
 import BaseComponent, { BaseStyles, mainColor, window_width } from "../page/BaseComponent";
 import HttpUtils from "../util/HttpUtils";
 import BaseUrl from "../util/BaseUrl";
-import RefreshFlatList from "../common/RefreshFlatList.js"
+import RefreshFlatList from "./RefreshFlatList"
 import Utils from '../util/Utils';
 
 //订单公用类（相当于Fragment）

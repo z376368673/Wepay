@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import BaseComponent, { BaseStyles, mainColor, window_width } from "../page/BaseComponent";
 import HttpUtils from "../util/HttpUtils";
-import RefreshFlatList from "./RefreshFlatList.js"
+import RefreshFlatList from "./RefreshFlatList"
 import Utils from '../util/Utils';
 
 //订单公用类（相当于Fragment）

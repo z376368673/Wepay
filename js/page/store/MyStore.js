@@ -13,7 +13,7 @@ import BaseComponent, { BaseStyles, mainColor, window_width } from "../BaseCompo
 import NavigationBar from "../../common/NavigationBar";
 import HttpUtils from "../../util/HttpUtils";
 import BaseUrl from "../../util/BaseUrl";
-import RefreshFlatList2 from "../../common/RefreshFlatList2.js"
+import RefreshFlatList2 from "../../common/RefreshFlatList2"
 //我的店铺
 
 export default class MyStore extends BaseComponent {

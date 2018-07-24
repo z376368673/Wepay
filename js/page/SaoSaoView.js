@@ -18,13 +18,20 @@ export default class SaoSaoView extends BaseComponent {
         return (
             < QRScannerView
                 isCornerOffset={true}
+                cornerBorderLength={24}
+                cornerBorderWidth={4}
+                cornerOffsetSize={4}
+                rectWidth={280}
+                rectHeight={280}
                 hintText={'请将扫描框对准二维码'}
                 hintTextStyle={{ color: "#fff", fontSize: 16, }}
                 hintTextPosition={80}
+                maskColor={"#00000080"}
                 bottomMenuHeight={100}
                 bottomMenuStyle={{ backgroundColor: '#00000080', height: 100, justifyContent: 'center' }}
                 scanBarColor={"#d11"}
                 scanBarMargin={10}
+                scanBarAnimateTime={3000}
                 onScanResultReceived={this.barcodeReceived.bind(this)}
                 renderTopBarView={() => {
                     return (

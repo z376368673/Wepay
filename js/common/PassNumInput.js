@@ -151,7 +151,7 @@ var PassWordInput = {
     showPassWordInput(onComplete) {
         let width = require('Dimensions').get('window').width
         let height = require('Dimensions').get('window').height
-        let overlayView = (
+        let overlayView = (         //"left"
             <Overlay.PullView side={'bottom'} modal={true} ref={v => this.overlayPullView = v}>
                 <View style={{ minWidth: width, minHeight: 100, justifyContent: 'center', alignItems: 'center' }}>
                     <PassNumInput

@@ -14,7 +14,7 @@ import {
     View,
 } from 'react-native';
 import { BaseStyles, window_width, mainColor } from "../page/BaseComponent";
-import { Theme, Overlay, Button } from 'teaset';
+
 export default class ViewUtils {
     static getLineView(lineHeight, color) {
         lineHeight = lineHeight ? lineHeight : 1.5;
@@ -106,23 +106,24 @@ export default class ViewUtils {
      * @param width 信誉图片大小
      * @returns {*}
      */
-    static getCreditView(value, fontSize, width,textColor) {
+    static getCreditView(value, fontSize, width, textColor) {
         var views = [];
-        if(value>5)value=5;
+        if (value > 5) value = 5;
         for (let i = 0; i < value; i++) {
             views.push(<Image
                 key={i}
-                style={{ width: width, height: width / 4 * 3, marginLeft: 2}}
+                style={{ width: width, height: width / 4 * 3, marginLeft: 2 }}
                 source={require('../../res/images/xin.png')}
             />)
         }
         let view = <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ color: textColor?textColor:"#fff", fontSize: fontSize, }}>信用: </Text>
+            <Text style={{ color: textColor ? textColor : "#fff", fontSize: fontSize, }}>信用: </Text>
             {views}
         </View>
         return view;
     }
 
+    
 }
 
 const styles = StyleSheet.create({
