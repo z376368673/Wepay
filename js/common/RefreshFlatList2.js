@@ -33,7 +33,7 @@ export default class RefreshFlatList extends Component {
         footerView: () => {
         },
     }
-
+    
     refreshStar() {
         this.setState({
             isRefresh: true,
@@ -49,31 +49,13 @@ export default class RefreshFlatList extends Component {
      */
     setData(data) {
         this.setState({
+            dataArray: [],
+        });
+        this.setState({
             isFrist: false,
             isRefresh: false,
             isDownLoad: !data ? false : data.length < this.props.minLength ? false : this.props.isDownLoad,
             dataArray: data,
-        });
-    }
-
-    /**
-     * 在原数据的基础上添加数据
-     * @param data
-     */
-    addData(data) {
-        if (!data || data.length < 1) {
-            this.setState({
-                isDownLoad: false,
-            });
-            return
-        }
-        let arr = []
-        for (let i = 0; i < data.length; i++) {
-            arr.push(data[i])
-        }
-        arr = this.state.dataArray.concat(arr)
-        this.setState({
-            dataArray: arr,
         });
     }
 

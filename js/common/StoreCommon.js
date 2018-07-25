@@ -35,11 +35,7 @@ export default class StoreCommon extends BaseComponent {
         this.refList.refreshStar()
         HttpUtils.getData(URL + value)
             .then(result => {
-                var arr = [];
-                for (let i = 0; i < 10; i++) {
-                    arr.push(result.items[i])
-                }
-                this.refList.setData(arr)
+                this.refList.setData(result.items)
             })
             .catch(error => {
                 this.refList.setData([])

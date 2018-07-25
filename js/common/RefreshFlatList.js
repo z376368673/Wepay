@@ -48,6 +48,10 @@ export default class RefreshFlatList extends Component {
      * @param data
      */
     setData(data) {
+        //flatlist公用的时候 先把数据清空再添加数据
+        this.setState({
+            dataArray: [],
+        });
         this.setState({
             isFrist: false,
             isRefresh: false,

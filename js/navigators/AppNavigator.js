@@ -16,6 +16,7 @@ import YueOrIntegralRecord from "../page/YueOrIntegralRecord";
 import BuyOrSellCentre from "../page/BuyOrSellCentre";
 import BuyOrSellRecord from "../page/BuyOrSellRecord";
 import BuyOrSellUnfinishedOrder from "../page/BuyOrSellUnfinishedOrder";
+import BuyOrSellOrde from "../page/BuyOrSellOrder";
 import ModifyNickName from "../page/setting/ModifyNickName";
 import BankCardList from "../page/setting/BankCardList ";
 import AddBankCard from "../page/setting/AddBankCard";
@@ -95,10 +96,14 @@ export default AppNavigator = createStackNavigator({
     BuyOrSellRecord: {// 买入/卖出记录
         screen: BuyOrSellRecord
     },
+
+    
     BuyOrSellUnfinishedOrder: {// 买入/卖出 未完成订单
         screen: BuyOrSellUnfinishedOrder
     },
-
+    BuyOrSellOrde: {// 买入/卖出  的订单
+        screen: BuyOrSellOrde
+    },
     ZhuanRu: { //转入
         screen: ZhuanRu
     },
@@ -180,8 +185,8 @@ export default AppNavigator = createStackNavigator({
     },
     
 }, {
-    //initialRouteName: 'LoginPage', // 默认显示界面
-    initialRouteName: 'StoreMall', // 默认显示界面
+    initialRouteName: 'LoginPage', // 默认显示界面
+    //initialRouteName: 'StoreMall', // 默认显示界面
     mode: 'card',
     navigationOptions: {
         header: null,

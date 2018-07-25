@@ -44,7 +44,7 @@ export default class SellPage extends BaseComponent {
         this.props.navigation.navigate("BankCardList",{
             selectBank:(bankCard)=>{
                 this.setState({
-                    bankCardID:bankCard.cardId,
+                    bankCardID:bankCard.id,
                     bankCardName:bankCard.banqGenre,
                     bankCardNum:bankCard.cardNumber,
                     userName:bankCard.holdName,
@@ -184,15 +184,17 @@ export default class SellPage extends BaseComponent {
        })
     }
     _menuClick(index) {
+        //type 表示   0，买入  1， 卖出    
+        //orderType    1，未完成订单， 2，确定打款订单  3 已完成订单
         switch (index) {
             case 1:
-                this.props.navigation.navigate('BuyOrSellUnfinishedOrder', { type: 1 });
+                this.props.navigation.navigate('BuyOrSellUnfinishedOrder', { type: 1 ,orderType:1});
                 break;
             case 2:
-                alert("确认打款")
+                this.props.navigation.navigate('BuyOrSellOrde', { type: 1 ,orderType:2});
                 break;
             case 3:
-                alert("已完成订单")
+                this.props.navigation.navigate('BuyOrSellOrde', { type: 1 ,orderType:3});
                 break;
             case 4:
                 this.props.navigation.navigate('BuyOrSellRecord', { type: 1 });

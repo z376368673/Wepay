@@ -14,76 +14,40 @@ import HttpUtils from "../util/HttpUtils";
 import { SegmentedBar, Label } from 'teaset';
 import BaseUrl from '../util/BaseUrl';
 import RefreshFlatList from '../common/RefreshFlatList';
-import UnfinshedorderItem from '../item/UnfinshedorderItem';
+import OrderItem from '../item/OrderItem';
 
 /**
  * 买入/卖出  未完成订单
+ * 
+ *  type 表示     0，买入  1， 卖出    
+ * 
+ *  orderType    1，未完成订单(不是这个界面)， 2，确定打款订单  3 已完成订单
+ *  这个界面支持 orderType = 2，3
  */
 
-
 const width = Utils.getWidth()
-export default class BuyOrSellUnfinishedOrder extends BaseComponent {
+export default class BuyOrSellOrde extends BaseComponent {
     pageIndex = 1;
     constructor(props) {
         super(props);
-        this.state = {
-            activeIndex: 0,
-        }
-        this.barItems = [
-            '未选择打款人',
-            '已选择打款人',
-        ];
         this.userInfo = this.getUserInfo()
-        this.activeIndex=0;
+        const { navigation } = this.props;
+        //取出参数   orderType    type
+        this.orderType=navigation.state.params.orderType ? navigation.state.params.orderType : 2;
+        this.type = navigation.state.params.type ? navigation.state.params.type : 0;
+       // alert("orderType="+this.orderType+" type="+this.type)
     }
     //界面加载完成
     componentDidMount() {
         this._refreshData()
     }
-
-    onSegmentedBarChange(index) {
-        if (index != this.activeIndex) {
-            this.setState({ activeIndex: index });
-            this.activeIndex = index
-            this._refreshData()
-        }
-    }
-
-    renderCustomItems() {
-        let { activeIndex } = this.state;
-        return this.barItems.map((item, index) => {
-            let isActive = index == activeIndex;
-            let tintColor = isActive ? mainColor : '#333';
-            return (
-                <View key={index} style={{ padding: 15, alignItems: 'center' }}>
-                    <Text style={{ fontSize: 17, color: tintColor, paddingTop: 4 ,}} >{item}</Text>
-                </View>
-            );
-        });
-    }
-
     render() {
-        const { navigation } = this.props;
-        const type = navigation.state.params.type ? navigation.state.params.type : 0;
-        let title = type === 0 ? "买入" : "卖出"
-        let { justifyItem, activeIndex } = this.state;
-        let barItems = this.barItems;
         return (
             <View style={BaseStyles.container_column}>
                 <NavigationBar
-                    title={"未完成订单"}
+                    title={"确认打款"}
                     navigation={this.props.navigation}
                 />
-                <SegmentedBar
-                    justifyItem={"fixed"}
-                    indicatorLineColor={mainColor}
-                    indicatorLineWidth={2}
-                    indicatorPositionPadding={5}
-                    activeIndex={activeIndex}
-                    onChange={index => this.onSegmentedBarChange(index)} >
-                    {this.renderCustomItems()}
-                </SegmentedBar>
-
                 <View style={{ flex: 1, backgroundColor: "#f1f1f1", marginTop: 1 ,}}>
                     <RefreshFlatList
                         ref={refList => this.refList = refList}
@@ -98,7 +62,7 @@ export default class BuyOrSellUnfinishedOrder extends BaseComponent {
     }
 
     renderItem(data){
-        let view = <UnfinshedorderItem data={data.item}/>
+        let view = <OrderItem data={data.item} type={this.type} orderType={this.orderType}/>
         return view
     }
 
@@ -118,10 +82,14 @@ export default class BuyOrSellUnfinishedOrder extends BaseComponent {
      * @param {*} pageIndex 
      */
     getData(isRefesh) {
-        if (this.activeIndex === 0) {
-            this.url = BaseUrl.getoutUndoneUnselectedUrl(this.userInfo.sessionId, this.pageIndex)
-        } else {
-            this.url = BaseUrl.getOutUndoneSelectedUrl(this.userInfo.sessionId, this.pageIndex)
+        if(this.type==0&&this.orderType==2){ //买入 确认打款
+            this.url = BaseUrl.getOutAffirmProceeds(this.userInfo.sessionId, this.pageIndex)
+        }else if(this.type==0&&this.orderType==3){//买入 完成订单
+            this.url = BaseUrl.getOutCompleteOrder(this.userInfo.sessionId, this.pageIndex)
+        }else if(this.type==1&&this.orderType==2){ //卖出 确认打款
+            this.url = BaseUrl.getOutAffirmProceeds(this.userInfo.sessionId, this.pageIndex)
+        }else if(this.type==1&&this.orderType==3){ //卖出 完成订单
+            this.url = BaseUrl.getOutCompleteOrder(this.userInfo.sessionId, this.pageIndex)
         }
         HttpUtils.getData(this.url)
             .then(result => {

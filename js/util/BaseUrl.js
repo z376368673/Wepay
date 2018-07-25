@@ -402,23 +402,23 @@ export default class BaseUrl {
         3.6	newMessage		暂时没用
      */
 
-    static getUserBy(sessionId,account) {
-        return url + "/tranMoney/getUser?sessionId=" + sessionId+"&account="+account
+    static getUserBy(sessionId, account) {
+        return url + "/tranMoney/getUser?sessionId=" + sessionId + "&account=" + account
     }
 
 
-   /**
-     * 转出-余额转出
-     * POST
-     * @param {*} sessionId 
-     * @param {*} payId   支付会员id
-     * @param {*} getId   收入方id
-     * @param {*} getNums    转出数 
-     * @param {*} mobile   手机后4位
-     * @param {*} safetyPwd       交易密码
-     * 
-     * @returns code 1,0
-     */
+    /**
+      * 转出-余额转出
+      * POST
+      * @param {*} sessionId 
+      * @param {*} payId   支付会员id
+      * @param {*} getId   收入方id
+      * @param {*} getNums    转出数 
+      * @param {*} mobile   手机后4位
+      * @param {*} safetyPwd       交易密码
+      * 
+      * @returns code 1,0
+      */
     static tranOutMoney() {
         return url + "/store/outMoney"
     }
@@ -465,7 +465,7 @@ export default class BaseUrl {
      * 请求方式:POST
      */
     static creditsExchange() {
-        return url + "/store/creditsExchange?" 
+        return url + "/store/creditsExchange?"
     }
 
     /**
@@ -504,6 +504,103 @@ export default class BaseUrl {
         return url + "/trans/createOutOrder";
     }
 
+
+    /**
+     * 卖出-未完成订单-未选择打款人
+     * @param {*} sessionId 
+     * @returns
+        序号	参数名称	一定会返回	描述
+        1	code	是	状态码 
+        2	msg	是	错误信息
+        3	data	是	数据(code=1返回集合数据)
+        3.1	id		挂单id
+        3.2	payoutId		转出余额会员id
+        3.3	payinId		转入会员id
+        3.4	payNums		挂出金额
+        3.5	payState		订单状态:0->默认上架,1->有人买入,2->已打款,3->确认到款(已完成)
+        3.6	payTime		订单生成时间
+        3.7	payNo		订单编号
+        3.8	cardId		会员银行卡id
+        3.9	tradeNotes		订单备注
+        3.10	transType		0->卖出,1->买入
+        3.11	transImg		打款凭证
+        3.12	getMoneytime		收到款时间
+        3.13	feeNums		手续费
+     */
+    static getoutUndoneUnselectedUrl(sessionId,pageIndex) {
+        return url + "/trans/outUndoneUnselected?sessionId=" + sessionId  + "&pageIndex=" + pageIndex;;
+    }
+    /**
+     * 卖出-未完成订单-已选择打款人
+     * @param {*} sessionId 
+     * @returns
+     序号	参数名称	一定会返回	描述
+     1	code	是	状态码 
+     2	msg	是	错误信息
+     3	data	是	数据(code=1返回集合数据)
+     3.1	id		挂单id
+     3.2	payoutId	转出余额会员id
+     3.3	payinId		转入会员id
+     3.4	payNums		转出数量
+     3.5	payState	订单状态:0->默认上架,1->有人买入,2->已打款,3->确认到款(已完成)
+     3.6	payTime		订单生成时间
+     3.7	payNo		订单编号
+     3.8	userName	打款人姓名
+     3.9	mobile		手机号
+     */
+    static getOutUndoneSelectedUrl(sessionId,pageIndex) {
+        return url + "/trans/outUndoneSelected?sessionId=" + sessionId  + "&pageIndex=" + pageIndex;
+    }
+
+
+
+    /**
+     * 卖出-确认收款-记录
+     * @param {*} sessionId 
+     * @returns
+     序号	参数名称	一定会返回	描述
+     1	code	是	状态码 
+     2	msg	是	错误信息
+     3	data	是	数据(code=1返回集合数据)
+     3.1	id		挂单id
+     3.2	payoutId		转出余额会员id
+     3.3	payinId		转入会员id
+     3.4	payNums		卖出金额
+     3.5	payState		订单状态:0->默认上架,1->有人买入,2->已打款,3->确认到款(已完成)
+     3.6	payTime		订单生成时间
+     3.7	payNo		订单编号
+     3.8	userName		打款人姓名
+     3.9	mobile		手机号
+     3.10	transImg		打款截图（需要添加前缀如：如http://tz.hxksky.com/wepay/upload/
+）
+     */
+    static getOutAffirmProceeds(sessionId,pageIndex) {
+        return url + "/trans/outAffirmProceeds?sessionId=" + sessionId  + "&pageIndex=" + pageIndex;
+    }    
+
+
+     /**
+     * 卖出-已完成订单
+     * @param {*} sessionId 
+     * @returns
+     序号	参数名称	一定会返回	描述
+     1	code	是	状态码 
+     2	msg	是	错误信息
+     3	data	是	数据
+     3.1	id		挂单id
+     3.2	payoutId		转出余额会员id
+     3.3	payinId		转入会员id
+     3.4	payNums		买入金额
+     3.5	payState		订单状态:0->默认上架,1->有人买入,2->已打款,3->确认到款(已完成)
+     3.6	payTime		订单生成时间
+     3.7	payNo		订单编号
+     3.8	userName		收款人（打款人姓名）
+     3.9	mobile		手机号
+     3.10	transImg		打款截图（需要添加前缀如：如http://tz.hxksky.com/wepay/upload/）
+     */
+    static getOutCompleteOrder(sessionId,pageIndex) {
+        return url + "/trans/outCompleteOrder?sessionId=" + sessionId  + "&pageIndex=" + pageIndex;
+    }  
 
 }
 
