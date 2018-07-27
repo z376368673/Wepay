@@ -14,7 +14,8 @@ import HttpUtils from "../util/HttpUtils";
 import { SegmentedBar, Label } from 'teaset';
 import BaseUrl from '../util/BaseUrl';
 import RefreshFlatList from '../common/RefreshFlatList';
-import UnfinshedorderItem from '../item/UnfinshedorderItem';
+import SellUnfinshedorderItem from '../item/SellUnfinshedorderItem';
+import BuyUnfinshedorderItem from '../item/BuyUnfinshedorderItem';
 
 /**
  * 买入/卖出  未完成订单
@@ -35,6 +36,12 @@ export default class BuyOrSellUnfinishedOrder extends BaseComponent {
         ];
         this.userInfo = this.getUserInfo()
         this.activeIndex=0;
+
+         //取出参数   orderType    type
+         const { navigation } = this.props;
+         this.orderType = navigation.state.params.orderType ? navigation.state.params.orderType : 2;
+         this.type = navigation.state.params.type ? navigation.state.params.type : 0;
+         // alert("orderType="+this.orderType+" type="+this.type)
     }
     //界面加载完成
     componentDidMount() {
@@ -98,7 +105,11 @@ export default class BuyOrSellUnfinishedOrder extends BaseComponent {
     }
 
     renderItem(data){
-        let view = <UnfinshedorderItem data={data.item}/>
+        let view = this.type===1?<SellUnfinshedorderItem data={data} 
+         delBack={(index)=>this.refList.delData(index)}  
+        />:<BuyUnfinshedorderItem data={data} 
+        delBack={(index)=>this.refList.delData(index)}  
+       />
         return view
     }
 
@@ -112,16 +123,21 @@ export default class BuyOrSellUnfinishedOrder extends BaseComponent {
     _onLoadData() {
         this.getData(false)
     }
+    
     /**
      * 获取数据
      * @param {*} isRefesh  是否刷新
      * @param {*} pageIndex 
      */
     getData(isRefesh) {
-        if (this.activeIndex === 0) {
-            this.url = BaseUrl.getoutUndoneUnselectedUrl(this.userInfo.sessionId, this.pageIndex)
-        } else {
+        if (this.activeIndex === 0&&this.type===1) { //卖出 未选择付款人
+            this.url = BaseUrl.getOutUndoneUnselectedUrl(this.userInfo.sessionId, this.pageIndex)
+        }else  if (this.activeIndex === 1&&this.type===1) {//卖出 已选择付款人
             this.url = BaseUrl.getOutUndoneSelectedUrl(this.userInfo.sessionId, this.pageIndex)
+        }else  if (this.activeIndex === 0&&this.type===0) {//卖入 未选择付款人
+            this.url = BaseUrl.getInUndoneUnselectedUrl(this.userInfo.sessionId, this.pageIndex)
+        }else  if (this.activeIndex === 1&&this.type===0) {//卖入 已选择付款人
+            this.url = BaseUrl.getInUndoneSelectedUrl(this.userInfo.sessionId, this.pageIndex)
         }
         HttpUtils.getData(this.url)
             .then(result => {

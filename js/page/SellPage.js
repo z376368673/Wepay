@@ -220,7 +220,7 @@ export default class SellPage extends BaseComponent {
                 let backgroundColor = "#fff";
                 let items = [
                     { title: '未完成订单', onPress: () => this._menuClick(1), itemStyle: itemStyle },
-                    { title: '确认打款', onPress: () => this._menuClick(2), itemStyle: itemStyle },
+                    { title: '确认收款', onPress: () => this._menuClick(2), itemStyle: itemStyle },
                     { title: '已完成订单', onPress: () => this._menuClick(3), itemStyle: itemStyle },
                     { title: '卖出记录', onPress: () => this._menuClick(4), itemStyle: itemStyle },
                     { title: '卖出中心', onPress: () => this._menuClick(5), itemStyle: itemStyle },

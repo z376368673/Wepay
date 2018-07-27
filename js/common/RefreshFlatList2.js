@@ -39,9 +39,14 @@ export default class RefreshFlatList extends Component {
             isRefresh: true,
         });
     }
-
-    delData(){
-       
+    
+    //删除数据，通过下标来删除数据
+    delData(index){
+       this.state.dataArray.splice(index,1)
+       let data =  this.state.dataArray;
+        this.setState({
+            dataArray: data,
+        });
     }
     /**
      * 初次设置数据

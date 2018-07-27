@@ -222,10 +222,11 @@ export default class BaseUrl {
     * @param {*} holdName 持卡人姓名
     * @param {*} openCard 开户支行
     * @param {*} cardNumber 银行卡号
+    * @param {*} isDefault 是否默认绑定 0  是  ， 1  不是
     * 
     */
-    static addBankCardUrl(sessionId, cardId, holdName, openCard, cardNumber) {
-        return url + "/bank/addBank?sessionId=" + sessionId + "&cardId=" + cardId + "&holdName=" + holdName + "&openCard=" + openCard + "&cardNumber=" + cardNumber;
+    static addBankCardUrl(sessionId, cardId, holdName, openCard, cardNumber,isDefault) {
+        return url + "/bank/addBank?sessionId=" + sessionId + "&cardId=" + cardId + "&holdName=" + holdName + "&openCard=" + openCard + "&cardNumber=" + cardNumber+ "&isDefault=" + isDefault;
     }
     /**
      * 银行类型列表
@@ -499,6 +500,8 @@ export default class BaseUrl {
      * safetyPwd     是	交易密码	String
      * describe     是	描述	String
      * bankId      是	银行卡id	int
+     * 
+     * 
      */
     static createOutOrder() {
         return url + "/trans/createOutOrder";
@@ -527,9 +530,10 @@ export default class BaseUrl {
         3.12	getMoneytime		收到款时间
         3.13	feeNums		手续费
      */
-    static getoutUndoneUnselectedUrl(sessionId,pageIndex) {
-        return url + "/trans/outUndoneUnselected?sessionId=" + sessionId  + "&pageIndex=" + pageIndex;;
+    static getOutUndoneUnselectedUrl(sessionId, pageIndex) {
+        return url + "/trans/outUndoneUnselected?sessionId=" + sessionId + "&pageIndex=" + pageIndex;;
     }
+
     /**
      * 卖出-未完成订单-已选择打款人
      * @param {*} sessionId 
@@ -548,10 +552,9 @@ export default class BaseUrl {
      3.8	userName	打款人姓名
      3.9	mobile		手机号
      */
-    static getOutUndoneSelectedUrl(sessionId,pageIndex) {
-        return url + "/trans/outUndoneSelected?sessionId=" + sessionId  + "&pageIndex=" + pageIndex;
+    static getOutUndoneSelectedUrl(sessionId, pageIndex) {
+        return url + "/trans/outUndoneSelected?sessionId=" + sessionId + "&pageIndex=" + pageIndex;
     }
-
 
 
     /**
@@ -574,19 +577,118 @@ export default class BaseUrl {
      3.10	transImg		打款截图（需要添加前缀如：如http://tz.hxksky.com/wepay/upload/
 ）
      */
-    static getOutAffirmProceeds(sessionId,pageIndex) {
-        return url + "/trans/outAffirmProceeds?sessionId=" + sessionId  + "&pageIndex=" + pageIndex;
-    }    
+    static getOutAffirmProceeds(sessionId, pageIndex) {
+        return url + "/trans/outAffirmProceeds?sessionId=" + sessionId + "&pageIndex=" + pageIndex;
+    }
 
+
+    /**
+    * 卖出-已完成订单
+    * @param {*} sessionId 
+    * @returns
+    序号	参数名称	一定会返回	描述
+    1	code	是	状态码 
+    2	msg	是	错误信息
+    3	data	是	数据
+    3.1	id		挂单id
+    3.2	payoutId		转出余额会员id
+    3.3	payinId		转入会员id
+    3.4	payNums		买入金额
+    3.5	payState		订单状态:0->默认上架,1->有人买入,2->已打款,3->确认到款(已完成)
+    3.6	payTime		订单生成时间
+    3.7	payNo		订单编号
+    3.8	userName		收款人（打款人姓名）
+    3.9	mobile		手机号
+    3.10	transImg		打款截图（需要添加前缀如：如http://tz.hxksky.com/wepay/upload/）
+    */
+    static getOutCompleteOrder(sessionId, pageIndex) {
+        return url + "/trans/outCompleteOrder?sessionId=" + sessionId + "&pageIndex=" + pageIndex;
+    }
+
+
+    /**
+     *  卖出-确认收款-修改状态为确认收款
+     * @param {*} sessionId 
+     * @id {*} id  挂单id
+     */
+    static getOutAPUpdate(sessionId, id) {
+        return url + "/trans/outAPUpdate?sessionId=" + sessionId + "&id=" + id;
+    }
 
      /**
-     * 卖出-已完成订单
+     *  卖出-卖出中心
      * @param {*} sessionId 
-     * @returns
-     序号	参数名称	一定会返回	描述
+     * @param {*} pageIndex 
+     * @param {*} amount 匹配金额 
+     * 
+     1	    code	是	状态码 
+     2	    msg	    是	错误信息
+     3	    data	是	数据（code=1返回集合）
+     3.1	id		    挂单id
+     3.2	userName	求购者用户名
+     3.3	payinId		求购者id
+     3.4	payNums		交易金额
+     3.5	imgHead		求购者头像
+     3.6	userCredit	求购者信用
+     3.7	banqGenre	支付方式
+     * 
+     * @id {*} id  挂单id
+     */
+    static getOutSalesCenter(sessionId, pageIndex,amount) {
+        return url + "/trans/outSalesCenter?sessionId=" + sessionId + "&pageIndex=" + pageIndex+ "&amount=" + amount;
+    }
+
+
+     /**卖出-卖出中心-卖出
+     * 
+     * POST
+     * 
+     * @param {*} sessionId 
+     * @param {*} id          挂单id
+     * @param {*} safetyPwd   交易密码
+     * 
+     * @returns 数据 data （code=1}
+     */
+    static getSalesCenterSaleUrl() {
+        return url + "/trans/salesCenterSale?";
+    }
+
+    /**
+     *  取消订单
+     * @param {*} sessionId 
+     * @id {*} id  挂单id
+     */
+    static getCncelBalanceOrder(sessionId, id) {
+        return url + "/trans/cancelBalanceOrder?sessionId=" + sessionId + "&id=" + id;
+    }
+
+
+    /**
+     * 卖出-创建卖出订单
+     * 
+     * POST
+     * 
+     * @param:
+     * sessionId	是	token	String
+     * exchangeMoney 是	需要卖出余额	int
+     * safetyPwd     是	交易密码	String
+     * describe     是	描述	String
+     * bankId      是	银行卡id	int
+     * 
+     * 
+     */
+    static createInOrder() {
+        return url + "/trans/createInOrder";
+    }
+
+
+    /**
+     *  买入-未完成订单-未选择打款人
+     * @param {*} sessionId 
+     * @param {*} pageIndex 
      1	code	是	状态码 
      2	msg	是	错误信息
-     3	data	是	数据
+     3	data	是	数据(code=1返回集合数据)
      3.1	id		挂单id
      3.2	payoutId		转出余额会员id
      3.3	payinId		转入会员id
@@ -594,13 +696,194 @@ export default class BaseUrl {
      3.5	payState		订单状态:0->默认上架,1->有人买入,2->已打款,3->确认到款(已完成)
      3.6	payTime		订单生成时间
      3.7	payNo		订单编号
-     3.8	userName		收款人（打款人姓名）
-     3.9	mobile		手机号
-     3.10	transImg		打款截图（需要添加前缀如：如http://tz.hxksky.com/wepay/upload/）
+     3.8	cardId		会员银行卡id
+     3.9	tradeNotes		订单备注
+     3.10	transType		0->卖出,1->买入
+     3.11	transImg		打款凭证
+     3.12	getMoneytime		收到款时间
+     3.13	feeNums		手续费
+     3.14	outCard		买入会员银行卡id
+     * 
      */
-    static getOutCompleteOrder(sessionId,pageIndex) {
-        return url + "/trans/outCompleteOrder?sessionId=" + sessionId  + "&pageIndex=" + pageIndex;
-    }  
+    static getInUndoneUnselectedUrl(sessionId, pageIndex) {
+        return url + "/trans/inUndoneUnselected?sessionId=" + sessionId + "&pageIndex=" + pageIndex;
+    }
+
+    /**
+     * 买入-未完成订单-未选择打款人
+     * @param {*} sessionId 
+     * @param {*} pageIndex 
+     1	code	是	状态码 
+     2	msg	是	错误信息
+     3	data	是	数据(code=1返回集合数据)
+     3.1	id		挂单id
+     3.2	payoutId		转出余额会员id
+     3.3	payinId		转入会员id
+     3.4	payNums		买入金额
+     3.5	payState		订单状态:0->默认上架,1->有人买入,2->已打款,3->确认到款(已完成)
+     3.6	payTime		订单生成时间
+     3.7	payNo		订单编号
+     3.8	cardId		会员银行卡id
+     3.9	tradeNotes		订单备注
+     3.10	transType		0->卖出,1->买入
+     3.11	transImg		打款凭证
+     3.12	getMoneytime		收到款时间
+     3.13	feeNums		手续费
+     3.14	outCard		买入会员银行卡id
+     * 
+     */
+    static getInUndoneSelectedUrl(sessionId, pageIndex) {
+        return url + "/trans/inUndoneSelected?sessionId=" + sessionId + "&pageIndex=" + pageIndex;
+    }
+    /**买入-确认打款 列表
+     * 
+     * @param {*} sessionId 
+     * @param {*} pageIndex 
+     * 
+     1	code	是	状态码 
+     2	msg	是	错误信息
+     3	data	是	数据(code=1返回集合数据)
+     3.1	id		挂单id
+     3.2	payoutId		转出余额会员id
+     3.3	payinId		转入会员id
+     3.4	payNums		买入金额
+     3.5	payState		订单状态:0->默认上架,1->有人买入,2->已打款,3->确认到款(已完成)
+     3.6	payTime		订单生成时间
+     3.7	payNo		订单编号
+     3.8	holdName		收款人姓名
+     3.9	mobile		手机号码
+     3.10	transImg		打款截图
+     3.11	banqGenre		开户银行
+     3.12	cardNumber		银行卡号
+     3.13	openCard		开户支行
+     3.14	getMoneyTime		订单完成时间
+     3.15	userName		收款人
+     * 
+     */
+    static getInAffirmProceeds(sessionId, pageIndex) {
+        return url + "/trans/inAffirmProceeds?sessionId=" + sessionId + "&pageIndex=" + pageIndex;
+    }
+
+
+    /**
+     * .买入-确认打款-修改打款
+     * 
+     * POST
+     * 
+     参数名称	是否必须	描述	   格式
+     sessionId	是	    token	    String
+     id	        是	    挂单id	     int
+     file	    是	    打款截图	  file
+     */
+    static getInAPUpdateUrl() {
+        return url + "/trans/inAPUpdate"
+    }
+
+    /*买入-已完成订单
+     * 
+     * @param {*} sessionId 
+     * @param {*} pageIndex 
+     * 
+     1	code	是	状态码 
+     2	msg	是	错误信息
+     3	data	是	数据(code=1返回集合数据)
+     3.1	id		挂单id
+     3.2	payoutId		转出余额会员id
+     3.3	payinId		转入会员id
+     3.4	payNums		买入金额
+     3.5	payState		订单状态:0->默认上架,1->有人买入,2->已打款,3->确认到款(已完成)
+     3.6	payTime		订单生成时间
+     3.7	payNo		订单编号
+     3.8	holdName		收款人姓名
+     3.9	mobile		手机号码
+     3.10	transImg		打款截图
+     3.11	banqGenre		开户银行
+     3.12	cardNumber		银行卡号
+     3.13	openCard		开户支行
+     3.14	getMoneyTime		订单完成时间
+     * 
+     */
+    static getInCompleteOrder(sessionId, pageIndex) {
+        return url + "/trans/inCompleteOrder?sessionId=" + sessionId + "&pageIndex=" + pageIndex;
+    }
+
+     /**
+     *  买入-买入中心
+     * @param {*} sessionId 
+     * @param {*} pageIndex 
+     * @param {*} amount 匹配金额 
+     * 
+     1	    code	是	    状态码 
+     2	    msg	    是	    错误信息
+     3	    data	是	    数据（code=1返回集合）
+     3.1	id		        挂单id
+     3.2	userName		出售者用户名
+     3.3	payoutId		出售者id
+     3.4	payNums		    交易金额
+     3.5	imgHead		    出售者头像
+     3.6	userCredit		出售者信用
+     3.7	banqGenre		支付方式
+     * 
+     * 
+     */
+    static getCallCenter(sessionId, pageIndex,amount) {
+        return url + "/trans/callCenter?sessionId=" + sessionId + "&pageIndex=" + pageIndex+ "&amount=" + amount;
+    }
+   
+
+     /**买入-买入中心-买入
+      * 
+     * POST
+     * 
+     * @param {*} sessionId 
+     * @param {*} id          挂单id
+     * @param {*} safetyPwd   交易密码
+     * 
+     * @returns 数据 data （code=1}
+     */
+    static getCallCenterBuyUrl() {
+        return url + "/trans/callCenterBuy"
+    }
+
+
+     /**
+     *   买入-买入记录
+     * @param {*} sessionId 
+     * @param {*} pageIndex 
+     * 
+     1	    code	是	状态码 
+     2	    msg	    是	错误信息
+     3	    data	是	数据（code=1返回集合）
+     3.1	id		    挂单id
+     3.2	userName		卖出账号用户名
+     3.3	payinId		卖出账号会员id
+     3.4	payNums		买入金额
+     3.5	getMoneyTime		买入时间
+     * 
+     */
+    static getInBuyRecords(sessionId, pageIndex) {
+        return url + "/trans/inBuyRecords?sessionId=" + sessionId + "&pageIndex=" + pageIndex;
+    }
+
+
+     /**
+     *   卖出-卖出记录
+     * @param {*} sessionId 
+     * @param {*} pageIndex 
+     * 
+     1	    code	是	状态码 
+     2  	msg 	是	错误信息
+     3	    data	是	数据（code=1返回集合）
+     3.1	id		    挂单id
+     3.2	userName		买入账号用户名
+     3.3	payinId		买入账号会员id
+     3.4	payNums		卖出金额
+     3.5	getMoneyTime		卖出时间
+     * 
+     */
+    static getOutSellRecords(sessionId, pageIndex) {
+        return url + "/trans/outSellRecords?sessionId=" + sessionId + "&pageIndex=" + pageIndex;
+    }
 
 }
 

@@ -35,6 +35,7 @@ export default class AddBankCard extends BaseComponent {
             selectedIndex: 0,
             bankCardId: -1,
             bankCardTextList: [],
+            isDefault: 0,
         }
         this.navigation = this.props.navigation;
         this.userInfo = this.getUserInfo()
@@ -57,19 +58,19 @@ export default class AddBankCard extends BaseComponent {
             }
         );
     }
-  
+
     addBankCard() {
-        let url = BaseUrl.addBankCardUrl(this.userInfo.sessionId, 
-        this.state.bankCardId,this.state.userName,this.state.bankBranch,this.state.bankNum)
+        let url = BaseUrl.addBankCardUrl(this.userInfo.sessionId,
+            this.state.bankCardId, this.state.userName, this.state.bankBranch, this.state.bankNum, this.state.isDefault)
         HttpUtils.getData(url)
             .then(result => {
                 alert(JSON.stringify(result))
                 if (result.code === 1) {
-                    DialogUtils.showMsg("添加银行卡成功","知道了",
-                    ()=>{
-                        this.navigation.state.params.callback()
-                        this.props.navigation.goBack()
-                    })
+                    DialogUtils.showMsg("添加银行卡成功", "知道了",
+                        () => {
+                            this.navigation.state.params.callback()
+                            this.props.navigation.goBack()
+                        })
                 } else {
                     DialogUtils.showToast(result.msg)
                 }
@@ -80,15 +81,15 @@ export default class AddBankCard extends BaseComponent {
     }
 
     onClicks() {
-        if(this.state.userName.length<1){
+        if (this.state.userName.length < 1) {
             DialogUtils.showMsg("请输入持卡人名称")
-        }else if(this.state.bankCardId===-1){
+        } else if (this.state.bankCardId === -1) {
             DialogUtils.showMsg("请选择开户银行")
-        }else if(this.state.bankNum.length<10){
+        } else if (this.state.bankNum.length < 10) {
             DialogUtils.showMsg("请输入正确的银行卡号")
-        }else if(this.state.bankBranch.length<1){
+        } else if (this.state.bankBranch.length < 1) {
             DialogUtils.showMsg("请输入银行卡开户支行")
-        }else{
+        } else {
             this.addBankCard();
         }
         //this.props.navigation.goBack()
@@ -120,10 +121,10 @@ export default class AddBankCard extends BaseComponent {
                 <View style={styles.itemView}>
                     <Text style={styles.itemText}>
                         开户银行</Text>
-                    <TouchableOpacity 
-                        style={{padding:8}}
+                    <TouchableOpacity
+                        style={{ padding: 8 }}
                         onPress={() => this.showBankCardList()}>
-                        <Text style={{ fontSize: 16, color: '#666'}}>{this.state.bankName}</Text>
+                        <Text style={{ fontSize: 16, color: '#666' }}>{this.state.bankName}</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.itemView}>
@@ -150,6 +151,13 @@ export default class AddBankCard extends BaseComponent {
                         keyboardType='default'
                         onChangeText={(text) => this.setState({ bankBranch: text })} />
                 </View>
+                <View style={{margin:10}}>
+                <Checkbox
+                    title='是否设置为默认绑定银行卡'
+                    size='md'
+                    checked={this.state.isDefault===0?true:false}
+                    onChange={value => this.setState({ isDefault: value?0:1 })}
+                /></View>
                 <TouchableOpacity
                     activeOpacity={0.8}
                     style={{
@@ -174,11 +182,11 @@ export default class AddBankCard extends BaseComponent {
         );
     }
 
-   
 
-      /**
-     * 获取所有银行卡类型
-     */
+
+    /**
+   * 获取所有银行卡类型
+   */
     getBankList() {
         HttpUtils.getData(BaseUrl.getBankListUrl())
             .then(result => {

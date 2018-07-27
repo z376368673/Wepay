@@ -109,6 +109,14 @@ export default class BankCardList extends BaseComponent {
      * @private
      */
     _getBankCardItem(data) {
+
+        let isDefault = <Text 
+        style={{color:"#fff",fontSize:12,
+        backgroundColor:mainColor,//width:30,height:15,
+        padding:5,
+        position:"absolute",left:0,top:0,alignSelf:"center"
+        }}>默认</Text>
+
         return <TouchableOpacity onPress={()=>{
           let  exis =  this.navigation.state.params.selectBank
           if(exis){
@@ -140,15 +148,17 @@ export default class BankCardList extends BaseComponent {
                     fontSize: 15,
                 }}>{data.item ? data.item.cardNumber : "0000"}</Text>
             </View>
+          
+            {data.item.isDefault===0?isDefault:null}
             <TouchableOpacity
                 onPress={()=>this.delDialog(data.item.id)}>
                 <Text style={{
                     marginRight: 5,
-                    paddingTop: 8,
-                    paddingBottom: 8,
-                    paddingLeft: 15,
-                    paddingRight: 15,
-                    borderRadius: 5,
+                    paddingTop: 5,
+                    paddingBottom: 5,
+                    paddingLeft: 8,
+                    paddingRight: 8,
+                    borderRadius: 3,
                     borderWidth: 1,
                     borderColor: "#cccccc"
                 }}>删除</Text>

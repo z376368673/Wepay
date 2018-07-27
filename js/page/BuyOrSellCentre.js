@@ -15,50 +15,74 @@ import ViewUtils from "../util/ViewUtils";
 import RefreshFlatList from "../common/RefreshFlatList";
 import HttpUtils from "../util/HttpUtils";
 import CheckMoney from "../common/CheckMoney";
+import BaseUrl from '../util/BaseUrl';
+import DialogUtils from '../util/DialogUtils';
+import PassWordInput from '../common/PassNumInput';
 /**
  * 买入\卖出中心
  */
 
-const URL = 'https://api.github.com/search/repositories?q=';
-let urlKey = "java"
 export default class BuyOrSellCentre extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
-            seleIndex: -1,//默认不选中
-            selectedValue: 0,//默认值为0
             dataArray: [],
         }
+        this.seleIndex = 0;
+        this.selectedValue = 500;
+        this.userInfo = this.getUserInfo()
+        //type 表示     0，买入  1， 卖出  
+        const { navigation } = this.props;
+        this.type = navigation.state.params.type ? navigation.state.params.type : 0;
+
     }
     //界面加载完成
     componentDidMount() {
         this._refreshData()
     }
 
-    //加载更多数据
-    _onLoadData() {
-    setTimeout(() => {
-            this.refList.addData([])
-        }, 2000)
-    }
     //刷新数据
     _refreshData() {
         this.refList.refreshStar()
-        HttpUtils.getData(URL + urlKey)
+        this.pageIndex = 1;
+        this.getData(true)
+    }
+    //加载更多数据
+    _onLoadData() {
+        this.getData(false)
+    }
+
+    /**
+    * 获取数据
+    * @param {*} isRefesh  是否刷新
+    * @param {*} pageIndex 
+    */
+    getData(isRefesh) {
+     
+        if (this.type === 0) { //买入 
+            this.url = BaseUrl.getCallCenter(this.userInfo.sessionId, this.pageIndex, this.selectedValue)
+        } else if (this.type == 1) { //卖出 
+            this.url = BaseUrl.getOutSalesCenter(this.userInfo.sessionId, this.pageIndex, this.selectedValue)
+        }
+        HttpUtils.getData(this.url)
             .then(result => {
-                this.refList.setData(result.items)
-                this.setState({
-                    dataArray: result.items
-                })
+                if (result.code === 1) {
+                    if (isRefesh) {
+                        this.refList.setData(result.data)
+                    } else {
+                        this.refList.addData(result.data)
+                        this.pageIndex += 1
+                    }
+                } else {
+                    DialogUtils.showToast(result.msg)
+                }
             })
             .catch(error => {
                 this.refList.setData([])
+                DialogUtils.showToast("error:" + error.message)
             })
     }
-
     render() {
-        const { navigation } = this.props;
-       this.type = navigation.state.params ? navigation.state.params.type : 1;
         let title = this.type === 0 ? "买入中心" : "卖出中心"
         return (
             <View style={[BaseStyles.container_column, { backgroundColor: "#f1f1f1" }]}>
@@ -76,6 +100,8 @@ export default class BuyOrSellCentre extends BaseComponent {
                     }}> 点击选择匹配金额</Text>
                     {ViewUtils.getLineView()}
                     <CheckMoney
+                        seleIndex={0}
+                        selectedValue={500}
                         arrText={[500, 1000, 3000, 5000, 10000, 30000]}
                         onSelected={(index, value) => this.onSelected(index, value)}
                     />
@@ -90,6 +116,7 @@ export default class BuyOrSellCentre extends BaseComponent {
                         onLoadData={() => {
                             this._onLoadData()
                         }}
+                        isDownLoad={true}
                         renderItem={(items) => this._getBuyOrSellItem(items)} />
                 </View>
             </View>
@@ -109,37 +136,37 @@ export default class BuyOrSellCentre extends BaseComponent {
                 source={require("../../res/images/banben.png")} />
             <View style={{ flexDirection: 'column', flex: 1, marginLeft: 10, justifyContent: "center" }}>
                 <Text
-                    style={{ color: "#333333", fontSize: 18, }}>{data.item ? data.item.name : "name"}</Text>
+                    style={{ color: "#333333", fontSize: 18, }}>{data.item ? data.item.userName : "name"}</Text>
                 {/* 信用值  */}
-                <View style={{ marginTop: 5, alignContent:"center"}}>
-                {ViewUtils.getCreditView(data.index+1, 15, 14, "#888")}
+                <View style={{ marginTop: 5, alignContent: "center" }}>
+                    {ViewUtils.getCreditView(data.item.userCredit, 15, 14, "#888")}
                 </View>
                 {/*支付方式 */}
-               {this.type===0?<Text style={{
+                {this.type === 0 ? <Text style={{
                     color: "#888",
                     fontSize: 15,
                     marginTop: 5
                 }}
                     numberOfLines={1}
-                >支付方式:{data.item.name}</Text>:null} 
+                >支付方式:{data.item.name}</Text> : null}
             </View>
 
             <View style={{ flexDirection: "column", backgroundColor: "#fff", marginTop: 5 }}>
                 <Text style={{
                     color: "#444",
                     fontSize: 17,
-                    alignSelf:"flex-end",
+                    alignSelf: "flex-end",
                 }}
                     numberOfLines={1}
-                >交易金额 {data.item.name} RMB</Text>
+                >交易金额 {data.item.payNums} RMB</Text>
                 <Text style={{
                     color: "#888",
                     fontSize: 14,
                     marginTop: 8,
-                    alignSelf:"flex-end",
+                    alignSelf: "flex-end",
                 }}
                     numberOfLines={1}
-                >实付金额:{data.item.name} RMB</Text>
+                >实付金额:{data.item.payNums} RMB</Text>
                 <TouchableOpacity
                     style={{
                         backgroundColor: "#d11",
@@ -150,25 +177,60 @@ export default class BuyOrSellCentre extends BaseComponent {
                         alignItems: "center",
                         justifyContent: "center",
                         marginTop: 5,
-                        width:60,
-                        alignSelf:"flex-end",
-                        height:30
+                        width: 60,
+                        alignSelf: "flex-end",
+                        height: 30
                     }}
-                    onPress={() => this.onClickDelect(data)}>
+                    onPress={() => this.onClickbtn(data)}>
                     <Text style={{
                         fontSize: 14,
                         color: "#fff",
-                        padding:5,
-                    }}> 买入 </Text>
+                        padding: 5,
+                    }}> {this.type === 0 ? "买入" : "卖出"} </Text>
                 </TouchableOpacity>
             </View>
         </View>
     }
-    onClicks(type) {
-        alert(type)
+    /**
+     * * @param {*} sessionId 
+     * @param {*} id          挂单id
+     * @param {*} safetyPwd   交易密码
+     * @param {*} data 
+     */
+    onClickbtn(data) {
+        PassWordInput.showPassWordInput((safetyPwd) => {
+            if (this.type === 0) {
+                this.url = BaseUrl.getCallCenterBuyUrl()
+            } else {
+                this.url = BaseUrl.getSalesCenterSaleUrl()
+            }
+            HttpUtils.postData(this.url,
+                {
+                    sessionId: this.userInfo.sessionId,
+                    id: data.item.id,
+                    safetyPwd: safetyPwd,
+                })
+                .then(result => {
+                    if (result.code === 1) {
+                        //买入或者卖出成功 删除此条订单
+                        DialogUtils.showMsg("交易成功")
+                        this.refList.delData(data.index)
+                    } else {
+                        DialogUtils.showToast(result.msg)
+                    }
+                    DialogUtils.hideLoading()
+                })
+                .catch(error => {
+                    DialogUtils.hideLoading()
+                    DialogUtils.showToast("创建订单失败")
+                })
+        })
     }
+
     onSelected(index, value) {
-        urlKey = value
+        this.selectedValue = value
+        this.seleIndex= index
+        alert(this.selectedValue)
         this._refreshData()
     }
 }

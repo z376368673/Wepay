@@ -4858,11 +4858,21 @@ react-native-htmlview@^0.12.0:
     entities "^1.1.1"
     htmlparser2-without-node-native "^3.9.2"
 
+react-native-image-pan-zoom@^2.1.7:
+  version "2.1.7"
+  resolved "http://registry.npm.taobao.org/react-native-image-pan-zoom/download/react-native-image-pan-zoom-2.1.7.tgz#1c066e66f8f345f5e1fc187f02d92c482952bb59"
+
 react-native-image-progress@^1.1.1:
   version "1.1.1"
   resolved "http://registry.npm.taobao.org/react-native-image-progress/download/react-native-image-progress-1.1.1.tgz#95bbe0875c7ebd54286df69cb37b598b94c54eb0"
   dependencies:
     prop-types "^15.5.10"
+
+react-native-image-zoom-viewer@^2.2.13:
+  version "2.2.13"
+  resolved "http://registry.npm.taobao.org/react-native-image-zoom-viewer/download/react-native-image-zoom-viewer-2.2.13.tgz#05d085dae399129970c3c6e58b03276bf25f032e"
+  dependencies:
+    react-native-image-pan-zoom "^2.1.7"
 
 react-native-modalbox@^1.6.0:
   version "1.6.0"

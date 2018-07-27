@@ -11,10 +11,11 @@ import NavigationBar from "../common/NavigationBar";
 import {Menu} from 'teaset';
 import BankCardView from "../common/BankCardView";
 import ViewUtils from "../util/ViewUtils";
-import BankCardModel from "../model/BankCardModel";
 import CheckMoney from "../common/CheckMoney";
-import YueOrIntegralRecord from "./YueOrIntegralRecord";
-import BuyOrSellUnfinishedOrder from "./BuyOrSellUnfinishedOrder";
+import BaseUrl from '../util/BaseUrl';
+import DialogUtils from '../util/DialogUtils';
+import HttpUtils from '../util/HttpUtils';
+import PassWordInput from '../common/PassNumInput';
 
 
 export default class BuyPage extends BaseComponent {
@@ -23,8 +24,62 @@ export default class BuyPage extends BaseComponent {
         this.state = {
             seleIndex: -1,//默认不选中
             selectedValue: 0,//默认值为0
+
+            bankCardID:"",
+            bankCardName:"",
+            bankCardNum:"",
+            userName:"请选择银行卡",
+            describe:"",//描述
         }
+        this.userInfo = this.getUserInfo();
     }
+
+     /**
+     * 选择银行卡
+     */
+    selectBankCard(){
+        this.props.navigation.navigate("BankCardList",{
+            selectBank:(bankCard)=>{
+                this.setState({
+                    bankCardID:bankCard.id,
+                    bankCardName:bankCard.banqGenre,
+                    bankCardNum:bankCard.cardNumber,
+                    userName:bankCard.holdName,
+                })
+            }
+        })
+    }
+
+
+      /**
+     * 创建订单
+     */
+   creatOrder(safetyPwd) {
+    DialogUtils.showLoading();
+    this.url = BaseUrl.createInOrder()
+    HttpUtils.postData(this.url,
+        {
+             sessionId:this.userInfo.sessionId,
+             exchangeMoney: this.state.selectedValue,
+             describe: this.state.describe,
+             bankId: this.state.bankCardID,
+             safetyPwd: safetyPwd,
+        })
+        .then(result => {
+            if (result.code === 1) {
+                DialogUtils.showMsg("创建订单成功")
+                //this.props.navigation.goBack()
+            } else {
+                DialogUtils.showToast(result.msg)
+            }
+            DialogUtils.hideLoading()
+        })
+        .catch(error => {
+            DialogUtils.hideLoading()
+            DialogUtils.showToast("创建订单失败")
+        })
+}
+
 
     render() {
         return (
@@ -50,13 +105,14 @@ export default class BuyPage extends BaseComponent {
                     />
                 </View>
                 {/*绑定银行卡*/}
-                <BankCardView
-                    BankCardModel={{
-                        userName: '呵呵1',
-                        bankName: '中国银行1',
-                        bankNum: '1234567892'
-                    }}
-                />
+                <TouchableOpacity onPress={()=>this.selectBankCard()}>
+                        <BankCardView
+                            BankCardModel={{
+                                userName: this.state.userName,
+                                bankName: this.state.bankCardName,
+                                bankNum: this.state.bankCardNum,
+                            }}
+                        /></TouchableOpacity>
 
                 <TouchableOpacity
                     activeOpacity={0.9}
@@ -70,6 +126,7 @@ export default class BuyPage extends BaseComponent {
                         alignItems: 'center',
                         backgroundColor: mainColor,
                     }}
+                    onPress={()=>this.onClicks("creatOrder")}
                 >
                     <Text style={{
                         alignSelf: "center",
@@ -82,11 +139,19 @@ export default class BuyPage extends BaseComponent {
     }
 
     onSelected(index, value) {
-
+        this.state.seleIndex = index
+        this.setState({
+         seleIndex:index,
+         selectedValue:value,
+        })
     }
 
     onClicks(type) {
-        alert(type)
+        switch(type){
+            case "creatOrder":
+            PassWordInput.showPassWordInput((safetyPwd)=>this.creatOrder(safetyPwd))
+            break;
+        }
     }
 
     _rightClick(view) {
@@ -96,14 +161,13 @@ export default class BuyPage extends BaseComponent {
     _menuClick(index) {
         switch (index) {
             case 1:
-                this.props.navigation.navigate('BuyOrSellUnfinishedOrder', {type: 0});
-                break;
+                this.props.navigation.navigate('BuyOrSellUnfinishedOrder', {type: 0,orderType:1});
                 break;
             case 2:
-                alert("确认打款")
+                this.props.navigation.navigate('BuyOrSellOrde', { type: 0 ,orderType:2});
                 break;
             case 3:
-                alert("已完成订单")
+            this.props.navigation.navigate('BuyOrSellOrde', { type: 0 ,orderType:3});
                 break;
             case 4:
                 this.props.navigation.navigate('BuyOrSellRecord', {type: 0});

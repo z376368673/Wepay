@@ -14,8 +14,8 @@ export default class CheckMoney extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            seleIndex: -1,//默认不选中
-            selectedValue: 0,//默认值为0
+            seleIndex: this.props.seleIndex,//默认不选中
+            selectedValue: this.props.selectedValue,//默认值为0
         }
     }
     static propTypes = {
@@ -23,6 +23,8 @@ export default class CheckMoney extends Component {
     }
     static defaultProps = {
         arrText: ["undefined"],
+        seleIndex: -1,//默认不选中
+        selectedValue: 0,//默认值为0
     }
 
     render(){

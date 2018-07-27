@@ -26,7 +26,7 @@ export default class DialogUtils {
                 style={{ alignItems: 'center', justifyContent: 'center', padding: 40 }}
                 type={"zoomIn"}//动画效果
                 modal={false}//点击任意区域消失 
-                ref={v => this.overlayPopView = v}
+                ref={v => this.PopView = v}
             >
                 <View style={{ backgroundColor: "#fff", minWidth: 300, minHeight: 100, flexDirection: 'column', borderRadius: 15 }}>
                     {/* 内容 */}
@@ -39,7 +39,7 @@ export default class DialogUtils {
                         <TouchableOpacity
                             style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
                             onPress={() => {
-                                this.overlayPopView && this.overlayPopView.close()
+                                this.PopView && this.PopView.close()
                                 cancel? cancel() : {}
                             }}
                         >
@@ -49,7 +49,7 @@ export default class DialogUtils {
                         <TouchableOpacity
                             style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
                             onPress={() => {
-                                this.overlayPopView && this.overlayPopView.close(),
+                                this.PopView && this.PopView.close(),
                                     confirm? confirm() : {}
                             }}
                         >
@@ -75,7 +75,7 @@ export default class DialogUtils {
                 style={{ alignItems: 'center', justifyContent: 'center', padding: 40 }}
                 type={"zoomIn"}//动画效果
                 modal={false}//点击任意区域消失 
-                ref={v => this.overlayPopView = v}
+                ref={v => this.MsgView = v}
             >
                 <View style={{ backgroundColor: "#fff", minWidth: 300, minHeight: 100, flexDirection: 'column', borderRadius: 15 }}>
                     {/* 内容 */}
@@ -88,7 +88,7 @@ export default class DialogUtils {
                         <TouchableOpacity
                             style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
                             onPress={() => {
-                                this.overlayPopView && this.overlayPopView.close(),
+                                this.MsgView && this.MsgView.close(),
                                     confirm? confirm() : {}
                             }}
                         >
@@ -120,7 +120,7 @@ export default class DialogUtils {
                 style={{ alignItems: 'center', justifyContent: 'center' }}
                 modal={false}
                  overlayOpacity={0 }
-                ref={v => this.overlayView = v} >
+                ref={v => this.loadingView = v} >
                 <View style={{ backgroundColor: '#333', padding: 25, borderRadius: 15, alignItems: 'center' }}>
                     <ActivityIndicator
                         size={'large'}
@@ -136,8 +136,8 @@ export default class DialogUtils {
      * 关闭加载动画
      */
     static  hideLoading() {
-        if (this.overlayView)
-            this.overlayView.close();
+        if (this.loadingView)
+            this.loadingView.close();
     }
     /**
      * 底部弹出选择框

@@ -14,7 +14,8 @@ import HttpUtils from "../util/HttpUtils";
 import { SegmentedBar, Label } from 'teaset';
 import BaseUrl from '../util/BaseUrl';
 import RefreshFlatList from '../common/RefreshFlatList';
-import OrderItem from '../item/OrderItem';
+import SellOrderItem from '../item/SellOrderItem';
+import BuyOrderItem from '../item/BuyOrderItem';
 
 /**
  * 买入/卖出  未完成订单
@@ -33,9 +34,12 @@ export default class BuyOrSellOrde extends BaseComponent {
         this.userInfo = this.getUserInfo()
         const { navigation } = this.props;
         //取出参数   orderType    type
-        this.orderType=navigation.state.params.orderType ? navigation.state.params.orderType : 2;
+        this.orderType = navigation.state.params.orderType ? navigation.state.params.orderType : 2;
         this.type = navigation.state.params.type ? navigation.state.params.type : 0;
-       // alert("orderType="+this.orderType+" type="+this.type)
+
+        this.title = this.orderType===2?this.type===0?"确认打款":"确认收款":"已完成"
+
+       //  alert("orderType="+this.orderType+" type="+this.type)
     }
     //界面加载完成
     componentDidMount() {
@@ -45,24 +49,29 @@ export default class BuyOrSellOrde extends BaseComponent {
         return (
             <View style={BaseStyles.container_column}>
                 <NavigationBar
-                    title={"确认打款"}
+                    title={this.title}
                     navigation={this.props.navigation}
                 />
-                <View style={{ flex: 1, backgroundColor: "#f1f1f1", marginTop: 1 ,}}>
+                <View style={{ flex: 1, backgroundColor: "#f1f1f1", marginTop: 1, }}>
                     <RefreshFlatList
                         ref={refList => this.refList = refList}
                         isDownLoad={true}
                         onRefreshs={() => this._refreshData()}
                         onLoadData={() => this._onLoadData()}
-                        renderItem={(items) =>this.renderItem(items)}
+                        renderItem={(items) => this.renderItem(items)}
                     />
                 </View>
             </View>
         );
     }
 
-    renderItem(data){
-        let view = <OrderItem data={data.item} type={this.type} orderType={this.orderType}/>
+    renderItem(data) {
+        let view = this.type===1?<SellOrderItem data={data}
+            delBack={(index) => this.refList.delData(index)}
+            type={this.type} orderType={this.orderType} />:
+            <BuyOrderItem data={data}
+            delBack={(index) => this.refList.delData(index)}
+            type={this.type} orderType={this.orderType} />
         return view
     }
 
@@ -82,19 +91,18 @@ export default class BuyOrSellOrde extends BaseComponent {
      * @param {*} pageIndex 
      */
     getData(isRefesh) {
-        if(this.type==0&&this.orderType==2){ //买入 确认打款
+        if (this.type == 0 && this.orderType == 2) { //买入 确认打款
+            this.url = BaseUrl.getInAffirmProceeds(this.userInfo.sessionId, this.pageIndex)
+        } else if (this.type == 0 && this.orderType == 3) {//买入 完成订单
+            this.url = BaseUrl.getInCompleteOrder(this.userInfo.sessionId, this.pageIndex)
+        } else if (this.type == 1 && this.orderType == 2) { //卖出 确认打款
             this.url = BaseUrl.getOutAffirmProceeds(this.userInfo.sessionId, this.pageIndex)
-        }else if(this.type==0&&this.orderType==3){//买入 完成订单
-            this.url = BaseUrl.getOutCompleteOrder(this.userInfo.sessionId, this.pageIndex)
-        }else if(this.type==1&&this.orderType==2){ //卖出 确认打款
-            this.url = BaseUrl.getOutAffirmProceeds(this.userInfo.sessionId, this.pageIndex)
-        }else if(this.type==1&&this.orderType==3){ //卖出 完成订单
+        } else if (this.type == 1 && this.orderType == 3) { //卖出 完成订单
             this.url = BaseUrl.getOutCompleteOrder(this.userInfo.sessionId, this.pageIndex)
         }
         HttpUtils.getData(this.url)
             .then(result => {
                 if (result.code === 1) {
-                    //alert(JSON.stringify(result.data))
                     if (isRefesh) {
                         this.refList.setData(result.data)
                     } else {

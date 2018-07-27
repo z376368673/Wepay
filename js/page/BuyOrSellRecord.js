@@ -10,6 +10,8 @@ import NavigationBar from "../common/NavigationBar";
 import Utils from "../util/Utils";
 import RefreshFlatList from "../common/RefreshFlatList";
 import HttpUtils from "../util/HttpUtils";
+import DialogUtils from '../util/DialogUtils';
+import BaseUrl from '../util/BaseUrl';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 /**
@@ -21,6 +23,11 @@ const width = Utils.getWidth()
 export default class BuyOrSellRecord extends BaseComponent {
     constructor(props) {
         super(props);
+
+        this.userInfo = this.getUserInfo()
+        //type 表示     0，买入  1， 卖出  
+        const { navigation } = this.props;
+        this.type = navigation.state.params.type ? navigation.state.params.type : 0;
     }
     //界面加载完成
     componentDidMount() {
@@ -79,25 +86,45 @@ export default class BuyOrSellRecord extends BaseComponent {
         );
     }
 
+     //刷新数据
+     _refreshData() {
+        this.refList.refreshStar()
+        this.pageIndex = 1;
+        this.getData(true)
+    }
     //加载更多数据
     _onLoadData() {
-        setTimeout(() => {
-            this.refList.addData(this.state.dataArray)
-        }, 2000)
+        this.getData(false)
     }
 
-    //刷新数据
-    _refreshData(value) {
-        this.refList.refreshStar()
-        HttpUtils.getData(URL + value)
+    /**
+    * 获取数据
+    * @param {*} isRefesh  是否刷新
+    * @param {*} pageIndex 
+    */
+    getData(isRefesh) {
+        if (this.type === 0) { //买入 
+            this.url = BaseUrl.getInBuyRecords(this.userInfo.sessionId, this.pageIndex)
+        } else if (this.type == 1) { //卖出 
+            this.url = BaseUrl.getOutSellRecords(this.userInfo.sessionId, this.pageIndex)
+        }
+        HttpUtils.getData(this.url)
             .then(result => {
-                this.refList.setData(result.items)
-                this.setState({
-                    dataArray: result.items
-                })
+               // alert(JSON.stringify(result.data))
+                if (result.code === 1) {
+                    if (isRefesh) {
+                        this.refList.setData(result.data)
+                    } else {
+                        this.refList.addData(result.data)
+                        this.pageIndex += 1
+                    }
+                } else {
+                    DialogUtils.showToast(result.msg)
+                }
             })
             .catch(error => {
                 this.refList.setData([])
+                DialogUtils.showToast("error:" + error.message)
             })
     }
 
@@ -107,18 +134,28 @@ export default class BuyOrSellRecord extends BaseComponent {
             borderBottomWidth: 0.5,
             borderColor: '#CCC',
             backgroundColor: '#fff',
-            marginBottom: 8,
+            marginBottom: 1,
+            paddingTop:15,
+            paddingBottom:15,
+            paddingLeft:10,
+            paddingRight:10,
         }}>
             <TouchableOpacity onPress={() => {
                 // alert('点击')
             }}>
-                <View style={{flexDirection: 'column',}}>
-                    <Text style={{color: "#333333", fontSize: 20,}}>{items.item ? items.item.name : "name"}</Text>
+                <View style={{flexDirection: 'row',}}>
+                    <Text style={{color: "#333333", fontSize: 13,width: width / 3 ,textAlign:"center",alignSelf:"center"}}>
+                    {this.type === 0?items.item.payoutId:items.item.payinId}({items.item.userName})</Text>
                     <Text style={{
-                        color: "#666666",
-                        marginTop: 5,
-                        fontSize: 15,
-                    }}>{items.item ? items.item.description : "description"}</Text>
+                        color: "#333",
+                        fontSize: 14,
+                        width: width / 3,textAlign:"center",alignSelf:"center"
+                    }}>{items.item.payNums}</Text>
+                     <Text style={{
+                        color: "#333",
+                        fontSize: 14,
+                        width: width / 3,textAlign:"center",
+                    }}>{Utils.formatDateTime(items.item.getMoneyTime * 1000)}</Text>
                 </View>
             </TouchableOpacity>
         </View>

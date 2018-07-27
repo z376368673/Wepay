@@ -1,6 +1,7 @@
 import React from 'react'
 import {createStackNavigator, createBottomTabNavigator} from 'react-navigation'
 import Welcome from '../page/Welcome'
+import ImageBorwser from '../page/ImageBorwser'
 import HomePage from "../page/HomePage";
 import SettingView from "../page/setting/SettingView";
 import SaoSaoView from "../page/SaoSaoView";
@@ -176,6 +177,10 @@ export default AppNavigator = createStackNavigator({
 
     ApplyStore: {//店铺申请认证
         screen: ApplyStore
+    },
+
+    ImageBorwser: {//图片浏览器 查看图片 
+        screen: ImageBorwser
     },
     
     Welcome: {//欢迎页 
