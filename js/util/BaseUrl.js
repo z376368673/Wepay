@@ -469,13 +469,26 @@ export default class BaseUrl {
         return url + "/store/creditsExchange?"
     }
 
+
+
+
+    /**
+     * 积分兑换记录
+     * @param {*} sessionId 
+     * @param {*} pageIndex 
+     */
+    static getExchangeRecord(sessionId, pageIndex) {
+        return url + "/tranMoney/exchangeRecord?sessionId=" + sessionId
+            + "&pageIndex=" + pageIndex;
+    }
+
     /**
      * 积分记录
      * @param {*} sessionId 
      * @param {*} pageIndex 
      */
     static getExchangeRecordJ(sessionId, pageIndex) {
-        return url + "/tranMoney/exchangeRecord?sessionId=" + sessionId
+        return url + "/tranMoney/integralRecord?sessionId=" + sessionId
             + "&pageIndex=" + pageIndex;
     }
     /**
@@ -484,7 +497,7 @@ export default class BaseUrl {
      * @param {*} pageIndex 
      */
     static getExchangeRecordY(sessionId, pageIndex) {
-        return url + "/tranMoney/exchangeRecord?sessionId=" + sessionId
+        return url + "/tranMoney/balanceRecord?sessionId=" + sessionId
             + "&pageIndex=" + pageIndex;
     }
 

@@ -14,6 +14,8 @@ import BuyPage from "../page/BuyPage";
 import SellPage from "../page/SellPage";
 import ExcIntegral from "../page/ExcIntegral";
 import YueOrIntegralRecord from "../page/YueOrIntegralRecord";
+import ExcinttegralRecord from "../page/ExcinttegralRecord";
+
 import BuyOrSellCentre from "../page/BuyOrSellCentre";
 import BuyOrSellRecord from "../page/BuyOrSellRecord";
 import BuyOrSellUnfinishedOrder from "../page/BuyOrSellUnfinishedOrder";
@@ -94,7 +96,10 @@ export default AppNavigator = createStackNavigator({
     YueOrIntegralRecord: {// 余额,积分记录
         screen: YueOrIntegralRecord
     },
-    BuyOrSellRecord: {// 买入/卖出记录
+    ExcinttegralRecord: {// 积分兑换记录
+        screen: ExcinttegralRecord
+    },
+    BuyOrSellRecord: {// 买入/卖出记录 
         screen: BuyOrSellRecord
     },
 

@@ -1,9 +1,11 @@
 import AsySorUtils from '../dao/AsySorUtils';
+import { observable } from '../../node_modules/mobx';
 
 export default global.UserInfo = {
 //    static constructor(){
 //         userInfo =  AsySorUtils.getUser((user)=>alert(JSON.stringify(user)))
 //     },
+
     userInfo:null,
     sessionId:null,
     

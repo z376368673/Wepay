@@ -7,11 +7,13 @@ import {
     View,
 } from 'react-native';
 import DialogUtils from "../util/DialogUtils"
+import HttpUtils from "../util/HttpUtils"
 import AsySorUtils from '../dao/AsySorUtils';
 import { inject } from 'mobx-react';
 import user from '../model/UserInfo';
 import { PullPicker } from 'teaset';
 import  SplashScreen from "react-native-splash-screen"
+import BaseUrl from '../util/BaseUrl';
 export default class BaseComponent extends Component {
     
     constructor(props) {
@@ -44,6 +46,35 @@ export default class BaseComponent extends Component {
     getImgUrl(){
         return "http://tz.hxksky.com/wepay/upload/"
     }
+    //更新用户信息  想办法更新全局的 用户信息
+    upDataUserInfo() {
+        //DialogUtils.showLoading("");
+        let url = BaseUrl.getUserInfoBy(user.userInfo.sessionId)
+        HttpUtils.getData(url)
+            .then(result => {
+                if (result.code === 1) {
+                    //alert(JSON.stringify(result))
+                    //let state = new  AppState() 
+                    AsySorUtils.saveUser(result.data, () => {
+                        user.userInfo = result.data
+                        //alert("userInfo:"+JSON.stringify(UserInfo.userInfo))
+                        //Mobx保存方式
+                        //this.props.AppStore.setUserInfo(result.data)
+                       // this.props.navigation.navigate('HomePage');
+                        //this.props.navigation.navigate('SettingView');
+                        //DialogUtils.showToast("登陆成功")
+                    })
+                } else {
+                    DialogUtils.showToast(result.msg)
+                }
+                DialogUtils.hideLoading()
+            })
+            .catch(error => {
+                DialogUtils.hideLoading()
+                DialogUtils.showToast("服务器繁忙" + error.message)
+            })
+    }
+
 }
 const { height, width } = Dimensions.get('window');
 export const mainColor = '#48b1a3';

@@ -15,7 +15,9 @@ import BaseUrl from '../util/BaseUrl';
 import DialogUtils from '../util/DialogUtils';
 import HttpUtils from '../util/HttpUtils';
 import PassWordInput from '../common/PassNumInput';
+import { observer } from '../../node_modules/mobx-react';
 //兑换积分
+@observer
 export default class ExcIntegral extends BaseComponent {
     constructor(props) {
         super(props);
@@ -47,6 +49,7 @@ export default class ExcIntegral extends BaseComponent {
         .then(result => {
             if (result.code===1) {
                DialogUtils.showMsg("兑换成功")
+               this.upDataUserInfo()
             }else{
                DialogUtils.showToast(result.msg)
             }
@@ -157,7 +160,7 @@ export default class ExcIntegral extends BaseComponent {
     onClicks(index) {
         switch (index) {
             case "record": //兑换记录
-                this.props.navigation.navigate('YueOrIntegralRecord', { type: 1 });
+                this.props.navigation.navigate('ExcinttegralRecord');
                 break;
             case "sumbit"://确定兑换
             if(this.state.exchangeMoney<100||this.state.exchangeMoney%100!==0){

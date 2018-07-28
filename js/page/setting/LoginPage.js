@@ -20,13 +20,13 @@ import  SplashScreen from "react-native-splash-screen"
 /**
  * 登陆页面
  */
-//@inject('AppStore')
+// @inject('AppStore')
 export default class LoginPage extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
-           //text: '18629448593',
-             text: '13923044417',
+           //  text: '18629448593',
+            text: '13923044417',
             pwd: '123456',
         }
     }

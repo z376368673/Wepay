@@ -12,14 +12,13 @@ import RefreshFlatList from "../common/RefreshFlatList";
 import HttpUtils from "../util/HttpUtils";
 import BaseUrl from '../util/BaseUrl';
 
-const URL = 'https://api.github.com/search/repositories?q=';
 /**
- * 余额,积分记录
+ * 积分兑换记录
  */
 
 
 const width = Utils.getWidth()
-export default class YueOrIntegralRecord extends BaseComponent {
+export default class ExcinttegralRecord extends BaseComponent {
     pageIndex = 1;
     constructor(props) {
         super(props);
@@ -33,12 +32,10 @@ export default class YueOrIntegralRecord extends BaseComponent {
 
     render() {
         const { navigation } = this.props;
-        this.type = navigation.state.params.type ? navigation.state.params.type : 0;
-        const title = this.type === 0 ? "余额记录" : "积分记录"
         return (
             <View style={BaseStyles.container_column}>
                 <NavigationBar
-                    title={title}
+                    title={"积分兑换记录"}
                     navigation={this.props.navigation}
                 />
 
@@ -65,7 +62,7 @@ export default class YueOrIntegralRecord extends BaseComponent {
                         <Text style={{
                             color: '#333',
                             fontSize: 15,
-                        }}>当前{this.type === 0 ? "余额" : "积分"}</Text>
+                        }}>当前{ this.type === 0 ? "余额" : "积分"}</Text>
                     </View>
                     <View style={{ alignItems: 'center', width: 0.5, backgroundColor: "#999" }} />
                     <View style={{ alignItems: 'center', width: width / 4 + 14, }}>
@@ -90,7 +87,7 @@ export default class YueOrIntegralRecord extends BaseComponent {
         );
     }
 
-
+   
     //加载更多数据
     _onLoadData() {
         this.getData(false)
@@ -101,11 +98,7 @@ export default class YueOrIntegralRecord extends BaseComponent {
      * @param {*} pageIndex 
      */
     getData(isRefesh) {
-        if (this.type === 0) {
-            this.url = BaseUrl.getExchangeRecordY(this.userInfo.sessionId, this.pageIndex)
-        } else {
-            this.url = BaseUrl.getExchangeRecordJ(this.userInfo.sessionId, this.pageIndex)
-        }
+        this.url = BaseUrl.getExchangeRecord(this.userInfo.sessionId, this.pageIndex)
         HttpUtils.getData(this.url)
             .then(result => {
                 if (result.code === 1) {
@@ -132,106 +125,44 @@ export default class YueOrIntegralRecord extends BaseComponent {
     }
     _getItem(data) {
         return <View style={{
-            borderBottomWidth: 0.5,
+            borderBottomWidth:0.5,
             borderColor: '#CCC',
             backgroundColor: '#fff',
-            paddingBottom: 10,
-            paddingTop: 10,
-            paddingLeft: 5,
-            paddingRight: 5,
+            paddingBottom:10,
+            paddingTop:10,
+            paddingLeft:5,
+            paddingRight:5,
         }}>
             <TouchableOpacity onPress={() => {
-                alert(JSON.stringify(data.item))
+                // alert('点击')
             }}>
                 <View style={{ flexDirection: 'row', }}>
-                    <View style={{ justifyContent: "center", alignItems: 'center', width: width / 4 - 10, }}>
+                    <View style={{justifyContent:"center", alignItems: 'center', width: width / 4 - 10, }}>
                         <Text style={{
                             color: '#333',
                             fontSize: 15,
-                        }}>{this.type === 0 ? this.getYueType(data) : this.getJifenType(data)}</Text>
+                        }}>兑换积分</Text>
                     </View>
-                    <View style={{ justifyContent: "center", alignItems: 'center', width: width / 4 - 10, }}>
+                    <View style={{ justifyContent:"center",alignItems: 'center', width: width / 4 - 10, }}>
                         <Text style={{
                             color: '#333',
                             fontSize: 15,
                         }}>{data.item.getNums}</Text>
                     </View>
-                    <View style={{ justifyContent: "center", alignItems: 'center', width: width / 4 + 4, }}>
+                    <View style={{ justifyContent:"center",alignItems: 'center', width: width / 4 + 4, }}>
                         <Text style={{
                             color: '#333',
                             fontSize: 15,
-                            //当getType===0 时  当前余额或者积分 取得的 nowNums 其他的都是取nowNumsGet
-                        }}>{data.item.getType===0?data.item.nowNums:data.item.nowNumsGet}</Text>
+                        }}>{data.item.nowNums}</Text>
                     </View>
-                    <View style={{ justifyContent: "center", alignItems: 'center', width: width / 4 + 14, }}>
+                    <View style={{ justifyContent:"center",alignItems: 'center', width: width / 4 + 14, }}>
                         <Text style={{
                             color: '#333',
                             fontSize: 15,
-                        }}>{Utils.formatDateTime(data.item.getTime * 1000, "-")}</Text>
+                        }}>{Utils.formatDateTime(data.item.getTime*1000,"-")}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
         </View>
     }
-    //获取余额类型
-    getYueType(data) {
-        let type = data.item.getType
-        var typeText;
-        switch (type) {
-            case 0:
-                typeText = "转出"
-                break;
-            case 2:
-                typeText = "积分释放"
-                break;
-            case 8:
-                typeText = "买入"
-                break;
-            case 9:
-                typeText = "卖出"
-                break;
-            case 10:
-                typeText = "取消卖出"
-                break;
-            case 11:
-                typeText = "后台操作"
-                break;
-            case 13:
-                typeText = "兑换积分"
-                break;
-            case 31:
-                typeText = "转入"
-                break;
-        }
-        return typeText;
-    }
-
-    //获取积分类型
-    getJifenType(data) {
-        let type = data.item.getType
-        let jifen = data.item.getNums
-        var typeText;
-        switch (type) {
-            case 1:
-                if (jifen < 0) {
-                    typeText = "积分释放"
-                } else if (data.item.payId !== data.item.getId) {
-                    typeText = "转入获得"
-                } else if (data.item.payId === data.item.getId) {
-                    typeText = "兑换积分"
-                }
-                break;
-            case 12:
-                typeText = "后台操作"
-                break;
-            case 16:
-                typeText = "vip获得"
-                break;
-            case 30:
-                typeText = "转出获得"
-                break;
-        }
-        return typeText
-    }
-
 }
