@@ -16,21 +16,21 @@ import AsySorUtils from "../../dao/AsySorUtils"
 import { inject, observer } from 'mobx-react';
 import UserInfo from '../../model/UserInfo';
 import ViewUtils from '../../util/ViewUtils';
-import  SplashScreen from "react-native-splash-screen"
+import SplashScreen from "react-native-splash-screen"
 /**
  * 登陆页面
  */
-// @inject('AppStore')
+@inject('AppStore')
 export default class LoginPage extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
-           //  text: '18629448593',
+            //  text: '18629448593',
             text: '13923044417',
             pwd: '123456',
         }
     }
-    componentDidMount(){
+    componentDidMount() {
         SplashScreen.hide();
     }
     render() {
@@ -134,16 +134,20 @@ export default class LoginPage extends BaseComponent {
             .then(result => {
                 if (result.code === 1) {
                     //alert(JSON.stringify(result))
-                    //let state = new  AppState() 
-                    AsySorUtils.saveUser(result.data, () => {
-                        UserInfo.userInfo = result.data
-                        //alert("userInfo:"+JSON.stringify(UserInfo.userInfo))
-                        //Mobx保存方式
-                        //this.props.AppStore.setUserInfo(result.data)
-                        this.props.navigation.navigate('HomePage');
-                        //this.props.navigation.navigate('SettingView');
-                        DialogUtils.showToast("登陆成功")
-                    })
+                    //Mobx保存方式
+                    this.props.AppStore.setUserInfo(result.data)
+                    //全局保存，    
+                    UserInfo.userInfo = result.data
+                    this.props.navigation.navigate('HomePage');
+                    DialogUtils.showToast("登陆成功")
+                    //异步保存到本地文件  
+                    // AsySorUtils.saveUser(result.data, () => {
+                    //     UserInfo.userInfo = result.data
+                    //     //alert("userInfo:"+JSON.stringify(UserInfo.userInfo))
+                    //     
+                    //     //this.props.navigation.navigate('SettingView');
+                    //     DialogUtils.showToast("登陆成功")
+                    // })
                 } else {
                     DialogUtils.showToast(result.msg)
                 }

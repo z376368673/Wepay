@@ -7,7 +7,7 @@ import {
     TouchableOpacity,
     Button,
 } from 'react-native';
-import BaseComponent, {BaseStyles, mainColor, window_width} from "./BaseComponent";
+import BaseComponent, {BaseStyles, mainColor, upDataUserInfo} from "./BaseComponent";
 import NavigationBar from "../common/NavigationBar";
 import QRCode from "react-native-qrcode";
 import ViewUtils from "../util/ViewUtils";
@@ -15,9 +15,11 @@ import BaseUrl from '../util/BaseUrl';
 import DialogUtils from '../util/DialogUtils';
 import HttpUtils from '../util/HttpUtils';
 import PassWordInput from '../common/PassNumInput';
-import { observer } from '../../node_modules/mobx-react';
+import { observer, inject } from '../../node_modules/mobx-react';
+import AsySorUtils from '../dao/AsySorUtils';
+import HomePage from './HomePage';
 //兑换积分
-@observer
+@inject('AppStore')@observer
 export default class ExcIntegral extends BaseComponent {
     constructor(props) {
         super(props);
@@ -27,13 +29,11 @@ export default class ExcIntegral extends BaseComponent {
             jifen: 0,
         }
         //this.account =  this.navigation.state.params.account;
-        this.userInfo = this.getUserInfo();
+    // this.props.AppStore.userInfo = this.getUserInfo();
+   
     }
     componentDidMount(){
-        this.setState({
-            yue:this.userInfo.cangkuNum,
-            jifen:this.userInfo.fengmiNum,
-        })
+       
     }
      /**
      * 积分兑换
@@ -42,14 +42,14 @@ export default class ExcIntegral extends BaseComponent {
         DialogUtils.showLoading()
         let url =  BaseUrl.creditsExchange()
         HttpUtils.postData(url,{
-            sessionId: this.userInfo.sessionId,
+            sessionId: this.props.AppStore.userInfo.sessionId,
             exchangeMoney: this.state.exchangeMoney,
             safetyPwd: safetyPwd,
         })
         .then(result => {
             if (result.code===1) {
                DialogUtils.showMsg("兑换成功")
-               this.upDataUserInfo()
+               upDataUserInfo(this.props.AppStore)
             }else{
                DialogUtils.showToast(result.msg)
             }
@@ -61,6 +61,25 @@ export default class ExcIntegral extends BaseComponent {
         })
     }
 
+      //更新用户信息  想办法更新全局的 用户信息
+      upDataUserInfo() {
+        let url = BaseUrl.getUserInfoBy(this.getUserInfo().sessionId)
+        HttpUtils.getData(url)
+            .then(result => {
+                if (result.code === 1) {
+                    //Mobx保存方式
+                    this.props.AppStore.setUserInfo(result.data)
+                    //全局保存
+                    UserInfo.userInfo = result.data
+                   
+                } else {
+                    DialogUtils.showToast(result.msg)
+                }
+            })
+            .catch(error => {
+                DialogUtils.showMsg("服务器繁忙" + error.message)
+            })
+    }
     render() {
         return (
             <View style={[BaseStyles.container_column, {backgroundColor: "#f1f1f1"}]}>
@@ -87,7 +106,7 @@ export default class ExcIntegral extends BaseComponent {
                     >
                         <View style={{flexDirection: 'column',alignItems: "center" }}>
                             <Text style={{fontSize: 16, color: '#fff'}}>余额</Text>
-                            <Text style={{fontSize: 16, color: '#fff'}}>￥{this.state.yue}</Text>
+                            <Text style={{fontSize: 16, color: '#fff'}}>￥{this.props.AppStore.userInfo.cangkuNum}</Text>
                         </View></TouchableOpacity>
                     <View style={{height: 30, width: 0.5, backgroundColor: '#fff'}}/>
                     <TouchableOpacity
@@ -95,7 +114,7 @@ export default class ExcIntegral extends BaseComponent {
                     >
                         <View style={{flexDirection: 'column',alignItems: "center" }}>
                             <Text style={{fontSize: 16, color: '#fff'}}>积分</Text>
-                            <Text style={{fontSize: 16, color: '#fff'}}>￥{this.state.jifen}</Text>
+                            <Text style={{fontSize: 16, color: '#fff'}}>￥{this.props.AppStore.userInfo.fengmiNum}</Text>
                         </View></TouchableOpacity>
                 </View>
                 <Text style={[{
@@ -163,6 +182,7 @@ export default class ExcIntegral extends BaseComponent {
                 this.props.navigation.navigate('ExcinttegralRecord');
                 break;
             case "sumbit"://确定兑换
+           //this. upDataUserInfo()
             if(this.state.exchangeMoney<100||this.state.exchangeMoney%100!==0){
                 DialogUtils.showMsg("请输入大于等于100的整数倍")
             }else{

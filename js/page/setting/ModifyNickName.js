@@ -7,16 +7,18 @@ import {
     TouchableOpacity,
     Button,
 } from 'react-native';
-import BaseComponent, { BaseStyles, mainColor, window_width } from "../BaseComponent";
+import BaseComponent, { BaseStyles, mainColor, upDataUserInfo } from "../BaseComponent";
 import NavigationBar from "../../common/NavigationBar";
 import AsySorUtils from '../../dao/AsySorUtils';
 import BaseUrl from '../../util/BaseUrl';
 import HttpUtils from '../../util/HttpUtils';
 import DialogUtils from '../../util/DialogUtils';
+import { inject } from '../../../node_modules/mobx-react';
 
 /**
  * 修改昵称
  */
+@inject("AppStore")
 export default class ModifyNickName extends BaseComponent {
     constructor(props) {
         super(props);
@@ -42,6 +44,7 @@ export default class ModifyNickName extends BaseComponent {
         HttpUtils.getData(url)
             .then(result => {
                 if (result.code === 1) {
+                     upDataUserInfo(this.props.AppStore)
                     //更新用户本地信息
                       //这个nickname 是上一个界面里 
                       this.userInfo.userName = this.state.userName;

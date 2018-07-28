@@ -19,30 +19,21 @@ import BaseUrl from '../util/BaseUrl';
 import HttpUtils from '../util/HttpUtils';
 import UserInfo from '../model/UserInfo';
 import  SplashScreen from "react-native-splash-screen"
+import { observer, inject } from '../../node_modules/mobx-react';
 const screen_width = Utils.getWidth();
+
+@inject('AppStore')@observer
 export default class HomePage extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
-            userId:  "1234567",
-            yue:  0,
-            jifen:  0,
-            xinyong: 5,
-            headImg:null,
             bannerArray: []
         }
-        this.userInfo = this.getUserInfo()
+        //this.props.AppStore.userInfo = this.props.AppStore.userInfo
     }
     componentDidMount() {
         SplashScreen.hide();
         this.getBanner();
-        this.setState({
-            userId:this.userInfo.account ,
-            yue: this.userInfo.cangkuNum ,
-            jifen: this.userInfo.fengmiNum,
-            xinyong: this.userInfo.userCredit ,
-            headImg: {uri: this.userInfo.imgHead} ,
-        })
     }
     setImgToBanner(bannerArray) {
         var views = []
@@ -118,13 +109,13 @@ export default class HomePage extends BaseComponent {
                                 <View
                                     style={[BaseStyles.container_row, { alignItems: 'center' }]}
                                 >
-                                    <Image source={this.state.headImg}
+                                    <Image source={{uri: this.props.AppStore.userInfo.imgHead}}
                                         style={styles.headImg} />
                                     <View style={{ flex: 1, marginLeft: 10 }}>
                                         <Text style={styles.text}>
-                                            UUID:{this.state.userId ? this.state.userId : "123456"}
+                                            UUID:{this.props.AppStore.userInfo.account}
                                         </Text>
-                                        {ViewUtils.getCreditView(this.state.xinyong, 16, 15,"#fff")}
+                                        {ViewUtils.getCreditView(this.props.AppStore.userInfo.userCredit, 16, 15,"#fff")}
                                     </View>
                                     <Image style={{ width: 30, height: 30, borderRadius: 15 }}
                                         source={require('../../res/images/shezhi.png')}
@@ -160,7 +151,7 @@ export default class HomePage extends BaseComponent {
                                 >
                                     <View style={{ flexDirection: 'column', alignItems: "center" }}>
                                         <Text style={{ fontSize: 16, color: '#fff' }}>余额</Text>
-                                        <Text style={{ fontSize: 16, color: '#fff' }}>￥{this.state.yue}</Text>
+                                        <Text style={{ fontSize: 16, color: '#fff' }}>￥{this.props.AppStore.userInfo.cangkuNum}</Text>
                                     </View></TouchableOpacity>
                                 <View style={{ height: 30, width: 0.5, backgroundColor: '#fff' }} />
                                 <TouchableOpacity
@@ -169,7 +160,7 @@ export default class HomePage extends BaseComponent {
                                 >
                                     <View style={{ flexDirection: 'column', alignItems: "center" }}>
                                         <Text style={{ fontSize: 16, color: '#fff' }}>积分</Text>
-                                        <Text style={{ fontSize: 16, color: '#fff' }}>￥{this.state.jifen}</Text>
+                                        <Text style={{ fontSize: 16, color: '#fff' }}>￥{this.props.AppStore.userInfo.fengmiNum}</Text>
                                     </View></TouchableOpacity>
                             </View>
                         </View>

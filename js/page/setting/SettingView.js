@@ -15,13 +15,12 @@ import SYImagePicker from 'react-native-syan-image-picker'
 import Utils from '../../util/Utils';
 import HttpUtils from '../../util/HttpUtils';
 import BaseUrl from '../../util/BaseUrl';
-import { inject } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 
-//@inject('AppStore')
+@inject('AppStore')@observer
 export default class SettingView extends BaseComponent {
     constructor(props) {
         super(props);
-        //this.userInfo = this.props.AppStore.userInfo;
         this.state = {
             userId: '123456',
             xinyong: 5,
@@ -30,16 +29,16 @@ export default class SettingView extends BaseComponent {
             headImg:require('../../../res/images/touxiang-xiao.png'),
             newMessage:0,
         }
-        this.userInfo = this.getUserInfo()
+        this.props.AppStore.userInfo = this.getUserInfo()
     }
     componentDidMount(){
         this.isNewMessage();
         this.setState({
-            headImg:{uri:this.userInfo.imgHead},
-            nickname:this.userInfo.username,
-            userId:this.userInfo.account,
-            xinyong:this.userInfo.userCredit,
-            sessionId:this.userInfo.sessionId,
+            headImg:{uri:this.props.AppStore.userInfo.imgHead},
+            nickname:this.props.AppStore.userInfo.username,
+            userId:this.props.AppStore.userInfo.account,
+            xinyong:this.props.AppStore.userInfo.userCredit,
+            sessionId:this.props.AppStore.userInfo.sessionId,
         })
     }
 
@@ -47,7 +46,7 @@ export default class SettingView extends BaseComponent {
      * 获取设置界面的消息状态
      */
     isNewMessage(){
-        let url =  BaseUrl.getuserInfoUrl(this.userInfo.sessionId)
+        let url =  BaseUrl.getuserInfoUrl(this.props.AppStore.userInfo.sessionId)
         HttpUtils.getData(url)
         .then(result => {
             if (result.code===1) {
@@ -95,9 +94,10 @@ export default class SettingView extends BaseComponent {
      */
     uploadImage(imgs){
        let url =  BaseUrl.getUpdataHeadUrl()
-        HttpUtils.uploadImage(url,{sessionId:this.state.sessionId},imgs,(result)=>{
+        HttpUtils.uploadImage(url,{sessionId:this.props.AppStore.userInfo.sessionId},imgs,(result)=>{
             if(result.code===1){
                 DialogUtils.showToast("上传成功")
+                uri:this.props.AppStore.userInfo.imgHead
                 this.setState({
                     headImg: this.source
                 })
@@ -118,8 +118,8 @@ export default class SettingView extends BaseComponent {
                 break
             case "nickname"://修改昵称
                 this.props.navigation.navigate('ModifyNickName', {
-                    userName: this.state.nickname,
-                    sessionId:this.state.sessionId,
+                    userName: this.props.AppStore.userInfo.username,
+                    sessionId:this.props.AppStore.userInfo.sessionId,
                     callbacks: (name) => { this.getCallBackValue(name) }
                 });
                 break
@@ -199,20 +199,20 @@ export default class SettingView extends BaseComponent {
                             <View
                                 style={[styles.container_row, { alignItems: 'center', padding: 10, }]}
                             >
-                                <Image source={this.state.headImg}
+                                <Image source={{uri:this.props.AppStore.userInfo.imgHead}}
                                     style={styles.headImg} />
                                 <View style={{ flex: 1, marginLeft: 10 }}>
                                     <Text style={{ color: "#333", fontSize: 16, }}>
-                                        UUID:{this.state.userId ? this.state.userId : "123456"}
+                                        UUID:{this.props.AppStore.userInfo.account}
                                     </Text>
-                                    {ViewUtils.getCreditView(this.state.xinyong, 16, 15,"#333")}
+                                    {ViewUtils.getCreditView(this.props.AppStore.userInfo.userCredit, 16, 15,"#333")}
                                 </View>
                                 <Text style={{ color: "#666", fontSize: 16, marginRight: 10 }}>
                                     更换头像
                                 </Text>
                             </View></TouchableOpacity>
                         <View style={[BaseStyles.container_center, { marginTop: 12 }]} />
-                        {ViewUtils.getSettingItem(require('../../../res/images/nicheng.png'), '昵称', this.state.nickname,
+                        {ViewUtils.getSettingItem(require('../../../res/images/nicheng.png'), '昵称', this.props.AppStore.userInfo.username,
                             () => this.onClicks("nickname"))}
                         {ViewUtils.getSettingItem(require('../../../res/images/duoyuyan.png'), '多语言', '中文',
                             () => this.onClicks("language"))}

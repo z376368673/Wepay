@@ -2,6 +2,13 @@
 import { AsyncStorage } from 'react-native';
 import DialogUtils from '../util/DialogUtils';
 
+/**
+ * 本地文件保存 这个类保存和读取都是异步的， 不能保存实时读取和使用的信息 只能保存一些配置信息，
+ * 
+ * 如果要保存用户信息 建议 一定要使用 mobx  
+ * 
+ * 以下 保存用户信息 已经废了 我已经改成用mobx保存 或者 全局变量保存了 
+ */
 export default class AsySorUtils {
 
     /**
