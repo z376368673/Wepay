@@ -47,9 +47,11 @@ export default class BaseComponent extends Component {
     getCallBackValue = (params) => this.setState(params)
     //获取图片拼接的地址，有些图片不需要拼接
     getImgUrl(){
-        return "http://tz.hxksky.com/wepay/upload/"
+        return "http://wepay.hxksky.com/"
     }
-
+    getImgUrl(imgName){
+        return "http://wepay.hxksky.com/"+imgName
+    }
 }
 const { height, width } = Dimensions.get('window');
 export const mainColor = '#48b1a3';
@@ -65,6 +67,22 @@ export const window_width = width;
                 AppStore.setUserInfo(result.data)
                 //全局保存
                UserInfo.userInfo = result.data
+            } else {    
+                DialogUtils.showToast(result.msg)
+            }
+        })
+        .catch(error => {
+            DialogUtils.showMsg("服务器繁忙" + error.message)
+        })
+}
+
+ //领红包 积分释放到余额
+ export const  integralRelease=(AppStore)=>{
+    let url = BaseUrl.integralRelease(AppStore.userInfo.sessionId)
+    HttpUtils.getData(url)
+        .then(result => {
+            if (result.code === 1) {
+                upDataUserInfo(AppStore)
             } else {    
                 DialogUtils.showToast(result.msg)
             }

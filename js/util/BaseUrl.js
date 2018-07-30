@@ -898,5 +898,193 @@ export default class BaseUrl {
         return url + "/trans/outSellRecords?sessionId=" + sessionId + "&pageIndex=" + pageIndex;
     }
 
+
+    /**
+     *  积分释放到余额
+     * @param {*} sessionId
+     * @returns code  1,0
+     */
+    static integralRelease(sessionId) {
+        return url + "/store/integralRelease?sessionId=" + sessionId ;
+    }
+
+
+    /**
+     *  申请店铺-店铺状态
+     *  描述:	判断是否有店铺，是否申请中
+     * @return data	是	数据0.申请中,1.已通过,2.去申请
+     * @param {*} sessionId 
+     */
+    static getStoreStatus(sessionId) {
+        return url + "/verify/status?sessionId=" + sessionId;
+    }
+
+
+     /**
+     * .申请店铺-获取店铺类型列表（商品分类）
+     * @param {*} sessionId 
+     * @param {*} pageIndex 
+     * 
+     序号	参数名称	一定会返回	描述
+     1	code	是	状态码 
+     2	msg	是	错误信息
+     3	data	是	数据（返回集合）
+     3.1	id		分类id
+     3.2	name		分类名称
+     3.3	serialNumber		序号（暂时没用）
+     3.4	createTime		创建时间
+     3.5	pid		上级分类id（暂时没用）
+     3.6	status		状态（1.在客户端显示,0.不显示）暂时没用
+     3.7	pic		分类图片（暂时没用）
+     * 
+     */
+    static getCateList() {
+        return url + "/verify/cateList";
+    }
+
+    /**
+     * 申请店铺
+     * post
+     序号	参数名称	是否必须	描述	格式
+     1	sessionId	是	token	String
+     2	file	是	身份证正反照	file
+     3	typeId
+     是	店铺分类id	int
+     4	realname
+     是	真实姓名	String
+     5	idcard
+     是	身份证号	String
+     6	phone
+     是	手机号	String
+     7	shopName
+     是	店铺名称	String
+     8	shopAddress
+     是	店铺地址	String
+     */
+    static applyStore() {
+        return url + "/verify/add";
+    }
+
+    /**
+     * 添加商品
+     * 
+     * post
+     * 
+     1	sessionId	是	token	String
+     2	file	   是	商品封面图	file
+     3	goodsName  是	商品名称    String
+     4	goodsPrice 是	商品价格  double
+     5	goodsStock 是	商品库存 int
+     */
+    static getAddShopUrl() {
+        return url + "/goods/add";
+    }
+
+
+     /**
+     * 商城 -商品列表 /搜索/分类
+     * @param {*} sessionId 
+     * @param {*} pageIndex 
+     * @param {*} keyword  可选  搜索关键字
+     * @param {*} typeId   可选  分类id
+     * 
+     3.1	id		商品id
+     3.2	goodsName		商品名称
+     3.3	goodsPrice		商品价格
+     3.4	goodsStock		商品库存
+     3.5	coverPlan		商品封面图
+     3.6	shopId		店铺id
+     * 
+     */
+    
+    static getShopBySearch(sessionId, pageIndex,keyword,typeId) {
+        var path = url + "/goods/all?sessionId=" + sessionId + "&pageIndex=" + pageIndex;
+        if(keyword){
+            path +="&keyword="+keyword
+        }
+        if(typeId){
+            path +="&typeId="+typeId
+        }
+        return path
+    }
+
+     /**
+     *  商城 -店铺列表
+     * @param {*} sessionId 
+     * @param {*} pageIndex 
+     * 
+     3.1	id		商品id
+     3.2	goodsName		商品名称
+     3.3	goodsPrice		商品价格
+     3.4	goodsStock		商品库存
+     3.5	coverPlan		商品封面图
+     3.6	shopId		店铺id
+     * 
+     */
+    static getStoreList(sessionId, pageIndex,lng,lat) {
+        return url + "/shop/nearby?sessionId=" + sessionId 
+        + "&pageIndex=" + pageIndex
+        + "&lng=" + lng
+        + "&lat=" + lat
+    }
+
+
+     /**
+     *  它人的店铺详情 -商品列表
+     * @param {*} sessionId 
+     * @param {*} pageIndex 
+     * 
+     3.1	id		商品id
+     3.2	goodsName		商品名称
+     3.3	goodsPrice		商品价格
+     3.4	goodsStock		商品库存
+     3.5	coverPlan		商品封面图
+     3.6	shopId		店铺id
+     * 
+     */
+    static getStoreDetails(sessionId, pageIndex) {
+        return url + "/shop/goods?sessionId=" + sessionId + "&pageIndex=" + pageIndex;
+    }
+
+    /**
+     *  我的店铺 - 商品列表
+     * @param {*} sessionId 
+     * @param {*} pageIndex 
+     * 
+     3.1	id		商品id
+     3.2	goodsName		商品名称
+     3.3	goodsPrice		商品价格
+     3.4	goodsStock		商品库存
+     3.5	coverPlan		商品封面图
+     3.6	goodsPic2		暂时没用
+     3.7	goodsPic3		暂时没用
+     3.8	goodsPic4		暂时没用
+     3.9	goodsPic5		暂时没用
+     3.10	goodsPic6		暂时没用
+     3.11	goodsStatus		商品状态1.未上架，2.已上架
+     3.12	createTime		创建时间
+     3.13	shopId		店铺id
+     3.14	show		是否显示1.显示，0.不显示
+     3.15	classifyId		分类id
+     3.16	uid		用户id
+     * 
+     */
+    static getMyStoreShop(sessionId, pageIndex) {
+        return url + "/shop/indexGoods?sessionId=" + sessionId + "&pageIndex=" + pageIndex;
+    }
+
+     /**
+     * 修改商品状态 1.未上架  2.上架，3.下架
+     * @param {*} sessionId 
+     * @param {*} pageIndex 
+     * 
+     1	sessionId	是	token	String
+     2	id	        是	商品id	int
+     3	goodsStatus 是	商品状态。1.未上架，2.已上架，3.下架 int
+     * 
+     */
+    static updateStatus(sessionId, id,goodsStatus) {
+        return url + "/goods/updateStatus?sessionId=" + sessionId + "&id=" + id+ "&goodsStatus=" + goodsStatus
+    }
 }
 

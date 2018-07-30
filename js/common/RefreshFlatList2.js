@@ -48,6 +48,18 @@ export default class RefreshFlatList extends Component {
             dataArray: data,
         });
     }
+
+
+        //修改数据，通过下标来确定数据
+        upData(index, item) {
+            this.state.dataArray[index] = item
+            let data = this.state.dataArray;
+            this.setState({
+                dataArray: data,
+            });
+        }
+    
+
     /**
      * 初次设置数据
      * @param data

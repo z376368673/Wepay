@@ -20,76 +20,103 @@ import SplashScreen from "react-native-splash-screen"
 import ViewUtils from '../../util/ViewUtils';
 import RefreshFlatList from "../../common/RefreshFlatList"
 
-//购物中心
+//商品搜索页
 const window_w = Utils.getWidth();
 export default class SearchStore extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
-            text: '18629448593',
+            keyword:"",
             activeIndex: 0,
+            typeArr:[],
         }
-        this.barItems = [
-            '商品',
-            '商铺',
-        ];
+        this.userInfo = this.getUserInfo();
+        this.typeId = ""
     }
     //界面加载完成
     componentDidMount() {
-        this._refreshData()
+        //this._refreshData()
+        this.getCateList()
     }
-    //刷新数据
-    _refreshData(value) {
-        const URL = 'https://api.github.com/search/repositories?q=';
+      //刷新数据
+    _refreshData() {
         this.refList.refreshStar()
-        HttpUtils.getData(URL + value)
+        this.pageIndex = 1;
+        this.getData(true)
+    }
+    //加载更多数据
+    _onLoadData() {
+        this.getData(false)
+    }
+
+    /**
+    * 获取数据
+    * @param {*} isRefesh  是否刷新
+    * @param {*} pageIndex 
+    */
+    getData(isRefesh) {
+        this.url = BaseUrl.getShopBySearch(this.userInfo.sessionId, this.pageIndex,this.state.keyword,this.typeId)
+        //alert(JSON.stringify(this.url))
+        HttpUtils.getData(this.url)
             .then(result => {
-                var arr = [];
-                for (let i = 0; i < 10; i++) {
-                    arr.push(result.items[i])
+                //alert(JSON.stringify(result.data))
+                if (result.code === 1) {
+                   
+                    if (isRefesh) {
+                        this.refList.setData(result.data)
+                    } else {
+                        this.refList.addData(result.data)
+                        this.pageIndex += 1
+                    }
+                    if(result.data.length<1){
+                        DialogUtils.showToast("暂无数据")
+                    }
+                } else {
+                    DialogUtils.showToast(result.msg)
                 }
-                this.refList.setData(arr)
             })
             .catch(error => {
                 this.refList.setData([])
+                DialogUtils.showToast("error:" + error.message)
             })
     }
 
-    onClickDelect(data) {
+   //导航右边更多按钮
+   getRightStyle_View() {
+    return (
+        <View style={{ flexDirection: "row" }}>
+            <TouchableOpacity
+                style={{ flexDirection: 'row', alignItems: 'center', }}
+                onPress={() => this.leftDrawView()}
+            >
+                <Image
+                    style={{ width: 25, height: 25, padding: 5 }}
+                    source={require("../../../res/images/fenleisousuo.png")} />
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={{ flexDirection: 'row', alignItems: 'center', }}
+                onPress={() => this._refreshData()}
+            >
+                <Image
+                    style={{ width: 25, height: 25, padding: 5, marginLeft: 10 }}
+                    source={require("../../../res/images/sousuo.png")} />
+            </TouchableOpacity>
+        </View>)
 
-    }
-    onSegmentedBarChange(index) {
-        if (index != this.state.activeIndex) {
-            this.setState({ activeIndex: index });
-        }
-    }
-    renderCustomItems() {
-        let { activeIndex } = this.state;
-        return this.barItems.map((item, index) => {
-            let isActive = index == activeIndex;
-            let tintColor = isActive ? mainColor : '#333';
-            return (
-                <View key={index} style={{ padding: 15, alignItems: 'center' }}>
-                    <Text style={{ fontSize: 17, color: tintColor, paddingTop: 4 }} >{item}</Text>
-                </View>
-            );
-        });
-    }
+}
     render() {
-        let { activeIndex } = this.state;
         return (
             <View style={[BaseStyles.container_column, { backgroundColor: "#f1f1f1" }]}>
                 <NavigationBar
-                    title='购物中心'
                     navigation={this.props.navigation}
                     titleView={() => this.searchView()}
-                    rightView={NavigationBar.getRightStyle_View(require("../../../res/images/sousuo.png"),()=>this.onClicks(1))}
-            
+                    rightView={this.getRightStyle_View()}
                 />
                 <View style={{ flex: 1, backgroundColor: "#f1f1f1" }}>
                 <RefreshFlatList
                     ref={refList => this.refList = refList}
                     numColumns={ 2 }
+                    isDownLoad ={true}
                     onRefreshs={() => this._refreshData()}
                     onLoadData={() => this._onLoadData()}
                     renderItem={(items) =>  this._getStore(items)} />
@@ -100,7 +127,7 @@ export default class SearchStore extends BaseComponent {
     }
     searchView() {
         return (<View style={{ flexDirection: "row", alignItems: "center" }}>
-            <View style={{  width: 230, backgroundColor: "#fff", height: 35, borderRadius: 18, flexDirection: "row", alignItems: "center" }}>
+            <View style={{ marginLeft:-60, width: 230, backgroundColor: "#fff", height: 35, borderRadius: 18, flexDirection: "row", alignItems: "center" }}>
                 <Image style={{ height: 30, width: 30, marginLeft: 10 }} source={require("../../../res/images/sousuo-shang.png")} />
                 <TextInput
                     style={[{
@@ -113,18 +140,61 @@ export default class SearchStore extends BaseComponent {
                     underlineColorAndroid='transparent'
                     keyboardType={"default"}
                     maxLength={12}
-                    onChangeText={(text) => this.setState({ shopPrice: text })} />
+                    onChangeText={(text) => this.setState({ keyword: text })} />
             </View>
         </View>);
     }
 
-    onClicks(index) {
-        switch (index) {
-            case 1:
-                break;
-            default:
-                break;
-        }
+    /**
+     * 获取商品分类
+     */
+    getCateList() {
+        let url = BaseUrl.getCateList()
+        HttpUtils.getData(url)
+            .then(result => {
+                if (result.code === 1) {
+                    this.setState({
+                        typeArr:result.data,
+                    })
+                }
+            })
+            .catch(error => {
+
+            })
+    }
+    leftDrawView() {
+        let views = [];
+        this.state.typeArr.forEach((element, index) => {
+            views.push(this._renderTypeItem(element,index))
+        });
+
+        let listview = <View style={{ backgroundColor: "#fff", width: 120, flex: 1, flexDirection: "column", marginTop: 60 }}>
+            {/* <View style={{ backgroundColor:"#fff", flex: 1,}}></View> */}
+            {views}
+        </View>
+        this.drawer = Drawer.open(listview, 'left', "translate");
+    }
+    /**
+     * 分类列表的item
+     * @param {*} data 
+     */
+    _renderTypeItem(data,index) {
+        let item = 
+        <View style={{flexDirection:"column"}}>
+        <TouchableOpacity
+            key={index.toString()}
+            onPress={() => {
+                this.drawer && this.drawer.close()
+                //选中的商品分类传到商品的界面 
+                this.typeId = data.id;
+                this._refreshData()
+            }}
+        >
+            <Text style={{ fontSize: 16, color: "#333", padding: 15, }}>{data.name}</Text>
+        </TouchableOpacity>
+        <View style={{height:1,backgroundColor:"#eee"}}/>
+        </View>
+        return item;
     }
 
       /** 商品
@@ -137,7 +207,6 @@ export default class SearchStore extends BaseComponent {
             return <View
                 key={this.state.activeIndex === 0 ? data.item.index : data.item.index + 1}
                 style={{
-                    flex: 1,
                     backgroundColor: '#fff',
                     alignItems: 'center',
                     marginBottom: 4,
@@ -151,23 +220,23 @@ export default class SearchStore extends BaseComponent {
                     onPress={(item) => this.goDetails(item)}>
                     <Image
                         style={{ width: window_w / 2 - 4, height: window_w / 2, }}
-                        source={require("../../../res/images/default_shop.png")} />
+                        source={{uri:this.getImgUrl(data.item.coverPlan)}} />
                 </TouchableOpacity>
     
                 <View style={{ flexDirection: 'column', padding: 5, height: 60, justifyContent: "center", alignContent: "center" }}>
                     <Text style={{ color: "#333333", fontSize: 18, }} numberOfLines={1}>
-                        {data.item ? data.item.name : "name"}</Text>
+                        {data.item ? data.item.goodsName : "name"}</Text>
     
                     <View style={{ flexDirection: 'row', marginTop: 5 }}>
                         <Text style={{
                             color: "#d11",
                             fontSize: 15,
-                        }}>￥{124}</Text>
+                        }}>￥{data.item.goodsPrice}</Text>
                         <Text style={{
                             color: "#888",
                             fontSize: 15,
                             marginLeft: 30,
-                        }}>库存:{3}</Text>
+                        }}>库存:{data.item.goodsStock}</Text>
                     </View>
                 </View>
             </View>

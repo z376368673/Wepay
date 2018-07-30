@@ -10,6 +10,7 @@ import BaseComponent, { BaseStyles, mainColor, window_width } from "../page/Base
 import HttpUtils from "../util/HttpUtils";
 import RefreshFlatList from "./RefreshFlatList"
 import Utils from '../util/Utils';
+import BaseUrl from '../util/BaseUrl';
 
 //订单公用类（相当于Fragment）
 const window_w = Utils.getWidth();
@@ -23,6 +24,11 @@ export default class StoreCommon extends BaseComponent {
         this.state = {
             text: '18629448593',
         }
+        this.userInfo = this.getUserInfo();
+    }
+    
+    setType(data){
+        
     }
     //界面加载完成
     componentDidMount() {
@@ -30,18 +36,48 @@ export default class StoreCommon extends BaseComponent {
         
     }
     //刷新数据
-    _refreshData(value) {
-        const URL = 'https://api.github.com/search/repositories?q=';
+    _refreshData() {
         this.refList.refreshStar()
-        HttpUtils.getData(URL + value)
+        this.pageIndex = 1;
+        this.getData(true)
+    }
+    //加载更多数据
+    _onLoadData() {
+        this.getData(false)
+    }
+
+    /**
+    * 获取数据
+    * @param {*} isRefesh  是否刷新
+    * @param {*} pageIndex 
+    */
+    getData(isRefesh) {
+        if(this.tabLabel==='商品'){
+            this.url = BaseUrl.getShopBySearch(this.userInfo.sessionId, this.pageIndex)
+        }else{
+            this.url = BaseUrl.getStoreList(this.userInfo.sessionId, 
+                this.pageIndex,this.userInfo.longitude,this.userInfo.latitude)
+        }
+         //alert(this.tabLabel)
+        HttpUtils.getData(this.url)
             .then(result => {
-                this.refList.setData(result.items)
+               //alert(JSON.stringify(result))
+                if (result.code === 1) {
+                    if (isRefesh) {
+                        this.refList.setData(result.data)
+                    } else {
+                        this.refList.addData(result.data)
+                        this.pageIndex += 1
+                    }
+                } else {
+                    DialogUtils.showToast(result.msg)
+                }
             })
             .catch(error => {
                 this.refList.setData([])
+                DialogUtils.showToast("error:" + error.message)
             })
     }
-
     onClickDelect(data) {
 
     }
@@ -76,6 +112,12 @@ export default class StoreCommon extends BaseComponent {
     }
         /** 商品
           * 绘制itemView
+          * 3.1	id		商品id
+          3.2	goodsName		商品名称
+          3.3	goodsPrice		商品价格
+          3.4	goodsStock		商品库存
+          3.5	coverPlan		商品封面图
+          3.6	shopId		店铺id
           * @param data
           * @returns {*}
           * @private
@@ -84,7 +126,6 @@ export default class StoreCommon extends BaseComponent {
         return <View
             key={this.state.activeIndex === 0 ? data.item.index : data.item.index + 1}
             style={{
-                flex: 1,
                 backgroundColor: '#fff',
                 alignItems: 'center',
                 marginBottom: 4,
@@ -98,23 +139,23 @@ export default class StoreCommon extends BaseComponent {
                 onPress={(item) => this.goDetails(item)}>
                 <Image
                     style={{ width: window_w / 2 - 4, height: window_w / 2, }}
-                    source={require("../../res/images/default_shop.png")} />
+                    source={{uri:this.getImgUrl(data.item.coverPlan)}} />
             </TouchableOpacity>
 
             <View style={{ flexDirection: 'column', padding: 5, height: 60, justifyContent: "center", alignContent: "center" }}>
                 <Text style={{ color: "#333333", fontSize: 18, }} numberOfLines={1}>
-                    {data.item ? data.item.name : "name"}</Text>
+                    {data.item ? data.item.goodsName : "name"}</Text>
 
                 <View style={{ flexDirection: 'row', marginTop: 5 }}>
                     <Text style={{
                         color: "#d11",
                         fontSize: 15,
-                    }}>￥{124}</Text>
+                    }}>￥{data.item.goodsPrice}</Text>
                     <Text style={{
                         color: "#888",
                         fontSize: 15,
                         marginLeft: 30,
-                    }}>库存:{3}</Text>
+                    }}>库存:{data.item.goodsStock}</Text>
                 </View>
             </View>
         </View>
@@ -124,9 +165,21 @@ export default class StoreCommon extends BaseComponent {
           * 绘制itemView
           * @param data
           * @returns {*}
+          * 3.1	id		店铺id
+          3.2	uid		用户id
+          3.3	shopName		店铺名称
+          3.4	shopAddress		店铺地址
+          3.5	imgHead		头像
+          3.6	distance		距离（单位米）
           * @private
           */
     _getStoreMall(data) {
+        var distance;
+        if(data.item.distance>1000){
+            distance = data.item.distance/1000 +"千米"
+        }else{
+            distance = data.item.distance+"米"
+        }
         return <View
             style={{
                 backgroundColor: '#fff',
@@ -137,18 +190,18 @@ export default class StoreCommon extends BaseComponent {
             }}>
             <Image
                 style={{ width: 60, height: 60, borderWidth: 1, borderRadius: 30, borderColor: "#d11" }}
-                source={require("../../res/images/banben.png")} />
+                source={{uri:this.getImgUrl(data.item.imgHead)}} />
             <View style={{ flexDirection: 'column', flex: 1, marginLeft: 10, }}>
                 <Text
-                    style={{ color: "#333333", fontSize: 18 }}>{data.index} {data.item ? data.item.name : "name"}</Text>
-                <View style={{ flexDirection: 'row', marginTop: 5 }}>
+                    style={{ color: "#333333", fontSize: 18 }}>{data.item ? data.item.shopName : "name"}</Text>
+                <View style={{ flexDirection:"", marginTop: 5,flexDirection:"column" }}>
                     <Text style={{
                         color: "#888",
                         fontSize: 15,
                         flex: 1,
                     }}
                         numberOfLines={1}
-                    >地址：店铺地址信息...2k.....</Text>
+                    >{distance }</Text>
                 </View>
             </View>
 
@@ -171,7 +224,7 @@ export default class StoreCommon extends BaseComponent {
                     <Text style={{
                         fontSize: 15,
                         color: mainColor,
-                    }}>上架</Text>
+                    }}>进店</Text>
                 </TouchableOpacity>
             </View>
         </View>

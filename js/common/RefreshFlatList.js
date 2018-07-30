@@ -3,7 +3,7 @@
  * https://github.com/facebook/react-native
  * @flow
  */
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     FlatList,
@@ -25,7 +25,7 @@ export default class RefreshFlatList extends Component {
             isFrist: true,
         }
     }
-    static defaultProps={
+    static defaultProps = {
         footerView: PropTypes.element,
     }
     static defaultProps = {
@@ -43,14 +43,23 @@ export default class RefreshFlatList extends Component {
         });
     }
     //删除数据，通过下标来删除数据
-    delData(index){
-       alert(index)
-       this.state.dataArray.splice(index,1)
-       let data =  this.state.dataArray;
-         this.setState({
-             dataArray: data,
-         });
-     }
+    delData(index) {
+        this.state.dataArray.splice(index, 1)
+        let data = this.state.dataArray;
+        this.setState({
+            dataArray: data,
+        });
+    }
+
+
+    //修改数据，通过下标来确定数据
+    upData(index, item) {
+        this.state.dataArray[index] = item
+        let data = this.state.dataArray;
+        this.setState({
+            dataArray: data,
+        });
+    }
 
     /**
      * 初次设置数据
@@ -90,19 +99,19 @@ export default class RefreshFlatList extends Component {
         });
     }
 
-    getKeys(){
+    getKeys() {
         var keys = [];
-        this.state.dataArray.map((index)=>{
+        this.state.dataArray.map((index) => {
             keys.push(index)
         })
         return keys;
     }
     render() {
-        const {onRefreshs, onLoadData,...other} = this.props
+        const { onRefreshs, onLoadData, ...other } = this.props
 
         return <View style={styles.container}>
             <FlatList
-                 {...other}
+                {...other}
                 //renderItem={other.renderItem}
                 //设置数据
                 data={this.state.dataArray}
@@ -123,7 +132,7 @@ export default class RefreshFlatList extends Component {
                     />
                 }
                 //定义加载更多控件
-                ListFooterComponent={() =>this.getIndicator()}
+                ListFooterComponent={() => this.getIndicator()}
                 //设置触发 onEndReached 的距离
                 onEndReachedThreshold={0.1}
                 //触发加载更多的后执行的方法
@@ -140,10 +149,10 @@ export default class RefreshFlatList extends Component {
                     size={'large'}
                     animating={true}
                 />
-                <Text style={{color: '#d11', fontSize: 15, margin: 10}}>加载更多</Text>
+                <Text style={{ color: '#d11', fontSize: 15, margin: 10 }}>加载更多</Text>
             </View>;
         } else {
-            return <View/>
+            return <View />
             // return <View style={styles.indicatorContainer}>
             //     <Text style={{color: '#d11', fontSize: 15, margin: 10}}>{this.state.dataArray ? "" : "没有数据了"}</Text>
             // </View>;

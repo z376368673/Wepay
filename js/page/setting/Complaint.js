@@ -77,7 +77,7 @@ export default class Complaint extends BaseComponent {
      * 上传图片
      */
     uploadImg(){
-        alert(JSON.stringify(this.state.photos))
+        //alert(JSON.stringify(this.state.photos))
         let url =  BaseUrl.getComplaintUrl()
         /** sessionId   contents  file */
         HttpUtils.uploadImage(url,{sessionId:this.state.sessionId,contents:this.state.text},

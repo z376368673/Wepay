@@ -9,6 +9,9 @@ export default global.UserInfo = {
     userInfo:null,
     sessionId:null,
     
+    //经纬度 默认深圳的经纬度，
+    longitude:114.03, 
+    latitude:22.32,
     // "userid": 26536,
     // "account": "13923044417", 账号
     // "mobile": "13923044417", 手机号
@@ -22,4 +25,7 @@ export default global.UserInfo = {
     // "cangkuNum": 14.2282, //余额
     // "fengmiNum": 501.996, //积分
     // "todayReleas": 1.004, //可释放奖金
+
+
+
 }

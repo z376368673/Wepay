@@ -9,7 +9,7 @@ import {
     TouchableOpacity,
     StatusBar, Platform,
 } from 'react-native';
-import BaseComponent, { BaseStyles } from "./BaseComponent";
+import BaseComponent, { BaseStyles, integralRelease } from "./BaseComponent";
 import ViewUtils from "../util/ViewUtils";
 import { Carousel } from 'teaset';
 import Utils from "../util/Utils";
@@ -18,11 +18,11 @@ import AsySorUtils from '../dao/AsySorUtils';
 import BaseUrl from '../util/BaseUrl';
 import HttpUtils from '../util/HttpUtils';
 import UserInfo from '../model/UserInfo';
-import  SplashScreen from "react-native-splash-screen"
+import SplashScreen from "react-native-splash-screen"
 import { observer, inject } from '../../node_modules/mobx-react';
 const screen_width = Utils.getWidth();
 
-@inject('AppStore')@observer
+@inject('AppStore') @observer
 export default class HomePage extends BaseComponent {
     constructor(props) {
         super(props);
@@ -34,14 +34,29 @@ export default class HomePage extends BaseComponent {
     componentDidMount() {
         SplashScreen.hide();
         this.getBanner();
+        if (this.props.AppStore.userInfo.isReward === 0) {
+            DialogUtils.redPacket(this.props.AppStore.userInfo.todayReleas,
+                () => integralRelease(this.props.AppStore))
+        }
+        //获取经纬度 并赋值给全局变量
+        Utils.getLocation((coords)=>{
+            Utils.getCityInfoBy(
+                JSON.stringify(coords.longitude), 
+                JSON.stringify(coords.latitude),
+                (addressComponent)=>{
+                    this.userInfo = this.getUserInfo()
+                    this.userInfo.longitude =addressComponent.longitude
+                    this.userInfo.latitude =addressComponent.latitude
+            })
+        })
     }
     setImgToBanner(bannerArray) {
         var views = []
-        bannerArray.forEach((element,index)=> {
+        bannerArray.forEach((element, index) => {
             views.push(
-                <TouchableOpacity  key={index.toString()} onPress={() => { alert(JSON.stringify(element)) }}>
+                <TouchableOpacity key={index.toString()} onPress={() => { alert(this.getImgUrl(element.pic)) }}>
                     <Image style={{ width: screen_width, height: screen_width / 4 }}
-                        resizeMode='cover' source={{ uri: element.pic }} />
+                        resizeMode='cover' source={{ uri: this.getImgUrl(element.pic) }} />
                 </TouchableOpacity>)
         });
         return views;
@@ -67,7 +82,7 @@ export default class HomePage extends BaseComponent {
     }
     _itemView(callback, img, text) {
         return <TouchableOpacity
-           
+
             activeOpacity={0.8}
             onPress={callback}
         >
@@ -83,7 +98,7 @@ export default class HomePage extends BaseComponent {
         </TouchableOpacity>
     }
     _StatusBar(statusBarColor) {
-        return<View style={{ height: 20 ,backgroundColor:statusBarColor}}>
+        return <View style={{ height: 20, backgroundColor: statusBarColor }}>
             <StatusBar
                 animated={true} //指定状态栏的变化是否应以动画形式呈现。目前支持这几种样式：backgroundColor, barStyle和hidden
                 hidden={false}  //是否隐藏状态栏。
@@ -109,13 +124,13 @@ export default class HomePage extends BaseComponent {
                                 <View
                                     style={[BaseStyles.container_row, { alignItems: 'center' }]}
                                 >
-                                    <Image source={{uri: this.props.AppStore.userInfo.imgHead}}
+                                    <Image source={{ uri: this.getImgUrl(this.props.AppStore.userInfo.imgHead) }}
                                         style={styles.headImg} />
                                     <View style={{ flex: 1, marginLeft: 10 }}>
                                         <Text style={styles.text}>
                                             UUID:{this.props.AppStore.userInfo.account}
                                         </Text>
-                                        {ViewUtils.getCreditView(this.props.AppStore.userInfo.userCredit, 16, 15,"#fff")}
+                                        {ViewUtils.getCreditView(this.props.AppStore.userInfo.userCredit, 16, 15, "#fff")}
                                     </View>
                                     <Image style={{ width: 30, height: 30, borderRadius: 15 }}
                                         source={require('../../res/images/shezhi.png')}
@@ -174,7 +189,7 @@ export default class HomePage extends BaseComponent {
                             {this._itemView(() => this.onClicks(1), require('../../res/images/zhuanchu.png'), "转出")}
                             {this._itemView(() => this.onClicks(2), require('../../res/images/zhuanru.png'), "转入")}
                             {this._itemView(() => this.onClicks(6), require('../../res/images/shangcheng.png'), "商城")}
-                           
+
                             {this._itemView(() => this.onClicks(3), require('../../res/images/mairu.png'), "买入")}
                             {this._itemView(() => this.onClicks(4), require('../../res/images/maichu.png'), "卖出")}
                             {this._itemView(() => this.onClicks(5), require('../../res/images/shuzi.png'), "数字资产")}
@@ -210,10 +225,10 @@ export default class HomePage extends BaseComponent {
             case 4:
                 this.props.navigation.navigate('SellPage');
                 break;
-                case 5://数字资产
-                this.props.navigation.navigate('SellPage');
+            case 5://数字资产
+                this.props.navigation.navigate('ApplyStore');
                 break;
-                case 6://商城
+            case 6://商城
                 this.props.navigation.navigate('StoreMall');
                 break;
             default://

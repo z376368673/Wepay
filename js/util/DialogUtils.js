@@ -155,4 +155,52 @@ export default class DialogUtils {
       }
 
 
+
+
+    /**
+     * 红包
+     * @param {*} text 提示类容 
+     * @param {*} confirm  按钮回调
+     * @param {*} confirmText  按钮文字
+     */
+    static redPacket(text, confirm,) {
+        let overlayView = (
+            <Overlay.PopView
+                style={{ alignItems: 'center', justifyContent: 'center', padding: 40 }}
+                type={"zoomIn"}//动画效果
+                modal={true}//点击任意区域消失 
+                ref={v => this.MsgView = v}
+            >
+                <View style={{ minWidth: 300, minHeight: 100, flexDirection: 'column',  }}>
+                    {/* 内容 */}
+                    <View style={{ backgroundColor:"#F9F900",marginBottom:-100,zIndex:1,
+                     justifyContent: "center", alignItems: "center", padding: 25,marginLeft:30,marginRight:30, }}>
+                        <Text style={{ fontSize: 23, color: "#d11" ,marginTop:40,}}>{text}元</Text>
+                        <View style={{ backgroundColor: "#d11", height: 0.5 ,width:120,marginTop:10,marginBottom:10}} />
+                        <Text style={{ fontSize: 15, color: "#d11" }}>天天签到红包不断</Text>
+                    </View>
+                    <View style={{backgroundColor:"#d11",minHeight: 160}}>
+                    <Text style={{ fontSize: 18, color: "#F9F900",position:"absolute", bottom:15,alignSelf:"center"}}>Wepay签到红包</Text>
+                    </View>
+                    <View style={{ justifyContent: "center", alignItems: "center",  flexDirection: "row", }}>
+                        <TouchableOpacity
+                            style={{ justifyContent: "center", 
+                            alignItems: "center",height:48,
+                            backgroundColor:"#f9f900",borderRadius:24,
+                            borderColor:"#EAC100",borderWidth:3,margin:30,
+                           paddingLeft:40,paddingRight:40}}
+                            onPress={() => {
+                                this.MsgView && this.MsgView.close(),
+                                    confirm? confirm() : {}
+                            }} >
+                            <Text style={{ fontSize: 20, color: "#d11" }}>存入余额</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Overlay.PopView>
+        );
+        Overlay.show(overlayView);
+    }
+
+
 }

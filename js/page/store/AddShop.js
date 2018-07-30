@@ -7,9 +7,11 @@ import { PullPicker } from 'teaset';
 import SYImagePicker from 'react-native-syan-image-picker'
 import Utils from '../../util/Utils';
 import DialogUtils from '../../util/DialogUtils';
+import HttpUtils from '../../util/HttpUtils';
+import BaseUrl from '../../util/BaseUrl';
 
 /**
- * 添加商品
+ * 添加商品 / 编辑修改商品
  */
 const width_w = Utils.getWidth() / 2 - 20;
 export default class AddShop extends BaseComponent {
@@ -17,12 +19,32 @@ export default class AddShop extends BaseComponent {
         super(props);
         this.state = {
             shopName:"",
-            shopPrice:0,
-            shopNum:0,
+            shopPrice:"",
+            shopNum:"",
             shopImage: require("../../../res/images/addimg.png"),
+            photos:[]
         }
+        this.userInfo = this.getUserInfo()
         this.navigation = this.props.navigation;
+        this.params = this.props.navigation.state.params;
+        this.data = this.params?this.params.data:null;
+
+        this.type = "add"
     }
+
+    componentDidMount(){
+       // alert(JSON.stringify(this.data))
+        if(this.data){
+            this.type = "edit"
+            this.setState({
+                shopName:this.data.item.goodsName,
+                shopPrice:this.data.item.goodsPrice,
+                shopNum:this.data.item.goodsStock,
+                shopImage:{uri:this.getImgUrl(this.data.item.coverPlan)}
+            })
+        }
+    }
+
 
     /**
     * 使用方式sync/await
@@ -38,7 +60,7 @@ export default class AddShop extends BaseComponent {
                 if (photo.enableBase64) {
                     source = { uri: photo.base64 };
                 }
-                this.setState({shopImage:source}, )
+                this.setState({shopImage:source,photos:[photo]})
             })
         } catch (err) {
             // 取消选择，err.message为"取消"
@@ -46,12 +68,78 @@ export default class AddShop extends BaseComponent {
         }
     };
 
+    onClicks(type) {
+        if(type==="add"){
+            if(this.state.shopName.length<1){
+                DialogUtils.showMsg("请输入商品名称");
+            }else if(this.state.shopPrice.length<1){
+                DialogUtils.showMsg("请输入商品价格");
+            }else if(this.state.shopNum.length<1){
+                DialogUtils.showMsg("请输入商品库存");
+            }else if(this.state.photos.length<1){
+                DialogUtils.showMsg("请选择商品照片");
+            }else{
+                this.addShop();
+               // this.props.navigation.navigate('MyStore'); 
+            }
+        }
+    }
+
+    /**
+     * 添加商品信息
+     */
+    addShop(){
+        //alert(JSON.stringify(this.state.photos))
+        let url =  BaseUrl.getAddShopUrl()
+        /** sessionId   contents  file */
+        HttpUtils.uploadImage(url,
+            {sessionId:this.userInfo.sessionId,
+                goodsName:this.state.shopName,
+                goodsPrice:this.state.shopPrice,
+                goodsStock:this.state.shopNum,
+            },
+            this.state.photos,(result)=>{
+            if(result.code===1){
+                DialogUtils.showMsg("添加商品成功","知道了",()=>{
+                     this.props.navigation.goBack()
+                });
+            }else{
+                DialogUtils.showToast(result.msg)
+            }
+        })
+    }
+
+
+     /**
+     * 修改商品信息
+     */
+    editShop(){
+        //alert(JSON.stringify(this.state.photos))
+        let url =  BaseUrl.getAddShopUrl()
+        /** sessionId   contents  file */
+        HttpUtils.uploadImage(url,
+            {sessionId:this.userInfo.sessionId,
+                id:this.data.item.id,
+                goodsName:this.state.shopName,
+                goodsPrice:this.state.shopPrice,
+                goodsStock:this.state.shopNum,
+            },
+            this.state.photos,(result)=>{
+            if(result.code===1){
+                DialogUtils.showMsg("添加商品成功","知道了",()=>{
+                     this.props.navigation.goBack()
+                });
+            }else{
+                DialogUtils.showToast(result.msg)
+            }
+        })
+    }
 
     render() {
         return (
             <View style={BaseStyles.container_column}>
                 <NavigationBar
-                    title={"添加商品"}
+                    title={this.type==="add"?"添加商品":"修改商品"}
                     navigation={this.props.navigation}
                 />
                 <ScrollView >
@@ -62,7 +150,7 @@ export default class AddShop extends BaseComponent {
                             <TextInput
                                 style={styles.itemTextInput}
                                 placeholder={'请输入商品名称'}
-                                //defaultValue={userName}
+                                defaultValue={this.state.shopName}
                                 placeholderTextColor={'#999'}
                                 underlineColorAndroid='transparent'
                                 keyboardType={"default"}
@@ -76,10 +164,10 @@ export default class AddShop extends BaseComponent {
                             <TextInput
                                 style={[styles.itemTextInput,{width:60}]}
                                 placeholder={'请输入价格'}
-                                //defaultValue={userName}
+                                defaultValue={this.state.shopPrice+""}
                                 placeholderTextColor={'#999'}
                                 underlineColorAndroid='transparent'
-                                keyboardType={"default"}
+                                keyboardType={"numeric"}
                                 maxLength={12}
                                 onChangeText={(text) => this.setState({ shopPrice: text })} />
                                 <Text style={[styles.itemText,{marginLeft:10}]}>
@@ -91,7 +179,7 @@ export default class AddShop extends BaseComponent {
                             <TextInput
                                 style={[styles.itemTextInput,{width:60}]}
                                 placeholder={'请输入库存数量'}
-                                //defaultValue={userName}
+                                defaultValue={this.state.shopNum+""}
                                 placeholderTextColor={'#999'}
                                 underlineColorAndroid='transparent'
                                 keyboardType={"numeric"}
@@ -111,9 +199,9 @@ export default class AddShop extends BaseComponent {
                         <TouchableOpacity
                          onPress={() => this.handleAsyncSelectPhoto(false, false)}
                         ><Image
-                         style={{flex:1,width:200,height:140,backgroundColor:"#fff"}}
+                         style={{flex:1,width:240,height:170,backgroundColor:"#fff"}}
                          source={this.state.shopImage}
-                        />></TouchableOpacity>
+                        /></TouchableOpacity>
                         </View>
                         <TouchableOpacity
                             activeOpacity={0.8}
@@ -134,7 +222,7 @@ export default class AddShop extends BaseComponent {
                                 alignSelf: "center",
                                 color: '#FFF',
                                 fontSize: 20,
-                            }}>确认添加</Text>
+                            }}>确认{this.type==="add"?"添加":"修改"}</Text>
                         </TouchableOpacity>
 
                     </View>
@@ -143,12 +231,6 @@ export default class AddShop extends BaseComponent {
 
         );
     }
-    onClicks(type) {
-        if (type === "sumbitApply") {
-            this.props.navigation.navigate('MyStore');
-        }
-    }
-
 }
 export const styles = StyleSheet.create({
     container_center: {

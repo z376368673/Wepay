@@ -7,6 +7,8 @@ import { PullPicker } from 'teaset';
 import SYImagePicker from 'react-native-syan-image-picker'
 import Utils from '../../util/Utils';
 import DialogUtils from '../../util/DialogUtils';
+import BaseUrl from '../../util/BaseUrl';
+import HttpUtils from '../../util/HttpUtils';
 
 
 /**
@@ -17,60 +19,70 @@ export default class ApplyStore extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
-            text: '其输入您的意见',
             card1: require("../../../res/images/addimg.png"),
             card2: require("../../../res/images/addimg.png"),
-            headImg: require("../../../res/images/addimg.png"),
-            selectedIndex: null,
+            //店铺头像被暂时弃用
+            //headImg: require("../../../res/images/addimg.png"),
+            
             longitude:0,
             latitude:0,
+            //店铺当前选中的位置
+            selectedIndex: null,
+            selectedId: null,
+
+            userName:"",
+            idcard:"",//身份证号
+            phone:"",
+            shopName:"",//店铺名称
+            shopAddress:"",//店铺地址
+
         }
-        this.items = [
-            '全部',
-          ];
+        //店铺分类实体类
+        this.typeArr=[],
+        //店铺分类名称
+        this.items = [];
+          //存储上传的照片
+        this. cardImg =[]
+        this.userInfo = this.getUserInfo()
     }
     componentDidMount(){
-        Utils.getLocation((coords)=>{
-            Utils.getCityInfoBy(
-                JSON.stringify(coords.longitude), 
-                JSON.stringify(coords.latitude),
-                (addressComponent)=>{
-                    this.setState({
-                        longitude:addressComponent.longitude,
-                        latitude:addressComponent.latitude
-                    })
-            })
-        })
+        this.getCateList()
+       
     }
-
-    show() {
+    //选择分类弹出框
+    showStoreType() {
         PullPicker.show(
             '选择店铺分类',
             this.items,
             this.state.selectedIndex,
-            (item, index) => this.setState({ selectedIndex: index })
+            (item, index) => {
+                this.setState({ selectedIndex: index,selectedId:this.typeArr[index].id })
+                //alert(JSON.stringify(this.typeArr[index]))
+            }
         );
     }
-    setImg(type, source) {
+    setImg(type, source,photo) {
         switch (type) {
             case "card1":
+                this.cardImg[0]=photo;
                 this.setState({
                     card1: source,
                 })
                 break;
             case "card2":
+                this.cardImg[1]=photo;
                 this.setState({
                     card2: source,
                 })
                 break;
             case "headImg":
+                this.cardImg[3]=photo;
                 this.setState({
                     headImg: source,
                 })
                 break;
         }
     }
-
 
     /**
     * 使用方式sync/await
@@ -87,14 +99,31 @@ export default class ApplyStore extends BaseComponent {
                 if (photo.enableBase64) {
                     source = { uri: photo.base64 };
                 }
-                this.setImg(type, source)
+                this.setImg(type, source,photo)
             })
         } catch (err) {
             // 取消选择，err.message为"取消"
             // alert(err,photos)
         }
     };
-
+    /**
+     * 获取商品分类
+     */
+    getCateList() {
+        let url = BaseUrl.getCateList()
+        HttpUtils.getData(url)
+            .then(result => {
+                if (result.code === 1) {
+                    this.typeArr = result.data
+                    for(var i=0;i<this.typeArr.length;i++){
+                        this.items.push(this.typeArr[i].name)
+                    }
+                }
+            })
+            .catch(error => {
+                DialogUtils.showToast("获取分类失败")
+            })
+    }
 
     render() {
         let {selectedIndex, modalSelectedIndex} = this.state;
@@ -126,7 +155,7 @@ export default class ApplyStore extends BaseComponent {
                                 underlineColorAndroid='transparent'
                                 keyboardType={"default"}
                                 maxLength={12}
-                                onChangeText={(text) => this.setState({ text: text })} />
+                                onChangeText={(text) => this.setState({ userName: text })} />
                         </View>
                         <View style={styles.itemView}>
                             <Text style={styles.itemText}>
@@ -139,7 +168,7 @@ export default class ApplyStore extends BaseComponent {
                                 underlineColorAndroid='transparent'
                                 keyboardType={"numeric"}
                                 maxLength={18}
-                                onChangeText={(text) => this.setState({ text: text })} />
+                                onChangeText={(text) => this.setState({ idcard: text })} />
                         </View>
 
                         <View style={styles.itemView}>
@@ -153,7 +182,7 @@ export default class ApplyStore extends BaseComponent {
                                 maxLength={11}
                                 underlineColorAndroid='transparent'
                                 keyboardType={"numeric"}
-                                onChangeText={(text) => this.setState({ text: text })} />
+                                onChangeText={(text) => this.setState({ phone: text })} />
                         </View>
 
                         <Text style={{
@@ -164,7 +193,7 @@ export default class ApplyStore extends BaseComponent {
                             padding: 10,
                         }}>*请上传身份证正反面</Text>
 
-                        <View style={{ flexDirection: 'row', backgroundColor: "#fff" }}>
+                        <View style={{ flexDirection: 'row', backgroundColor: "#fff",marginBottom: 8 }}>
                             <TouchableOpacity activeOpacity={0.8} onPress={() => this.handleAsyncSelectPhoto("card1", false, false)}>
                                 <View style={{ flexDirection: "column", padding: 10, backgroundColor: "#fff" }}>
                                     <Image style={{
@@ -204,7 +233,7 @@ export default class ApplyStore extends BaseComponent {
                         </View>
 
                         {/* 申请店铺信息 */}
-                        <View style={{ flexDirection: "row", padding: 10, backgroundColor: "#fff", marginTop: 8, alignItems: "center" }}>
+                        {/* <View style={{ flexDirection: "row", padding: 10, backgroundColor: "#fff", marginTop: 8, alignItems: "center" }}>
                             <Text style={styles.itemText}>店铺头像</Text>
                             <TouchableOpacity activeOpacity={0.8} onPress={() => this.handleAsyncSelectPhoto("headImg", true, true)}>
                                 <Image style={{
@@ -218,7 +247,7 @@ export default class ApplyStore extends BaseComponent {
                                     source={this.state.headImg}
                                 />
                             </TouchableOpacity>
-                        </View>
+                        </View> */}
                         <View style={styles.itemView}>
                             <Text style={styles.itemText}>
                                 店铺名称</Text>
@@ -230,14 +259,14 @@ export default class ApplyStore extends BaseComponent {
                                 underlineColorAndroid='transparent'
                                 maxLength={10}
                                 keyboardType={"default"}
-                                onChangeText={(text) => this.setState({ text: text })} />
+                                onChangeText={(text) => this.setState({ shopName: text })} />
                         </View>
                         <View style={[styles.itemView,{alignItems: "center",height:55}]}>
                             <Text style={[styles.itemText]}>
                                 店铺分类</Text>
                             <TouchableOpacity
                                 activeOpacity={0.8}
-                                onPress={()=>this.show()}>
+                                onPress={()=>this.showStoreType()}>
                                 <View style={{flexDirection:"row"}}>
                                 <Text style={{fontSize: 16, color: "#333",marginLeft:10}}>{selected}</Text>
                                 {/* <Image
@@ -258,7 +287,7 @@ export default class ApplyStore extends BaseComponent {
                                 underlineColorAndroid='transparent'
                                 maxLength={10}
                                 keyboardType={"default"}
-                                onChangeText={(text) => this.setState({ text: text })} />
+                                onChangeText={(text) => this.setState({ shopAddress: text })} />
                         </View>
                         <TouchableOpacity
                             activeOpacity={0.8}
@@ -290,8 +319,53 @@ export default class ApplyStore extends BaseComponent {
     }
     onClicks(type) {
         if(type==="sumbitApply"){
-            this.props.navigation.navigate('MyStore'); 
+            if(this.state.userName.length<1){
+                DialogUtils.showMsg("请填写真实姓名");
+            }else if(this.state.idcard.length!==18){
+                DialogUtils.showMsg("请填写正确的18位身份证号");
+            }else if(this.state.phone.length!==11){
+                DialogUtils.showMsg("请填写11手机号码");
+            }else if(this.cardImg.length!==2){
+                DialogUtils.showMsg("请选择身份证正反面照片");
+            }else if(this.state.shopName.length<1){
+                DialogUtils.showMsg("请填写您的店铺名称");
+            }else if(this.state.selectedId===null){
+                DialogUtils.showMsg("请选择您的店铺分类");
+            }else if(this.state.shopAddress.length<1){
+                DialogUtils.showMsg("请填写准确的位置信息");
+            }else{
+                this.sumbitApply();
+               // this.props.navigation.navigate('MyStore'); 
+            }
         }
+    }
+
+
+    /**
+     * 提交申请
+     */
+    sumbitApply(){
+        //alert(JSON.stringify(this.state.photos))
+        let url =  BaseUrl.applyStore()
+        /** sessionId   contents  file */
+        HttpUtils.uploadImage(url,
+            {sessionId:this.userInfo.sessionId,
+                typeId:this.state.selectedId,
+                realname:this.state.userName,
+                idcard:this.state.idcard,
+                phone:this.state.phone,
+                shopName:this.state.shopName,
+                shopAddress:this.state.shopAddress,
+            },
+            this.cardImg,(result)=>{
+            if(result.code===1){
+                DialogUtils.showMsg("提交成功，我们会认真审查您的信息,请耐心等待!","知道了",()=>{
+                     this.props.navigation.goBack()
+                });
+            }else{
+                DialogUtils.showToast(result.msg)
+            }
+        })
     }
 
 }

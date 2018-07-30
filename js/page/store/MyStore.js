@@ -13,38 +13,87 @@ import BaseComponent, { BaseStyles, mainColor, window_width } from "../BaseCompo
 import NavigationBar from "../../common/NavigationBar";
 import HttpUtils from "../../util/HttpUtils";
 import BaseUrl from "../../util/BaseUrl";
-import RefreshFlatList2 from "../../common/RefreshFlatList2"
+import RefreshFlatList from "../../common/RefreshFlatList"
 //我的店铺
 
 export default class MyStore extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
-            text: '18629448593',
             yue: 0,
             jifen: 0,
         }
+        this.userInfo = this.getUserInfo();
     }
     //界面加载完成
     componentDidMount() {
         this._refreshData()
     }
     //刷新数据
-    _refreshData(value) {
-        const URL = 'https://api.github.com/search/repositories?q=';
+    _refreshData() {
         this.refList.refreshStar()
-        HttpUtils.getData(URL + value)
+        this.pageIndex = 1;
+        this.getData(true)
+    }
+    //加载更多数据
+    _onLoadData() {
+        this.getData(false)
+    }
+
+    /**
+    * 获取数据
+    * @param {*} isRefesh  是否刷新
+    * @param {*} pageIndex 
+    */
+    getData(isRefesh) {
+        this.url = BaseUrl.getMyStoreShop(this.userInfo.sessionId, this.pageIndex)
+        HttpUtils.getData(this.url)
             .then(result => {
-                var arr = [];
-                for (let i = 0; i < 3; i++) {
-                    arr.push(result.items[i])
+                //alert(JSON.stringify(result))
+                if (result.code === 1) {
+                    if (isRefesh) {
+                        this.refList.setData(result.data)
+                    } else {
+                        this.refList.addData(result.data)
+                        this.pageIndex += 1
+                    }
+                } else {
+                    DialogUtils.showToast(result.msg)
                 }
-                this.refList.setData(arr)
             })
             .catch(error => {
                 this.refList.setData([])
+                DialogUtils.showToast("error:" + error.message)
             })
     }
+
+    editShopState(data){
+        if(data.item.goodsStatus===2){
+            this.url = BaseUrl.updateStatus(this.userInfo.sessionId, data.item.id,1)
+        }else{
+            this.url = BaseUrl.updateStatus(this.userInfo.sessionId, data.item.id,2)
+        }
+        console.warn(this.url)
+
+        HttpUtils.getData(this.url)
+        .then(result => {
+            if (result.code===1) {
+                if(data.item.goodsStatus===2){
+                        data.item.goodsStatus=1
+                        this.refList.upData(data.index,data.item)
+                    }else{
+                        data.item.goodsStatus=2
+                        this.refList.upData(data.index,data.item)
+                    }
+            }else{
+                DialogUtils.showToast(result.msg)
+            }
+        })
+        .catch(error => {
+            DialogUtils.showToast("服务器繁忙"+error.message)
+        })
+    }
+
     /**
        * 绘制itemView
        * @param data
@@ -63,20 +112,20 @@ export default class MyStore extends BaseComponent {
             }}>
             <Image
                 style={{ width: 80, height: 80, }}
-                source={require("../../../res/images/banben.png")} />
+                source={{uri:this.getImgUrl(data.item.coverPlan)}} />
             <View style={{ flexDirection: 'column', flex: 1, marginLeft: 10, }}>
                 <Text
-                    style={{ color: "#333333", fontSize: 18 }}>{data.index} {data.item ? data.item.name : "name"}</Text>
+                    style={{ color: "#333333", fontSize: 18 }}>{data.item ? data.item.goodsName : "name"}</Text>
                 <View style={{ flexDirection: 'row', marginTop: 5 }}>
                     <Text style={{
                         color: "#d11",
                         fontSize: 15,
-                    }}>￥{124}</Text>
+                    }}>￥{data.item.goodsPrice}</Text>
                     <Text style={{
                         color: "#888",
                         fontSize: 15,
                         marginLeft: 30,
-                    }}>库存:{3}</Text>
+                    }}>库存:{data.item.goodsStock}</Text>
                 </View>
 
                 <View style={{ flexDirection: "row-reverse", backgroundColor: "#fff", marginTop: 5 }}>
@@ -93,11 +142,11 @@ export default class MyStore extends BaseComponent {
                             backgroundColor: mainColor,
                             marginLeft: 10,
                         }}
-                        onPress={() => this.onClickDelect(data)}>
+                        onPress={() => this.editShopState(data)}>
                         <Text style={{
                             color: "#fff",
                             fontSize: 15,
-                        }}>上架</Text>
+                        }}>{data.item.goodsStatus===2?"下架":"上架"}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={{
@@ -112,7 +161,7 @@ export default class MyStore extends BaseComponent {
                             alignItems: "center",
                             justifyContent: "center"
                         }}
-                        onPress={() => this.onClickDelect(data)}>
+                        onPress={() => this.editShop(data)}>
                         <Text style={{
                             color: "#333",
                             fontSize: 15,
@@ -121,9 +170,6 @@ export default class MyStore extends BaseComponent {
                 </View>
             </View>
         </View>
-    }
-    onClickDelect(data) {
-
     }
     render() {
         return (
@@ -134,7 +180,7 @@ export default class MyStore extends BaseComponent {
                     rightView={NavigationBar.getRightStyle_Text('订单', {
                         fontSize: 16,
                         color: "#fff"
-                    }, () => this.onClicks(1))}
+                    }, () => this.myorder())}
                 />
 
                 {/* 收益布局*/}
@@ -147,7 +193,6 @@ export default class MyStore extends BaseComponent {
                 }]}>
                     <TouchableOpacity
                         activeOpacity={0.8}
-                        onPress={() => this.onClicks(2)}
                     >
                         <View style={{ flexDirection: 'column', }}>
 
@@ -157,7 +202,6 @@ export default class MyStore extends BaseComponent {
                     <View style={{ height: 30, width: 0.5, backgroundColor: '#fff' }} />
                     <TouchableOpacity
                         activeOpacity={0.8}
-                        onPress={() => this.onClicks(3)}
                     >
                         <View style={{ flexDirection: 'column', }}>
                             <Text style={{ fontSize: 16, color: '#fff' }}>￥{this.state.jifen}</Text>
@@ -165,13 +209,13 @@ export default class MyStore extends BaseComponent {
                         </View></TouchableOpacity>
                 </View>
                 <View style={{ flex: 1, backgroundColor: "#f1f1f1" }}>
-                    <RefreshFlatList2
+                    <RefreshFlatList
                         ref={refList => this.refList = refList}
                         renderItem={(items) => this._getBuyOrSellItem(items)}
                         onRefreshs={() => this._refreshData()}
                     />
                 </View>
-                <TouchableOpacity onPress={()=>this.onClicks("add")}>
+                <TouchableOpacity onPress={()=>this.addShop()}>
                     <View style={{ flexDirection: "row", backgroundColor: mainColor, height: 48, justifyContent: "center", alignItems: "center" }}>
                         <Text style={{ fontSize: 20, color: "#fff" }}>+ </Text><Text style={{ fontSize: 15, color: "#fff" }}>添加商品</Text>
                     </View>
@@ -180,21 +224,17 @@ export default class MyStore extends BaseComponent {
         );
     }
 
-    onClicks(index) {
-        alert(index)
-        switch (index) {
-            case 1:
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            case "add":
-            this.props.navigation.navigate('BankCardList');
-                break;
-            default:
-                break;
-        }
+    
+    myorder(){
+        this.props.navigation.navigate('AddShop');
+    }
+    addShop(){
+        this.props.navigation.navigate('AddShop');
+    }
+    editShop(data){
+        this.props.navigation.navigate('AddShop',{
+            data:data,
+        });
     }
 }
 export const styles = StyleSheet.create({

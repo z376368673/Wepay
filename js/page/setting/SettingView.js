@@ -22,24 +22,16 @@ export default class SettingView extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
-            userId: '123456',
-            xinyong: 5,
-            nickname: "哈哈",
             photos: [],//选择的照片
-            headImg:require('../../../res/images/touxiang-xiao.png'),
+            //headImg:require('../../../res/images/touxiang-xiao.png'),
             newMessage:0,
+            storeStatus:2,//0.申请中,1.已通过,2.去申请
         }
         this.props.AppStore.userInfo = this.getUserInfo()
     }
     componentDidMount(){
         this.isNewMessage();
-        this.setState({
-            headImg:{uri:this.props.AppStore.userInfo.imgHead},
-            nickname:this.props.AppStore.userInfo.username,
-            userId:this.props.AppStore.userInfo.account,
-            xinyong:this.props.AppStore.userInfo.userCredit,
-            sessionId:this.props.AppStore.userInfo.sessionId,
-        })
+        this.getStoreStatus()
     }
 
    /**
@@ -53,6 +45,27 @@ export default class SettingView extends BaseComponent {
                 this.info = result.data
                 this.setState({
                     newMessage:this.info.newMessage,
+                })
+            }else{
+                DialogUtils.showToast(result.msg)
+            }
+        })
+        .catch(error => {
+            DialogUtils.showToast("服务器繁忙"+error.message)
+        })
+    }
+
+     /**
+     * 申请店铺-店铺状态
+     *  描述:	判断是否有店铺，是否申请中
+     */
+    getStoreStatus(){
+        let url =  BaseUrl.getStoreStatus(this.props.AppStore.userInfo.sessionId)
+        HttpUtils.getData(url)
+        .then(result => {
+            if (result.code===1) {
+                this.setState({
+                    storeStatus:result.data,
                 })
             }else{
                 DialogUtils.showToast(result.msg)
@@ -158,12 +171,24 @@ export default class SettingView extends BaseComponent {
                 });
                 break
             case "store"://我的店铺
-                DialogUtils.showPop("您还没有开通店铺，是否去申请店铺",
+                let content;
+                let btn;
+                if(this.state.storeStatus===0){
+                    content="您的店铺已提交申请，请耐心等待审核..."
+                    btn = "知道了"
+                }else if(this.state.storeStatus===1){
+                    this.props.navigation.navigate('MyStore');
+                    break;
+                }else{
+                    content="您还没有开通店铺，是否去申请店铺"
+                    btn = "去申请"
+                }
+                DialogUtils.showPop(content,
                     () => {
-                        this.props.navigation.navigate('ApplyStore');
+                        this.state.storeStatus===0?{}:this.props.navigation.navigate('ApplyStore');
                     },
                     () => { },
-                    "去申请", "取消"
+                    btn, "取消"
                 );
                 break
                 case "order"://地址管理
@@ -199,7 +224,7 @@ export default class SettingView extends BaseComponent {
                             <View
                                 style={[styles.container_row, { alignItems: 'center', padding: 10, }]}
                             >
-                                <Image source={{uri:this.props.AppStore.userInfo.imgHead}}
+                                <Image source={{uri:this.getImgUrl(this.props.AppStore.userInfo.imgHead)}}
                                     style={styles.headImg} />
                                 <View style={{ flex: 1, marginLeft: 10 }}>
                                     <Text style={{ color: "#333", fontSize: 16, }}>
