@@ -19,7 +19,7 @@ import BaseUrl from '../util/BaseUrl';
 import HttpUtils from '../util/HttpUtils';
 import UserInfo from '../model/UserInfo';
 import SplashScreen from "react-native-splash-screen"
-import { observer, inject } from '../../node_modules/mobx-react';
+import { observer, inject } from 'mobx-react';
 const screen_width = Utils.getWidth();
 
 @inject('AppStore') @observer

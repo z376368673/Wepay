@@ -191,9 +191,6 @@ export default class SettingView extends BaseComponent {
                     btn, "取消"
                 );
                 break
-                case "order"://地址管理
-                this.props.navigation.navigate('MyOrder');
-                break
             case "address"://地址管理
                 this.props.navigation.navigate('AddressList');
                 break
@@ -261,8 +258,6 @@ export default class SettingView extends BaseComponent {
                         <View style={[BaseStyles.container_center, { marginTop: 12 }]} />
                         {ViewUtils.getSettingItem1(require('../../../res/images/dianpu.png'), '我的店铺', false,
                             () => this.onClicks("store"))}
-                        {ViewUtils.getSettingItem1(require('../../../res/images/wodedingdan.png'), '我的订单', false,
-                            () => this.onClicks("order"))}
                         {ViewUtils.getSettingItem1(require('../../../res/images/dizhiguanli.png'), '地址管理', false,
                             () => this.onClicks("address"))}
 
@@ -297,6 +292,8 @@ const styles = StyleSheet.create({
         width: 70,
         height: 70,
         borderRadius: 35,
+        borderWidth: 0.5,
+        borderColor: "#d11",
     },
     logoutView: {
         padding: 15,

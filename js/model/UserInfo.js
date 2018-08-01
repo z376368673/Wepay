@@ -1,5 +1,5 @@
 import AsySorUtils from '../dao/AsySorUtils';
-import { observable } from '../../node_modules/mobx';
+import { observable } from 'mobx';
 
 export default global.UserInfo = {
 //    static constructor(){

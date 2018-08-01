@@ -981,7 +981,7 @@ export default class BaseUrl {
     }
 
 
-     /**
+    /**
      * 商城 -商品列表 /搜索/分类
      * @param {*} sessionId 
      * @param {*} pageIndex 
@@ -1007,6 +1007,7 @@ export default class BaseUrl {
         }
         return path
     }
+
 
      /**
      *  商城 -店铺列表
@@ -1074,6 +1075,20 @@ export default class BaseUrl {
     }
 
      /**
+     *  我的店铺 - 店铺收益
+     * @param {*} sessionId 
+     * 
+    3.1	todayEarnings		今日收益
+    3.2	totalRevenue		总收益
+     * 
+     */
+    static getMyStoreEarnings(sessionId) {
+        return url + "/shop/earnings?sessionId=" + sessionId 
+    }
+
+
+
+     /**
      * 修改商品状态 1.未上架  2.上架，3.下架
      * @param {*} sessionId 
      * @param {*} pageIndex 
@@ -1086,5 +1101,142 @@ export default class BaseUrl {
     static updateStatus(sessionId, id,goodsStatus) {
         return url + "/goods/updateStatus?sessionId=" + sessionId + "&id=" + id+ "&goodsStatus=" + goodsStatus
     }
-}
 
+
+    /**
+     * 获取商品详情
+     * @param {*} sessionId 
+     * @param {*} id   商品id
+     * 
+     * goodsDtos 是商品中的一个属性
+     * 
+     3.1	id		商品id
+     3.2	goodsName		商品名称
+     3.3	goodsPrice		商品价格
+     3.4	goodsStock		商品库存
+     3.5	coverPlan		商品封面图
+     3.6	goodsPic2		暂时没用
+     3.7	goodsPic3		暂时没用
+     3.8	goodsPic4		暂时没用
+     3.9	goodsPic5		暂时没用
+     3.10	goodsPic6		暂时没用
+     3.11	goodsStatus		商品状态
+     3.12	createTime		创建时间
+     3.13	shopId		    店铺id
+     3.14	show		    是否显示1.显示，0.不显示
+     3.15	classifyId		分类id
+     3.16	uid		用户id
+     */
+    
+    static getShopDetail(sessionId, id) {
+        var path = url + "/goods/detail?sessionId=" + sessionId + "&id=" + id;
+        return path
+    }
+
+
+     /**
+     * 获取店铺详情  
+     * @param {*} sessionId 
+     * @param {*} id   商品id
+     *                              
+     * 
+     * 
+     3.1	goodsDtos		商品集合
+
+     3.1.1	id		商品id
+     3.1.2	goodsName		商品名称
+     3.1.3	goodsPrice		商品价格
+     3.1.4	goodsStock		商品库存
+     3.1.5	coverPlan		商品封面图
+
+     以上的goodsDtos 是商品中的一个属性
+
+     3.1.6	shopId		   店铺id
+     3.2	shopName		店铺名称
+     3.3	shopAddress		店铺地址
+     3.4	shopPhone		商家电话
+     3.5	imgHead		    用户头像
+     */
+    
+    static getStoreDetail(sessionId, shopId) {
+        var path = url + "/shop/goods?sessionId=" + sessionId + "&shopId=" + shopId;
+        return path
+    }
+
+
+    /** 
+     * 我的订单
+     * @param {*} sessionId 
+     * @param {*} pageIndex 
+     * @param {*} orderStatus 订单状态1已支付（待发货）， 2已发货（待收货），  3交易完成(已收货)
+     * 
+     3.1	id		订单id
+     3.2	orderNo		订单号
+     3.3	buyUid		买家id
+     3.4	sellUid		卖家id
+     3.5	goodsId		商品id
+     3.6	payMoney		订单金额
+     3.7	createTime		创建时间
+     3.8	buyTime		付款时间
+     3.9	deliveryTime		发货时间
+     3.10	dealTime		收货时间（完成时间）
+     3.11	goodsName		商品名称
+     3.12	goodsNum		商品数量
+     3.13	goodsImg		商品图片
+     3.14	buyIntegral		买家获得积分
+     3.15	sellerIncomeBalance		卖家获得余额
+     3.16	sellerIncomeIntegral		卖家获得积分
+     3.17	phone		商家电话
+     * 
+     */
+    static getMyOrderBy(sessionId, pageIndex,orderStatus) {
+        return url + "/order/myOrder?sessionId=" + sessionId + "&pageIndex=" + pageIndex+ "&orderStatus=" + orderStatus
+    }
+
+    /** 
+     * 店铺订单
+     * @param {*} sessionId 
+     * @param {*} pageIndex 
+     * @param {*} orderStatus 订单状态1已支付（待发货）， 2已发货（待收货），  3交易完成(已收货)
+     * 
+     3.1	id		订单id
+     3.2	orderNo		订单号
+     3.3	buyUid		买家id
+     3.4	sellUid		卖家id
+     3.5	goodsId		商品id
+     3.6	payMoney		订单金额
+     3.7	show		是否显示1.显示0.不显示
+     3.8	createTime		创建时间
+     3.9	buyTime		付款时间
+     3.10	deliveryTime		发货时间
+     3.11	dealTime		收货时间（完成时间）
+     3.12	goodsName		商品名称
+     3.13	goodsNum		商品数量
+     3.14	goodsImg		商品图片
+     3.15	status		状态1已支付（待发货）， 2已发货（待收货），  3交易完成(已收货)
+     3.16	buyName		买家姓名
+     3.17	buyPhone		买家电话
+     3.18	buyAddress		买家地址
+     3.19	kdName		快递名称（暂时没用）
+     3.20	kdNo		快递单号（暂时没用）
+     3.21	buyIntegral		买家获得积分
+     3.22	sellerIncomeBalance		卖家获得余额
+     3.23	sellerIncomeIntegral		卖家获得积分
+     * 
+     */
+    static getStoreOrderBy(sessionId, pageIndex,orderStatus) {
+        return url + "/order/shopOrder?sessionId=" + sessionId + "&pageIndex=" + pageIndex+ "&orderStatus=" + orderStatus
+    }
+
+
+  
+    /**修改订单状态
+     * 
+     * @param {*} sessionId 
+     * @param {*} id          订单id
+     * @param {*} orderStatus 订单状态 2已发货（待收货），  3交易完成(已收货)
+     */
+    static updateOrderStatus(sessionId, id,orderStatus) {
+        return url + "/order/updateStatus?sessionId=" + sessionId + "&orderId=" + id+ "&orderStatus=" + orderStatus;
+    }
+}

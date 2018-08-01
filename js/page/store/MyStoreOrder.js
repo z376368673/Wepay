@@ -40,10 +40,9 @@ export default class MyStoreOrder extends BaseComponent {
                     }}
                     renderTabBar={() => <ScrollableTabBar/>}
                 >
-                    <OrderCommon tabLabel='待付款' key={1}/>
-                    <OrderCommon tabLabel='待发货' key={2}/>
-                    <OrderCommon tabLabel='待收货' key={3}/>
-                    <OrderCommon tabLabel='已完成' key={4} numColumns={2}/>
+                    <OrderCommon tabLabel='待发货' orderStatus={1} type={2} {...this.props}/>
+                    <OrderCommon tabLabel='待收货' orderStatus={2} type={2} {...this.props}/>
+                    <OrderCommon tabLabel='已完成' orderStatus={3} type={2} {...this.props}/>
                 </ScrollableTabView>            
             </View>
         );

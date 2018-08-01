@@ -83,7 +83,7 @@ export default class StoreMall extends BaseComponent {
                     {this.renderCustomItems()}
                 </SegmentedBar>
                 <View style={{ flex: 1, backgroundColor: "#f1f1f1" }}>
-                    {this.state.activeIndex === 0 ? <StoreCommon  ref={refStore => this.refStore = refStore} navigation={this.props.navigation} tabLabel='商品' numColumns={2} /> : <View />}
+                    {this.state.activeIndex === 0 ? <StoreCommon navigation={this.props.navigation} tabLabel='商品' numColumns={2} /> : <View />}
                     {this.state.activeIndex === 1 ? <StoreCommon navigation={this.props.navigation} tabLabel='商铺' numColumns={1} /> : <View />}
                 </View>
             </View>
@@ -130,13 +130,12 @@ export default class StoreMall extends BaseComponent {
                         source={require("../../../res/images/dingdan-shang.png")} />
                 </TouchableOpacity>
             </View>)
-
     }
-
+    
     onClicks(index) {
         switch (index) {
             case 1:
-                this.props.navigation.navigate('MyStoreOrder');
+                this.props.navigation.navigate('MyOrder');
                 break;
             case 2:
                 this.props.navigation.navigate('SearchStore');

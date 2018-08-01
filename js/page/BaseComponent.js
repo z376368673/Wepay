@@ -23,6 +23,7 @@ export default class BaseComponent extends Component {
        //this.props.navigation.navigate('name');
        // this.props.navigation.goBack()
        //this.props.AppStore.userInfo.sessionId,
+       //const { userName, sessionId } = this.props.navigation.state.params
     }
     componentDidMount(){
        // SplashScreen.hide();

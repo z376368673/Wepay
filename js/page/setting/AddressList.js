@@ -29,6 +29,7 @@ export default class AddressList extends BaseComponent {
             selectIndex: 0,
         }
         this.userInfo = this.getUserInfo()
+        this.navigation = this.props.navigation;
     }
 
     //界面加载完成
@@ -106,7 +107,13 @@ export default class AddressList extends BaseComponent {
     _getBuyOrSellItem(data) {
         let isChecked = this.state.selectIndex === data.index ? true : false;
         if(data.item)
-        return <TouchableOpacity>
+        return <TouchableOpacity onPress={()=>{
+            let  exis =  this.navigation.state.params.selectBank
+            if(exis){
+              this.navigation.state.params.selectBank(data.item)
+              this.props.navigation.goBack()
+            }
+          }}>>
         <View
             key={data.item.index}
             style={{
@@ -139,7 +146,8 @@ export default class AddressList extends BaseComponent {
             }}
                 numberOfLines={1}
             >{data.item ? data.item.address : "地址详细信息"}</Text>
-            <View style={{ flexDirection: "row", justifyContent: "center", marginTop: 15 }}>
+            <View style={{backgroundColor:"#ddd",height:0.5,marginTop: 15 }}></View>
+            <View style={{ flexDirection: "row", justifyContent: "center", marginTop: 5 }}>
                 <View style={{ flex: 1, padding: 10 }}>
                     <Checkbox
                         disabled={true}

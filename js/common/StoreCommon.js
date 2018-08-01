@@ -14,26 +14,26 @@ import BaseUrl from '../util/BaseUrl';
 
 //订单公用类（相当于Fragment）
 const window_w = Utils.getWidth();
-export const KEYS =[""]
+export const KEYS = [""]
 export default class StoreCommon extends BaseComponent {
     constructor(props) {
         super(props);
         this.tabLabel = this.props.tabLabel;
-        this.key = this.props.key;
-        this.numColumns = this.props.numColumns?this.props.numColumns:1
+        this.numColumns = this.props.numColumns ? this.props.numColumns : 1
         this.state = {
             text: '18629448593',
         }
         this.userInfo = this.getUserInfo();
+
     }
-    
-    setType(data){
-        
+
+    setType(data) {
+
     }
     //界面加载完成
     componentDidMount() {
         this._refreshData()
-        
+
     }
     //刷新数据
     _refreshData() {
@@ -52,16 +52,16 @@ export default class StoreCommon extends BaseComponent {
     * @param {*} pageIndex 
     */
     getData(isRefesh) {
-        if(this.tabLabel==='商品'){
+        if (this.tabLabel === '商品') {
             this.url = BaseUrl.getShopBySearch(this.userInfo.sessionId, this.pageIndex)
-        }else{
-            this.url = BaseUrl.getStoreList(this.userInfo.sessionId, 
-                this.pageIndex,this.userInfo.longitude,this.userInfo.latitude)
+        } else {
+            this.url = BaseUrl.getStoreList(this.userInfo.sessionId,
+                this.pageIndex, this.userInfo.longitude, this.userInfo.latitude)
         }
-         //alert(this.tabLabel)
+        //alert(this.tabLabel)
         HttpUtils.getData(this.url)
             .then(result => {
-               //alert(JSON.stringify(result))
+                //alert(JSON.stringify(result))
                 if (result.code === 1) {
                     if (isRefesh) {
                         this.refList.setData(result.data)
@@ -78,50 +78,31 @@ export default class StoreCommon extends BaseComponent {
                 DialogUtils.showToast("error:" + error.message)
             })
     }
-    onClickDelect(data) {
-
-    }
-
     render() {
         return (
             <View style={[BaseStyles.container_column, { backgroundColor: "#f1f1f1" }]}>
                 <RefreshFlatList
                     ref={refList => this.refList = refList}
-                    numColumns={ this.numColumns }
+                    numColumns={this.numColumns}
                     onRefreshs={() => this._refreshData()}
                     onLoadData={() => this._onLoadData()}
-                    renderItem={(items) =>  this.numColumns===1?this._getStoreMall(items):this._getStore(items) } />
+                    renderItem={(items) => this.numColumns === 1 ? this._getStoreMall(items) : this._getStore(items)} />
             </View>
         );
     }
-    /**
-     * 
-     * @param {*} item 
-     */
-    goDetails(item) {
-        this.props.navigation.navigate('StoreDetails', {
-            item: item,
-        });
-    }
 
-    //加载更多数据
-    _onLoadData() {
-        setTimeout(() => {
-            this.refList.addData(this.state.dataArray)
-        }, 2000)
-    }
-        /** 商品
-          * 绘制itemView
-          * 3.1	id		商品id
-          3.2	goodsName		商品名称
-          3.3	goodsPrice		商品价格
-          3.4	goodsStock		商品库存
-          3.5	coverPlan		商品封面图
-          3.6	shopId		店铺id
-          * @param data
-          * @returns {*}
-          * @private
-          */
+    /** 商品
+      * 绘制itemView
+      * 3.1	id		商品id
+      3.2	goodsName		商品名称
+      3.3	goodsPrice		商品价格
+      3.4	goodsStock		商品库存
+      3.5	coverPlan		商品封面图
+      3.6	shopId		店铺id
+      * @param data
+      * @returns {*}
+      * @private
+      */
     _getStore(data) {
         return <View
             key={this.state.activeIndex === 0 ? data.item.index : data.item.index + 1}
@@ -136,10 +117,10 @@ export default class StoreCommon extends BaseComponent {
             <TouchableOpacity
                 activeOpacity={0.8}
                 style={{ width: window_w / 2 - 4, height: window_w / 2, }}
-                onPress={(item) => this.goDetails(item)}>
+                onPress={(item) => this.goDetails(data.item)}>
                 <Image
                     style={{ width: window_w / 2 - 4, height: window_w / 2, }}
-                    source={{uri:this.getImgUrl(data.item.coverPlan)}} />
+                    source={{ uri: this.getImgUrl(data.item.coverPlan) }} />
             </TouchableOpacity>
 
             <View style={{ flexDirection: 'column', padding: 5, height: 60, justifyContent: "center", alignContent: "center" }}>
@@ -160,25 +141,33 @@ export default class StoreCommon extends BaseComponent {
             </View>
         </View>
     }
-
-        /**商铺
-          * 绘制itemView
-          * @param data
-          * @returns {*}
-          * 3.1	id		店铺id
-          3.2	uid		用户id
-          3.3	shopName		店铺名称
-          3.4	shopAddress		店铺地址
-          3.5	imgHead		头像
-          3.6	distance		距离（单位米）
-          * @private
-          */
+    /**
+       * 去商品详情
+       * @param {*} item 
+       */
+    goDetails(item) {
+        this.props.navigation.navigate('ShopDetails', {
+            shopId: item.id,
+        });
+    }
+    /**商铺
+      * 绘制itemView
+      * @param data
+      * @returns {*}
+      * 3.1	id		店铺id
+      3.2	uid		用户id
+      3.3	shopName		店铺名称
+      3.4	shopAddress		店铺地址
+      3.5	imgHead		头像
+      3.6	distance		距离（单位米）
+      * @private
+      */
     _getStoreMall(data) {
         var distance;
-        if(data.item.distance>1000){
-            distance = data.item.distance/1000 +"千米"
-        }else{
-            distance = data.item.distance+"米"
+        if (data.item.distance > 1000) {
+            distance = data.item.distance / 1000 + "千米"
+        } else {
+            distance = data.item.distance + "米"
         }
         return <View
             style={{
@@ -190,18 +179,18 @@ export default class StoreCommon extends BaseComponent {
             }}>
             <Image
                 style={{ width: 60, height: 60, borderWidth: 1, borderRadius: 30, borderColor: "#d11" }}
-                source={{uri:this.getImgUrl(data.item.imgHead)}} />
+                source={{ uri: this.getImgUrl(data.item.imgHead) }} />
             <View style={{ flexDirection: 'column', flex: 1, marginLeft: 10, }}>
                 <Text
                     style={{ color: "#333333", fontSize: 18 }}>{data.item ? data.item.shopName : "name"}</Text>
-                <View style={{ flexDirection:"", marginTop: 5,flexDirection:"column" }}>
+                <View style={{ flexDirection: "", marginTop: 5, flexDirection: "column" }}>
                     <Text style={{
                         color: "#888",
                         fontSize: 15,
                         flex: 1,
                     }}
                         numberOfLines={1}
-                    >{distance }</Text>
+                    >{distance}</Text>
                 </View>
             </View>
 
@@ -220,7 +209,7 @@ export default class StoreCommon extends BaseComponent {
                         justifyContent: "center",
                         marginLeft: 10,
                     }}
-                    onPress={() => this.onClickDelect(data)}>
+                    onPress={() => this.onComeInStore(data)}>
                     <Text style={{
                         fontSize: 15,
                         color: mainColor,
@@ -228,6 +217,11 @@ export default class StoreCommon extends BaseComponent {
                 </TouchableOpacity>
             </View>
         </View>
+    }
+    onComeInStore(data) {
+        this.props.navigation.navigate('StoreDetails', {
+            storeId: data.item.id,
+        });
     }
 }
 export const styles = StyleSheet.create({

@@ -89,9 +89,7 @@ export default class SearchStore extends BaseComponent {
                 style={{ flexDirection: 'row', alignItems: 'center', }}
                 onPress={() => this.leftDrawView()}
             >
-                <Image
-                    style={{ width: 25, height: 25, padding: 5 }}
-                    source={require("../../../res/images/fenleisousuo.png")} />
+               <Text style={{fontSize:16,color:"#fff",padding:5}}>筛选</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 style={{ flexDirection: 'row', alignItems: 'center', }}
@@ -99,7 +97,7 @@ export default class SearchStore extends BaseComponent {
             >
                 <Image
                     style={{ width: 25, height: 25, padding: 5, marginLeft: 10 }}
-                    source={require("../../../res/images/sousuo.png")} />
+                    source={require("../../../res/images/sousuo-3.png")} />
             </TouchableOpacity>
         </View>)
 
@@ -217,7 +215,7 @@ export default class SearchStore extends BaseComponent {
                 <TouchableOpacity
                     activeOpacity={0.8}
                     style={{ width: window_w / 2 - 4, height: window_w / 2, }}
-                    onPress={(item) => this.goDetails(item)}>
+                    onPress={(item) => this.goDetails(data.item)}>
                     <Image
                         style={{ width: window_w / 2 - 4, height: window_w / 2, }}
                         source={{uri:this.getImgUrl(data.item.coverPlan)}} />
@@ -241,7 +239,15 @@ export default class SearchStore extends BaseComponent {
                 </View>
             </View>
         }
-
+    /**
+     * 去商品的详情页
+     * @param {*} item 
+     */
+    goDetails(item) {
+        this.props.navigation.navigate('ShopDetails', {
+            shopId: item.id,
+        });
+    }
 }
 export const styles = StyleSheet.create({
     container_center: {

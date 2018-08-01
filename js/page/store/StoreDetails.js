@@ -1,150 +1,173 @@
-import React from 'react';
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View, ScrollView } from 'react-native';
-import AutoGrowingTextInput from '../../common/AutoGrowingTextInput';
+import React, { Component } from 'react';
+import {
+    StyleSheet,
+    Text,
+    View,
+    Linking,
+    TouchableOpacity,
+    Image,
+} from 'react-native';
+import BaseComponent, { BaseStyles, mainColor, window_width } from "../BaseComponent";
 import NavigationBar from "../../common/NavigationBar";
-import BaseComponent, { BaseStyles, mainColor, window_width, window_height } from "../BaseComponent";
-import { PullPicker } from 'teaset';
-import SYImagePicker from 'react-native-syan-image-picker'
+import HttpUtils from "../../util/HttpUtils";
+import BaseUrl from "../../util/BaseUrl";
+import { SegmentedBar, Drawer } from 'teaset';
 import Utils from '../../util/Utils';
+import StoreCommon from '../../common/StoreCommon';
+import SplashScreen from "react-native-splash-screen"
+import ViewUtils from '../../util/ViewUtils';
+import RefreshFlatList from "../../common/RefreshFlatList"
 import DialogUtils from '../../util/DialogUtils';
 
-/**
- * 添加商品
- */
-const width_w = Utils.getWidth() / 2 - 20;
-export default class StoreDetails extends BaseComponent {
+//商铺详情
+const window_w = Utils.getWidth();
+export default class StroeDetails extends BaseComponent {
     constructor(props) {
         super(props);
-        const { params } = this.props.navigation.state
-        shaopInfo = params ? params.item : null,
-            this.state = {
-                shopName: "商品名称",
-                shopPrice: 23.23,
-                shopNum: 100,
-                shopImage: require("../../../res/images/default_shop.png"),
-            }
-        this.navigation = this.props.navigation;
+        this.state = {
+
+            shopName: "", //店铺名称
+            shopAddress: "",//店铺地址
+            shopPhone: "", //店铺联系方式
+            imgHead: "",  //店铺头像
+        }
+        //获取传过来的店铺id
+        this.storeId = this.props.navigation.state.params.storeId
+        this.userInfo = this.getUserInfo();
+        this.typeId = ""
+    }
+    //界面加载完成
+    componentDidMount() {
+        this.getStoreDetail()
     }
 
     /**
-    * 使用方式sync/await
-    * 相册参数暂时只支持默认参数中罗列的属性；
-    * @returns {Promise<void>}
+    * 获取商品信息 by id 
     */
-    handleAsyncSelectPhoto = async (isCrop, showCropCircle) => {
-        SYImagePicker.removeAllPhoto()
-        try {
-            const photos = await SYImagePicker.asyncShowImagePicker({ imageCount: 1, isCrop: isCrop, showCropCircle: showCropCircle });
-            photos.map((photo, index) => {
-                let source = { uri: photo.uri };
-                if (photo.enableBase64) {
-                    source = { uri: photo.base64 };
+    getStoreDetail() {
+        let url = BaseUrl.getStoreDetail(this.userInfo.sessionId, this.storeId)
+        this.refList.refreshStar()
+        HttpUtils.getData(url)
+            .then(result => {
+                if (result.code === 1) {
+                    //alert(JSON.stringify(result.data))
+                    this.info = result.data
+                    this.refList.setData(this.info.goodsDtos)
+                    this.setState({
+                        shopName: this.info.shopName,
+                        shopAddress: this.info.shopAddress,
+                        shopPhone: this.info.shopPhone,
+                        imgHead: {uri: this.getImgUrl(this.info.imgHead)},
+                    })
+                } else {
+                    DialogUtils.showToast(result.msg)
                 }
-                this.setState({ shopImage: source }, )
             })
-        } catch (err) {
-            // 取消选择，err.message为"取消"
-            // alert(err,photos)
-        }
-    };
-
-
+            .catch(error => {
+                DialogUtils.showToast("服务器繁忙" + error.message)
+            })
+    }
     render() {
         return (
-            <View style={BaseStyles.container_column}>
+            <View style={[BaseStyles.container_column, { backgroundColor: "#f1f1f1" }]}>
                 <NavigationBar
-                    title={this.state.shopName}
+                    title={"店铺详情"}
                     navigation={this.props.navigation}
                 />
-                <ScrollView >
-                    <View style={[BaseStyles.container_column, { backgroundColor: "#f1f1f1" }]}>
+                <View style={{flexDirection:"row",backgroundColor: mainColor ,padding:15,alignItems:"center"}}>
+                    <Image
+                        style={{ width: 60, height: 60, borderColor:"#d11",borderWidth:1,borderRadius:30}}
+                        source={this.state.imgHead} />
+                        <View style={{flex:1,marginLeft:15,marginEnd:50}}>
+                        <Text style={{fontSize:16,color:"#fff",}}>{this.state.shopName}  {this.state.shopPhone}</Text>
+                        <Text style={{fontSize:14,color:"#fff",marginTop:5,}}>{this.state.shopAddress}</Text>
+                        </View>
                         <TouchableOpacity
-                            onPress={() => this.handleAsyncSelectPhoto(false, false)}
-                        ><Image
-                                style={{ flex: 1, width: window_width, height: window_height / 3 * 1.7, backgroundColor: "#fff" }}
-                                source={this.state.shopImage}
-                            />></TouchableOpacity>
-                        <View style={{ flexDirection: 'row', padding: 10 }}>
-                            <Text
-                                style={{
-                                    alignSelf: "center",
-                                    color: '#333',
-                                    fontSize: 16,
-                                }}>商品信息商品信息商品信息商品信息商品信息商品信息商品信息商品信息商品信息商品信息商品信息商品信息商品信息商品信息商品信息</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 10 ,marginBottom:10,}}>
-                            <Text style={{
-                                color: "#d11",
-                                fontSize: 15,
-                            }}>￥{124}</Text>
-                            <Text style={{
-                                color: "#888",
-                                fontSize: 15,
-                                marginLeft: 30,
-                                flex: 1,
-                            }}>库存:{3}</Text>
-
-                            <Text style={{
-                                color: "#888",
-                                fontSize: 15,
-                                marginLeft: 30,
-                            }}>距离:{3}km</Text>
-                        </View>
-
-                    </View>
-                </ScrollView>
-
-                <View style={{
-                    flexDirection: "row",
-                    height: 50,
-                    position: "absolute",
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: "#fff",
-                }}>
-                    <TouchableOpacity
-                        style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: "#fff", }}
-                        activeOpacity={0.8}
-                        onPress={() => this.onClicks("store")}>
-                        <View style={{ flex: 1, }}>
-                            <Text style={{
-                                alignSelf: "center",
-                                color: '#333',
-                                fontSize: 20,
-                                padding: 15,
-                            }}>联系商家</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: "#d11", }}
-                        activeOpacity={0.8}
-                        onPress={() => this.onClicks("buy")}
-                    >
-                        <View style={{ flex: 1 }}>
-                            <Text style={{
-                                alignSelf: "center",
-                                color: '#FFF',
-                                fontSize: 20,
-                                padding: 15,
-                            }}>立即购买</Text>
-                        </View>
-                    </TouchableOpacity>
+                         onPress={()=>this.callStore(this.state.shopPhone)}
+                         >
+                        <Image
+                        style={{ width: 30, height: 30, marginLeft:-45,marginTop:-35}}
+                        source={require("../../../res/images/dianhua.png")}/>
+                         </TouchableOpacity>
                 </View>
+                <View style={{ flex: 1, backgroundColor: "#f1f1f1" }}>
+                    <RefreshFlatList
+                        ref={refList => this.refList = refList}
+                        numColumns={2}
+                        onRefreshs={() => this._refreshData()}
+                        onLoadData={() => this._onLoadData()}
+                        renderItem={(items) => this._getStore(items)} />
 
-
+                </View>
             </View>
-
         );
     }
-    onClicks(type) {
-        if (type === "sumbitApply") {
-            this.props.navigation.navigate('MyStore');
-        }
+    //联系商家 //暂时返回失败， 可能要真机测试才可以
+    callStore(phone){
+        let url = 'tel: ' + phone;
+        Linking.canOpenURL(url).then(supported => {
+            if (!supported) {
+                DialogUtils.showToast('Can\'t handle url: ' + url)
+                console.log('Can\'t handle url: ' + url);
+            } else {
+                return Linking.openURL(url);
+            }
+        }).catch(err => DialogUtils.showToast('An error occurred', err));
     }
 
+    /** 商品
+     * 绘制itemView
+     * @param data
+     * @returns {*}
+     * @private
+     */
+    _getStore(data) {
+        return <View
+            key={this.state.activeIndex === 0 ? data.item.index : data.item.index + 1}
+            style={{
+                backgroundColor: '#fff',
+                alignItems: 'center',
+                marginBottom: 4,
+                flexDirection: "column",
+                marginLeft: 2,
+                marginRight: 2,
+            }}>
+            <TouchableOpacity
+                activeOpacity={0.8}
+                style={{ width: window_w / 2 - 4, height: window_w / 2, }}
+                onPress={(item) => this.goDetails(data.item)}>
+                <Image
+                    style={{ width: window_w / 2 - 4, height: window_w / 2, }}
+                    source={{ uri: this.getImgUrl(data.item.coverPlan) }} />
+            </TouchableOpacity>
+
+            <View style={{ flexDirection: "column", padding: 5, height: 60, justifyContent: "center", alignContent: "center" }}>
+                <Text style={{ color: "#333333", fontSize: 18, }} numberOfLines={1}>
+                    {data.item ? data.item.goodsName : "name"}</Text>
+
+                <View style={{ flexDirection: 'row', marginTop: 5 }}>
+                    <Text style={{
+                        color: "#d11",
+                        fontSize: 15,
+                    }}>￥{data.item.goodsPrice}</Text>
+                    <Text style={{
+                        color: "#888",
+                        fontSize: 15,
+                        marginLeft: 30,
+                    }}>库存:{data.item.goodsStock}</Text>
+                </View>
+            </View>
+        </View>
+    }
+    /**
+     * 
+     * @param {*} item 
+     */
+    goDetails(item) {
+        this.props.navigation.navigate('ShopDetails', {
+            shopId: item.id,
+        });
+    }
 }
 export const styles = StyleSheet.create({
     container_center: {
@@ -153,17 +176,4 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         // position:"absolute",  //绝对布局
     },
-    itemView: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        padding: 10,
-        marginTop: 0.5
-    },
-    itemText: {
-        fontSize: 16, color: "#333", width: 80
-    },
-    itemTextInput: {
-        height: 35, flex: 1, fontSize: 16, color: '#333', backgroundColor: "#fff", padding: 5,
-        borderWidth: 0.5, borderColor: "#ccc",
-    }
 });

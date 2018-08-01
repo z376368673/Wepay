@@ -13,7 +13,7 @@ import AsySorUtils from '../../dao/AsySorUtils';
 import BaseUrl from '../../util/BaseUrl';
 import HttpUtils from '../../util/HttpUtils';
 import DialogUtils from '../../util/DialogUtils';
-import { inject } from '../../../node_modules/mobx-react';
+import { inject } from 'mobx-react';
 
 /**
  * 修改昵称

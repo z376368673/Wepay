@@ -40,6 +40,7 @@ import MyStore from "../page/store/MyStore";
 import AddShop from "../page/store/AddShop";
 import StoreMall from "../page/store/StoreMall";
 import SearchStore from "../page/store/SearchStore";
+import ShopDetails from "../page/store/ShopDetails";
 import StoreDetails from "../page/store/StoreDetails";
 import MyStoreOrder from "../page/store/MyStoreOrder";
 import MyOrder from "../page/setting/MyOrder";
@@ -79,7 +80,10 @@ export default AppNavigator = createStackNavigator({
         screen: SharePage
     },
    
-    StoreDetails: {//商品详情
+    ShopDetails: {//商品详情
+        screen: ShopDetails
+    },
+    StoreDetails: {//店铺详情
         screen: StoreDetails
     },
     AddShop: {//添加商品
