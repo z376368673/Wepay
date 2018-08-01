@@ -53,6 +53,9 @@ export default class BaseComponent extends Component {
     getImgUrl(imgName){
         return "http://wepay.hxksky.com/"+imgName
     }
+    getSharedUrl(userId){
+        return "http://wp.wepay168.com/wepay/share?userId="+userId
+    }
 }
 const { height, width } = Dimensions.get('window');
 export const mainColor = '#48b1a3';

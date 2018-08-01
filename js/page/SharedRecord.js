@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-    StyleSheet,
+    TextInput,
     Text,
     View,
     TouchableOpacity,
@@ -15,25 +15,24 @@ import BaseUrl from '../util/BaseUrl';
 import DialogUtils from '../util/DialogUtils';
 
 /**
- * 转出 转入 记录
+ * 分享记录
  */
 const width = Utils.getWidth()
-export default class TranMoneyRecord extends BaseComponent {
+export default class SharedRecord extends BaseComponent {
     pageIndex = 1;
-    tranType = "out";// "in"
     constructor(props) {
         super(props);
         this.index = 1
-        this.userInfo = this.getUserInfo()
-        const { tranType } = this.props.navigation.state.params
-        this.tranType = tranType
-        this.userInfo = this.getUserInfo();
+       this.userInfo = this.getUserInfo()
+       this.state = {
+        keyword:"",
+       }
 
     }
 
     //界面加载完成
     componentDidMount() {
-        this._refreshData()
+      this._refreshData()
     }
 
     render() {
@@ -41,9 +40,31 @@ export default class TranMoneyRecord extends BaseComponent {
         return (
             <View style={[BaseStyles.container_column, { backgroundColor: "#f1f1f1" }]}>
                 <NavigationBar
-                    title={this.tranType === "out" ? "转出记录" : "转入记录"}
+                    title={this.tranType === "分享记录"}
                     navigation={this.props.navigation}
                 />
+
+                <View style={{  height: 35, flexDirection: "row", alignItems: "center",margin:5 }}>
+                    <TextInput
+                        style={[{ borderRadius: 5,backgroundColor: "#fff",
+                            height: 35, flex: 1, fontSize: 13, color: '#333', backgroundColor: "#fff", padding: 5,
+                            borderColor: "#ccc",
+                        }]}
+                        placeholder={'搜索UID/手机号码'}
+                        //defaultValue={userName}
+                        placeholderTextColor={'#999'}
+                        underlineColorAndroid='transparent'
+                        keyboardType={"default"}
+                        maxLength={12}
+                        onChangeText={(text) => this.setState({ keyword: text })} />
+                        <Text style={{backgroundColor:"#d15",color:"#fff",fontSize:15,
+                        borderRadius:10,paddingLeft:12,paddingRight:12,
+                        marginLeft:10,paddingTop:10,paddingBottom:10,
+                        }}
+                        onPress={()=>this._refreshData()}
+                        >搜索</Text>
+                </View>
+
                 <View style={{ flex: 1, marginTop: 10, backgroundColor: "#f1f1f1" }}>
                     <RefreshFlatList
                         ref={refList => this.refList = refList}
@@ -67,11 +88,7 @@ export default class TranMoneyRecord extends BaseComponent {
      * @param {*} pageIndex 
      */
     getData(isRefesh) {
-        if (this.tranType === "out") {
-            this.url = BaseUrl.getOutRecord(this.userInfo.sessionId, this.pageIndex)
-        } else {
-            this.url = BaseUrl.getInRecord(this.userInfo.sessionId, this.pageIndex)
-        }
+        this.url = BaseUrl.shareRecord(this.userInfo.sessionId, this.pageIndex)
         HttpUtils.getData(this.url)
             .then(result => {
                 if (result.code === 1) {
@@ -81,7 +98,7 @@ export default class TranMoneyRecord extends BaseComponent {
                         this.refList.addData(result.data)
                         this.pageIndex += 1
                     }
-                    if(result.data.length<1){
+                    if (result.data.length < 1) {
                         DialogUtils.showToast("暂无记录")
                         this.refList.setData([])
                     }
@@ -118,7 +135,7 @@ export default class TranMoneyRecord extends BaseComponent {
      * @private
      */
     _getItem(data) {
-        if (data.item){
+        if (data.item) {
             let imgPath = this.getImgUrl(data.item.imgHead)
             return <TouchableOpacity
                 onPress={() => this.onClick(data.item)}>
@@ -127,32 +144,40 @@ export default class TranMoneyRecord extends BaseComponent {
                     style={{
                         backgroundColor: '#fff',
                         alignItems: 'center',
-                        justifyContent:"center",
+                        justifyContent: "center",
                         marginBottom: 8,
                         flexDirection: 'row',
                         padding: 10
                     }}>
                     <Image
                         style={{ width: 45, height: 45, borderWidth: 1, borderRadius: 23, borderColor: "#666" }}
-                        source={{uri:imgPath}} />
-                        
-                    <View style={{ flexDirection: 'column',justifyContent:"center", flex: 1, marginLeft: 10,marginRight:10 }}>
+                        source={{ uri: imgPath }} />
+
+                    <View style={{ flexDirection: 'column', justifyContent: "center", flex: 1, marginLeft: 10, marginRight: 10 }}>
                         <Text
                             style={{ color: "#333333", fontSize: 14 }}>{data.item ? data.item.username : "name"}</Text>
-                        
-                        <Text style={{color: "#888",fontSize: 14,marginTop:5}}
-                                numberOfLines={1}
-                            >UUID:{data.item ? data.item.getId : "name"}</Text>
+
+                        <Text style={{ color: "#888", fontSize: 14, marginTop: 5 }}
+                            numberOfLines={1}
+                        >UUID:{data.item ? data.item.userid : "name"}</Text>
+                        <Text style={{ color: "#888", fontSize: 14, marginTop: 5 }}
+                            numberOfLines={1}
+                        >手机号:{data.item ? data.item.mobile : "name"}</Text>
                     </View>
 
-                    <View style={{ flexDirection: 'column',justifyContent:"center",flex: 1, marginLeft: 10,marginRight:10 }}>
+                    <View style={{ flexDirection: 'column', justifyContent: "center", flex: 1, marginLeft: 10, marginRight: 10 }}>
                         <Text
-                            style={{ color: "#48b1a3", fontSize: 16,textAlign:"right"}}>{data.item ? data.item.getNums : "0"}</Text>
-                        
-                        <Text style={{color: "#888", fontSize: 13, marginTop:5,textAlign:"right"}}
-                                numberOfLines={1}>{Utils.formatDateTime(data.item.getTime*1000)}</Text>
+                            style={{
+                                color: "#fff", fontSize: 14, textAlign: "right",
+                                backgroundColor: data.item.useGrade === 3 ? "#d11" : "#999",
+                                paddingLeft: 10, paddingRight: 10, paddingTop: 5, paddingBottom: 5,
+                            }}>{data.item.useGrade === 3 ? "VIP会员" : "初始会员"}</Text>
+
+                        <Text style={{ color: "#888", fontSize: 13, marginTop: 5, textAlign: "right" }}
+                            numberOfLines={1}>{Utils.formatDateTime(data.item.regDate * 1000)}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
-    }}
+        }
+    }
 }

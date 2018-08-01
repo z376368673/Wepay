@@ -10,6 +10,7 @@ import ZhuanChu from "../page/ZhuanChu";
 import ZhuanChuNext from "../page/ZhuanChuNext";
 
 import TranMoneyRecord from "../page/TranMoneyRecord";
+import SharedRecord from "../page/SharedRecord";
 import BuyPage from "../page/BuyPage";
 import SellPage from "../page/SellPage";
 import ExcIntegral from "../page/ExcIntegral";
@@ -43,6 +44,7 @@ import SearchStore from "../page/store/SearchStore";
 import ShopDetails from "../page/store/ShopDetails";
 import StoreDetails from "../page/store/StoreDetails";
 import MyStoreOrder from "../page/store/MyStoreOrder";
+import CreatOrder from "../page/store/CreatOrder";
 import MyOrder from "../page/setting/MyOrder";
 import PassNumInput from "../common/PassNumInput";
 
@@ -82,6 +84,10 @@ export default AppNavigator = createStackNavigator({
    
     ShopDetails: {//商品详情
         screen: ShopDetails
+    },
+
+    CreatOrder: {//创建订单界面 支付界面
+        screen: CreatOrder
     },
     StoreDetails: {//店铺详情
         screen: StoreDetails
@@ -124,11 +130,12 @@ export default AppNavigator = createStackNavigator({
     ZhuanChuNext: {//转出 下一步
         screen: ZhuanChuNext
     },
-
     TranMoneyRecord: { //转入转出记录
         screen: TranMoneyRecord
     },
-
+    SharedRecord: { //分享记录
+        screen: SharedRecord
+    },
     ExcIntegral: {//兑换积分
         screen: ExcIntegral
     },
@@ -200,7 +207,7 @@ export default AppNavigator = createStackNavigator({
     
 }, {
     initialRouteName: 'LoginPage', // 默认显示界面
-    //initialRouteName: 'StoreMall', // 默认显示界面
+    //initialRouteName: 'SharedRecord', // 默认显示界面
     mode: 'card',
     navigationOptions: {
         header: null,

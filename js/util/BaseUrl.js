@@ -1,4 +1,4 @@
-const url = 'http://192.168.0.105:8081/wepay'
+const url = 'http://wp.wepay168.com/wepay'
 
 export default class BaseUrl {
 
@@ -384,6 +384,42 @@ export default class BaseUrl {
             + "&zt=" + zt;
     }
 
+    /**
+     *  获取默认地址信息
+     *  
+     * @returns
+     3.1	addressId		地址id
+     3.2	memberId		用户id
+     3.3	name		收货人姓名
+     3.4	telephone		收货人手机号
+     3.5	address		收货人详细地址
+     3.6	cityId		市
+     3.7	countryId		县
+     3.8	provinceId		省
+     3.9	zt		是否默认1是默认收货地址，0为不勾选
+     * @param {*} sessionId 
+     */
+    static getDefaultAddressUrl(sessionId) {
+        return url + "/address/default?sessionId=" + sessionId;
+    }
+
+
+     /**
+     * 分享记录
+     * @param {*} sessionId 
+     * @param {*} pageIndex 
+     3.1	userid		用户id
+     3.2	mobile		用户手机号
+     3.3	username		用户名
+     3.4	regDate		注册时间
+     3.5	useGrade		用户等级0为初始会员，3为VIP
+     3.6	imgHead		用户头像
+     */
+    static shareRecord(sessionId, pageIndex,keyword) {
+        return url + "/user/shareRecord?sessionId=" + sessionId
+            + "&pageIndex=" + pageIndex
+            + "&keyword=" + keyword
+    }
 
     /**
      * 转出-获取转入用户的信息
@@ -1029,24 +1065,6 @@ export default class BaseUrl {
         + "&lat=" + lat
     }
 
-
-     /**
-     *  它人的店铺详情 -商品列表
-     * @param {*} sessionId 
-     * @param {*} pageIndex 
-     * 
-     3.1	id		商品id
-     3.2	goodsName		商品名称
-     3.3	goodsPrice		商品价格
-     3.4	goodsStock		商品库存
-     3.5	coverPlan		商品封面图
-     3.6	shopId		店铺id
-     * 
-     */
-    static getStoreDetails(sessionId, pageIndex) {
-        return url + "/shop/goods?sessionId=" + sessionId + "&pageIndex=" + pageIndex;
-    }
-
     /**
      *  我的店铺 - 商品列表
      * @param {*} sessionId 
@@ -1238,5 +1256,46 @@ export default class BaseUrl {
      */
     static updateOrderStatus(sessionId, id,orderStatus) {
         return url + "/order/updateStatus?sessionId=" + sessionId + "&orderId=" + id+ "&orderStatus=" + orderStatus;
+    }
+
+
+     /**
+     * 创建商城订单
+     * 
+     * POST
+     * 
+     * @param:
+     1	sessionId	是	token	String
+     2	addressId   是	地址id	int
+     3	goodsId    是	商品id	int
+     4	goodsNum   是	商品数量	int
+     5	safetyPwd  是	交易密码	String
+     * 
+     * 
+     */
+    static createShopOrder() {
+        return url + "/order/create";
+    }
+
+
+     /**
+     * 获取转出-获取转出记录
+     * @param {*} sessionId 
+     * @param {*} pageIndex 
+     *  // 1	code	是	状态码 
+        // 2	msg	是	错误信息
+        // 3	data	是	数据(code=1返回集合数据)
+        // 3.1	id		转出记录id
+        // 3.2	payId		支付人id
+        // 3.3	getId		对方id
+        // 3.4	getNums		转账总金额
+        // 3.5	getTime		转账时间
+        // 3.6	getType		类型 0-转账
+        // 3.7	username		对方用户名
+        // 3.8	imgHead		对方头像（需要添加前缀如：如http://tz.hxksky.com/wepay/upload/
+     */
+    static getOutRecord(sessionId, pageIndex) {
+        return url + "/tranMoney/outRecord?sessionId=" + sessionId
+            + "&pageIndex=" + pageIndex;
     }
 }

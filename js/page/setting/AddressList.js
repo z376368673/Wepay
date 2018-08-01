@@ -15,7 +15,6 @@ import { Checkbox } from "teaset"
 import DialogUtils from '../../util/DialogUtils';
 import BaseUrl from '../../util/BaseUrl';
 
-const URL = 'https://api.github.com/search/repositories?q=';
 /**
  * 地址管理
  */
@@ -108,9 +107,9 @@ export default class AddressList extends BaseComponent {
         let isChecked = this.state.selectIndex === data.index ? true : false;
         if(data.item)
         return <TouchableOpacity onPress={()=>{
-            let  exis =  this.navigation.state.params.selectBank
+            let  exis =  this.navigation.state.params.selectAddess
             if(exis){
-              this.navigation.state.params.selectBank(data.item)
+              this.navigation.state.params.selectAddess(data.item)
               this.props.navigation.goBack()
             }
           }}>>

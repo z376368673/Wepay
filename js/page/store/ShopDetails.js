@@ -25,7 +25,7 @@ export default class ShopDetails extends BaseComponent {
                 shopPrice: 23.23,
                 shopNum: 100,
                 shopImage: require("../../../res/images/default_shop.png"),
-                storeId:""//		店铺id
+                storeId:"",//		店铺id
             }
         this.navigation = this.props.navigation;
         this.userInfo = this.getUserInfo()
@@ -145,7 +145,7 @@ export default class ShopDetails extends BaseComponent {
                             <Text style={{
                                 alignSelf: "center",
                                 color: '#333',
-                                fontSize: 20,
+                                fontSize: 18,
                                 padding: 15,
                             }}>联系商家</Text>
                         </View>
@@ -153,13 +153,13 @@ export default class ShopDetails extends BaseComponent {
                     <TouchableOpacity
                         style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: "#d11", }}
                         activeOpacity={0.8}
-                        onPress={() => this.onClicks("buy")}
+                        onPress={() => this.buy()}
                     >
                         <View style={{ flex: 1 }}>
                             <Text style={{
                                 alignSelf: "center",
                                 color: '#FFF',
-                                fontSize: 20,
+                                fontSize: 18,
                                 padding: 15,
                             }}>立即购买</Text>
                         </View>
@@ -178,7 +178,17 @@ export default class ShopDetails extends BaseComponent {
             this.props.navigation.navigate('StoreDetails',{
                 storeId:this.state.storeId
             });
+        }else if (type === "buy") {
+            this.props.navigation.navigate('StoreDetails',{
+                storeId:this.state.storeId
+            });
         }
+    }
+
+    buy(){
+        this.props.navigation.navigate('CreatOrder',{
+            data:this.info
+        });
     }
 
 }

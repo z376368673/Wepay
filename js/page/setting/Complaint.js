@@ -23,13 +23,7 @@ export default class Complaint extends BaseComponent {
             photos:[],
             sessionId:null,
         }
-
-        this.getUserInfo((userInfo)=>{
-            this.setState({
-                 headImg:{uri:userInfo.imgHead},
-                sessionId:userInfo.sessionId,
-            })
-        })
+        this.userInfo =  this.getUserInfo();
 
         this.navigation = this.props.navigation;
     }
@@ -80,7 +74,7 @@ export default class Complaint extends BaseComponent {
         //alert(JSON.stringify(this.state.photos))
         let url =  BaseUrl.getComplaintUrl()
         /** sessionId   contents  file */
-        HttpUtils.uploadImage(url,{sessionId:this.state.sessionId,contents:this.state.text},
+        HttpUtils.uploadImage(url,{sessionId:this.userInfo.sessionId,contents:this.state.text},
             this.state.photos,(result)=>{
             if(result.code===1){
                 DialogUtils.showMsg("提交成功，我们会认真审查您的建议/投诉,请耐心等待!","知道了",()=>{

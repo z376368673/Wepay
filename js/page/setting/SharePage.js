@@ -6,7 +6,7 @@ import {
     Image,
     TouchableOpacity,
     UIManager,
-    ImageBackground
+    Clipboard,
 } from 'react-native';
 
 import BaseComponent, { BaseStyles, mainColor, window_width } from "../BaseComponent";
@@ -20,8 +20,9 @@ import DialogUtils from '../../util/DialogUtils';
 export default class SharePage extends BaseComponent {
     constructor(props) {
         super(props);
+        this.userInfo = this.getUserInfo();
         this.state = {
-            text: 'app下载地址' + "当前用户id",
+            text: {type:"url",data:this.getSharedUrl(this.userInfo.userid)},
         }
     }
     /**
@@ -42,21 +43,21 @@ export default class SharePage extends BaseComponent {
                 <NavigationBar
                     title='分享好友'
                     navigation={this.props.navigation}
-                    rightView={NavigationBar.getRightStyle_Text('保存二维码', {
-                        fontSize: 16,
-                        color: "#fff"
-                    }, () => this.saveImgBy(this.qrCode))}
+                // rightView={NavigationBar.getRightStyle_Text('保存二维码', {
+                //     fontSize: 16,
+                //     color: "#fff"
+                // }, () => this.saveImgBy(this.qrCode))}
                 />
                 <View style={{
-                   // backgroundColor: mainColor,
-                     height:390,
+                    // backgroundColor: mainColor,
+                    height: 390,
                     alignItems: 'center',
                     flexDirection: "column",
                     marginTop: 30,
                 }}>
                     <Image source={require("../../../res/images/erweima-bg.png")}
-                        style={{ flex: 1, position: "absolute", resizeMode: Image.resizeMode.contain, }}/>
-                        {/*生成二维码*/}
+                        style={{ flex: 1, position: "absolute", resizeMode: Image.resizeMode.contain, }} />
+                    {/*生成二维码*/}
                     <View style={{ marginTop: 40, top: 20, }}>
                         <QRCode
                             //ref='qrCode'
@@ -95,7 +96,12 @@ export default class SharePage extends BaseComponent {
     onClicks(type) {
         switch (type) {
             case "save_img":
-
+                break
+            case 1:
+                Clipboard.setString(this.getSharedUrl(this.userInfo.userid));
+                break
+            case 2:
+                this.props.navigation.navigate('SharedRecord')
                 break
         }
     }

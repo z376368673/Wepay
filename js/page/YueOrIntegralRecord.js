@@ -11,6 +11,7 @@ import Utils from "../util/Utils";
 import RefreshFlatList from "../common/RefreshFlatList";
 import HttpUtils from "../util/HttpUtils";
 import BaseUrl from '../util/BaseUrl';
+import DialogUtils from '../util/DialogUtils';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 /**
@@ -115,6 +116,10 @@ export default class YueOrIntegralRecord extends BaseComponent {
                         this.refList.addData(result.data)
                         this.pageIndex += 1
                     }
+                    if(result.data.length<1){
+                        DialogUtils.showToast("暂无记录")
+                        this.refList.setData([])
+                    }
                 } else {
                     DialogUtils.showToast(result.msg)
                 }
@@ -147,26 +152,26 @@ export default class YueOrIntegralRecord extends BaseComponent {
                     <View style={{ justifyContent: "center", alignItems: 'center', width: width / 4 - 10, }}>
                         <Text style={{
                             color: '#333',
-                            fontSize: 15,
+                            fontSize: 13,
                         }}>{this.type === 0 ? this.getYueType(data) : this.getJifenType(data)}</Text>
                     </View>
                     <View style={{ justifyContent: "center", alignItems: 'center', width: width / 4 - 10, }}>
                         <Text style={{
                             color: '#333',
-                            fontSize: 15,
+                            fontSize: 13,
                         }}>{data.item.getNums}</Text>
                     </View>
                     <View style={{ justifyContent: "center", alignItems: 'center', width: width / 4 + 4, }}>
                         <Text style={{
                             color: '#333',
-                            fontSize: 15,
+                            fontSize: 13,
                             //当getType===0 时  当前余额或者积分 取得的 nowNums 其他的都是取nowNumsGet
-                        }}>{data.item.getType===0?data.item.nowNums:data.item.nowNumsGet}</Text>
+                        }}>{data.item.getType === 0 ? data.item.nowNums : data.item.nowNumsGet}</Text>
                     </View>
                     <View style={{ justifyContent: "center", alignItems: 'center', width: width / 4 + 14, }}>
                         <Text style={{
                             color: '#333',
-                            fontSize: 15,
+                            fontSize: 13,
                         }}>{Utils.formatDateTime(data.item.getTime * 1000, "-")}</Text>
                     </View>
                 </View>
@@ -199,6 +204,12 @@ export default class YueOrIntegralRecord extends BaseComponent {
             case 13:
                 typeText = "兑换积分"
                 break;
+            case 20:
+                typeText = "商城消费"
+                break;
+            case 21:
+                typeText = "店铺收益"
+                break;
             case 31:
                 typeText = "转入"
                 break;
@@ -226,6 +237,12 @@ export default class YueOrIntegralRecord extends BaseComponent {
                 break;
             case 16:
                 typeText = "vip获得"
+                break;
+            case 22:
+                typeText = "店铺收益"
+                break;
+            case 23:
+                typeText = "商城返还"
                 break;
             case 30:
                 typeText = "转出获得"

@@ -152,7 +152,7 @@ export default class SellPage extends BaseComponent {
                                 backgroundColor: mainColor,
                             }}
                             onPress={()=>this.onClicks("creatOrder")}
-                        >
+                            >
                             <Text style={{
                                 alignSelf: "center",
                                 color: '#FFF',

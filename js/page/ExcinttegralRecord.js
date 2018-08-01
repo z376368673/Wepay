@@ -11,6 +11,7 @@ import Utils from "../util/Utils";
 import RefreshFlatList from "../common/RefreshFlatList";
 import HttpUtils from "../util/HttpUtils";
 import BaseUrl from '../util/BaseUrl';
+import DialogUtils from '../util/DialogUtils';
 
 /**
  * 积分兑换记录
@@ -108,6 +109,10 @@ export default class ExcinttegralRecord extends BaseComponent {
                         this.refList.addData(result.data)
                         this.pageIndex += 1
                     }
+                    if(result.data.length<1){
+                        DialogUtils.showToast("暂无记录")
+                        this.refList.setData([])
+                    }
                 } else {
                     DialogUtils.showToast(result.msg)
                 }
@@ -140,25 +145,25 @@ export default class ExcinttegralRecord extends BaseComponent {
                     <View style={{justifyContent:"center", alignItems: 'center', width: width / 4 - 10, }}>
                         <Text style={{
                             color: '#333',
-                            fontSize: 15,
+                            fontSize: 13,
                         }}>兑换积分</Text>
                     </View>
                     <View style={{ justifyContent:"center",alignItems: 'center', width: width / 4 - 10, }}>
                         <Text style={{
                             color: '#333',
-                            fontSize: 15,
+                            fontSize: 13,
                         }}>{data.item.getNums}</Text>
                     </View>
                     <View style={{ justifyContent:"center",alignItems: 'center', width: width / 4 + 4, }}>
                         <Text style={{
                             color: '#333',
-                            fontSize: 15,
+                            fontSize: 13,
                         }}>{data.item.nowNums}</Text>
                     </View>
                     <View style={{ justifyContent:"center",alignItems: 'center', width: width / 4 + 14, }}>
                         <Text style={{
                             color: '#333',
-                            fontSize: 15,
+                            fontSize: 13,
                         }}>{Utils.formatDateTime(data.item.getTime*1000,"-")}</Text>
                     </View>
                 </View>

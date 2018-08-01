@@ -72,6 +72,8 @@ export default class SaoSaoView extends BaseComponent {
 
     zIndex = 0;
     barcodeReceived(e) {
+        // let data =   JSON.parse(e)
+        // alert(JSON.stringify(data))
         this.zIndex += 1;
         if (this.zIndex === 1) {
             DialogUtils.showToast("扫描成功" + this.zIndex + JSON.stringify(e))

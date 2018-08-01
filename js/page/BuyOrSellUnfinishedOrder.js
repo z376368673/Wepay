@@ -16,6 +16,7 @@ import BaseUrl from '../util/BaseUrl';
 import RefreshFlatList from '../common/RefreshFlatList';
 import SellUnfinshedorderItem from '../item/SellUnfinshedorderItem';
 import BuyUnfinshedorderItem from '../item/BuyUnfinshedorderItem';
+import DialogUtils from '../util/DialogUtils';
 
 /**
  * 买入/卖出  未完成订单
@@ -148,6 +149,10 @@ export default class BuyOrSellUnfinishedOrder extends BaseComponent {
                     } else {
                         this.refList.addData(result.data)
                         this.pageIndex += 1
+                    }
+                    if(result.data.length<1){
+                        DialogUtils.showToast("暂无信息")
+                        this.refList.setData([])
                     }
                 } else {
                     DialogUtils.showToast(result.msg)
