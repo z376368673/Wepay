@@ -20,7 +20,12 @@
 # (unless you are using a system that supports de-obfuscate the stack traces).
 -dontobfuscate
 
+
+# 忽略警告
+-ignorewarnings
 # React Native
+
+
 
 # Keep our interfaces so they can be used by other ProGuard rules.
 # See http://sourceforge.net/p/proguard/bugs/466/
