@@ -3,6 +3,7 @@ package com.wepay;
 import android.os.Bundle;
 
 import com.facebook.react.ReactActivity;
+import com.microsoft.codepush.react.CodePush;
 
 import org.devio.rn.splashscreen.SplashScreen;
 

@@ -37,13 +37,12 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            //new RCTCameraPackage(),
             new RCTCameraPackage(),
             new VectorIconsPackage(),
             new RNSyanImagePickerPackage(),
             new SplashScreenReactPackage(),
             new PickerViewPackage(),
-            new CodePush(null, getApplicationContext(), BuildConfig.DEBUG)
+            new CodePush("v-5TDPSESydQj-n9alBgCVEab3Mefdf2b04e-456b-420f-8acd-58a99c8306be", getApplicationContext(), BuildConfig.DEBUG)
       );
     }
 

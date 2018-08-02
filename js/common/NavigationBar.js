@@ -14,6 +14,7 @@ import {
     View,
     StatusBar,
     TouchableOpacity,
+    ViewPropTypes,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -37,7 +38,7 @@ export default class NavigationBar extends Component {
 
     //类型约束
     static propTypes = {
-        style: View.propTypes.style,
+        style: ViewPropTypes.style,
         title: PropTypes.string,
         titleView: PropTypes.element,
         leftView: PropTypes.element,
