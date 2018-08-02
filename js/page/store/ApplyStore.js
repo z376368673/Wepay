@@ -379,14 +379,16 @@ export const styles = StyleSheet.create({
     itemView: {
         flexDirection: 'row',
         alignItems: 'center',
-        padding: 10,
         backgroundColor: "#fff",
+        paddingLeft: 10,
+        height:45,
         marginTop: 0.5
     },
     itemText: {
-        fontSize: 16, color: "#333", width: 90
+        fontSize: 16, color: "#333", width: 90,
+        alignSelf:"center",alignItems:"center",alignContent: 'center',
     },
     itemTextInput: {
-        height: 30, flex: 1, fontSize: 16, color: '#333', marginLeft: 8
+        height: 45, flex: 1, fontSize: 16, color: '#333', marginLeft: 8
     }
 });
