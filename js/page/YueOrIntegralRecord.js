@@ -116,7 +116,7 @@ export default class YueOrIntegralRecord extends BaseComponent {
                         this.refList.addData(result.data)
                         this.pageIndex += 1
                     }
-                    if(result.data.length<1){
+                    if (result.data.length < 1) {
                         DialogUtils.showToast("暂无记录")
                         this.refList.setData([])
                     }
@@ -159,7 +159,7 @@ export default class YueOrIntegralRecord extends BaseComponent {
                         <Text style={{
                             color: '#333',
                             fontSize: 13,
-                        }}>{data.item.getNums}</Text>
+                        }}>{this.type === 0 ? this.getYueTypeNum(data) : this.getJifenTypeNum(data)}</Text>
                     </View>
                     <View style={{ justifyContent: "center", alignItems: 'center', width: width / 4 + 4, }}>
                         <Text style={{
@@ -247,6 +247,55 @@ export default class YueOrIntegralRecord extends BaseComponent {
             case 30:
                 typeText = "转出获得"
                 break;
+        }
+        return typeText
+    }
+
+
+    //获取余额正负
+    getYueTypeNum(data) {
+        let type = data.item.getType
+        let yue = data.item.getNums
+        var typeText;
+        switch (type) {
+            case 0:
+                typeText = "-" + yue
+                break;
+            case 2:
+            case 8:
+                typeText = "+" + yue
+                break;
+            case 9:
+                typeText = "-" + yue
+                break;
+            case 10:
+                typeText = "+" + yue
+                break;
+            case 11:
+                if (yue >= 0) {
+                    typeText = "+" + yue
+                } else {
+                    typeText =  yue
+                }
+                break;
+            case 13:
+            case 20:
+                typeText = "-" + yue
+                break;
+            case 21:
+            case 31:
+                typeText = "+" + yue
+                break;
+        }
+        return typeText;
+    }
+
+    //获取积分正负
+    getJifenTypeNum(data) {
+        let jifen = data.item.getNums
+        var typeText = jifen;
+        if (jifen >= 0) {
+            typeText = "+" + jifen
         }
         return typeText
     }

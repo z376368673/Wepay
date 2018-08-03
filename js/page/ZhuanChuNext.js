@@ -53,16 +53,18 @@ export default class ZhuanChuNext extends BaseComponent {
                     mobile: this.info.mobile,
                     userid: this.info.userid,
                     username: this.info.username,
-                    imgHead: {uri:this.info.imgHead},
+                    imgHead: {uri:this.getImgUrl(this.info.imgHead)},
                 })
             }else{
                 DialogUtils.showToast(result.msg)
+                this.props.navigation.goBack()
             }
             DialogUtils.hideLoading()
         })
         .catch(error => {
             DialogUtils.hideLoading()
             DialogUtils.showToast("服务器繁忙"+error.message)
+            this.props.navigation.goBack()
         })
     }
 

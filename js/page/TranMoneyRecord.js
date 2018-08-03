@@ -147,7 +147,7 @@ export default class TranMoneyRecord extends BaseComponent {
 
                     <View style={{ flexDirection: 'column',justifyContent:"center",flex: 1, marginLeft: 10,marginRight:10 }}>
                         <Text
-                            style={{ color: "#48b1a3", fontSize: 16,textAlign:"right"}}>{data.item ? data.item.getNums : "0"}</Text>
+                            style={{ color: "#48b1a3", fontSize: 16,textAlign:"right"}}>{this.tranType==="out"? "-":"+"}{data.item.getNums}</Text>
                         
                         <Text style={{color: "#888", fontSize: 13, marginTop:5,textAlign:"right"}}
                                 numberOfLines={1}>{Utils.formatDateTime(data.item.getTime*1000)}</Text>

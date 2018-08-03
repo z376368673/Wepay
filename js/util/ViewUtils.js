@@ -112,7 +112,7 @@ export default class ViewUtils {
         for (let i = 0; i < value; i++) {
             views.push(<Image
                 key={i}
-                style={{ width: width-3, height: width-3, marginLeft: 2 }}
+                style={{ width: width-3, height: width-3, marginLeft: 2,resizeMode:"center" }}
                 source={require('../../res/images/xin.png')}
             />)
         }

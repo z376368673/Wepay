@@ -152,7 +152,7 @@ export default class ExcinttegralRecord extends BaseComponent {
                         <Text style={{
                             color: '#333',
                             fontSize: 13,
-                        }}>{data.item.getNums}</Text>
+                        }}>+{data.item.getNums}</Text>
                     </View>
                     <View style={{ justifyContent:"center",alignItems: 'center', width: width / 4 + 4, }}>
                         <Text style={{

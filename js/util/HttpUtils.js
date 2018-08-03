@@ -13,7 +13,7 @@ export default class HttpUtils {
                 })
                 .catch(error => {
                     reject(error);
-                    alert("error:"+JSON.stringify(error.message))
+                    DialogUtils.showToast(JSON.stringify(error.message))
                 })
         })
     }
@@ -33,8 +33,7 @@ export default class HttpUtils {
                     //'charset':'UTF-8'
                 },
                  body: formData,
-                // header:{},
-                // body:formData,
+             
             })
                 .then(response => response.json())
                 .then(result => {
@@ -43,7 +42,7 @@ export default class HttpUtils {
                 })
                 .catch(error => {
                     reject(error);
-                    DialogUtils.showMsg(JSON.stringify(error.message))
+                    DialogUtils.showToast(JSON.stringify(error.message))
                 })
         })
     }
@@ -87,7 +86,6 @@ export default class HttpUtils {
         .catch((error) => {
                 DialogUtils.hideLoading()
                 DialogUtils.showToast("上传失败"+error.message)
-                alert("error:"+error.message)
             });
     }
 

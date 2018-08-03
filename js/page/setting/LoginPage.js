@@ -5,7 +5,7 @@ import {
     View,
     TextInput,
     TouchableOpacity,
-    Button,
+    Image,
 } from 'react-native';
 import BaseComponent, { BaseStyles, mainColor, window_width } from "../BaseComponent";
 import NavigationBar from "../../common/NavigationBar";
@@ -26,11 +26,12 @@ export default class LoginPage extends BaseComponent {
         super(props);
         this.state = {
             // text: '26641',
-             //  text: '26536', 
+             text: '26536', 
             // text: '18629448593',
-           // text: '13923044417',
-           text: '15989426734',
-           pwd: 'huazhongno1',
+            // text: '13923044417',
+            //text: '15989426734',
+            //pwd: 'huazhongno1',
+            pwd: '123456',
         }
     }
     componentDidMount() {
@@ -43,7 +44,14 @@ export default class LoginPage extends BaseComponent {
                     title={"Wepay用户登陆"}
                     navigation={this.props.navigation}
                 />
+                <View style={{height:150,justifyContent:"center",alignItems:"center"}}>
+                <Image style={{height:100,width:100,resizeMode:"center",}} 
+                       source={require('../../../res/images/logo-d.png')}/>
+                </View>
+                
                 <View style={styles.itemView}>
+                <Image style={{height:30,width:30,resizeMode:"center",marginRight:10}} 
+                       source={require('../../../res/images/user.png')}/>
                     <TextInput
                         style={styles.itemTextInput}
                         placeholder={"请输入手机号/账号"}
@@ -55,6 +63,8 @@ export default class LoginPage extends BaseComponent {
                 </View>
 
                 <View style={styles.itemView}>
+                <Image style={{height:30,width:30,resizeMode:"center",marginRight:10}} 
+                       source={require('../../../res/images/password.png')}/>
                     <TextInput
                         style={styles.itemTextInput}
                         placeholder={'请输入密码'}
@@ -65,20 +75,21 @@ export default class LoginPage extends BaseComponent {
                         keyboardType={"default"}
                         onChangeText={(pwd) => this.setState({ pwd: pwd })} />
                 </View>
-                <View style={{ flexDirection: "row-reverse", }}>
-                    <TouchableOpacity onPress={() => this.onClicks(0)} style={{ height: 50, justifyContent: 'center' }}>
-                        <Text style={{
-                            fontSize: 15,
-                            color: "#d11",
-                            marginRight: 20
-                        }}>注 册</Text>
-                    </TouchableOpacity>
+                <View style={{ flexDirection: "row", }}>
                     <TouchableOpacity onPress={() => this.onClicks(1)} style={{ height: 50, justifyContent: 'center' }}>
                         <Text style={{
                             fontSize: 15,
-                            color: "#d11",
-                            marginRight: 20
+                            color: "#f82929",
+                            marginLeft:25,
                         }}>忘记密码</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => this.onClicks(0)} style={{ flex: 1, height: 50, justifyContent:"center",alignItems:"flex-end" }}>
+                        <Text style={{
+                            fontSize: 15,
+                            color: "#fff",
+                            marginRight: 20
+                        }}>注 册</Text>
                     </TouchableOpacity>
                 </View>
                 <TouchableOpacity
@@ -173,7 +184,7 @@ export const styles = StyleSheet.create({
     itemView: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: "#129481",
+        backgroundColor: "#469c92",
         borderRadius: 3,
         borderColor: "#fff",
         paddingLeft: 15,

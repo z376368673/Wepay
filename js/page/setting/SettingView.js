@@ -99,7 +99,6 @@ export default class SettingView extends BaseComponent {
         } catch (err) {
             DialogUtils.showToast(err.message)
             // 取消选择，err.message为"取消"
-            alert(err.message)
         }
     };
 
@@ -136,10 +135,7 @@ export default class SettingView extends BaseComponent {
                 });
                 break
             case "language"://多语言
-                DialogUtils.showPop("请选择语言",
-                    () => DialogUtils.showToast("你点击了确定"),
-                    () => DialogUtils.showToast("你点击了取消")
-                );
+                DialogUtils.showMsg("暂不支持切换其他语言");
                 break
             case "bankName"://我的银行卡
                 this.props.navigation.navigate('BankCardList', {
@@ -200,6 +196,7 @@ export default class SettingView extends BaseComponent {
                 DialogUtils.showPop("您已经是最新版本了", () => {
                     DialogUtils.showToast("检查完毕");
                 });
+                break
             case 66://退出登录
                 this.goLogin()
                 break

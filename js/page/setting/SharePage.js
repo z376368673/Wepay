@@ -24,7 +24,7 @@ export default class SharePage extends BaseComponent {
         let sharedUrl =this.getSharedUrl(this.userInfo.userid);
         let json = {type:"url",data:sharedUrl}
         this.state = {
-            text: JSON.stringify(json),
+            text: sharedUrl,
         }
     }
     /**

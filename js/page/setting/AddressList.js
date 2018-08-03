@@ -107,12 +107,11 @@ export default class AddressList extends BaseComponent {
         let isChecked = this.state.selectIndex === data.index ? true : false;
         if(data.item)
         return <TouchableOpacity onPress={()=>{
-            let  exis =  this.navigation.state.params.selectAddess
-            if(exis){
+            if(this.navigation.state.params.selectAddess){
               this.navigation.state.params.selectAddess(data.item)
               this.props.navigation.goBack()
             }
-          }}>>
+          }}>
         <View
             key={data.item.index}
             style={{

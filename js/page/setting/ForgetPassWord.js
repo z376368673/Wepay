@@ -164,7 +164,7 @@ export const styles = StyleSheet.create({
     itemView: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: "#129478",
+        backgroundColor: "#469c92",
         borderRadius: 3,
         borderColor: "#fff",
         paddingLeft: 15,
@@ -177,7 +177,7 @@ export const styles = StyleSheet.create({
     },
     itemTextInput: {
         flex: 1,
-        fontSize: 18,
+        fontSize: 15,
         color: '#fff',
     }
 });

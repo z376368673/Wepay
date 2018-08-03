@@ -72,29 +72,27 @@ export default class SaoSaoView extends BaseComponent {
     }
     zIndex = 0;
     barcodeReceived(e) {
-        let data = JSON.parse(e.data)
-        // alert("扫描成功" + this.zIndex + JSON.stringify(e.data))
+        var data = e.data;
         this.zIndex += 1;
         if (this.zIndex === 1) {
-            //
-            //先解析类型
-            let type = data.type
-            switch (type) {
-                case "url":
-                    let url = data.data;
-                    contactBaidu(url)
-                    break;
-                case "id":
-                    let id = data.data;
-                    this.props.navigation.navigate('ZhuanChuNext', {
-                        account: data.data,
-                    })
-                    break;
+            //判断是不是纯数字 纯数字就跳转转出界面
+            var reg = /^\d{20,45}$/
+            if (reg.test(data)) {
+                 data = this.getQRcode(data)
+                 //DialogUtils.showMsg("qrcode:"+data)
+                this.props.navigation.navigate('ZhuanChuNext', {
+                    account: data,
+                })
+            } else if (data.startsWith("http")||data.startsWith("https")){
+                contactBaidu(data)
+            }else{
+                DialogUtils.showToast(data)
             }
-            this.zIndex = 0
             this.props.navigation.goBack();
+            this.zIndex = 0
         }
     }
+
 }
 //调用本地浏览器打开网页
 export const contactBaidu = (url) => {

@@ -56,7 +56,15 @@ export default class BaseComponent extends Component {
     getSharedUrl(userId){
         return "http://wp.wepay168.com/wepay/share?userId="+userId
     }
+
+    setQRcode(text){
+       return qrcodetext+text
+    }
+    getQRcode(text){
+        return text.substr(qrcodetext.length,text.length)
+    }
 }
+const qrcodetext = "567309251673029316273928";
 const { height, width } = Dimensions.get('window');
 export const mainColor = '#48b1a3';
 export const window_height = height;
