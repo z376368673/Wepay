@@ -4,6 +4,7 @@ import {
     Text,
     View,
     TouchableOpacity,
+    Linking,
 } from 'react-native';
 import BaseComponent, { BaseStyles, mainColor } from "./BaseComponent";
 import NavigationBar from "../common/NavigationBar";
@@ -37,7 +38,7 @@ export default class SaoSaoView extends BaseComponent {
                     return (
                         <TouchableOpacity
                             activeOpacity={0.8}
-                            style={{zIndex: 1}}
+                            style={{ zIndex: 1 }}
                             onPress={() => this.props.navigation.goBack()}>
                             <NavigationBar
                                 title='扫一扫'
@@ -69,21 +70,41 @@ export default class SaoSaoView extends BaseComponent {
     onClicks(type) {
 
     }
-
     zIndex = 0;
     barcodeReceived(e) {
-        // let data =   JSON.parse(e)
-        // alert(JSON.stringify(data))
+        let data = JSON.parse(e.data)
+        // alert("扫描成功" + this.zIndex + JSON.stringify(e.data))
         this.zIndex += 1;
         if (this.zIndex === 1) {
-            DialogUtils.showToast("扫描成功" + this.zIndex + JSON.stringify(e))
-            this.props.navigation.goBack();
-            this.props.navigation.navigate('ZhuanChuNext', {
-                account: e.data,
-            })
+            //
+            //先解析类型
+            let type = data.type
+            switch (type) {
+                case "url":
+                    let url = data.data;
+                    contactBaidu(url)
+                    break;
+                case "id":
+                    let id = data.data;
+                    this.props.navigation.navigate('ZhuanChuNext', {
+                        account: data.data,
+                    })
+                    break;
+            }
             this.zIndex = 0
+            this.props.navigation.goBack();
         }
     }
+}
+//调用本地浏览器打开网页
+export const contactBaidu = (url) => {
+    Linking.canOpenURL(url).then(supported => {
+        if (!supported) {
+            DialogUtils.showToast("An error occurred:" + url)
+        } else {
+            return Linking.openURL(url);
+        }
+    }).catch(err => console.error('An error occurred', url));
 }
 export const Styles = StyleSheet.create({
     image_qqbrowser_light: {

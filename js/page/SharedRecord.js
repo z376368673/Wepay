@@ -88,9 +88,11 @@ export default class SharedRecord extends BaseComponent {
      * @param {*} pageIndex 
      */
     getData(isRefesh) {
-        this.url = BaseUrl.shareRecord(this.userInfo.sessionId, this.pageIndex)
+        this.url = BaseUrl.shareRecord(this.userInfo.sessionId, this.pageIndex,this.state.keyword)
+        alert(this.url)
         HttpUtils.getData(this.url)
             .then(result => {
+               // alert(JSON.stringify(result))
                 if (result.code === 1) {
                     if (isRefesh) {
                         this.refList.setData(result.data)
@@ -165,10 +167,10 @@ export default class SharedRecord extends BaseComponent {
                         >手机号:{data.item ? data.item.mobile : "name"}</Text>
                     </View>
 
-                    <View style={{ flexDirection: 'column', justifyContent: "center", flex: 1, marginLeft: 10, marginRight: 10 }}>
+                    <View style={{ flexDirection: 'column', marginLeft: 10, marginRight: 10,alignItems:"flex-end" ,alignSelf:"flex-end"}}>
                         <Text
                             style={{
-                                color: "#fff", fontSize: 14, textAlign: "right",
+                                color: "#fff", fontSize: 14, 
                                 backgroundColor: data.item.useGrade === 3 ? "#d11" : "#999",
                                 paddingLeft: 10, paddingRight: 10, paddingTop: 5, paddingBottom: 5,
                             }}>{data.item.useGrade === 3 ? "VIP会员" : "初始会员"}</Text>

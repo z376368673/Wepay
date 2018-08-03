@@ -13,8 +13,9 @@ import QRCode from "react-native-qrcode";
 export default class ZhuanRu extends BaseComponent {
     constructor(props) {
         super(props);
+        let json = {type:"url",data:this.getUserInfo().account}
         this.state = {
-            text: {type:"id",data:"18629448593"},
+            text: JSON.stringify(json),
         }
     }
 

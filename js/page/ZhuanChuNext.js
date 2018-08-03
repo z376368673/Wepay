@@ -9,8 +9,6 @@ import {
 } from 'react-native';
 import BaseComponent, {BaseStyles, mainColor, window_width} from "./BaseComponent";
 import NavigationBar from "../common/NavigationBar";
-import QRCode from "react-native-qrcode";
-import ViewUtils from "../util/ViewUtils";
 import BaseUrl from '../util/BaseUrl';
 import DialogUtils from '../util/DialogUtils';
 import HttpUtils from '../util/HttpUtils';

@@ -57,7 +57,7 @@ export default class StroeDetails extends BaseComponent {
                         shopName: this.info.shopName,
                         shopAddress: this.info.shopAddress,
                         shopPhone: this.info.shopPhone,
-                        imgHead: {uri: this.getImgUrl(this.info.imgHead)},
+                        imgHead: { uri: this.getImgUrl(this.info.imgHead) },
                     })
                 } else {
                     DialogUtils.showToast(result.msg)
@@ -74,28 +74,28 @@ export default class StroeDetails extends BaseComponent {
                     title={"店铺详情"}
                     navigation={this.props.navigation}
                 />
-                <View style={{flexDirection:"row",backgroundColor: mainColor ,padding:15,alignItems:"center"}}>
+                <View style={{ flexDirection: "row", backgroundColor: mainColor, padding: 15, alignItems: "center" }}>
                     <Image
-                        style={{ width: 60, height: 60, borderColor:"#d11",borderWidth:1,borderRadius:30}}
+                        style={{ width: 60, height: 60, borderColor: "#d11", borderWidth: 1, borderRadius: 30 }}
                         source={this.state.imgHead} />
-                        <View style={{flex:1,marginLeft:15,marginEnd:50}}>
-                        <Text style={{fontSize:16,color:"#fff",}}>{this.state.shopName}  {this.state.shopPhone}</Text>
-                        <Text style={{fontSize:14,color:"#fff",marginTop:5,}}>{this.state.shopAddress}</Text>
-                        </View>
-                        <TouchableOpacity
-                         onPress={()=>this.callStore(this.state.shopPhone)}
-                         >
+                    <View style={{ flex: 1, marginLeft: 15, marginEnd: 50 }}>
+                        <Text style={{ fontSize: 16, color: "#fff", }}>{this.state.shopName}  {this.state.shopPhone}</Text>
+                        <Text style={{ fontSize: 14, color: "#fff", marginTop: 5, }}>{this.state.shopAddress}</Text>
+                    </View>
+                    <TouchableOpacity
+                        style={{height:50,width:50}}
+                        onPress={() => this.callStore(this.state.shopPhone)}
+                    >
                         <Image
-                        style={{ width: 30, height: 30, marginLeft:-45,marginTop:-35}}
-                        source={require("../../../res/images/dianhua.png")}/>
-                         </TouchableOpacity>
+                            style={{ width: 33, height: 35, resizeMode:"center"}}
+                            source={require("../../../res/images/dianhua.png")} />
+                    </TouchableOpacity>
                 </View>
                 <View style={{ flex: 1, backgroundColor: "#f1f1f1" }}>
                     <RefreshFlatList
                         ref={refList => this.refList = refList}
                         numColumns={2}
-                        onRefreshs={() => this._refreshData()}
-                        onLoadData={() => this._onLoadData()}
+                        onRefreshs={() => this.getStoreDetail()}
                         renderItem={(items) => this._getStore(items)} />
 
                 </View>
@@ -103,7 +103,7 @@ export default class StroeDetails extends BaseComponent {
         );
     }
     //联系商家 //暂时返回失败， 可能要真机测试才可以
-    callStore(phone){
+    callStore(phone) {
         let url = 'tel: ' + phone;
         Linking.canOpenURL(url).then(supported => {
             if (!supported) {

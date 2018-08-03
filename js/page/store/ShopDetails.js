@@ -91,11 +91,11 @@ export default class ShopDetails extends BaseComponent {
                 <ScrollView >
                     <View style={[BaseStyles.container_column, { backgroundColor: "#f1f1f1" }]}>
                         <TouchableOpacity
-                            // onPress={() => this.handleAsyncSelectPhoto(false, false)}
+                            onPress={() => this.handleAsyncSelectPhoto(false, false)}
                         ><Image
                                 style={{ flex: 1, width: window_width, height: window_height / 3 * 1.7, backgroundColor: "#fff" }}
                                 source={this.state.shopImage}
-                            />></TouchableOpacity>
+                            /></TouchableOpacity>
                         <View style={{ flexDirection: 'row', padding: 10 }}>
                             <Text
                                 style={{

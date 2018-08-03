@@ -188,11 +188,10 @@ export default class HomePage extends BaseComponent {
                         <View style={[BaseStyles.container_row, { flexWrap: 'wrap', }]}>
                             {this._itemView(() => this.onClicks(1), require('../../res/images/zhuanchu.png'), "转出")}
                             {this._itemView(() => this.onClicks(2), require('../../res/images/zhuanru.png'), "转入")}
-                            {this._itemView(() => this.onClicks(6), require('../../res/images/shangcheng.png'), "商城")}
-
                             {this._itemView(() => this.onClicks(3), require('../../res/images/mairu.png'), "买入")}
                             {this._itemView(() => this.onClicks(4), require('../../res/images/maichu.png'), "卖出")}
                             {this._itemView(() => this.onClicks(5), require('../../res/images/shuzi.png'), "数字资产")}
+                            {this._itemView(() => this.onClicks(6), require('../../res/images/shangcheng.png'), "超级商城")}
                         </View>
                     </View>
                 </ScrollView></View>

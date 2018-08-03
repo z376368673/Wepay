@@ -7,7 +7,7 @@ import {
     View,
     TouchableOpacity,
 } from 'react-native';
-import BaseComponent, { BaseStyles, mainColor } from "../BaseComponent";
+import BaseComponent, { BaseStyles, mainColor ,upDataUserInfo} from "../BaseComponent";
 import NavigationBar from "../../common/NavigationBar";
 import ViewUtils from "../../util/ViewUtils";
 import DialogUtils from '../../util/DialogUtils';
@@ -112,10 +112,7 @@ export default class SettingView extends BaseComponent {
         HttpUtils.uploadImage(url, { sessionId: this.props.AppStore.userInfo.sessionId }, imgs, (result) => {
             if (result.code === 1) {
                 DialogUtils.showToast("上传成功")
-                uri: this.props.AppStore.userInfo.imgHead
-                this.setState({
-                    headImg: this.source
-                })
+                upDataUserInfo(this.props.AppStore)
             } else {
                 DialogUtils.showToast(result.msg)
             }

@@ -133,40 +133,40 @@ export default class BuyOrSellCentre extends BaseComponent {
             }}>
             <Image
                 style={{ width: 60, height: 60, borderWidth: 1, borderRadius: 30, borderColor: "#d11" }}
-                source={require("../../res/images/banben.png")} />
+                source={{uri:this.getImgUrl(data.item.imgHead)}} />
             <View style={{ flexDirection: 'column', flex: 1, marginLeft: 10, justifyContent: "center" }}>
                 <Text
-                    style={{ color: "#333333", fontSize: 18, }}>{data.item ? data.item.userName : "name"}</Text>
+                    style={{ color: "#333333", fontSize: 16, }}>{data.item ? data.item.userName : "name"}</Text>
                 {/* 信用值  */}
                 <View style={{ marginTop: 5, alignContent: "center" }}>
-                    {ViewUtils.getCreditView(data.item.userCredit, 15, 14, "#888")}
+                    {ViewUtils.getCreditView(data.item.userCredit, 13, 14, "#888")}
                 </View>
                 {/*支付方式 */}
-                {this.type === 0 ? <Text style={{
+                 <Text style={{
                     color: "#888",
-                    fontSize: 15,
+                    fontSize: 13,
                     marginTop: 5
                 }}
                     numberOfLines={1}
-                >支付方式:{data.item.name}</Text> : null}
+                >支付方式:{data.item.banqGenre}</Text> 
             </View>
 
             <View style={{ flexDirection: "column", backgroundColor: "#fff", marginTop: 5 }}>
                 <Text style={{
                     color: "#444",
-                    fontSize: 17,
+                    fontSize: 15,
                     alignSelf: "flex-end",
                 }}
                     numberOfLines={1}
-                >交易金额 {data.item.payNums} RMB</Text>
+                >交易金额 {data.item.payNums}</Text>
                 <Text style={{
                     color: "#888",
-                    fontSize: 14,
+                    fontSize: 13,
                     marginTop: 8,
                     alignSelf: "flex-end",
                 }}
                     numberOfLines={1}
-                >实付金额:{data.item.payNums} RMB</Text>
+                >实付金额:{data.item.payNums}</Text>
                 <TouchableOpacity
                     style={{
                         backgroundColor: "#d11",
