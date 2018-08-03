@@ -219,6 +219,8 @@ export default class ZhuanChuNext extends BaseComponent {
             case 5:
             if(this.state.tranMoney<=0){
                 DialogUtils.showMsg("请输入大于0的数字")
+            } if(this.state.mobile4.length<1){
+                DialogUtils.showMsg("请输入对方手机后四位数字")
             }else if(this.state.mobile4!==this.state.mobile.substr(7, 10)){
                 DialogUtils.showMsg("手机后四位数字不正确")
             }else{

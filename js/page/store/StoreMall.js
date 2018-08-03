@@ -26,7 +26,7 @@ export default class StoreMall extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
-            text: '18629448593',
+            text: '',
             activeIndex: 0,
             typeArr:[]
         }

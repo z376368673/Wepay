@@ -21,7 +21,7 @@ export default class StoreCommon extends BaseComponent {
         this.tabLabel = this.props.tabLabel;
         this.numColumns = this.props.numColumns ? this.props.numColumns : 1
         this.state = {
-            text: '18629448593',
+            text: '',
         }
         this.userInfo = this.getUserInfo();
 
