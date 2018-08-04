@@ -5,8 +5,8 @@
 添加；import PropTypes from 'prop-types';
 
 在QRScannerView 中 添加一下代码  
-  {/*绘制顶部标题栏组件  在遮罩上方*/}
-                    {Platform.OS==="android"?this.props.renderTopBarView():null}
+                      {/*绘制顶部标题栏组件  在遮罩上方*/}
+                    {Platform.OS === "android" ? this.props.renderTopBarView() : null}
 
                     {/*绘制扫描遮罩*/}
                     <QRScannerRectView
@@ -32,8 +32,8 @@
                         hintTextPosition={this.props.hintTextPosition}
                         isShowScanBar={this.props.isShowScanBar}
                     />
- {/*绘制顶部标题栏组件 在遮罩下方*/}
- {Platform.OS==="ios"?this.props.renderTopBarView():null}
+                    {/*绘制顶部标题栏组件 在遮罩下方*/}
+                    {Platform.OS === "ios" ? this.props.renderTopBarView() : null}
 
 2，修改 react-native-camera
 添加；import PropTypes from 'prop-types';
