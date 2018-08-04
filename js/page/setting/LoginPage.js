@@ -141,7 +141,7 @@ export default class LoginPage extends BaseComponent {
     /**
      * 登陆
      */
-    loginByPwd() {
+    loginByPwd()   {
         DialogUtils.showLoading("");
         let url = BaseUrl.loginUrl(this.state.text, this.state.pwd)
         HttpUtils.getData(url)
