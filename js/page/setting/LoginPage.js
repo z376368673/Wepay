@@ -167,10 +167,6 @@ export default class LoginPage extends BaseComponent {
                 }
                 DialogUtils.hideLoading()
             })
-            .catch(error => {
-                DialogUtils.hideLoading()
-                DialogUtils.showToast("服务器繁忙" + error.message)
-            })
     }
 
 }

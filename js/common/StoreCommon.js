@@ -11,7 +11,7 @@ import HttpUtils from "../util/HttpUtils";
 import RefreshFlatList from "./RefreshFlatList"
 import Utils from '../util/Utils';
 import BaseUrl from '../util/BaseUrl';
-
+import UserInfo from '../model/UserInfo';
 //订单公用类（相当于Fragment）
 const window_w = Utils.getWidth();
 export const KEYS = [""]
@@ -56,9 +56,8 @@ export default class StoreCommon extends BaseComponent {
             this.url = BaseUrl.getShopBySearch(this.userInfo.sessionId, this.pageIndex)
         } else {
             this.url = BaseUrl.getStoreList(this.userInfo.sessionId,
-                this.pageIndex, this.userInfo.longitude, this.userInfo.latitude)
+                this.pageIndex, UserInfo.longitude, UserInfo.latitude)
         }
-        //alert(this.tabLabel)
         HttpUtils.getData(this.url)
             .then(result => {
                 //alert(JSON.stringify(result))

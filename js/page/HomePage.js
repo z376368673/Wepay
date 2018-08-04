@@ -40,14 +40,16 @@ export default class HomePage extends BaseComponent {
         }
         //获取经纬度 并赋值给全局变量
         Utils.getLocation((coords)=>{
-            Utils.getCityInfoBy(
-                JSON.stringify(coords.longitude), 
-                JSON.stringify(coords.latitude),
-                (addressComponent)=>{
-                    this.userInfo = this.getUserInfo()
-                    this.userInfo.longitude =addressComponent.longitude
-                    this.userInfo.latitude =addressComponent.latitude
-            })
+                    UserInfo.longitude =coords.longitude
+                    UserInfo.latitude =coords.latitude
+            //Utils.getCityInfoBy(
+            //     JSON.stringify(coords.longitude), 
+            //     JSON.stringify(coords.latitude),
+            //     (addressComponent)=>{
+            //         this.userInfo = this.getUserInfo()
+            //         this.userInfo.longitude =addressComponent.longitude
+            //         this.userInfo.latitude =addressComponent.latitude
+            // })
         })
     }
     setImgToBanner(bannerArray) {
@@ -128,7 +130,7 @@ export default class HomePage extends BaseComponent {
                                         style={styles.headImg} />
                                     <View style={{ flex: 1, marginLeft: 10 }}>
                                         <Text style={styles.text}>
-                                            UUID:{this.props.AppStore.userInfo.account}
+                                            UID:{this.props.AppStore.userInfo.userid}
                                         </Text>
                                         {ViewUtils.getCreditView(this.props.AppStore.userInfo.userCredit, 16, 15, "#fff")}
                                     </View>
@@ -225,7 +227,8 @@ export default class HomePage extends BaseComponent {
                 this.props.navigation.navigate('SellPage');
                 break;
             case 5://数字资产
-                this.props.navigation.navigate('ApplyStore');
+                // this.props.navigation.navigate('ApplyStore');
+                DialogUtils.showToast("此功能暂不开放")
                 break;
             case 6://商城
                 this.props.navigation.navigate('StoreMall');

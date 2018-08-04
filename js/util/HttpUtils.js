@@ -1,7 +1,10 @@
 import DialogUtils from './DialogUtils';
 import BaseUrl from './BaseUrl';
 export default class HttpUtils {
-
+    /**
+     * 
+     * @param {*} url 
+     */
     static getData(url) {
         console.log(url)
         return new Promise((resolve, reject) => {
@@ -12,12 +15,30 @@ export default class HttpUtils {
                     resolve(result);
                 })
                 .catch(error => {
-                    reject(error);
-                    DialogUtils.showToast(JSON.stringify(error.message))
+                    //reject(error);
+                    this.errorMsg(error)
+                    DialogUtils.hideLoading()
                 })
         })
     }
 
+    /**错误信息解析
+     * 
+     * @param {*} error 
+     */
+    static errorMsg(error ){
+        var message  = JSON.stringify(error.message)
+        if(message.startsWith("Network")&&message.endsWith("failed")){
+            DialogUtils.showToast("网络异常，请检查网络")
+        }else if(error){
+
+        }
+    }
+    /**
+     * 
+     * @param {*} url 
+     * @param {*} data 
+     */
     static postData(url, data) {
         console.log(url + JSON.stringify(data))
         var formData = new FormData();
@@ -41,8 +62,9 @@ export default class HttpUtils {
                     resolve(result);
                 })
                 .catch(error => {
-                    reject(error);
-                    DialogUtils.showToast(JSON.stringify(error.message))
+                    //reject(error);
+                    this.errorMsg(error)
+                    DialogUtils.hideLoading()
                 })
         })
     }

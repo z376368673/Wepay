@@ -235,7 +235,7 @@ export default class SettingView extends BaseComponent {
                                     style={styles.headImg} />
                                 <View style={{ flex: 1, marginLeft: 10 }}>
                                     <Text style={{ color: "#333", fontSize: 16, }}>
-                                        UUID:{this.props.AppStore.userInfo.account}
+                                        UID:{this.props.AppStore.userInfo.userid}
                                     </Text>
                                     {ViewUtils.getCreditView(this.props.AppStore.userInfo.userCredit, 16, 15, "#333")}
                                 </View>
