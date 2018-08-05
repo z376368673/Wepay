@@ -145,7 +145,7 @@ export default class NoticeList extends BaseComponent {
                             color: "#666666",
                             marginTop: 5,
                             fontSize: 16,
-                        }}>{Utils.formatDateTime(data.item.addtime)}</Text>
+                        }}>{Utils.formatDateTime(data.item.addtime*1000)}</Text>
                     </View>
                 </View>
             </TouchableOpacity>

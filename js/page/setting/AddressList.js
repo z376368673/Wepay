@@ -71,7 +71,7 @@ export default class AddressList extends BaseComponent {
                         alignSelf: "center",
                         color: '#FFF',
                         fontSize: 20,
-                    }}> 创建订单</Text>
+                    }}> 添加地址</Text>
                 </TouchableOpacity>
             </View>
         );
@@ -104,10 +104,13 @@ export default class AddressList extends BaseComponent {
      * @private
      */
     _getBuyOrSellItem(data) {
-        let isChecked = this.state.selectIndex === data.index ? true : false;
+        //alert(JSON.stringify(data.item.zt))
+        var isChecked = true
+         isChecked = data.item.zt == "0" ?false  : true;
+      
         if(data.item)
         return <TouchableOpacity onPress={()=>{
-            if(this.navigation.state.params.selectAddess){
+            if(this.navigation.state.params){
               this.navigation.state.params.selectAddess(data.item)
               this.props.navigation.goBack()
             }
@@ -151,7 +154,7 @@ export default class AddressList extends BaseComponent {
                         disabled={true}
                         title='默认地址'
                         size='md'
-                        checked={data.item.zt===1?true:false}
+                        checked={isChecked}
                         //onChange={value =>this.defaultAddress(data.item)}
                     />
                 </View>

@@ -39,7 +39,7 @@ export default class MyNoticeList extends BaseComponent{
         return (
             <View style={[BaseStyles.container_column, {backgroundColor: "#f1f1f1"}]}>
                 <NavigationBar
-                    title="个人信息"
+                    title="个人消息"
                     navigation={this.props.navigation}
                 />
                 <View style={{flex: 1, marginTop: 10, paddingTop: 10, backgroundColor: "#f1f1f1"}}>
@@ -149,7 +149,7 @@ export default class MyNoticeList extends BaseComponent{
                         color: "#666666",
                         marginTop: 5,
                         fontSize: 16,
-                    }}>{Utils.formatDateTime(data.item.createTime)}</Text>
+                    }}>{Utils.formatDateTime(data.item.createTime*1000)}</Text>
                 </View>
             </View>
         </TouchableOpacity>

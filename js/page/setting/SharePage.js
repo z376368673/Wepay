@@ -52,13 +52,12 @@ export default class SharePage extends BaseComponent {
                 />
                 <View style={{
                     // backgroundColor: mainColor,
-                    height: 390,
+                    height: 340,
                     alignItems: 'center',
                     flexDirection: "column",
                     marginTop: 30,
                 }}>
-                    <Image source={require("../../../res/images/erweima-bg.png")}
-                        style={{ flex: 1, position: "absolute", resizeMode: Image.resizeMode.contain, }} />
+                   
                     {/*生成二维码*/}
                     <View style={{ marginTop: 40, top: 20, }}>
                         <QRCode
@@ -69,14 +68,6 @@ export default class SharePage extends BaseComponent {
                             bgColor='black'
                             fgColor='white' />
                     </View>
-                    <Text
-                        style={{
-                            color: '#333',
-                            //position: 'relative', top: 90,
-                            position: "absolute", bottom: 30,
-                            fontSize: 20,
-                        }}>
-                        扫一扫，向我付款</Text>
                 </View>
 
                 <TouchableOpacity
@@ -101,6 +92,7 @@ export default class SharePage extends BaseComponent {
                 break
             case 1:
                 Clipboard.setString(this.getSharedUrl(this.userInfo.userid));
+                DialogUtils.showToast("已复制到剪贴板")
                 break
             case 2:
                 this.props.navigation.navigate('SharedRecord')

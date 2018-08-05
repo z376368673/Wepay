@@ -23,9 +23,9 @@ export default class ModifyPassWord extends BaseComponent {
         super(props);
         const {type} = this.props.navigation.state.params
         this.state = {
-            phone: "",
-            code: "",//当前验证码
-            sms: "10086",//短信验证码
+            phone: "18629448593",
+            code: 0,//当前验证码
+            sms: 10086,//短信验证码
             pwd: "",//第一次密码
             pwdAgain: "",//第二次密码
             type: type,
@@ -34,7 +34,7 @@ export default class ModifyPassWord extends BaseComponent {
     onClicks(type) {
         switch (type) {
             case 1://确定
-                if(this.state.code!==this.state.sms){
+                if(this.state.code!=this.state.sms){
                     DialogUtils.showMsg("验证码不正确")
                 }else if(this.state.pwd.length<6){
                     DialogUtils.showMsg("密码不能小于6位")
@@ -81,7 +81,7 @@ export default class ModifyPassWord extends BaseComponent {
                         defaultValue={this.state.phone}
                         placeholderTextColor={'#fff'}
                         underlineColorAndroid='transparent'
-                        keyboardType={this.state.type === 0 ? "default" : "numeric"}
+                        keyboardType="numeric"
                         onChangeText={(text) => this.setState({phone: text})}/>
                 </View>
 
@@ -91,7 +91,7 @@ export default class ModifyPassWord extends BaseComponent {
                         placeholder={'请输入验证码'}
                         placeholderTextColor={'#fff'}
                         underlineColorAndroid='transparent'
-                        keyboardType={this.state.type === 0 ? "default" : "numeric"}
+                        keyboardType='default'
                         onChangeText={(text) => this.setState({code: text})}/>
                    <CountDownView codeText={"获取验证码"} 
                             phone = {this.state.phone}
@@ -108,7 +108,7 @@ export default class ModifyPassWord extends BaseComponent {
                         placeholderTextColor={'#fff'}
                         underlineColorAndroid='transparent'
                         secureTextEntry={true}
-                        keyboardType={this.state.type === 0 ? "default" : "numeric"}
+                        keyboardType='default'
                         onChangeText={(text) => this.setState({pwd: text})}/>
                 </View>
 
@@ -120,7 +120,7 @@ export default class ModifyPassWord extends BaseComponent {
                         placeholderTextColor={'#fff'}
                         secureTextEntry={true}
                         underlineColorAndroid='transparent'
-                        keyboardType={this.state.type === 0 ? "default" : "numeric"}
+                        keyboardType='default'
                         onChangeText={(text) => this.setState({pwdAgain: text})}/>
                 </View>
 

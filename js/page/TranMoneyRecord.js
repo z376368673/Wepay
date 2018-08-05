@@ -102,16 +102,6 @@ export default class TranMoneyRecord extends BaseComponent {
     }
 
     /**
-     * 进入公告详情
-     * @param data
-     */
-    onClick(news) {
-        this.props.navigation.navigate('NoticDetails', {
-            id: news.id,
-        })
-    }
-
-    /**
      * 绘制itemView
      * @param data
      * @returns {*}
@@ -121,7 +111,7 @@ export default class TranMoneyRecord extends BaseComponent {
         if (data.item){
             let imgPath = this.getImgUrl(data.item.imgHead)
             return <TouchableOpacity
-                onPress={() => this.onClick(data.item)}>
+               >
                 <View
                     key={data.item.index}
                     style={{

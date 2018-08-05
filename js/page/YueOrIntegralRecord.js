@@ -82,9 +82,11 @@ export default class YueOrIntegralRecord extends BaseComponent {
                         onRefreshs={() => {
                             this._refreshData()
                         }}
+                        isDownLoad = {true}
                         onLoadData={() => {
                             this._onLoadData()
                         }}
+                        
                         renderItem={(item) => this._getItem(item)} />
                 </View>
             </View>

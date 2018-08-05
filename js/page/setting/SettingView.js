@@ -257,7 +257,7 @@ export default class SettingView extends BaseComponent {
                         <View style={[BaseStyles.container_center, { marginTop: 12 }]} />
                         {ViewUtils.getSettingItem1(require('../../../res/images/gonggao.png'), '公告', false,
                             () => this.onClicks("notice"))}
-                        {ViewUtils.getSettingItem1(require('../../../res/images/gonggao.png'), '个人信息',
+                        {ViewUtils.getSettingItem1(require('../../../res/images/gonggao.png'), '个人消息',
                             this.state.newMessage === 1 ? true : false, () => this.onClicks("geren"))}
 
                         <View style={[BaseStyles.container_center, { marginTop: 12 }]} />

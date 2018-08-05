@@ -34,7 +34,7 @@ export default class Complaint extends BaseComponent {
      * 选择图片后回调此函数
      */
     handleOpenImagePicker = () => {
-        SYImagePicker.showImagePicker({imageCount: 9, isRecordSelected: true}, (err, photos) => {
+        SYImagePicker.showImagePicker({imageCount: 3, isRecordSelected: true}, (err, photos) => {
             console.log(err, photos);
             if (!err) {
                 this.setState({

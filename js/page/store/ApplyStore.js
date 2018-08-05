@@ -138,7 +138,7 @@ export default class ApplyStore extends BaseComponent {
                                 alignSelf: "center",
                                 color: '#d11',
                                 fontSize: 14,
-                            }}>*请在认真填写申请资料</Text>
+                            }}>*请认真填写申请资料</Text>
                         </View>
 
                         <View style={styles.itemView}>
@@ -250,11 +250,11 @@ export default class ApplyStore extends BaseComponent {
                                 店铺名称</Text>
                             <TextInput
                                 style={styles.itemTextInput}
-                                placeholder={'请输入店铺名称,(不超过10个字)'}
+                                placeholder={'请输入店铺名称,(不超过20个字)'}
                                 //defaultValue={userName}
                                 placeholderTextColor={'#999'}
                                 underlineColorAndroid='transparent'
-                                maxLength={10}
+                                maxLength={20}
                                 keyboardType={"default"}
                                 onChangeText={(text) => this.setState({ shopName: text })} />
                         </View>
@@ -282,7 +282,7 @@ export default class ApplyStore extends BaseComponent {
                                 //defaultValue={userName}
                                 placeholderTextColor={'#999'}
                                 underlineColorAndroid='transparent'
-                                maxLength={10}
+                                maxLength={30}
                                 keyboardType={"default"}
                                 onChangeText={(text) => this.setState({ shopAddress: text })} />
                         </View>

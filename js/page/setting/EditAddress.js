@@ -53,7 +53,7 @@ export default class EditAddress extends BaseComponent {
         return (
             <View style={[BaseStyles.container_column, { backgroundColor: "#f1f1f1" }]}>
                 <NavigationBar
-                    title='编辑地址'
+                    title={this.addrssInfo?"编辑地址":"添加地址"}
                     navigation={this.props.navigation}
                 />
                 <View style={styles.itemView}>
@@ -158,8 +158,10 @@ export default class EditAddress extends BaseComponent {
      * 添加地址/修改地址信息
      */
     addAddress(){
+       
         if(this.addrssInfo===null){
-            this.url = BaseUrl.putAddress(this.userInfo.sessionId,
+            this.url = BaseUrl.putAddress(
+                this.userInfo.sessionId,
                 this.userInfo.userid,
                 this.state.name,
                 this.state.phone,
@@ -181,7 +183,7 @@ export default class EditAddress extends BaseComponent {
                 this.state.address,
                 this.state.isDefault)
         }
-
+          //alert(JSON.stringify(this.state.name))
             HttpUtils.getData(this.url)
                 .then(result => {
                     //alert(JSON.stringify(result))

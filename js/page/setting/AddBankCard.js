@@ -5,7 +5,7 @@ import {
     View,
     TextInput,
     TouchableOpacity,
-    Button,
+    ScrollView
 } from 'react-native';
 import BaseComponent, { BaseStyles, mainColor, window_width } from "../BaseComponent";
 import NavigationBar from "../../common/NavigationBar";
@@ -14,6 +14,7 @@ import HttpUtils from '../../util/HttpUtils';
 import { PullPicker } from 'teaset';
 import DialogUtils from '../../util/DialogUtils';
 import Checkbox from 'teaset/components/Checkbox/Checkbox';
+import EditText from "../../common/EditText"
 /**
  * 添加银行卡
  */
@@ -43,10 +44,11 @@ export default class AddBankCard extends BaseComponent {
     componentDidMount() {
         this.getBankList();
     }
+   
     //选择银行类型
     showBankCardList() {
         PullPicker.show(
-            '选择店铺分类',
+            '请选择银行卡类型',
             this.state.bankCardTextList,
             this.state.selectedIndex,
             (item, index) => {
@@ -99,6 +101,8 @@ export default class AddBankCard extends BaseComponent {
                     title='添加银行卡'
                     navigation={this.props.navigation}
                 />
+                <ScrollView><View>
+                
                 <View style={{ height: 50, justifyContent: 'center', alignItems: 'center', }}>
                     <Text style={{ fontSize: 14, color: "#888", }}>
                         *请帮定持卡人本人的银行卡，姓名一经填写不可修改</Text></View>
@@ -136,13 +140,24 @@ export default class AddBankCard extends BaseComponent {
                         keyboardType='numeric'
                         onChangeText={(text) => this.setState({ bankNum: text })} />
                 </View>
+                <View style={[styles.itemView,{height:0}]}>
+                    <Text style={styles.itemText}>
+                      开户支行</Text>
+                    <TextInput
+                        style={styles.itemTextInput}
+                        //placeholder={'请输入开户银行的支行分行1'}
+                        //defaultValue={userName}
+                        placeholderTextColor={'#999'}
+                        underlineColorAndroid='transparent'
+                        keyboardType='default'
+                        onChangeText={(text) => this.setState({ bankBranch: text })} />
+                </View>
                 <View style={styles.itemView}>
                     <Text style={styles.itemText}>
                         开户支行</Text>
-                    <TextInput
+                    <EditText
                         style={styles.itemTextInput}
                         placeholder={'请输入开户银行的支行分行'}
-                        //defaultValue={userName}
                         placeholderTextColor={'#999'}
                         underlineColorAndroid='transparent'
                         keyboardType='default'
@@ -175,6 +190,8 @@ export default class AddBankCard extends BaseComponent {
                         fontSize: 20,
                     }}>确定</Text>
                 </TouchableOpacity>
+                </View>
+                </ScrollView>
             </View>
         );
     }

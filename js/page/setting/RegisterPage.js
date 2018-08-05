@@ -6,6 +6,7 @@ import {
     TextInput,
     TouchableOpacity,
     Button,
+    Platform,
 } from 'react-native';
 import BaseComponent, { BaseStyles, mainColor, window_width } from "../BaseComponent";
 import NavigationBar from "../../common/NavigationBar";
@@ -32,6 +33,14 @@ export default class RegisterPage extends BaseComponent {
             paymentPwd: "", //支付密码
         }
     }
+
+    shouldComponentUpdate(nextProps){
+        return Platform.OS !== 'ios' || (this.props.value === nextProps.value &&  
+               (nextProps.defaultValue == undefined || nextProps.defaultValue == '' )) || 
+               (this.props.defaultValue === nextProps.defaultValue &&  (nextProps.value == undefined || nextProps.value == '' ));
+      
+      }
+  
     /**
      * 注册
      */
@@ -65,11 +74,11 @@ export default class RegisterPage extends BaseComponent {
                     DialogUtils.showMsg("请输入昵称")
                 } else if (this.state.phone.length !== 11) {
                     DialogUtils.showMsg("请输入11位手机号")
-                } else if (this.state.code!==this.state.sms) {
+                } else if (this.state.code!=this.state.sms) {
                     DialogUtils.showMsg("验证码不正确")
                 } else if (this.state.pwd.length  < 6) {
                     DialogUtils.showMsg("请输入6位以上的密码")
-                } else if (this.state.pwd !== this.state.pwdAgain) {
+                } else if (this.state.pwd != this.state.pwdAgain) {
                     DialogUtils.showMsg("两次输入的密码不一致")
                 } else if (this.state.recommendPhone.length  !== 11) {
                     DialogUtils.showMsg("请输入11位推荐人手机号")
@@ -101,11 +110,12 @@ export default class RegisterPage extends BaseComponent {
 
                 <View style={styles.itemView}>
                     <TextInput
+                        {...this.props}
                         style={styles.itemTextInput}
                         placeholder={'请输入您的昵称'}
                         placeholderTextColor={'#fff'}
                         underlineColorAndroid='transparent'
-                        keyboardType={"numeric"}
+                        //keyboardType={"default"}
                         onChangeText={(text) => this.setState({ nickName: text })} />
                 </View>
                 <View style={styles.itemView}>
@@ -115,7 +125,7 @@ export default class RegisterPage extends BaseComponent {
                         defaultValue={this.state.phone}
                         placeholderTextColor={'#fff'}
                         underlineColorAndroid='transparent'
-                        keyboardType={"numeric"}
+                        //keyboardType={"default"}
                         onChangeText={(text) => this.setState({ phone: text })} />
                 </View>
 
@@ -125,7 +135,7 @@ export default class RegisterPage extends BaseComponent {
                         placeholder={'请输入验证码'}
                         placeholderTextColor={'#fff'}
                         underlineColorAndroid='transparent'
-                        keyboardType={"numeric"}
+                        //keyboardType={"default"}
                         onChangeText={(text) => this.setState({ code: text })} />
                     <CountDownView codeText={"获取验证码"}
                         phone={this.state.phone}
@@ -164,7 +174,7 @@ export default class RegisterPage extends BaseComponent {
                         //defaultValue={userName}
                         placeholderTextColor={'#fff'}
                         underlineColorAndroid='transparent'
-                        keyboardType={"numeric"}
+                        keyboardType={"default"}
                         onChangeText={(text) => this.setState({ recommendPhone: text })} />
                 </View>
                 <View style={styles.itemView}>
@@ -174,7 +184,7 @@ export default class RegisterPage extends BaseComponent {
                         //defaultValue={userName}
                         placeholderTextColor={'#fff'}
                         underlineColorAndroid='transparent'
-                        keyboardType={"numeric"}
+                        keyboardType={"default"}
                         onChangeText={(text) => this.setState({ paymentPwd: text })} />
                 </View>
 

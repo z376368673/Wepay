@@ -27,7 +27,7 @@ export default class ModifyPassWord extends BaseComponent {
             pwdAgain: "",//第二次密码
             type: type,
         }
-        //this.userInfo.sessionId
+        this.userInfo.sessionId
     }
 
     onClicks(type) {

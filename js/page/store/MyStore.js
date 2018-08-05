@@ -41,11 +41,10 @@ export default class MyStore extends BaseComponent {
         HttpUtils.getData(url)
             .then(result => {
                 if (result.code === 1) {
-                    //alert(JSON.stringify(result))
-                    this.info = result.data
+                   // alert(JSON.stringify(result.data))
                     this.setState({
-                        todayEarnings: result.data.todayEarnings ? result.data.todayEarnings : 0,
-                        totalRevenue: result.data.totalRevenue ? result.data.totalRevenue : 0,
+                        todayEarnings: result.data.todayEarnings,
+                        totalRevenue: result.data.totalRevenue,
                     })
                 } else {
                     DialogUtils.showToast(result.msg)
