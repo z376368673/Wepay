@@ -1707,15 +1707,15 @@ code-point-at@^1.0.0:
   version "1.1.0"
   resolved "http://registry.npm.taobao.org/code-point-at/download/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
 
-code-push@2.0.5:
-  version "2.0.5"
-  resolved "http://registry.npm.taobao.org/code-push/download/code-push-2.0.5.tgz#5dae053ab4eb5682ce39df8d173683c18be1089f"
+code-push@2.0.6:
+  version "2.0.6"
+  resolved "http://registry.npm.taobao.org/code-push/download/code-push-2.0.6.tgz#fb4e140c90fdb7fa047f3be6f53caacc8915d0b8"
   dependencies:
     q "^1.4.1"
     recursive-fs "0.1.4"
     slash "1.0.0"
     superagent "^3.8.0"
-    superagent-proxy "^1.0.0"
+    superagent-proxy "^1.0.3"
     yazl "^2.4.1"
 
 collection-visit@^1.0.0:
@@ -4803,11 +4803,11 @@ react-native-check-box@^2.0.2:
   dependencies:
     prop-types "^15.5.7"
 
-react-native-code-push@^5.2.2:
-  version "5.3.4"
-  resolved "http://registry.npm.taobao.org/react-native-code-push/download/react-native-code-push-5.3.4.tgz#db5da06550435a1fcb64d94a79436d90d8ab8c58"
+react-native-code-push@^5.4.1:
+  version "5.4.1"
+  resolved "http://registry.npm.taobao.org/react-native-code-push/download/react-native-code-push-5.4.1.tgz#8502c44075bb4f1ac2d64991912056691a89f049"
   dependencies:
-    code-push "2.0.5"
+    code-push "2.0.6"
     glob "^5.0.15"
     hoist-non-react-statics "^2.3.1"
     inquirer "1.1.2"
@@ -4851,9 +4851,9 @@ react-native-flexi-radio-button@^0.2.2:
   version "0.2.2"
   resolved "http://registry.npm.taobao.org/react-native-flexi-radio-button/download/react-native-flexi-radio-button-0.2.2.tgz#a0180393c531ba3477722c6e42a31ceb1c11623b"
 
-react-native-htmlview@^0.12.0:
-  version "0.12.1"
-  resolved "http://registry.npm.taobao.org/react-native-htmlview/download/react-native-htmlview-0.12.1.tgz#4b987f1f34fae89f7bbd3c478f8f20d601019639"
+react-native-htmlview@^0.13.0:
+  version "0.13.0"
+  resolved "http://registry.npm.taobao.org/react-native-htmlview/download/react-native-htmlview-0.13.0.tgz#2c34646c35bbe94386db9aaebbb3930ec58c8bcf"
   dependencies:
     entities "^1.1.1"
     htmlparser2-without-node-native "^3.9.2"
@@ -5854,7 +5854,7 @@ strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "http://registry.npm.taobao.org/strip-json-comments/download/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
 
-superagent-proxy@^1.0.0:
+superagent-proxy@^1.0.3:
   version "1.0.3"
   resolved "http://registry.npm.taobao.org/superagent-proxy/download/superagent-proxy-1.0.3.tgz#acfa776672f11c24a90ad575e855def8be44f741"
   dependencies:

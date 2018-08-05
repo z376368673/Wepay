@@ -119,7 +119,7 @@ export default class BuyOrderItem extends BaseComponent {
         } catch (err) {
             DialogUtils.showToast(err.message)
             // 取消选择，err.message为"取消"
-             alert(err.message)
+            // alert(err.message)
         }
     };
 
@@ -130,7 +130,7 @@ export default class BuyOrderItem extends BaseComponent {
         let url = BaseUrl.getCncelBalanceOrder(this.userInfo.sessionId,this.props.data.item.id)
         HttpUtils.getData(url)
             .then(result => {
-                alert(JSON.stringify(result))
+                //alert(JSON.stringify(result))
                 if (result.code === 1) {
                     this.props.delBack(this.props.data.index)
                     DialogUtils.showMsg("订单已取消")
@@ -153,7 +153,7 @@ export default class BuyOrderItem extends BaseComponent {
         let url = BaseUrl.getOutAPUpdate(this.userInfo.sessionId,this.props.id)
         HttpUtils.getData(url)
             .then(result => {
-                alert(JSON.stringify(result))
+                //alert(JSON.stringify(result))
                 if (result.code === 1) {
                     DialogUtils.showMsg("已确认收款","知道了",
                     ()=>{

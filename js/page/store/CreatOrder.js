@@ -102,7 +102,7 @@ export default class CreatOrder extends BaseComponent {
     HttpUtils.getData(url)
         .then(result => {
             if (result.code === 1) {
-                alert(JSON.stringify(result.data))
+                //alert(JSON.stringify(result.data))
                 this.info = result.data
                 this.setState({
                     shopName: this.info.shopName,

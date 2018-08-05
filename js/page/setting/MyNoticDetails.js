@@ -9,6 +9,7 @@ import NavigationBar from "../../common/NavigationBar";
 import HttpUtils from "../../util/HttpUtils";
 import DialogUtils from '../../util/DialogUtils';
 import BaseUrl from '../../util/BaseUrl';
+import HTMLView from 'react-native-htmlview';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 export default class NoticDetails extends BaseComponent {
@@ -39,7 +40,7 @@ export default class NoticDetails extends BaseComponent {
         HttpUtils.getData(this.url)
             .then(result => {
                 DialogUtils.hideLoading();
-                alert(JSON.stringify(result.data))
+                //alert(JSON.stringify(result.data))
                 if (result.code === 1) {
                     this.setState({
                         textInfo:result.data.content,
@@ -61,8 +62,10 @@ export default class NoticDetails extends BaseComponent {
                     navigation={this.props.navigation}
                 />
                 <ScrollView style={{ margin: 15 }}>
-                    <Text style={{ fontSize: 16, color: "#333" }}>
-                        {this.state.textInfo}</Text>
+                <HTMLView
+                        value={this.state.textInfo}
+                        stylesheet={{ color: "#333" }}
+                    />
                 </ScrollView>
             </View>
         );

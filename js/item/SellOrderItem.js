@@ -191,7 +191,7 @@ export default class SellOrderItem extends BaseComponent {
     }
 
     onClickImage(){
-        alert("查看大图")   
+        //alert("查看大图")   
         // if(this.props.data.item.payState===2){
         //     if(this.state.image.length>0){
         //         this.props.navigation.navigate('ImageBorwser',{

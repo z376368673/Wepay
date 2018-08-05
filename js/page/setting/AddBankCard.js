@@ -64,7 +64,7 @@ export default class AddBankCard extends BaseComponent {
             this.state.bankCardId, this.state.userName, this.state.bankBranch, this.state.bankNum, this.state.isDefault)
         HttpUtils.getData(url)
             .then(result => {
-                alert(JSON.stringify(result))
+                //alert(JSON.stringify(result))
                 if (result.code === 1) {
                     DialogUtils.showMsg("添加银行卡成功", "知道了",
                         () => {

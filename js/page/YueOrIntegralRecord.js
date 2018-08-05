@@ -146,7 +146,7 @@ export default class YueOrIntegralRecord extends BaseComponent {
             paddingRight: 5,
         }}>
             <TouchableOpacity onPress={() => {
-                alert(JSON.stringify(data.item))
+                //alert(JSON.stringify(data.item))
             }}>
                 <View style={{ flexDirection: 'row', }}>
                     <View style={{ justifyContent: "center", alignItems: 'center', width: width / 4 - 10, }}>

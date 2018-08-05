@@ -36,7 +36,7 @@ export default class EditAddress extends BaseComponent {
         this.addrssInfo = this.params.addrssInfo?this.params.addrssInfo:null;
     }
     componentDidMount(){
-        alert(JSON.stringify(this.addrssInfo))
+       // alert(JSON.stringify(this.addrssInfo))
         if(this.addrssInfo){
             this.setState({
                 name:this.addrssInfo.name,
@@ -184,7 +184,7 @@ export default class EditAddress extends BaseComponent {
 
             HttpUtils.getData(this.url)
                 .then(result => {
-                    alert(JSON.stringify(result))
+                    //alert(JSON.stringify(result))
                     if (result.code === 1) {
                         let tip = this.addrssInfo===null?"添加地址成功":"修改地址成功"
                         DialogUtils.showToast(tip)

@@ -230,7 +230,7 @@ export default class BuyOrSellCentre extends BaseComponent {
     onSelected(index, value) {
         this.selectedValue = value
         this.seleIndex= index
-        alert(this.selectedValue)
+       // alert(this.selectedValue)
         this._refreshData()
     }
 }
