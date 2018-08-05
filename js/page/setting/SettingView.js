@@ -16,8 +16,6 @@ import Utils from '../../util/Utils';
 import HttpUtils from '../../util/HttpUtils';
 import BaseUrl from '../../util/BaseUrl';
 import { inject, observer } from 'mobx-react';
-//重置路由 首先导入NavigationActions
-import { NavigationActions, StackActions } from 'react-navigation';
 
 @inject('AppStore') @observer
 export default class SettingView extends BaseComponent {
@@ -47,7 +45,7 @@ export default class SettingView extends BaseComponent {
                     this.setState({
                         newMessage: this.info.newMessage,
                     })
-                }else if (result.code === 1) {
+                }else if (result.code === 2) {
                     this.goLogin()
                 }else {
                     DialogUtils.showToast(result.msg)
@@ -67,7 +65,9 @@ export default class SettingView extends BaseComponent {
                     this.setState({
                         storeStatus: result.data,
                     })
-                } else {
+                } else if (result.code === 2) {
+                    this.goLogin(this.props.navigation)
+                }else {
                     DialogUtils.showToast(result.msg)
                 }
             })
@@ -193,21 +193,9 @@ export default class SettingView extends BaseComponent {
                 });
                 break
             case 66://退出登录
-                this.goLogin()
+                this.goLogin(this.props.navigation)
                 break
         }
-    }
-    //qu登录
-    goLogin() {
-        //然后设置新路由的第0个路由为home 
-        const resetAction = StackActions.reset({
-            index: 0,
-            actions: [
-                NavigationActions.navigate({ routeName: 'LoginPage' }),
-            ],
-        });
-        //执行重置路由方法
-        this.props.navigation.dispatch(resetAction)
     }
 
     render() {
