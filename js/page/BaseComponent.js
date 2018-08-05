@@ -16,6 +16,9 @@ import  SplashScreen from "react-native-splash-screen"
 import BaseUrl from '../util/BaseUrl';
 import user from '../model/UserInfo';
 import UserInfo from '../model/UserInfo';
+//重置路由 首先导入NavigationActions
+import { NavigationActions, StackActions } from 'react-navigation';
+
 export default class BaseComponent extends Component {
     constructor(props) {
         super(props);
@@ -24,6 +27,19 @@ export default class BaseComponent extends Component {
        // this.props.navigation.goBack()
        //this.props.AppStore.userInfo.sessionId,
        //const { userName, sessionId } = this.props.navigation.state.params
+    }
+
+     //qu登录
+     goLogin(navigation) {
+        //然后设置新路由的第0个路由为home 
+        const resetAction = StackActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({ routeName: 'LoginPage' }),
+            ],
+        });
+        //执行重置路由方法
+        navigation.dispatch(resetAction)
     }
     componentDidMount(){
        // SplashScreen.hide();
@@ -83,9 +99,6 @@ export const window_width = width;
                 DialogUtils.showToast(result.msg)
             }
         })
-        .catch(error => {
-            DialogUtils.showMsg("服务器繁忙" + error.message)
-        })
 }
 
  //领红包 积分释放到余额
@@ -99,9 +112,7 @@ export const window_width = width;
                 DialogUtils.showToast(result.msg)
             }
         })
-        .catch(error => {
-            DialogUtils.showMsg("服务器繁忙" + error.message)
-        })
+     
 }
 
 

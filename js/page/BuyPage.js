@@ -74,10 +74,7 @@ export default class BuyPage extends BaseComponent {
             }
             DialogUtils.hideLoading()
         })
-        .catch(error => {
-            DialogUtils.hideLoading()
-            DialogUtils.showToast("创建订单失败")
-        })
+      
 }
 
 

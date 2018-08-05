@@ -49,9 +49,6 @@ export default class NoticDetails extends BaseComponent {
                     DialogUtils.showToast(result.msg)
                 }
             })
-            .catch(error => {
-                DialogUtils.hideLoading()
-            })
     }
     render() {
         return (

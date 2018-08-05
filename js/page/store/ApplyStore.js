@@ -120,9 +120,6 @@ export default class ApplyStore extends BaseComponent {
                     }
                 }
             })
-            .catch(error => {
-                DialogUtils.showToast("获取分类失败")
-            })
     }
 
     render() {

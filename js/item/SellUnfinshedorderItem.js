@@ -94,10 +94,6 @@ export default class SellUnfinshedorderItem extends BaseComponent {
                 }
                 DialogUtils.hideLoading()
             })
-            .catch(error => {
-                DialogUtils.showMsg("error:" + error.message)
-                DialogUtils.hideLoading()
-            })
         } 
         DialogUtils.showPop("您确认要取消此订单？",()=>cancelOrder(),null,"取消订单","点错了")
     }

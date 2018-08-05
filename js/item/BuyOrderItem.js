@@ -139,10 +139,7 @@ export default class BuyOrderItem extends BaseComponent {
                 }
                 DialogUtils.hideLoading()
             })
-            .catch(error => {
-                DialogUtils.showMsg("error:" + error.message)
-                DialogUtils.hideLoading()
-            })
+          
         }
        DialogUtils.showPop("您确认要取消此订单？",()=>cancelOrder(),null,"取消订单","点错了")
     }
@@ -163,10 +160,6 @@ export default class BuyOrderItem extends BaseComponent {
                 } else {
                     DialogUtils.showToast(result.msg)
                 }
-                DialogUtils.hideLoading()
-            })
-            .catch(error => {
-                DialogUtils.showMsg("error:" + error.message)
                 DialogUtils.hideLoading()
             })
     }

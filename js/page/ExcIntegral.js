@@ -55,10 +55,7 @@ export default class ExcIntegral extends BaseComponent {
             }
             DialogUtils.hideLoading()
         })
-        .catch(error => {
-            DialogUtils.hideLoading()
-            DialogUtils.showToast("服务器繁忙"+error.message)
-        })
+     
     }
 
       //更新用户信息  想办法更新全局的 用户信息
@@ -75,9 +72,6 @@ export default class ExcIntegral extends BaseComponent {
                 } else {
                     DialogUtils.showToast(result.msg)
                 }
-            })
-            .catch(error => {
-                DialogUtils.showMsg("服务器繁忙" + error.message)
             })
     }
     render() {

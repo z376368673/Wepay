@@ -39,7 +39,7 @@ export default class ZhuanChuNext extends BaseComponent {
     }
 
     /**
-     * 获取设置界面的消息状态
+     * 获取用户想你想
      */
      getOtherUserInfo(){
         DialogUtils.showLoading()
@@ -60,11 +60,6 @@ export default class ZhuanChuNext extends BaseComponent {
                 this.props.navigation.goBack()
             }
             DialogUtils.hideLoading()
-        })
-        .catch(error => {
-            DialogUtils.hideLoading()
-            DialogUtils.showToast("服务器繁忙"+error.message)
-            this.props.navigation.goBack()
         })
     }
 
@@ -90,10 +85,6 @@ export default class ZhuanChuNext extends BaseComponent {
                DialogUtils.showToast(result.msg)
             }
             DialogUtils.hideLoading()
-        })
-        .catch(error => {
-            DialogUtils.hideLoading()
-            DialogUtils.showToast("服务器繁忙"+error.message)
         })
     }
 

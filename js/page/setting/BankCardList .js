@@ -201,8 +201,6 @@ export default class BankCardList extends BaseComponent {
                  DialogUtils.showToast(result.msg)   
             }
         })
-        .catch(error => {   
-            DialogUtils.hideLoading()
-        })
+      
     }
 }

@@ -78,9 +78,6 @@ export default class HomePage extends BaseComponent {
                     DialogUtils.showToast(result.msg)
                 }
             })
-            .catch(error => {
-                DialogUtils.showToast("加载图片失败" + error.message)
-            })
     }
     _itemView(callback, img, text) {
         return <TouchableOpacity

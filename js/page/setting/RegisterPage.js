@@ -55,10 +55,6 @@ export default class RegisterPage extends BaseComponent {
                 }
                 DialogUtils.hideLoading()
             })
-            .catch(error => {
-                DialogUtils.hideLoading()
-                DialogUtils.showToast("注册失败")
-            })
     }
 
 

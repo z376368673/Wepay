@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
     StyleSheet,
     Text,
@@ -16,7 +16,7 @@ import Utils from '../../util/Utils';
 import HttpUtils from '../../util/HttpUtils';
 import BaseUrl from '../../util/BaseUrl';
 import { inject, observer } from 'mobx-react';
-//首先导入NavigationActions
+//重置路由 首先导入NavigationActions
 import { NavigationActions, StackActions } from 'react-navigation';
 
 @inject('AppStore') @observer
@@ -25,7 +25,6 @@ export default class SettingView extends BaseComponent {
         super(props);
         this.state = {
             photos: [],//选择的照片
-            //headImg:require('../../../res/images/touxiang-xiao.png'),
             newMessage: 0,
             storeStatus: 2,//0.申请中,1.已通过,2.去申请
         }
@@ -48,14 +47,13 @@ export default class SettingView extends BaseComponent {
                     this.setState({
                         newMessage: this.info.newMessage,
                     })
-                } else {
+                }else if (result.code === 1) {
+                    this.goLogin()
+                }else {
                     DialogUtils.showToast(result.msg)
                 }
             })
-            .catch(error => {
-                DialogUtils.showToast("服务器繁忙" + error.message)
-            })
-    }
+        }
 
     /**
     * 申请店铺-店铺状态
@@ -72,9 +70,6 @@ export default class SettingView extends BaseComponent {
                 } else {
                     DialogUtils.showToast(result.msg)
                 }
-            })
-            .catch(error => {
-                DialogUtils.showToast("服务器繁忙" + error.message)
             })
     }
 

@@ -51,9 +51,7 @@ export default class MyStore extends BaseComponent {
                     DialogUtils.showToast(result.msg)
                 }
             })
-            .catch(error => {
-                DialogUtils.showToast("服务器繁忙" + error.message)
-            })
+          
     }
 
     //刷新数据
@@ -120,10 +118,7 @@ export default class MyStore extends BaseComponent {
                     }
                     DialogUtils.hideLoading()
                 })
-                .catch(error => {
-                    DialogUtils.showToast("服务器繁忙" + error.message)
-                    DialogUtils.hideLoading()
-                })
+            
             }
             DialogUtils.showPop(content, () => editOrder(), null, "确认", "取消")
     }

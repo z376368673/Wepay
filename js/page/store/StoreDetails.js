@@ -63,9 +63,6 @@ export default class StroeDetails extends BaseComponent {
                     DialogUtils.showToast(result.msg)
                 }
             })
-            .catch(error => {
-                DialogUtils.showToast("服务器繁忙" + error.message)
-            })
     }
     render() {
         return (

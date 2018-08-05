@@ -75,9 +75,6 @@ export default class AddBankCard extends BaseComponent {
                     DialogUtils.showToast(result.msg)
                 }
             })
-            .catch(error => {
-                DialogUtils.showMsg("error:" + error.message)
-            })
     }
 
     onClicks() {
@@ -203,9 +200,7 @@ export default class AddBankCard extends BaseComponent {
                     DialogUtils.showToast(result.msg)
                 }
             })
-            .catch(error => {
-                DialogUtils.showMsg("error:" + error.message)
-            })
+      
     }
 }
 export const styles = StyleSheet.create({

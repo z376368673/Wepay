@@ -156,9 +156,6 @@ export default class SearchStore extends BaseComponent {
                     })
                 }
             })
-            .catch(error => {
-
-            })
     }
     leftDrawView() {
         let views = [];

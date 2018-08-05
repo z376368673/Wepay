@@ -10,8 +10,9 @@ import DialogUtils from '../../util/DialogUtils';
 import HttpUtils from '../../util/HttpUtils';
 import BaseUrl from '../../util/BaseUrl';
 import { observer, inject } from 'mobx-react';
-import { observable } from 'mobx';
+import { observable, comparer } from 'mobx';
 import PassWordInput from '../../common/PassNumInput';
+
 
 /**
  * 创建订单
@@ -40,7 +41,11 @@ export default class CreatOrder extends BaseComponent {
     }
 
     onPay() {
-        PassWordInput.showPassWordInput((safetyPwd) => this.creatOrder(safetyPwd))
+        if(!this.state.addressData){
+            DialogUtils.showMsg("请选择收货地址")
+        }else{
+            PassWordInput.showPassWordInput((safetyPwd) => this.creatOrder(safetyPwd))
+        }
     }
 
     /**
@@ -58,17 +63,16 @@ export default class CreatOrder extends BaseComponent {
                 safetyPwd: safetyPwd,
             })
             .then(result => {
+                alert(JSON.stringify(result))
                 if (result.code === 1) {
                     DialogUtils.showMsg("购买成功")
                     //this.props.navigation.goBack()
-                } else {
+                } else if (result.code === 2) {
+                    this.goLogin(this.props.navigation)
+                }else {
                     DialogUtils.showToast(result.msg)
                 }
                 DialogUtils.hideLoading()
-            })
-            .catch(error => {
-                DialogUtils.hideLoading()
-                DialogUtils.showToast("购买失败")
             })
     }
 
@@ -81,17 +85,19 @@ export default class CreatOrder extends BaseComponent {
             .then(result => {
                 if (result.code === 1) {
                    let info = result.data
-                    let address = info.provinceId + info.cityId + info.countryId + info.address
-                    this.setState({
-                        addressData: info,
-                        addressid: info.addressId,
-                        userName: info.name,
-                        userPhone: info.telephone,
-                        userAddress: address,
-                    })
-                } 
-            })
-            .catch(error => {
+                    if(info.provinceId){
+                        let address = info.provinceId + info.cityId + info.countryId + info.address
+                        this.setState({
+                            addressData: info,
+                            addressid: info.addressId,
+                            userName: info.name,
+                            userPhone: info.telephone,
+                            userAddress: address,
+                        })
+                    }
+                } else if (result.code === 2) {
+                    this.goLogin(this.props.navigation)
+                }
             })
     }
     /**
@@ -109,10 +115,11 @@ export default class CreatOrder extends BaseComponent {
                     shopImage: {uri: this.getImgUrl(this.info.imgHead)},
                     shopData:result.data
                 })
+            }else if (result.code === 2) {
+                this.goLogin(this.props.navigation)
             }
         })
-        .catch(error => {
-        })
+     
 }
 
     /**

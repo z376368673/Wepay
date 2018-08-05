@@ -80,7 +80,6 @@ export default class OrderCommon extends BaseComponent {
             })
             .catch(error => {
                 this.refList.setData([])
-                DialogUtils.showToast("error:" + error.message)
             })
     }
     onClickDelect(data) {
@@ -142,10 +141,6 @@ export default class OrderCommon extends BaseComponent {
                     } else {
                         DialogUtils.showToast(result.msg)
                     }
-                    DialogUtils.hideLoading()
-                })
-                .catch(error => {
-                    DialogUtils.showMsg("error:" + error.message)
                     DialogUtils.hideLoading()
                 })
         }

@@ -15,7 +15,7 @@ export default class HttpUtils {
                     resolve(result);
                 })
                 .catch(error => {
-                    //reject(error);
+                    reject(error);
                     this.errorMsg(error)
                     DialogUtils.hideLoading()
                 })
@@ -31,7 +31,7 @@ export default class HttpUtils {
         if(message.startsWith("Network")&&message.endsWith("failed")){
             DialogUtils.showToast("网络异常，请检查网络")
         }else if(error){
-
+            DialogUtils.showMsg("系统错误"+error.message)
         }
     }
     /**

@@ -194,9 +194,6 @@ export default class EditAddress extends BaseComponent {
                         DialogUtils.showToast(result.msg)
                     }
                 })
-                .catch(error => {
-                    DialogUtils.showMsg("error:" + error.message)
-                })
     }
     showPCAlist() {
         Picker.init({

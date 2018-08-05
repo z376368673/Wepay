@@ -56,10 +56,6 @@ export default class ModifyNickName extends BaseComponent {
                 }
                 DialogUtils.hideLoading()
             })
-            .catch(error => {
-                DialogUtils.showToast("修改昵称失败" + error.message)
-                DialogUtils.hideLoading()
-            })
     }
     render() {
 
