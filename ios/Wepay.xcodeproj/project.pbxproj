@@ -14,6 +14,7 @@
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		00E356F31AD99517003FC87E /* WepayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* WepayTests.m */; };
 		04C3B6F820F347DF00896097 /* TZImagePickerController.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 04C3B6D120F347DF00896097 /* TZImagePickerController.bundle */; };
+		04D15B65211708EC0040B1E6 /* bundle in Resources */ = {isa = PBXBuildFile; fileRef = 04D15B64211708EB0040B1E6 /* bundle */; };
 		04D9FEF32103359F00742A2C /* Images-2.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04D9FEF22103359F00742A2C /* Images-2.xcassets */; };
 		04E048C1210478AF0005E3BC /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		0B0A8A2DF5E84A8ABF0FF4A0 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C20EC66ECC9145CEB5D2EFA3 /* Octicons.ttf */; };
@@ -403,6 +404,7 @@
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* WepayTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WepayTests.m; sourceTree = "<group>"; };
 		04C3B6D120F347DF00896097 /* TZImagePickerController.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = TZImagePickerController.bundle; path = "../node_modules/react-native-syan-image-picker/ios/TZImagePickerController/TZImagePickerController.bundle"; sourceTree = "<group>"; };
+		04D15B64211708EB0040B1E6 /* bundle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bundle; sourceTree = "<group>"; };
 		04D9FEF22103359F00742A2C /* Images-2.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = "Images-2.xcassets"; path = "Wepay/Images-2.xcassets"; sourceTree = "<group>"; };
 		074669B514AD441E8F44EE19 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
@@ -669,6 +671,7 @@
 		13B07FAE1A68108700A75B9A /* Wepay */ = {
 			isa = PBXGroup;
 			children = (
+				04D15B64211708EB0040B1E6 /* bundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -1367,6 +1370,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04D15B65211708EC0040B1E6 /* bundle in Resources */,
 				04C3B6F820F347DF00896097 /* TZImagePickerController.bundle in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,

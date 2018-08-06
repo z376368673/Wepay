@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     StyleSheet,
     Text,
@@ -6,9 +6,9 @@ import {
     Image,
     TouchableOpacity,
 } from 'react-native';
-import BaseComponent, {BaseStyles, mainColor, window_width} from "./BaseComponent";
+import BaseComponent, { BaseStyles, mainColor, window_width } from "./BaseComponent";
 import NavigationBar from "../common/NavigationBar";
-import {Menu} from 'teaset';
+import { Menu } from 'teaset';
 import BankCardView from "../common/BankCardView";
 import ViewUtils from "../util/ViewUtils";
 import CheckMoney from "../common/CheckMoney";
@@ -25,71 +25,51 @@ export default class BuyPage extends BaseComponent {
             seleIndex: -1,//默认不选中
             selectedValue: 0,//默认值为0
 
-            bankCardID:"",
-            bankCardName:"",
-            bankCardNum:"",
-            userName:"请选择银行卡",
-            describe:"",//描述
+            bankCard:null,
+
+            describe: "",//描述
         }
         this.userInfo = this.getUserInfo();
     }
+    /**
+   * 创建订单
+   */
+    creatOrder(safetyPwd) {
+        DialogUtils.showLoading();
+        this.url = BaseUrl.createInOrder()
+        HttpUtils.postData(this.url,
+            {
+                sessionId: this.userInfo.sessionId,
+                exchangeMoney: this.state.selectedValue,
+                describe: this.state.describe,
+                bankId: this.state.bankCard.id,
+                safetyPwd: safetyPwd,
+            })
+            .then(result => {
+                if (result.code === 1) {
+                    DialogUtils.showMsg("创建订单成功")
+                    //this.props.navigation.goBack()
+                } else {
+                    DialogUtils.showToast(result.msg)
+                }
+                DialogUtils.hideLoading()
+            })
 
-     /**
-     * 选择银行卡
-     */
-    selectBankCard(){
-        this.props.navigation.navigate("BankCardList",{
-            selectBank:(bankCard)=>{
-                this.setState({
-                    bankCardID:bankCard.id,
-                    bankCardName:bankCard.banqGenre,
-                    bankCardNum:bankCard.cardNumber,
-                    userName:bankCard.holdName,
-                })
-            }
-        })
     }
-
-
-      /**
-     * 创建订单
-     */
-   creatOrder(safetyPwd) {
-    DialogUtils.showLoading();
-    this.url = BaseUrl.createInOrder()
-    HttpUtils.postData(this.url,
-        {
-             sessionId:this.userInfo.sessionId,
-             exchangeMoney: this.state.selectedValue,
-             describe: this.state.describe,
-             bankId: this.state.bankCardID,
-             safetyPwd: safetyPwd,
-        })
-        .then(result => {
-            if (result.code === 1) {
-                DialogUtils.showMsg("创建订单成功")
-                //this.props.navigation.goBack()
-            } else {
-                DialogUtils.showToast(result.msg)
-            }
-            DialogUtils.hideLoading()
-        })
-      
-}
 
 
     render() {
         return (
-            <View style={[BaseStyles.container_column, {backgroundColor: "#f1f1f1"}]}>
+            <View style={[BaseStyles.container_column, { backgroundColor: "#f1f1f1" }]}>
                 <NavigationBar
                     title='买入'
                     navigation={this.props.navigation}
                     rightView={NavigationBar.getRightStyle_More((view) => this._rightClick(view))}
                 />
-                <View style={[{flexDirection: 'column', backgroundColor: "#fff"}]}>
+                <View style={[{ flexDirection: 'column', backgroundColor: "#fff" }]}>
                     <Text style={{
                         color: '#999',
-                        fontSize: 18,
+                        fontSize: 16,
                         paddingTop: 15,
                         paddingLeft: 15,
                         paddingBottom: 15,
@@ -102,14 +82,9 @@ export default class BuyPage extends BaseComponent {
                     />
                 </View>
                 {/*绑定银行卡*/}
-                <TouchableOpacity onPress={()=>this.selectBankCard()}>
-                        <BankCardView
-                            BankCardModel={{
-                                userName: this.state.userName,
-                                bankName: this.state.bankCardName,
-                                bankNum: this.state.bankCardNum,
-                            }}
-                        /></TouchableOpacity>
+                <BankCardView {...this.props} 
+                    selechBankCard={(bankCard)=>this.setState({bankCard:bankCard})}
+                />
 
                 <TouchableOpacity
                     activeOpacity={0.9}
@@ -123,12 +98,12 @@ export default class BuyPage extends BaseComponent {
                         alignItems: 'center',
                         backgroundColor: mainColor,
                     }}
-                    onPress={()=>this.onClicks("creatOrder")}
+                    onPress={() => this.onClicks("creatOrder")}
                 >
                     <Text style={{
                         alignSelf: "center",
                         color: '#FFF',
-                        fontSize: 20,
+                        fontSize: 18,
                     }}> 创建订单</Text>
                 </TouchableOpacity>
             </View>
@@ -138,16 +113,22 @@ export default class BuyPage extends BaseComponent {
     onSelected(index, value) {
         this.state.seleIndex = index
         this.setState({
-         seleIndex:index,
-         selectedValue:value,
+            seleIndex: index,
+            selectedValue: value,
         })
     }
 
     onClicks(type) {
-        switch(type){
+        switch (type) {
             case "creatOrder":
-            PassWordInput.showPassWordInput((safetyPwd)=>this.creatOrder(safetyPwd))
-            break;
+            if(!this.state.bankCard){
+                DialogUtils.showMsg("请选择银行卡")
+            }else if(this.state.seleIndex<0){
+                 DialogUtils.showMsg("请选择买入金额")   
+            } else {
+                PassWordInput.showPassWordInput((safetyPwd) => this.creatOrder(safetyPwd))
+            }
+                break;
         }
     }
 
@@ -158,19 +139,19 @@ export default class BuyPage extends BaseComponent {
     _menuClick(index) {
         switch (index) {
             case 1:
-                this.props.navigation.navigate('BuyOrSellUnfinishedOrder', {type: 0,orderType:1});
+                this.props.navigation.navigate('BuyOrSellUnfinishedOrder', { type: 0, orderType: 1 });
                 break;
             case 2:
-                this.props.navigation.navigate('BuyOrSellOrde', { type: 0 ,orderType:2});
+                this.props.navigation.navigate('BuyOrSellOrde', { type: 0, orderType: 2 });
                 break;
             case 3:
-            this.props.navigation.navigate('BuyOrSellOrde', { type: 0 ,orderType:3});
+                this.props.navigation.navigate('BuyOrSellOrde', { type: 0, orderType: 3 });
                 break;
             case 4:
-                this.props.navigation.navigate('BuyOrSellRecord', {type: 0});
+                this.props.navigation.navigate('BuyOrSellRecord', { type: 0 });
                 break;
             case 5:
-                this.props.navigation.navigate('BuyOrSellCentre', {type: 0});
+                this.props.navigation.navigate('BuyOrSellCentre', { type: 0 });
                 break;
             default:
                 break;
@@ -185,17 +166,17 @@ export default class BuyPage extends BaseComponent {
     show(view, align) {
         if (view)
             view.measure((x, y, width, height, pageX, pageY) => {
-                let itemStyle = {backgroundColor: mainColor, color: "#fff", fontSize: 16, borderColor: "#fff"}
+                let itemStyle = { backgroundColor: mainColor, color: "#fff", fontSize: 16, borderColor: "#fff" }
                 let activeOpacity = 0.9;
                 let backgroundColor = "#fff";
                 let items = [
-                    {title: '未完成订单', onPress: () => this._menuClick(1), itemStyle: itemStyle},
-                    {title: '确认打款', onPress: () => this._menuClick(2), itemStyle: itemStyle},
-                    {title: '已完成订单', onPress: () => this._menuClick(3), itemStyle: itemStyle},
-                    {title: '买入记录', onPress: () => this._menuClick(4), itemStyle: itemStyle},
-                    {title: '买入中心', onPress: () => this._menuClick(5), itemStyle: itemStyle},
+                    { title: '未完成订单', onPress: () => this._menuClick(1), itemStyle: itemStyle },
+                    { title: '确认打款', onPress: () => this._menuClick(2), itemStyle: itemStyle },
+                    { title: '已完成订单', onPress: () => this._menuClick(3), itemStyle: itemStyle },
+                    { title: '买入记录', onPress: () => this._menuClick(4), itemStyle: itemStyle },
+                    { title: '买入中心', onPress: () => this._menuClick(5), itemStyle: itemStyle },
                 ];
-                Menu.show({x: pageX, y: pageY, width, height}, items, {align, activeOpacity, backgroundColor});
+                Menu.show({ x: pageX, y: pageY, width, height }, items, { align, activeOpacity, backgroundColor });
             });
     }
 

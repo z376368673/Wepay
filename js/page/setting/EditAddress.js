@@ -158,7 +158,6 @@ export default class EditAddress extends BaseComponent {
      * 添加地址/修改地址信息
      */
     addAddress(){
-       
         if(this.addrssInfo===null){
             this.url = BaseUrl.putAddress(
                 this.userInfo.sessionId,

@@ -54,14 +54,17 @@ export default class CreatOrder extends BaseComponent {
     creatOrder(safetyPwd) {
         DialogUtils.showLoading();
         this.url = BaseUrl.createShopOrder()
-        HttpUtils.postData(this.url,
-            {
-                sessionId: this.userInfo.sessionId,
-                addressId: this.state.addressData.addressId,
-                goodsId: this.data.id,
-                goodsNum: counter,
-                safetyPwd: safetyPwd,
-            })
+        // let goodsNum = counter
+         let goodsNum = counter.get()
+        let data = {
+            sessionId: this.userInfo.sessionId,
+            addressId: this.state.addressData.addressId,
+             goodsId: this.data.id,
+             goodsNum: goodsNum,
+             safetyPwd: safetyPwd,
+        }
+        //alert(JSON.stringify(data))
+        HttpUtils.postData(this.url,data)
             .then(result => {
                 alert(JSON.stringify(result))
                 if (result.code === 1) {

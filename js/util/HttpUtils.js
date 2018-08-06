@@ -6,7 +6,7 @@ export default class HttpUtils {
      * @param {*} url 
      */
     static getData(url) {
-        console.log(url)
+        // console.warn(url)
         return new Promise((resolve, reject) => {
             fetch(url)
                 .then(response => response.json())
@@ -15,9 +15,9 @@ export default class HttpUtils {
                     resolve(result);
                 })
                 .catch(error => {
-                    reject(error);
-                    this.errorMsg(error)
-                    DialogUtils.hideLoading()
+                   reject(error);
+                   this.errorMsg(error)
+                   DialogUtils.hideLoading()
                 })
         })
     }
@@ -27,11 +27,13 @@ export default class HttpUtils {
      * @param {*} error 
      */
     static errorMsg(error ){
+        console.error(error.message)
         var message  = JSON.stringify(error.message)
         if(message.startsWith("Network")&&message.endsWith("failed")){
             DialogUtils.showToast("网络异常，请检查网络")
         }else if(error){
-            DialogUtils.showMsg("系统错误"+error.message)
+            // DialogUtils.showMsg("系统错误"+error.message)
+            DialogUtils.showMsg("服务器繁忙")
         }
     }
     /**
@@ -40,7 +42,7 @@ export default class HttpUtils {
      * @param {*} data 
      */
     static postData(url, data) {
-        console.log(url + JSON.stringify(data))
+       // console.warn(url + JSON.stringify(data))
         var formData = new FormData();
         for (const key in data) {
             formData.append(key,data[key]);
@@ -62,7 +64,7 @@ export default class HttpUtils {
                     resolve(result);
                 })
                 .catch(error => {
-                    //reject(error);
+                    reject(error);
                     this.errorMsg(error)
                     DialogUtils.hideLoading()
                 })

@@ -27,31 +27,12 @@ export default class SellPage extends BaseComponent {
         this.state = {
             seleIndex: -1,//默认不选中
             selectedValue: 0,//选中金额 默认值为0 
-
-            bankCardID:"",
-            bankCardName:"",
-            bankCardNum:"",
-            userName:"请选择银行卡",
-
+            bankCard:null,
             describe:"",//描述
         }
         this.userInfo = this.getUserInfo();
     }
-    /**
-     * 选择银行卡
-     */
-    selectBankCard(){
-        this.props.navigation.navigate("BankCardList",{
-            selectBank:(bankCard)=>{
-                this.setState({
-                    bankCardID:bankCard.id,
-                    bankCardName:bankCard.banqGenre,
-                    bankCardNum:bankCard.cardNumber,
-                    userName:bankCard.holdName,
-                })
-            }
-        })
-    }
+ 
 
     /**
      * 创建订单
@@ -64,7 +45,7 @@ export default class SellPage extends BaseComponent {
                 sessionId:this.userInfo.sessionId,
                 exchangeMoney: this.state.selectedValue,
                 describe: this.state.describe,
-                bankId: this.state.bankCardID,
+                bankId: this.state.bankCard.id,
                 safetyPwd: safetyPwd,
            })
            .then(result => {
@@ -90,19 +71,15 @@ export default class SellPage extends BaseComponent {
                 <ScrollView>
                     <View style={[BaseStyles.container_column, { backgroundColor: "#f1f1f1" }]}>
                         {/*绑定银行卡*/}
-                        <TouchableOpacity onPress={()=>this.selectBankCard()}>
-                        <BankCardView
-                            BankCardModel={{
-                                userName: this.state.userName,
-                                bankName: this.state.bankCardName,
-                                bankNum: this.state.bankCardNum,
-                            }}
-                        /></TouchableOpacity>
+                        {/*绑定银行卡*/}
+                <BankCardView {...this.props} 
+                    selechBankCard={(bankCard)=>this.setState({bankCard:bankCard})}
+                />
 
                         <View style={[{ flexDirection: 'column', backgroundColor: "#fff", marginTop: 12, }]}>
                             <Text style={{
                                 color: '#999',
-                                fontSize: 18,
+                                fontSize: 16,
                                 paddingTop: 15,
                                 paddingLeft: 15,
                                 paddingBottom: 15,
@@ -122,7 +99,7 @@ export default class SellPage extends BaseComponent {
                                     height: 50,
                                     alignItems: 'flex-start',
                                     justifyContent: 'flex-start',
-                                    fontSize: 16,
+                                    fontSize: 15,
                                     color: '#333',
                                     maxLength: 50,
                                     marginTop: 8,
@@ -153,7 +130,7 @@ export default class SellPage extends BaseComponent {
                             <Text style={{
                                 alignSelf: "center",
                                 color: '#FFF',
-                                fontSize: 20,
+                                fontSize: 18,
                             }}> 创建订单</Text>
                         </TouchableOpacity>
                     </View></ScrollView>
@@ -164,7 +141,14 @@ export default class SellPage extends BaseComponent {
     onClicks(type) {
         switch(type){
             case "creatOrder":
-            PassWordInput.showPassWordInput((safetyPwd)=>this.creatOrder(safetyPwd))
+            if(!this.state.bankCard){
+                DialogUtils.showMsg("请选择银行卡")
+            }else if(this.state.seleIndex<0){
+                 DialogUtils.showMsg("请选择卖出金额")   
+            } else {
+                PassWordInput.showPassWordInput((safetyPwd)=>this.creatOrder(safetyPwd))
+            }
+            
             break;
         }
     }
