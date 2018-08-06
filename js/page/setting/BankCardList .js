@@ -15,7 +15,6 @@ import RefreshFlatList2 from "../../common/RefreshFlatList2";
 import AddBankCard from "./AddBankCard";
 import BaseUrl from '../../util/BaseUrl';
 import DialogUtils from '../../util/DialogUtils';
-const URL = 'https://api.github.com/search/repositories?q=';
 /**
  * 我的银行卡
  */
@@ -138,15 +137,15 @@ export default class BankCardList extends BaseComponent {
             }}>
             <Image
                 style={{width: 50, height: 50, marginLeft: 5}}
-                source={{uri:data.item.banqImg}}/>
+                source={{uri:this.getImgUrl(data.item.banqImg)}}/>
             <View style={{flexDirection: 'column', flex: 1, marginLeft: 10, marginRight: 10}}>
                 <Text
-                    style={{color: "#333333", fontSize: 18}}>{data.item ? data.item.banqGenre : "银行卡名称未知"}</Text>
+                    style={{color: "#333333", fontSize: 18}}>{data.item ? data.item.banqGenre : ""}</Text>
                 <Text style={{
                     color: "#666666",
                     marginTop: 5,
                     fontSize: 15,
-                }}>{data.item ? data.item.cardNumber : "0000"}</Text>
+                }}>{data.item ? data.item.cardNumber : ""}</Text>
             </View>
           
             {data.item.isDefault===0?isDefault:null}

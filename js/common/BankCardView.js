@@ -32,7 +32,7 @@ export  default class BankCardView extends BaseComponent {
                     }}>
                         <Text style={{color: '#999', fontSize: 16, flex: 1}}> 绑定银行卡</Text>
                         <Text style={{fontSize:14,color:"#fff",backgroundColor:"#00BB00",paddingLeft:6,paddingRight:6,paddingTop:3,paddingBottom:3}}
-                              onPress={()=>{alert("请选择国家")}}
+                              onPress={()=>this.selectCountry()}
                         >{this.state.country}</Text>
                         <Image
                             style={{tintColor: "#999",}}
@@ -50,14 +50,24 @@ export  default class BankCardView extends BaseComponent {
             </View>
         );
     }
-
+    
+    selectCountry(){
+        this.props.navigation.navigate("Country", {
+            country:this.state.country,
+            selectCountry: (country) => {
+                this.setState({
+                    country:country,
+                })
+            }
+        })
+    }
      /**
     * 选择银行卡
     */
    selectBankCard() {
     this.props.navigation.navigate("BankCardList", {
         selectBank: (bankCard) => {
-            alert(JSON.stringify(bankCard))
+            //alert(JSON.stringify(bankCard))
             this.props.selechBankCard(bankCard)
             this.setState({
                 bankCard:bankCard,

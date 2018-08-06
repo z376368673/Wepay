@@ -8,4 +8,6 @@ target 'Wepay' do
   # Pods for Wepay
   pod 'IQKeyboardManager'	
 
+  pod 'RNFS', :path => '../node_modules/react-native-fs'
+
 end

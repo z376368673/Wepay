@@ -1,14 +1,18 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     StyleSheet,
     Text,
     View,
     TouchableOpacity,
+    Platform,
+    CameraRoll,
 } from 'react-native';
-import BaseComponent, {BaseStyles, mainColor, window_width} from "./BaseComponent";
+import BaseComponent, { BaseStyles, mainColor, window_width } from "./BaseComponent";
 import NavigationBar from "../common/NavigationBar";
 import QRCode from "react-native-qrcode";
+import DialogUtils from '../util/DialogUtils';
 
+var IUtils = require('react-native');
 
 export default class ZhuanRu extends BaseComponent {
     constructor(props) {
@@ -20,38 +24,40 @@ export default class ZhuanRu extends BaseComponent {
 
     render() {
         return (
-            <View style={[BaseStyles.container_column, {backgroundColor: mainColor}]}>
+            <View style={[BaseStyles.container_column, { backgroundColor: mainColor }]}>
                 <NavigationBar
                     title='转入'
                     navigation={this.props.navigation}
-                    // rightView={NavigationBar.getRightStyle_Text('保存二维码', {
-                    //     fontSize: 16,
-                    //     color: "#fff"
-                    // }, () => this.onClicks(6))}
+                    rightView={NavigationBar.getRightStyle_Text('保存', {
+                        fontSize: 16,
+                        color: "#fff"
+                    }, () => this.saveImgBy(this.qrCode))}
                 />
-                <View style={{
-                    justifyContent: 'center',
-                    alignItems: 'center', margin: 20,
-                    backgroundColor: '#fff',
-                    width: window_width - 40,
-                    height: window_width,
-                    paddingTop: 40,
-                    borderRadius: 10
-                }}
+                <View
+                    ref={qrCode => this.qrCode = qrCode}
+                    style={{
+                        justifyContent: 'center',
+                        alignItems: 'center', margin: 20,
+                        backgroundColor: '#fff',
+                        width: window_width - 40,
+                        height: window_width,
+                        paddingTop: 40,
+                        borderRadius: 10
+                    }}
                 >
                     <Text
-                        style={{color: '#333', fontSize: 20, position: "absolute", zIndex: 1, top: 30}}> 扫一扫，向我付款</Text>
+                        style={{ color: '#333', fontSize: 20, position: "absolute", zIndex: 1, top: 30 }}> 扫一扫，向我付款</Text>
 
-                    <View style={{margin: 30}}>
+                    <View style={{ margin: 30 }}>
                         <QRCode
                             value={this.state.text}
                             size={window_width / 5 * 3}
                             bgColor='black'
-                            fgColor='white'/>
+                            fgColor='white' />
                     </View>
                 </View>
                 <TouchableOpacity
-                onPress={()=>this.onClicks("inRecord")}
+                    onPress={() => this.onClicks("inRecord")}
                     style={{
                         alignSelf: "center",
                         color: '#FFF',
@@ -71,12 +77,35 @@ export default class ZhuanRu extends BaseComponent {
     }
 
     onClicks(type) {
-        switch(type){
+        switch (type) {
             case "inRecord":
-            this.props.navigation.navigate('TranMoneyRecord',{
-                tranType:"in",
-            });
-            break;
+                this.props.navigation.navigate('TranMoneyRecord', {
+                    tranType: "in",
+                });
+                break;
+        }
+    }
+
+    /**
+    * 保存图片
+    * @param {*} view 
+    */
+    saveImgBy(view) {
+        if (Platform.OS === 'ios') {
+            IUtils.takeSnapshot(view, { format: 'png', quality: 1 }).then(
+                (uri) => {
+                    var promise = CameraRoll.saveToCameraRoll(uri);
+                    promise.then(function (result) {
+                        DialogUtils.showToast('保存成功！')
+                    }).catch(function (error) {
+                        DialogUtils.showToast('保存失败！\n' + error);
+                    });
+                }
+            ).catch(
+                (error) => alert(error)
+            );
+        } else {
+            DialogUtils.showMsg("Android暂不支持保存二维码，可以手动截图哦")
         }
     }
 }

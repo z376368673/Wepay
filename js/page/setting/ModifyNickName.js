@@ -78,7 +78,7 @@ export default class ModifyNickName extends BaseComponent {
                         defaultValue={this.state.userName}
                         placeholderTextColor={'#999'}
                         underlineColorAndroid='transparent'
-                        keyboardType='numeric'
+                        keyboardType={"default"}
                         onChangeText={(text) => this.setState({ userName: text })}
                     />
                 </View>

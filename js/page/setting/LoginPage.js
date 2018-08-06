@@ -26,9 +26,9 @@ export default class LoginPage extends BaseComponent {
         super(props);
         this.state = {
             // text: '26641',
-            // text: '26536', 
-             text: '18629448593',
-             //text: '13923044417',
+             text: '26536', 
+            // text: '18629448593',
+            // text: '13923044417',
             //text: '15989426734',
             //pwd: 'huazhongno1',
             pwd: '123456',

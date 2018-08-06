@@ -18,6 +18,7 @@ import YueOrIntegralRecord from "../page/YueOrIntegralRecord";
 import ExcinttegralRecord from "../page/ExcinttegralRecord";
 
 import BuyOrSellCentre from "../page/BuyOrSellCentre";
+import Country from "../page/Country";
 import BuyOrSellRecord from "../page/BuyOrSellRecord";
 import BuyOrSellUnfinishedOrder from "../page/BuyOrSellUnfinishedOrder";
 import BuyOrSellOrde from "../page/BuyOrSellOrder";
@@ -198,7 +199,9 @@ export default AppNavigator = createStackNavigator({
     ImageBorwser: {//图片浏览器 查看图片 
         screen: ImageBorwser
     },
-    
+    Country: {//选择国家 
+        screen: Country
+    },
     Welcome: {//欢迎页 
         screen: Welcome,
         path:'app/homeTwo',//使用url导航时用到, 如 web app 和 Deep Linking

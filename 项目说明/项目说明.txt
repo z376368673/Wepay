@@ -1,0 +1,4 @@
+用本文件夹下的 index.js 替换 node_modules/react-native-camera/index.js
+用本文件夹下的 QRScanner.js 替换 node_modules/ac-qrcode/QRScanner.js
+
+找个机会把以上两句 用一个命令来代替

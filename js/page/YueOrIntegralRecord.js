@@ -116,8 +116,8 @@ export default class YueOrIntegralRecord extends BaseComponent {
                         this.refList.setData(result.data)
                     } else {
                         this.refList.addData(result.data)
-                        this.pageIndex += 1
                     }
+                    this.pageIndex += 1
                     if (result.data.length < 1) {
                         DialogUtils.showToast("暂无记录")
                         this.refList.setData([])

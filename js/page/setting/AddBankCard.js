@@ -84,8 +84,8 @@ export default class AddBankCard extends BaseComponent {
             DialogUtils.showMsg("请输入持卡人名称")
         } else if (this.state.bankCardId === -1) {
             DialogUtils.showMsg("请选择开户银行")
-        } else if (this.state.bankNum.length < 10) {
-            DialogUtils.showMsg("请输入正确的银行卡号")
+        } else if (this.state.bankNum.length < 10||this.state.bankNum.length>19) {
+            DialogUtils.showMsg("请输入10-19位银行卡号")
         } else if (this.state.bankBranch.length < 1) {
             DialogUtils.showMsg("请输入银行卡开户支行")
         } else {

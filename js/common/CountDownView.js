@@ -31,7 +31,7 @@ export default class CountDownView extends Component {
                 activeOpacity={0.7}
                 onPress={() => this.getVerificationCode()}
                 >
-                <Text style={[ { fontSize: 16, color: "#EAC100", padding: 5 },textStyle]}> {this.state.codeText}</Text>
+                <Text style={[ { fontSize: 15, color: "#EAC100", padding: 5 },textStyle]}> {this.state.codeText}</Text>
             </TouchableOpacity>
         );
     }

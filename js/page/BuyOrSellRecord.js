@@ -116,8 +116,8 @@ export default class BuyOrSellRecord extends BaseComponent {
                         this.refList.setData(result.data)
                     } else {
                         this.refList.addData(result.data)
-                        this.pageIndex += 1
                     }
+                    this.pageIndex += 1
                 } else {
                     DialogUtils.showToast(result.msg)
                 }

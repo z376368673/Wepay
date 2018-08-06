@@ -1,5 +1,7 @@
 import DialogUtils from './DialogUtils';
 import area from "../../res/raw/area.json"
+import React from 'react';
+import { Platform, CameraRoll } from 'react-native';
 export default class Utils {
 
     static getWidth() {
@@ -130,3 +132,4 @@ export default class Utils {
         return data;
     }
 }
+

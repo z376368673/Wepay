@@ -91,13 +91,12 @@ export default class ModifyPassWord extends BaseComponent {
                         placeholder={'请输入验证码'}
                         placeholderTextColor={'#fff'}
                         underlineColorAndroid='transparent'
-                        keyboardType='default'
+                        keyboardType='numeric'
                         onChangeText={(text) => this.setState({code: text})}/>
                    <CountDownView codeText={"获取验证码"} 
                             phone = {this.state.phone}
                             callBack={(code)=>this.setState({sms:code})}
-                            textStyle={{marginRight:-15,padding:10}}
-                        />
+                            textStyle={{marginRight:-10,padding:10}}/>
                 </View>
 
                 <View style={styles.itemView}>
@@ -108,7 +107,7 @@ export default class ModifyPassWord extends BaseComponent {
                         placeholderTextColor={'#fff'}
                         underlineColorAndroid='transparent'
                         secureTextEntry={true}
-                        keyboardType='default'
+                        keyboardType={this.state.type === 0 ? "default" : "numeric"}
                         onChangeText={(text) => this.setState({pwd: text})}/>
                 </View>
 
@@ -120,7 +119,7 @@ export default class ModifyPassWord extends BaseComponent {
                         placeholderTextColor={'#fff'}
                         secureTextEntry={true}
                         underlineColorAndroid='transparent'
-                        keyboardType='default'
+                        keyboardType={this.state.type === 0 ? "default" : "numeric"}
                         onChangeText={(text) => this.setState({pwdAgain: text})}/>
                 </View>
 
