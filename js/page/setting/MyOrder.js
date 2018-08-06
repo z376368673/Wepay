@@ -19,11 +19,11 @@ export default class MyOrder extends BaseComponent {
    
     render() {
         return (
-            <View style={[BaseStyles.container_column, { backgroundColor: "#f1f1f1" }]}>
+            <View style={[BaseStyles.container_column, { backgroundColor:"#f1f1f1"}]}>
+
                 <NavigationBar
                     title='我的订单'
-                    navigation={this.props.navigation}
-                />
+                    navigation={this.props.navigation}/>
             <ScrollableTabView
                     //背景色
                     tabBarBackgroundColor='fff'

@@ -73,6 +73,8 @@ export default class MyNoticeList extends BaseComponent{
                 if (result.code === 1) {
                     if (isRefesh) {
                         this.refList.setData(result.data)
+                        if(result.data.length<1){
+                            DialogUtils.showToast("暂无消息") }
                     } else {
                         this.refList.addData(result.data)
                     }
@@ -81,10 +83,7 @@ export default class MyNoticeList extends BaseComponent{
                     DialogUtils.showToast(result.msg)
                 }
             })
-            .catch(error => {
-                this.refList.setData([])
-                DialogUtils.showToast("error:" + error.message)
-            })
+        
     }
     //刷新数据
     _refreshData() {

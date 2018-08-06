@@ -86,14 +86,13 @@ export default class AddressList extends BaseComponent {
                 //alert(JSON.stringify(result))
                 if(result.code===1){
                     this.refList.setData(result.data)
+                    if(result.data.length<1){
+                        DialogUtils.showToast("暂无记录") }
                 }else{
                      DialogUtils.showToast(result.msg)   
                 }
             })
-            .catch(error => {   
-                this.refList.setData([])
-                DialogUtils.showToast("error:"+error.message)   
-            })
+        
     }
 
 

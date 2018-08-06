@@ -1017,6 +1017,24 @@ export default class BaseUrl {
     }
 
 
+     /**
+     * 添加商品
+     * 
+     * post
+     * 
+     1	sessionId	是	token	String
+     2	file	   是	商品封面图	file
+     3	goodsName  是	商品名称    String
+     4	goodsPrice 是	商品价格  double
+     5	goodsStock 是	商品库存 int
+     6  id	是	商品id	int
+     */
+    static getUpdateShopUrl() {
+        return url + "/goods/update";
+    }
+    
+
+
     /**
      * 商城 -商品列表 /搜索/分类
      * @param {*} sessionId 

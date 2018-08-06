@@ -64,6 +64,8 @@ export default class StoreCommon extends BaseComponent {
                 if (result.code === 1) {
                     if (isRefesh) {
                         this.refList.setData(result.data)
+                        if(result.data.length<1){
+                            DialogUtils.showToast("暂无记录") }
                     } else {
                         this.refList.addData(result.data)
                     }
@@ -72,10 +74,7 @@ export default class StoreCommon extends BaseComponent {
                     DialogUtils.showToast(result.msg)
                 }
             })
-            .catch(error => {
-                this.refList.setData([])
-                DialogUtils.showToast("error:" + error.message)
-            })
+            
     }
     render() {
         return (

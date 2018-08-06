@@ -76,6 +76,8 @@ export default class MyStore extends BaseComponent {
                 if (result.code === 1) {
                     if (isRefesh) {
                         this.refList.setData(result.data)
+                        if(result.data.length<3){
+                            DialogUtils.showToast("暂无消息") }
                     } else {
                         this.refList.addData(result.data)
                     }
@@ -84,10 +86,7 @@ export default class MyStore extends BaseComponent {
                     DialogUtils.showToast(result.msg)
                 }
             })
-            .catch(error => {
-                this.refList.setData([])
-                DialogUtils.showToast("error:" + error.message)
-            })
+           
     }
     //上架下架
     editShopState(data) {

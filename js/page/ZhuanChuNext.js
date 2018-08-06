@@ -26,6 +26,7 @@ export default class ZhuanChuNext extends BaseComponent {
             imgHead: require("../../res/images/touxiang-xiao.png"),//收入方头像
             tranMoney: 0.00,//转出金额
             mobile4: "",//手机号后四位
+            selectIndex: 0, //  币种,0.人民币，1.美元
         }
         this.userInfo = this.getUserInfo();
         //接受上个界面传来的账户 （手机号）
@@ -75,6 +76,7 @@ export default class ZhuanChuNext extends BaseComponent {
             getId: this.state.userid,
             getNums: this.state.tranMoney,
             mobile: this.state.mobile4,
+            currency: this.state.selectIndex,
             safetyPwd: safetyPwd,
         })
             .then(result => {
@@ -96,7 +98,21 @@ export default class ZhuanChuNext extends BaseComponent {
         obj = obj.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
         return obj;
     }
+
+    selectMoney() {
+        let type = !this.state.moneyType
+        this.setState({
+            moneyType: type
+        })
+        alert(this.state.moneyType)
+    }
+
+
+
+
+
     render() {
+
         return (
             <View style={[BaseStyles.container_column, { backgroundColor: "#f1f1f1" }]}>
                 <NavigationBar
@@ -134,30 +150,53 @@ export default class ZhuanChuNext extends BaseComponent {
                 }]}>转出金额</Text>
                 <View style={{ backgroundColor: "#f0f0f0", height: 2, }} />
                 <View style={[{
-                    flexDirection: 'row', alignItems: 'center', padding: 10, backgroundColor: "#fff", }]}>
-                    <Text style={{color: '#333',fontSize: 15,width: 80, }}>CNY(￥)</Text>
-                    <TextInput
-                        style={{ height: 40, flex: 1, fontSize: 22, color: '#000', marginLeft: 8 }}
-                        placeholder={'0'}
-                        placeholderTextColor={'#999'}
-                        underlineColorAndroid='transparent'
-                        keyboardType='numeric'
-                        value={this.state.tranMoney}
-                        onChangeText={(text) => this.setState({ tranMoney: this.chkPrice(text) })}
-                        onChangeText={(text) => {
-                            // const newText = text.replace(/[^\d]+/, '');
-                            this.setState({ tranMoney: this.chkPrice(text) })
-                        }}
-                        //纯数字
-                        // onChangeText={(text) => {
-                        //     const newText = text.replace(/[^\d]+/, '');
-                        //     this.setState({tranMoney:newText})
-                        // }}
-                        //失去焦点时
-                        onBlur={() => this.onClicks(4)}
-                    />
+                    flexDirection: 'row', alignItems: "flex-end", padding: 10, backgroundColor: "#fff",
+                }]}>
+
+                    {/* {this.renderSelectView()} */}
+                    <View style={{ flexDirection: "column" }}>
+                        <View style={{ flexDirection: "row" }}>
+                            <TouchableOpacity
+                                onPress={() => this.setState({ selectIndex: 0, })}>
+                                <View style={{ width: 16, height: 16, borderRadius:8,borderColor:"#999",borderWidth:1,
+                                    backgroundColor: this.state.selectIndex === 0 ? "#d19" : "#fff" }} /></TouchableOpacity>
+                            <Text style={{ color: '#333', fontSize: 15, width: 80, marginLeft: 7 }}
+                            >CNY(￥)</Text>
+                        </View>
+                        <View style={{ flexDirection: "row" ,marginTop:10}}>
+                            <TouchableOpacity
+                                onPress={() => this.setState({ selectIndex: 1, })}>
+                                <View style={{ width: 16, height: 16, borderRadius:8,borderColor:"#999",borderWidth:1,
+                                    backgroundColor: this.state.selectIndex === 1 ? "#d19" : "#fff" }} /></TouchableOpacity>
+                            <Text  style={{ color: '#333', fontSize: 15, width: 80, marginLeft: 7 }}
+                            >USD($)</Text>
+                        </View>
+                    </View>
+                    <View style={{ flexDirection: "column" }}>
+                        <TextInput
+                            style={{ height: 30, flex: 1, fontSize: 22, color: '#000', marginLeft: 8, alignItems: "flex-end" }}
+                            placeholder={'0'}
+                            placeholderTextColor={'#999'}
+                            underlineColorAndroid='transparent'
+                            keyboardType='numeric'
+                            value={this.state.tranMoney}
+                            onChangeText={(text) => this.setState({ tranMoney: this.chkPrice(text) })}
+                            onChangeText={(text) => {
+                                // const newText = text.replace(/[^\d]+/, '');
+                                this.setState({ tranMoney: this.chkPrice(text) })
+                            }}
+                            //纯数字
+                            // onChangeText={(text) => {
+                            //     const newText = text.replace(/[^\d]+/, '');
+                            //     this.setState({tranMoney:newText})
+                            // }}
+                            //失去焦点时
+                            onBlur={() => this.onClicks(4)}
+                        />
+                        <View style={{ height: 1, backgroundColor: "#aaa", width: 190 }}></View>
+                    </View>
+
                 </View>
-                
                 <View style={[{
                     flexDirection: 'row',
                     alignItems: 'center',

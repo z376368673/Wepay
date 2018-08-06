@@ -105,21 +105,16 @@ export default class ExcinttegralRecord extends BaseComponent {
                 if (result.code === 1) {
                     if (isRefesh) {
                         this.refList.setData(result.data)
+                        if(result.data.length<1){
+                            DialogUtils.showToast("暂无记录") }
                     } else {
                         this.refList.addData(result.data)
                     }
                     this.pageIndex += 1
-                    if(result.data.length<1){
-                        DialogUtils.showToast("暂无记录")
-                        this.refList.setData([])
-                    }
+                   
                 } else {
                     DialogUtils.showToast(result.msg)
                 }
-            })
-            .catch(error => {
-                this.refList.setData([])
-                DialogUtils.showToast("error:" + error.message)
             })
     }
     //刷新数据

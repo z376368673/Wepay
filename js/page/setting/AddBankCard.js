@@ -140,11 +140,11 @@ export default class AddBankCard extends BaseComponent {
                         keyboardType='numeric'
                         onChangeText={(text) => this.setState({ bankNum: text })} />
                 </View>
-                <View style={[styles.itemView,{height:0}]}>
-                    <Text style={styles.itemText}>
-                      开户支行</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center',backgroundColor: "#fff",}}>
+                    <Text style={{height:0}}>
+                      </Text>
                     <TextInput
-                        style={styles.itemTextInput}
+                        style={{  height: 0, flex: 1, fontSize: 16, color: '#333', marginLeft: 8}}
                         //placeholder={'请输入开户银行的支行分行1'}
                         //defaultValue={userName}
                         placeholderTextColor={'#999'}

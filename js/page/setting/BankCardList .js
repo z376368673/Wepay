@@ -68,10 +68,7 @@ export default class BankCardList extends BaseComponent {
                      DialogUtils.showToast(result.msg)   
                 }
             })
-            .catch(error => {   
-                this.refList.setData([])
-                DialogUtils.showToast("error:"+error.message)   
-            })
+        
     }
 
     /**

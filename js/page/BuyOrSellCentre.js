@@ -68,6 +68,8 @@ export default class BuyOrSellCentre extends BaseComponent {
             .then(result => {
                 if (result.code === 1) {
                     if (isRefesh) {
+                        if(result.data.length<1){
+                            DialogUtils.showToast("暂无记录") }
                         this.refList.setData(result.data)
                     } else {
                         this.refList.addData(result.data)
@@ -77,10 +79,7 @@ export default class BuyOrSellCentre extends BaseComponent {
                     DialogUtils.showToast(result.msg)
                 }
             })
-            .catch(error => {
-                this.refList.setData([])
-                DialogUtils.showToast("error:" + error.message)
-            })
+            
     }
     render() {
         let title = this.type === 0 ? "买入中心" : "卖出中心"

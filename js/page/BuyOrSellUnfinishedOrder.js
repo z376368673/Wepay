@@ -146,21 +146,17 @@ export default class BuyOrSellUnfinishedOrder extends BaseComponent {
                     //alert(JSON.stringify(result.data))
                     if (isRefesh) {
                         this.refList.setData(result.data)
+                        if(result.data.length<1){
+                            DialogUtils.showToast("暂无信息") }
                     } else {
                         this.refList.addData(result.data)
                     }
                     this.pageIndex += 1
-                    if(result.data.length<1){
-                        DialogUtils.showToast("暂无信息")
-                        this.refList.setData([])
-                    }
+                   
                 } else {
                     DialogUtils.showToast(result.msg)
                 }
             })
-            .catch(error => {
-                this.refList.setData([])
-                DialogUtils.showToast("error:" + error.message)
-            })
+            
     }
 }

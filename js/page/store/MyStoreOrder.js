@@ -23,7 +23,7 @@ export default class MyStoreOrder extends BaseComponent {
         return (
             <View style={[BaseStyles.container_column, { backgroundColor: "#f1f1f1" }]}>
                 <NavigationBar
-                    title='我的订单'
+                    title='店铺订单'
                     navigation={this.props.navigation}
                 />
             <ScrollableTabView

@@ -28,7 +28,6 @@ export default class AddShop extends BaseComponent {
         this.navigation = this.props.navigation;
         this.params = this.props.navigation.state.params;
         this.data = this.params?this.params.data:null;
-
         this.type = "add"
     }
 
@@ -68,8 +67,8 @@ export default class AddShop extends BaseComponent {
         }
     };
 
-    onClicks(type) {
-        if(type==="add"){
+    onClicks() {
+        if(this.type=="add"){
             if(this.state.shopName.length<1){
                 DialogUtils.showMsg("请输入商品名称");
             }else if(this.state.shopPrice.length<1){
@@ -82,6 +81,17 @@ export default class AddShop extends BaseComponent {
                 this.addShop();
                // this.props.navigation.navigate('MyStore'); 
             }
+        }else{
+            if(this.state.shopName.length<1){
+                DialogUtils.showMsg("请输入商品名称");
+            }else if(this.state.shopPrice.length<1){
+                DialogUtils.showMsg("请输入商品价格");
+            }else if(this.state.shopNum.length<1){
+                DialogUtils.showMsg("请输入商品库存");
+            }else{
+                this.editShop();
+            }
+           
         }
     }
 
@@ -114,8 +124,7 @@ export default class AddShop extends BaseComponent {
      * 修改商品信息
      */
     editShop(){
-        //alert(JSON.stringify(this.state.photos))
-        let url =  BaseUrl.getAddShopUrl()
+        let url =  BaseUrl.getUpdateShopUrl()
         /** sessionId   contents  file */
         HttpUtils.uploadImage(url,
             {sessionId:this.userInfo.sessionId,
@@ -126,7 +135,7 @@ export default class AddShop extends BaseComponent {
             },
             this.state.photos,(result)=>{
             if(result.code===1){
-                DialogUtils.showMsg("添加商品成功","知道了",()=>{
+                DialogUtils.showMsg("编辑商品成功","知道了",()=>{
                      this.props.navigation.goBack()
                 });
             }else{
