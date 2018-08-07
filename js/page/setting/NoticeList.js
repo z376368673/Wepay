@@ -71,7 +71,7 @@ export default class NoticeList extends BaseComponent {
                 if (result.code === 1) {
                     if (isRefesh) {
                         this.refList.setData(result.data)
-                        if(result.data.length<3){
+                        if(result.data.length<1){
                             DialogUtils.showToast("暂无消息") }
                     } else {
                         this.refList.addData(result.data)

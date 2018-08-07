@@ -23,7 +23,7 @@ export default class ModifyPassWord extends BaseComponent {
         super(props);
         const {type} = this.props.navigation.state.params
         this.state = {
-            phone: "18629448593",
+            phone: "",
             code: 0,//当前验证码
             sms: 10086,//短信验证码
             pwd: "",//第一次密码

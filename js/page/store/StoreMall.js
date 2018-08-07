@@ -83,8 +83,8 @@ export default class StoreMall extends BaseComponent {
                     {this.renderCustomItems()}
                 </SegmentedBar>
                 <View style={{ flex: 1, backgroundColor: "#f1f1f1",marginTop:12, }}>
-                    {this.state.activeIndex === 0 ? <StoreCommon navigation={this.props.navigation} tabLabel='商品' numColumns={2} /> : <View />}
-                    {this.state.activeIndex === 1 ? <StoreCommon navigation={this.props.navigation} tabLabel='商铺' numColumns={1} /> : <View />}
+                    {this.state.activeIndex === 0 ? <StoreCommon navigation={this.props.navigation} tabLabel='商品' numColumns={2} {...this.props}/> : <View />}
+                    {this.state.activeIndex === 1 ? <StoreCommon navigation={this.props.navigation} tabLabel='商铺' numColumns={1} {...this.props}/> : <View />}
                 </View>
             </View>
         );

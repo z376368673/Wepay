@@ -37,7 +37,7 @@ class PassNumInput extends Component {
                             fontSize: 30, color: "#000",
                             borderColor: "#333",
                             borderRadius: 15,
-                            borderWidth: this.state.pwdArr[i] ? 15 : 1
+                            borderWidth: this.state.pwdArr[i]+1 ? 15 : 1
                         }}
                     />
                 </View>

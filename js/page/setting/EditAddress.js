@@ -15,6 +15,8 @@ import Utils from '../../util/Utils';
 import BaseUrl from '../../util/BaseUrl';
 import HttpUtils from '../../util/HttpUtils';
 import DialogUtils from '../../util/DialogUtils';
+import EditText from "../../common/EditText";
+
 /**
  * 编辑地址
  */
@@ -23,7 +25,7 @@ export default class EditAddress extends BaseComponent {
         super(props);
         this.userInfo = this.getUserInfo()
         this.state = {
-            name:'',
+            name: '',
             phone: '',
             province: "广东",
             city: "深圳",
@@ -33,13 +35,13 @@ export default class EditAddress extends BaseComponent {
         }
         this.params = this.props.navigation.state.params;
         // const { addrssInfo,} = this.props.navigation.state.params
-        this.addrssInfo = this.params.addrssInfo?this.params.addrssInfo:null;
+        this.addrssInfo = this.params.addrssInfo ? this.params.addrssInfo : null;
     }
-    componentDidMount(){
-       // alert(JSON.stringify(this.addrssInfo))
-        if(this.addrssInfo){
+    componentDidMount() {
+        // alert(JSON.stringify(this.addrssInfo))
+        if (this.addrssInfo) {
             this.setState({
-                name:this.addrssInfo.name,
+                name: this.addrssInfo.name,
                 phone: this.addrssInfo.telephone,
                 province: this.addrssInfo.provinceId,
                 city: this.addrssInfo.cityId,
@@ -53,7 +55,7 @@ export default class EditAddress extends BaseComponent {
         return (
             <View style={[BaseStyles.container_column, { backgroundColor: "#f1f1f1" }]}>
                 <NavigationBar
-                    title={this.addrssInfo?"编辑地址":"添加地址"}
+                    title={this.addrssInfo ? "编辑地址" : "添加地址"}
                     navigation={this.props.navigation}
                 />
                 <View style={styles.itemView}>
@@ -89,24 +91,31 @@ export default class EditAddress extends BaseComponent {
                         <Text style={{ fontSize: 16, color: '#666' }}>{this.state.province + " " + this.state.city + " " + this.state.area}</Text>
                     </TouchableOpacity>
                 </View>
-                <View style={styles.itemView}>
-                    <Text style={styles.itemText}>
-                        收货地址</Text>
-                    <TextInput
-                        style={styles.itemTextInput}
-                        placeholder={'请输入详细收货地址'}
-                        placeholderTextColor={'#999'}
-                        defaultValue={this.state.address}
-                        underlineColorAndroid='transparent'
-                        keyboardType='default'
-                        onChangeText={(text) => this.setState({ address: text })} />
-                </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', padding: 10, backgroundColor: "#fff", marginTop: 1 }}>
+                        <Text style={styles.itemText}>
+                            收货地址</Text>
+                        <TextInput
+                            style={{ height: 40, flex: 1, fontSize: 16, color: '#333', marginLeft: 8 }}
+                            placeholder={'请输入详细收货地址'}
+                            placeholderTextColor={'#999'}
+                            defaultValue={this.state.address}
+                            underlineColorAndroid='transparent'
+                            keyboardType='default'
+                            onChangeText={(text) => this.setState({ address: text })} />
+                        <TextInput
+                            style={{ height: 40, fontSize: 16, color: '#333', width:1 }}
+                            placeholderTextColor={'#999'}
+                            underlineColorAndroid='transparent'
+                            keyboardType='default'
+                            />
+                    </View>
+
                 <View style={{ padding: 10 }}>
                     <Checkbox
                         title='默认地址'
                         size='md'
-                        checked={this.state.isDefault===1?true:false}
-                        onChange={value =>this.defaultAddress(value)}
+                        checked={this.state.isDefault === 1 ? true : false}
+                        onChange={value => this.defaultAddress(value)}
                     />
                 </View>
                 <TouchableOpacity
@@ -134,7 +143,7 @@ export default class EditAddress extends BaseComponent {
     }
     defaultAddress(value) {
         var def = 1;
-        def = value?1:0;
+        def = value ? 1 : 0;
         this.setState({
             isDefault: def,
         })
@@ -144,11 +153,11 @@ export default class EditAddress extends BaseComponent {
         //this.navigation.state.params.callbacks({nickname: this.state.text})
         if (this.state.name.length < 1) {
             DialogUtils.showMsg("请输入收件人姓名")
-        } else if (this.state.phone.length !==11) {
+        } else if (this.state.phone.length !== 11) {
             DialogUtils.showMsg("请输入11位手机号")
         } else if (this.state.address.length < 2) {
             DialogUtils.showMsg("请输入详细地址")
-        }  else {
+        } else {
             this.addAddress();
         }
         //this.props.navigation.goBack()
@@ -157,8 +166,8 @@ export default class EditAddress extends BaseComponent {
     /**
      * 添加地址/修改地址信息
      */
-    addAddress(){
-        if(this.addrssInfo===null){
+    addAddress() {
+        if (this.addrssInfo === null) {
             this.url = BaseUrl.putAddress(
                 this.userInfo.sessionId,
                 this.userInfo.userid,
@@ -169,7 +178,7 @@ export default class EditAddress extends BaseComponent {
                 this.state.area,
                 this.state.address,
                 this.state.isDefault)
-        }else{
+        } else {
             this.url = BaseUrl.editAddress(
                 this.userInfo.sessionId,
                 this.addrssInfo.addressId,
@@ -182,19 +191,19 @@ export default class EditAddress extends BaseComponent {
                 this.state.address,
                 this.state.isDefault)
         }
-          //alert(JSON.stringify(this.state.name))
-            HttpUtils.getData(this.url)
-                .then(result => {
-                    //alert(JSON.stringify(result))
-                    if (result.code === 1) {
-                        let tip = this.addrssInfo===null?"添加地址成功":"修改地址成功"
-                        DialogUtils.showToast(tip)
-                        this.props.navigation.goBack()
-                        this.params.editCallBack()
-                    } else {
-                        DialogUtils.showToast(result.msg)
-                    }
-                })
+        //alert(JSON.stringify(this.state.name))
+        HttpUtils.getData(this.url)
+            .then(result => {
+                //alert(JSON.stringify(result))
+                if (result.code === 1) {
+                    let tip = this.addrssInfo === null ? "添加地址成功" : "修改地址成功"
+                    DialogUtils.showToast(tip)
+                    this.props.navigation.goBack()
+                    this.params.editCallBack()
+                } else {
+                    DialogUtils.showToast(result.msg)
+                }
+            })
     }
     showPCAlist() {
         Picker.init({

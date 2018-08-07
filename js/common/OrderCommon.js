@@ -8,15 +8,16 @@ import {
     Image,
     Linking,
 } from 'react-native';
-import BaseComponent, { BaseStyles, mainColor, window_width } from "../page/BaseComponent";
+import BaseComponent, { BaseStyles, mainColor, upDataUserInfo } from "../page/BaseComponent";
 import HttpUtils from "../util/HttpUtils";
 import BaseUrl from "../util/BaseUrl";
 import RefreshFlatList from "./RefreshFlatList"
 import Utils from '../util/Utils';
 import DialogUtils from '../util/DialogUtils';
-
+import { inject } from '../../node_modules/mobx-react';
 //订单公用类（相当于Fragment）
 const window_w = Utils.getWidth();
+@inject('AppStore')
 export default class OrderCommon extends BaseComponent {
     constructor(props) {
         super(props);
@@ -61,7 +62,6 @@ export default class OrderCommon extends BaseComponent {
         }
         HttpUtils.getData(this.url)
             .then(result => {
-
                 if (result.code === 1) {
                     if (isRefesh) {
                         this.refList.setData(result.data)
@@ -72,7 +72,9 @@ export default class OrderCommon extends BaseComponent {
                         this.refList.addData(result.data)
                     }
                     this.pageIndex += 1
-
+                } else if(result.code === 2){
+                    DialogUtils.showToast(result.msg)
+                    this.goLogin(this.props.navigation)
                 } else {
                     DialogUtils.showToast(result.msg)
                 }
@@ -125,14 +127,21 @@ export default class OrderCommon extends BaseComponent {
             let url = BaseUrl.updateOrderStatus(this.userInfo.sessionId, data.item.id, status)
             HttpUtils.getData(url)
                 .then(result => {
-
+                    DialogUtils.hideLoading()
                     if (result.code === 1) {
-                        this.props.delBack(this.props.data.index)
-                        DialogUtils.showMsg("订单已取消")
-                    } else {
+                        if(status ===2 ){
+                            DialogUtils.showToast("已确认发货")    
+                        }else if(status ===3 ){
+                            DialogUtils.showToast("已确认收货") 
+                            upDataUserInfo(this.props.AppStore)   
+                        }
+                        this.refList.delData(data.index)
+                    } else if (result.code === 2) {
+                        DialogUtils.showToast(result.msg)
+                        this.goLogin(this.props.navigation)
+                    }else {
                         DialogUtils.showToast(result.msg)
                     }
-                    DialogUtils.hideLoading()
                 })
         }
         DialogUtils.showPop(conten, () => editOrder(), null, "确认", "取消")
@@ -181,7 +190,7 @@ export default class OrderCommon extends BaseComponent {
                             <Text style={{ color: "#666", fontSize: 13, }}>联系商家</Text>
                         </TouchableOpacity>
                         {
-                            this.orderStatus === 3 ?
+                            this.orderStatus === 2 ?
                             <TouchableOpacity
                                 onPress={() => this.confirmBtn(data, 3)}
                                 style={{
@@ -262,7 +271,7 @@ export default class OrderCommon extends BaseComponent {
                     {this.orderStatus === 3 ? sellerIncomeIntegral : null}
                     {this.orderStatus === 3 ? sellerIncomeBalance : null}
                     <View style={{ flexDirection: "row-reverse", alignSelf: "flex-end", flex: 1, alignItems: "flex-end" }}>
-                        {this.orderStatus === 1 ? confirm : null}
+                         {this.orderStatus === 1 ? confirm : null} 
                     </View>
                 </View>
             </View>

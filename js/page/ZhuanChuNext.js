@@ -7,14 +7,15 @@ import {
     TouchableOpacity,
     Image,
 } from 'react-native';
-import BaseComponent, { BaseStyles, mainColor, window_width } from "./BaseComponent";
+import BaseComponent, { BaseStyles, mainColor, upDataUserInfo } from "./BaseComponent";
 import NavigationBar from "../common/NavigationBar";
 import BaseUrl from '../util/BaseUrl';
 import DialogUtils from '../util/DialogUtils';
 import HttpUtils from '../util/HttpUtils';
 import PassWordInput from '../common/PassNumInput';
-
+import { inject } from 'mobx-react';
 //转出 下一步
+@inject('AppStore') 
 export default class ZhuanChuNext extends BaseComponent {
     constructor(props) {
         super(props);
@@ -39,13 +40,14 @@ export default class ZhuanChuNext extends BaseComponent {
     }
 
     /**
-     * 获取用户想你想
+     * 获取转入用户信息
      */
     getOtherUserInfo() {
         DialogUtils.showLoading()
         let url = BaseUrl.getUserBy(this.userInfo.sessionId, this.account)
         HttpUtils.getData(url)
             .then(result => {
+                DialogUtils.hideLoading()
                 if (result.code === 1) {
                     //alert(JSON.stringify(result))
                     this.info = result.data
@@ -55,11 +57,13 @@ export default class ZhuanChuNext extends BaseComponent {
                         username: this.info.username,
                         imgHead: { uri: this.getImgUrl(this.info.imgHead) },
                     })
+                }else if(result.code === 2){
+                    DialogUtils.showToast(result.msg)
+                    this.goLogin(this.props.navigation)
                 } else {
                     DialogUtils.showToast(result.msg)
                     this.props.navigation.goBack()
                 }
-                DialogUtils.hideLoading()
             })
     }
 
@@ -80,12 +84,15 @@ export default class ZhuanChuNext extends BaseComponent {
             safetyPwd: safetyPwd,
         })
             .then(result => {
+                DialogUtils.hideLoading()
                 if (result.code === 1) {
-                    DialogUtils.showMsg("转出成功")
+                    DialogUtils.showToast("转出成功")
+                    upDataUserInfo(this.props.AppStore)
+                    this.props.navigation.goBack()
                 } else {
                     DialogUtils.showToast(result.msg)
                 }
-                DialogUtils.hideLoading()
+              
             })
     }
     chkPrice(obj) { //方法1

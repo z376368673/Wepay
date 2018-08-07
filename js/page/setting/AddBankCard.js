@@ -73,7 +73,10 @@ export default class AddBankCard extends BaseComponent {
                             this.navigation.state.params.callback()
                             this.props.navigation.goBack()
                         })
-                } else {
+                } else if (result.code === 2) {
+                    DialogUtils.showToast(result.msg)
+                    this.goLogin(this.props.navigation)
+                }else {
                     DialogUtils.showToast(result.msg)
                 }
             })
@@ -105,7 +108,7 @@ export default class AddBankCard extends BaseComponent {
                 
                 <View style={{ height: 50, justifyContent: 'center', alignItems: 'center', }}>
                     <Text style={{ fontSize: 14, color: "#888", }}>
-                        *请帮定持卡人本人的银行卡，姓名一经填写不可修改</Text></View>
+                        *请帮定持卡人本人的银行卡，银行卡添加后将不可修改</Text></View>
 
                 <View style={styles.itemView}>
                     <Text style={styles.itemText}>

@@ -88,6 +88,9 @@ export default class AddressList extends BaseComponent {
                     this.refList.setData(result.data)
                     if(result.data.length<1){
                         DialogUtils.showToast("暂无记录") }
+                }else if (result.code === 2) {
+                    DialogUtils.showToast(result.msg)
+                    this.goLogin(this.props.navigation)
                 }else{
                      DialogUtils.showToast(result.msg)   
                 }

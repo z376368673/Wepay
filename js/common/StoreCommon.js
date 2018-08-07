@@ -12,6 +12,7 @@ import RefreshFlatList from "./RefreshFlatList"
 import Utils from '../util/Utils';
 import BaseUrl from '../util/BaseUrl';
 import UserInfo from '../model/UserInfo';
+import DialogUtils from '../util/DialogUtils';
 //订单公用类（相当于Fragment）
 const window_w = Utils.getWidth();
 export const KEYS = [""]
@@ -70,6 +71,9 @@ export default class StoreCommon extends BaseComponent {
                         this.refList.addData(result.data)
                     }
                     this.pageIndex += 1
+                } else if(result.code === 2){
+                    DialogUtils.showToast(result.msg)
+                    this.goLogin(this.props.navigation)
                 } else {
                     DialogUtils.showToast(result.msg)
                 }
@@ -103,7 +107,6 @@ export default class StoreCommon extends BaseComponent {
       */
     _getStore(data) {
         return <View
-            key={this.state.activeIndex === 0 ? data.item.index : data.item.index + 1}
             style={{
                 backgroundColor: '#fff',
                 alignItems: 'center',
@@ -111,6 +114,7 @@ export default class StoreCommon extends BaseComponent {
                 flexDirection: "column",
                 marginLeft: 2,
                 marginRight: 2,
+                maxWidth:window_width/2-4,
             }}>
             <TouchableOpacity
                 activeOpacity={0.8}

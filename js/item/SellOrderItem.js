@@ -8,11 +8,12 @@ import {
     Animated,
 } from 'react-native';
 import Utils from '../util/Utils';
-import BaseComponent, { mainColor } from '../page/BaseComponent';
+import BaseComponent, { mainColor,upDataUserInfo } from '../page/BaseComponent';
 import SYImagePicker from 'react-native-syan-image-picker'
 import BaseUrl from '../util/BaseUrl';
 import HttpUtils from '../util/HttpUtils';
 import DialogUtils from '../util/DialogUtils';
+import { inject } from '../../node_modules/mobx-react';
 //未完成订单中，大概分为3个阶段， (刚发布)未选择打款人 ，  (有人购买你的或者卖你的)未选择打款人没有下拉，已选择打款人 和确认打款人点击下拉有银行卡信息 
 /** 未选择打款人 ，  (刚发布)
  *  已选择打款人,    (有人购买你的或者卖你的) 
@@ -25,6 +26,7 @@ import DialogUtils from '../util/DialogUtils';
  *  这个界面支持 orderType = 2，3
  * 
  */
+@inject('AppStore')
 export default class SellOrderItem extends BaseComponent {
     constructor(props) {
         super(props);
@@ -96,24 +98,6 @@ export default class SellOrderItem extends BaseComponent {
         }
         return stateText;
     }
-    
-    /**
-     * 提交选择的照片 确认打款
-     * @param {*} imgs 
-     */
-    uploadImage(imgs){
-       let url =  BaseUrl.getUpdataHeadUrl()
-        HttpUtils.uploadImage(url,{sessionId:this.state.sessionId},imgs,(result)=>{
-            if(result.code===1){
-                DialogUtils.showToast("上传成功")
-                this.setState({
-                    headImg: this.source
-                })
-            }else{
-                DialogUtils.showToast(result.msg)
-            }
-        })
-    }
 
     // //卖出-确认收款-修改状态为确认收款
     confirmButton(){
@@ -123,9 +107,13 @@ export default class SellOrderItem extends BaseComponent {
             HttpUtils.getData(url)
                 .then(result => {
                    // alert(JSON.stringify(result))
-                   this.props.delBack(this.props.data.index)
                     if (result.code === 1) {
                         DialogUtils.showMsg("已确认收款",)
+                        this.props.navigation.goBack()
+                       // this.props.delBack(this.props.data.index)
+                    } else if(result.code === 2){
+                        DialogUtils.showToast(result.msg)
+                        this.goLogin(this.props.navigation)
                     } else {
                         DialogUtils.showToast(result.msg)
                     }
@@ -133,7 +121,6 @@ export default class SellOrderItem extends BaseComponent {
                 })
         }
         DialogUtils.showPop("你确认已收到卖出款？",()=>confirmState(),null,"确认收款","取消")
-
     }
 
     render() {

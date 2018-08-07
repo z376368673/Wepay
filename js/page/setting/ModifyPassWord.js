@@ -76,7 +76,10 @@ export default class ModifyPassWord extends BaseComponent {
                 if (result.code === 1) {
                     DialogUtils.showToast("修改成功")
                     this.props.navigation.goBack()
-                } else {
+                } else if (result.code === 2) {
+                    DialogUtils.showToast(result.msg)
+                    this.goLogin(this.props.navigation)
+                }else {
                     DialogUtils.showToast(result.msg)   
                 }
                 DialogUtils.hideLoading()

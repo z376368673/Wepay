@@ -32,7 +32,6 @@ export default class BaseComponent extends Component {
      //qu登录
      goLogin(navigation) {
         //然后设置新路由的第0个路由为home 
-        DialogUtils.showToast("用户登录状态已过期")
         const resetAction = StackActions.reset({
             index: 0,
             actions: [

@@ -61,7 +61,8 @@ export default class StroeDetails extends BaseComponent {
                         imgHead: { uri: this.getImgUrl(this.info.imgHead) },
                     })
                 }else if (result.code === 2) {
-                    this.goLogin()
+                    DialogUtils.showToast(result.msg)
+                    this.goLogin(this.props.navigation)
                 } else {
                     DialogUtils.showToast(result.msg)
                 }
@@ -131,6 +132,7 @@ export default class StroeDetails extends BaseComponent {
                 flexDirection: "column",
                 marginLeft: 2,
                 marginRight: 2,
+                maxWidth:window_width/2-4,
             }}>
             <TouchableOpacity
                 activeOpacity={0.8}

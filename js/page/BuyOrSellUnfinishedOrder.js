@@ -108,8 +108,10 @@ export default class BuyOrSellUnfinishedOrder extends BaseComponent {
     renderItem(data){
         let view = this.type===1?<SellUnfinshedorderItem data={data} 
          delBack={(index)=>this.refList.delData(index)}  
+         {...this.props}
         />:<BuyUnfinshedorderItem data={data} 
-        delBack={(index)=>this.refList.delData(index)}  
+        delBack={(index)=>this.refList.delData(index) }  
+        {...this.props}
        />
         return view
     }
@@ -153,6 +155,9 @@ export default class BuyOrSellUnfinishedOrder extends BaseComponent {
                     }
                     this.pageIndex += 1
                    
+                } else if(result.code === 2){
+                    DialogUtils.showToast(result.msg)
+                    this.goLogin(this.props.navigation)
                 } else {
                     DialogUtils.showToast(result.msg)
                 }

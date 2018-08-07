@@ -64,7 +64,7 @@ export default class SearchStore extends BaseComponent {
                    
                     if (isRefesh) {
                         this.refList.setData(result.data)
-                        if(result.data.length<3){
+                        if(result.data.length<1){
                             DialogUtils.showToast("暂无消息") }
                     } else {
                         this.refList.addData(result.data)
@@ -73,7 +73,10 @@ export default class SearchStore extends BaseComponent {
                     if(result.data.length<1){
                         DialogUtils.showToast("暂无数据")
                     }
-                } else {
+                }  else if(result.code === 2){
+                    DialogUtils.showToast(result.msg)
+                    this.goLogin(this.props.navigation)
+                }else {
                     DialogUtils.showToast(result.msg)
                 }
             })
@@ -199,8 +202,8 @@ export default class SearchStore extends BaseComponent {
           */
          _getStore(data) {
             return <View
-                key={this.state.activeIndex === 0 ? data.item.index : data.item.index + 1}
                 style={{
+                    maxWidth:window_width/2-4,
                     backgroundColor: '#fff',
                     alignItems: 'center',
                     marginBottom: 4,

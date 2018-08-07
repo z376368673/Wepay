@@ -48,7 +48,8 @@ export default class ShopDetails extends BaseComponent {
                         coverPlan: { uri: this.getImgUrl(result.data.coverPlan) },
                     })
                 } else if (result.code === 2) {
-                    this.goLogin()
+                    DialogUtils.showToast(result.msg)
+                    this.goLogin(this.props.navigation)
                 } else {
                     DialogUtils.showToast(result.msg)
                 }
@@ -65,7 +66,9 @@ export default class ShopDetails extends BaseComponent {
                 />
                 <ScrollView >
                     <View style={[BaseStyles.container_column, { backgroundColor: "#f1f1f1" }]}>
-                        <TouchableOpacity>
+                        <TouchableOpacity 
+                          activeOpacity={1}
+                         >
                             <Image
                                 style={{
                                     flex: 1, width: window_width, height: window_height / 3 * 1.7,

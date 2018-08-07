@@ -7,9 +7,10 @@ import {
     ScrollView,
     TouchableHighlight,
     TouchableOpacity,
+    RefreshControl,
     StatusBar, Platform,
 } from 'react-native';
-import BaseComponent, { BaseStyles, integralRelease } from "./BaseComponent";
+import BaseComponent, { BaseStyles, integralRelease, upDataUserInfo } from "./BaseComponent";
 import ViewUtils from "../util/ViewUtils";
 import { Carousel } from 'teaset';
 import Utils from "../util/Utils";
@@ -27,7 +28,8 @@ export default class HomePage extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
-            bannerArray: []
+            bannerArray: [],
+            isRefresh:false,
         }
         //this.props.AppStore.userInfo = this.props.AppStore.userInfo
     }
@@ -42,21 +44,14 @@ export default class HomePage extends BaseComponent {
         Utils.getLocation((coords)=>{
                     UserInfo.longitude =coords.longitude
                     UserInfo.latitude =coords.latitude
-            //Utils.getCityInfoBy(
-            //     JSON.stringify(coords.longitude), 
-            //     JSON.stringify(coords.latitude),
-            //     (addressComponent)=>{
-            //         this.userInfo = this.getUserInfo()
-            //         this.userInfo.longitude =addressComponent.longitude
-            //         this.userInfo.latitude =addressComponent.latitude
-            // })
         })
     }
+    
     setImgToBanner(bannerArray) {
         var views = []
         bannerArray.forEach((element, index) => {
             views.push(
-                <TouchableOpacity key={index.toString()} onPress={() => { alert(this.getImgUrl(element.pic)) }}>
+                <TouchableOpacity key={index.toString()} onPress={() => { }} activeOpacity={1}>
                     <Image style={{ width: screen_width, height: screen_width / 4 }}
                         resizeMode='cover' source={{ uri: this.getImgUrl(element.pic) }} />
                 </TouchableOpacity>)
@@ -107,11 +102,48 @@ export default class HomePage extends BaseComponent {
             />
         </View>
     }
+    onRefreshs(){
+        this.setState({isRefresh:true})
+        let url = BaseUrl.getUserInfoBy(this.props.AppStore.userInfo.sessionId)
+        HttpUtils.getData(url)
+            .then(result => {
+               // alert(JSON.stringify(result))
+                this.setState({isRefresh:false})
+                if (result.code === 1) {
+                    //Mobx保存方式
+                    this.props.AppStore.setUserInfo(result.data)
+                    //全局保存
+                   UserInfo.userInfo = result.data
+                } else {    
+                    DialogUtils.showToast(result.msg)
+                }
+            }).catch(error => {
+                this.setState({isRefresh:false})
+            })
+              
+    }
     render() {
         return (
             <View style={BaseStyles.container_column}>
                 {this._StatusBar("#48b1a3")}
-                <ScrollView>
+                <ScrollView
+                 refreshControl={
+                    <RefreshControl
+                        //Android下只有一个 colors 是转圈的颜色
+                        colors={['#d11', '#000']}
+                        //ios 下 可以设置标题，转圈颜色，标题颜色
+                        title={'Loading...'}
+                        tintColor={'#d11'}
+                        titleColor={'#d11'}
+                        //刷新状态 false:隐藏，true:显示
+                        refreshing={this.state.isRefresh}
+                        //刷新触发的后执行的方法
+                        onRefresh={() => this.onRefreshs()}
+                    />
+                }
+               //onScroll={this._onScroll.bind(this)}
+               scrollEventThrottle={50}
+                >
                     <View style={BaseStyles.container_column}>
 
                         <View style={styles.container_top}>

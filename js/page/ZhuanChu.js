@@ -17,7 +17,7 @@ export default class ZhuanRu extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
-            account: "18629448593",
+            account: "",
         }
     }
 

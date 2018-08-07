@@ -51,7 +51,10 @@ export default class ModifyNickName extends BaseComponent {
                       this.navigation.state.params.callbacks({ nickname: this.state.userName })
                       this.props.navigation.goBack()
                     DialogUtils.showToast("修改成功")
-                } else {
+                } else if (result.code === 2) {
+                    DialogUtils.showToast(result.msg)
+                    this.goLogin(this.props.navigation)
+                }else {
                     DialogUtils.showToast(result.msg)
                 }
                 DialogUtils.hideLoading()

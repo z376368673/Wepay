@@ -113,6 +113,9 @@ export default class ExcinttegralRecord extends BaseComponent {
                     }
                     this.pageIndex += 1
                    
+                } else if(result.code === 2){
+                    DialogUtils.showToast(result.msg)
+                    this.goLogin(this.props.navigation)
                 } else {
                     DialogUtils.showToast(result.msg)
                 }

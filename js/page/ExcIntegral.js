@@ -47,13 +47,17 @@ export default class ExcIntegral extends BaseComponent {
             safetyPwd: safetyPwd,
         })
         .then(result => {
+            DialogUtils.hideLoading()
             if (result.code===1) {
                DialogUtils.showMsg("兑换成功")
                upDataUserInfo(this.props.AppStore)
-            }else{
+            } else if(result.code === 2){
+                DialogUtils.showToast(result.msg)
+                this.goLogin(this.props.navigation)
+            } else{
                DialogUtils.showToast(result.msg)
             }
-            DialogUtils.hideLoading()
+          
         })
      
     }

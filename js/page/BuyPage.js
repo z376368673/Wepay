@@ -6,7 +6,7 @@ import {
     Image,
     TouchableOpacity,
 } from 'react-native';
-import BaseComponent, { BaseStyles, mainColor, window_width } from "./BaseComponent";
+import BaseComponent, { BaseStyles, mainColor, } from "./BaseComponent";
 import NavigationBar from "../common/NavigationBar";
 import { Menu } from 'teaset';
 import BankCardView from "../common/BankCardView";
@@ -16,6 +16,7 @@ import BaseUrl from '../util/BaseUrl';
 import DialogUtils from '../util/DialogUtils';
 import HttpUtils from '../util/HttpUtils';
 import PassWordInput from '../common/PassNumInput';
+
 
 
 export default class BuyPage extends BaseComponent {
@@ -46,13 +47,16 @@ export default class BuyPage extends BaseComponent {
                 safetyPwd: safetyPwd,
             })
             .then(result => {
+                DialogUtils.hideLoading()
                 if (result.code === 1) {
-                    DialogUtils.showMsg("创建订单成功")
-                    //this.props.navigation.goBack()
+                    this.props.navigation.navigate('HomePage');
+                     DialogUtils.showToast("创建订单成功")
+                } else if(result.code === 2){
+                    DialogUtils.showToast(result.msg)
+                    this.goLogin(this.props.navigation)
                 } else {
                     DialogUtils.showToast(result.msg)
                 }
-                DialogUtils.hideLoading()
             })
 
     }

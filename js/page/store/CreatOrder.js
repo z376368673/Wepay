@@ -70,7 +70,8 @@ export default class CreatOrder extends BaseComponent {
                     DialogUtils.showMsg("购买成功")
                     upDataUserInfo(this.props.AppStore)
                     //this.props.navigation.goBack()
-                } else if (result.code === 2) {
+                }  else if(result.code === 2){
+                    DialogUtils.showToast(result.msg)
                     this.goLogin(this.props.navigation)
                 }else {
                     DialogUtils.showToast(result.msg)
@@ -98,9 +99,7 @@ export default class CreatOrder extends BaseComponent {
                             userAddress: address,
                         })
                     }
-                } else if (result.code === 2) {
-                    this.goLogin(this.props.navigation)
-                }
+                }  
             })
     }
     /**
@@ -238,7 +237,7 @@ export default class CreatOrder extends BaseComponent {
                                 fontSize: 18,
                                 marginRight:10,
                                 marginLeft:10,
-                            }}>合计：{this.data.goodsPrice*counter.get()}元</Text>
+                            }}>合计：{ new Number(this.data.goodsPrice*counter.get()).toFixed(2)}元</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: "#d11", }}

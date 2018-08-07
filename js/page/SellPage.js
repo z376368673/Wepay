@@ -8,7 +8,7 @@ import ReactNative, {
     ScrollView,
     KeyboardAvoidingView,
 } from 'react-native';
-import BaseComponent, { BaseStyles, mainColor, window_width } from "./BaseComponent";
+import BaseComponent, { BaseStyles, mainColor, upDataUserInfo } from "./BaseComponent";
 import NavigationBar from "../common/NavigationBar";
 import { Menu } from 'teaset';
 import BankCardView from "../common/BankCardView";
@@ -19,8 +19,10 @@ import BaseUrl from '../util/BaseUrl';
 import DialogUtils from '../util/DialogUtils';
 import HttpUtils from '../util/HttpUtils';
 import PassWordInput from '../common/PassNumInput';
+import { inject } from '../../node_modules/mobx-react';
 
 
+@inject('AppStore')
 export default class SellPage extends BaseComponent {
     constructor(props) {
         super(props);
@@ -50,7 +52,9 @@ export default class SellPage extends BaseComponent {
            })
            .then(result => {
                if (result.code === 1) {
-                   DialogUtils.showMsg("创建订单成功")
+                  upDataUserInfo(this.props.AppStore)
+                  this.props.navigation.navigate('HomePage');
+                   DialogUtils.showToast("创建订单成功")
                    //this.props.navigation.goBack()
                } else {
                    DialogUtils.showToast(result.msg)

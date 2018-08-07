@@ -46,7 +46,8 @@ export default class SettingView extends BaseComponent {
                         newMessage: this.info.newMessage,
                     })
                 }else if (result.code === 2) {
-                    this.goLogin()
+                    DialogUtils.showToast(result.msg)
+                    this.goLogin(this.props.navigation)
                 }else {
                     DialogUtils.showToast(result.msg)
                 }
@@ -65,8 +66,6 @@ export default class SettingView extends BaseComponent {
                     this.setState({
                         storeStatus: result.data,
                     })
-                } else if (result.code === 2) {
-                    this.goLogin(this.props.navigation)
                 }else {
                     DialogUtils.showToast(result.msg)
                 }

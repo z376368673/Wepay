@@ -26,7 +26,7 @@ export default class RegisterPage extends BaseComponent {
             nickName: "",
             phone: '',
             code: "",//当前验证码
-            sms: "10086",//短信验证码
+            sms: "10868866",//短信验证码
             pwd: "",//第一次密码
             pwdAgain: "",//第二次密码
             recommendPhone: "",//推荐人手机号

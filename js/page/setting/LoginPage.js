@@ -17,6 +17,7 @@ import { inject, observer } from 'mobx-react';
 import UserInfo from '../../model/UserInfo';
 import ViewUtils from '../../util/ViewUtils';
 import SplashScreen from "react-native-splash-screen"
+import PassWordInput from '../../common/PassNumInput';
 /**
  * 登陆页面
  */
@@ -30,8 +31,8 @@ export default class LoginPage extends BaseComponent {
             // text: '13923044417',
             //text: '15989426734',
             //pwd: 'huazhongno1',
-            text: '18629448593',
-            pwd: '123456',
+            text: '',
+            pwd: '',
         }
     }
     componentDidMount() {
@@ -141,7 +142,7 @@ export default class LoginPage extends BaseComponent {
                 })
                 break
             case 2://登陆
-                // this.props.navigation.navigate('HomePage');
+              //  PassWordInput.showPassWordInput((safetyPwd) => alert(safetyPwd))
                 if(this.state.text.length<1){
                     DialogUtils.showMsg("请输入UID或者手机号")
                 }else if(this.state.text.length<1){
@@ -153,6 +154,7 @@ export default class LoginPage extends BaseComponent {
                 break
         }
     }
+  
     /**
      * 登陆
      */

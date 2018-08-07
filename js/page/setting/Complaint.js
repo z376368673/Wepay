@@ -80,6 +80,9 @@ export default class Complaint extends BaseComponent {
                 DialogUtils.showMsg("提交成功，我们会认真审查您的建议/投诉,请耐心等待!","知道了",()=>{
                      this.props.navigation.goBack()
                 });
+            }else if (result.code === 2) {
+                DialogUtils.showToast(result.msg)
+                this.goLogin(this.props.navigation)
             }else{
                 DialogUtils.showToast(result.msg)
             }

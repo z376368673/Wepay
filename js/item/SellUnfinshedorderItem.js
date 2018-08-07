@@ -8,10 +8,11 @@ import {
     Animated,
 } from 'react-native';
 import Utils from '../util/Utils';
-import BaseComponent, { mainColor } from '../page/BaseComponent';
+import BaseComponent, { upDataUserInfo } from '../page/BaseComponent';
 import DialogUtils from '../util/DialogUtils';
 import BaseUrl from '../util/BaseUrl';
 import HttpUtils from '../util/HttpUtils';
+import { inject } from '../../node_modules/mobx-react';
 
 //未完成订单中，大概分为3个阶段， (刚发布)未选择打款人 ，  (有人购买你的或者卖你的)未选择打款人没有下拉，已选择打款人 和确认打款人点击下拉有银行卡信息 
 /** 未选择打款人 ，  (刚发布)
@@ -26,6 +27,7 @@ import HttpUtils from '../util/HttpUtils';
  * 
  * 
  */
+@inject('AppStore')
 export default class SellUnfinshedorderItem extends BaseComponent {
     constructor(props) {
         super(props);
@@ -77,8 +79,6 @@ export default class SellUnfinshedorderItem extends BaseComponent {
         }
         return stateText;
     }
-
-
      
     //取消订单
     cancelState() {
@@ -89,6 +89,7 @@ export default class SellUnfinshedorderItem extends BaseComponent {
                 if (result.code === 1) {
                     this.props.delBack(this.props.data.index)
                     DialogUtils.showMsg("订单已取消")
+                    upDataUserInfo(this.props.AppStore)   
                 } else {
                     DialogUtils.showToast(result.msg)
                 }

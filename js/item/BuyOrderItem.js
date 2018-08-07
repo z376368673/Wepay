@@ -8,11 +8,12 @@ import {
     Animated,
 } from 'react-native';
 import Utils from '../util/Utils';
-import BaseComponent, { mainColor } from '../page/BaseComponent';
+import BaseComponent, { mainColor ,upDataUserInfo} from '../page/BaseComponent';
 import SYImagePicker from 'react-native-syan-image-picker'
 import BaseUrl from '../util/BaseUrl';
 import HttpUtils from '../util/HttpUtils';
 import DialogUtils from '../util/DialogUtils';
+import { inject } from '../../node_modules/mobx-react';
 //未完成订单中，大概分为3个阶段， (刚发布)未选择打款人 ，  (有人购买你的或者卖你的)未选择打款人没有下拉，已选择打款人 和确认打款人点击下拉有银行卡信息 
 /** 未选择打款人 ，  (刚发布)
  *  已选择打款人,    (有人购买你的或者卖你的) 
@@ -25,6 +26,7 @@ import DialogUtils from '../util/DialogUtils';
  *  这个界面支持 orderType = 2，3
  * 
  */
+@inject('AppStore')
 export default class BuyOrderItem extends BaseComponent {
     constructor(props) {
         super(props);
@@ -122,8 +124,7 @@ export default class BuyOrderItem extends BaseComponent {
             // alert(err.message)
         }
     };
-
-
+    
     //取消订单
     cancelState() {
         cancelOrder = () => {
@@ -135,6 +136,10 @@ export default class BuyOrderItem extends BaseComponent {
                     if (result.code === 1) {
                         this.props.delBack(this.props.data.index)
                         DialogUtils.showMsg("订单已取消")
+                        upDataUserInfo(this.props.AppStore)   
+                    } else if(result.code === 2){
+                        DialogUtils.showToast(result.msg)
+                        this.goLogin(this.props.navigation)
                     } else {
                         DialogUtils.showToast(result.msg)
                     }
@@ -145,26 +150,6 @@ export default class BuyOrderItem extends BaseComponent {
         DialogUtils.showPop("您确认要取消此订单？", () => cancelOrder(), null, "取消订单", "点错了")
     }
 
-    //买入-确认打款-修改状态为确认收款
-    confirmState() {
-        DialogUtils.showLoading()
-        let url = BaseUrl.getOutAPUpdate(this.userInfo.sessionId, this.props.id)
-        HttpUtils.getData(url)
-            .then(result => {
-                //alert(JSON.stringify(result))
-                if (result.code === 1) {
-                    DialogUtils.showMsg("已确认收款", "知道了",
-                        () => {
-                            this.navigation.state.params.callback()
-                            this.props.navigation.goBack()
-                        })
-                } else {
-                    DialogUtils.showToast(result.msg)
-                }
-                DialogUtils.hideLoading()
-            })
-    }
-
     /**
      * 提交选择的照片 确认打款
      * @param {*} imgs 
@@ -173,10 +158,10 @@ export default class BuyOrderItem extends BaseComponent {
         let url = BaseUrl.getInAPUpdateUrl()
         HttpUtils.uploadImage(url, { sessionId: this.userInfo.sessionId, id: this.props.data.item.id }, imgs, (result) => {
             if (result.code === 1) {
-                DialogUtils.showToast("上传成功")
-                this.setState({
-                    headImg: this.source
-                })
+                //this._onPress(this.props.data.item.payState)
+                this.props.delBack(this.props.data.index)
+                DialogUtils.showToast("已确认打款")
+                this.props.navigation.goBack()
             } else {
                 DialogUtils.showToast(result.msg)
             }

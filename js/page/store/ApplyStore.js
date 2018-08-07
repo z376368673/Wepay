@@ -359,7 +359,10 @@ export default class ApplyStore extends BaseComponent {
                 DialogUtils.showMsg("提交成功，我们会认真审查您的信息,请耐心等待!","知道了",()=>{
                      this.props.navigation.goBack()
                 });
-            }else{
+            } else if(result.code === 2){
+                DialogUtils.showToast(result.msg)
+                this.goLogin(this.props.navigation)
+            } else{
                 DialogUtils.showToast(result.msg)
             }
         })

@@ -38,9 +38,9 @@ export default class BuyOrSellOrde extends BaseComponent {
         this.orderType = navigation.state.params.orderType ? navigation.state.params.orderType : 2;
         this.type = navigation.state.params.type ? navigation.state.params.type : 0;
 
-        this.title = this.orderType===2?this.type===0?"确认打款":"确认收款":"已完成"
+        this.title = this.orderType === 2 ? this.type === 0 ? "确认打款" : "确认收款" : "已完成"
 
-       //  alert("orderType="+this.orderType+" type="+this.type)
+        //  alert("orderType="+this.orderType+" type="+this.type)
     }
     //界面加载完成
     componentDidMount() {
@@ -67,12 +67,14 @@ export default class BuyOrSellOrde extends BaseComponent {
     }
 
     renderItem(data) {
-        let view = this.type===1?<SellOrderItem data={data}
+        let view = this.type === 1 ? <SellOrderItem data={data}
             delBack={(index) => this.refList.delData(index)}
-            type={this.type} orderType={this.orderType} />:
+            type={this.type} orderType={this.orderType}
+            {...this.props} /> :
             <BuyOrderItem data={data}
-            delBack={(index) => this.refList.delData(index)}
-            type={this.type} orderType={this.orderType} />
+                delBack={(index) => this.refList.delData(index)}
+                type={this.type} orderType={this.orderType}
+                {...this.props} />
         return view
     }
 
@@ -106,8 +108,9 @@ export default class BuyOrSellOrde extends BaseComponent {
                 if (result.code === 1) {
                     if (isRefesh) {
                         this.refList.setData(result.data)
-                        if(result.data.length<1){
-                            DialogUtils.showToast("暂无记录") }
+                        if (result.data.length < 1) {
+                            DialogUtils.showToast("暂无记录")
+                        }
                     } else {
                         this.refList.addData(result.data)
                     }
@@ -116,6 +119,6 @@ export default class BuyOrSellOrde extends BaseComponent {
                     DialogUtils.showToast(result.msg)
                 }
             })
-        
+
     }
 }
