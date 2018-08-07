@@ -31,19 +31,19 @@ export default class BuyOrderItem extends BaseComponent {
         this.state = {
             showAnim: new Animated.Value(0),
             rotate: "90deg",
-            defaultImage:require("../../res/images/addimg.png"),
-            image:[],
+            defaultImage: require("../../res/images/addimg.png"),
+            image: [],
         };
         this.showorhide = 0;
         this.type = this.props.type ? this.props.type : 0
         this.orderType = this.props.orderType ? this.props.orderType : 1
-        this.userInfo =this.getUserInfo()
+        this.userInfo = this.getUserInfo()
     }
-    componentDidMount(){
-        if(this.props.data.item.transImg){
-            let transImg = this.getImgUrl()+this.props.data.item.transImg
+    componentDidMount() {
+        if (this.props.data.item.transImg) {
+            let transImg = this.getImgUrl() + this.props.data.item.transImg
             this.setState({
-               // defaultImage:{uri:transImg},
+                // defaultImage:{uri:transImg},
             })
         }
     }
@@ -112,8 +112,8 @@ export default class BuyOrderItem extends BaseComponent {
                     source = { uri: photo.base64 };
                 }
                 this.setState({
-                    defaultImage:source,
-                    image:[photo]
+                    defaultImage: source,
+                    image: [photo]
                 })
             })
         } catch (err) {
@@ -123,40 +123,41 @@ export default class BuyOrderItem extends BaseComponent {
         }
     };
 
-    
+
     //取消订单
     cancelState() {
-        cancelOrder=()=> { DialogUtils.showLoading()
-        let url = BaseUrl.getCncelBalanceOrder(this.userInfo.sessionId,this.props.data.item.id)
-        HttpUtils.getData(url)
-            .then(result => {
-                //alert(JSON.stringify(result))
-                if (result.code === 1) {
-                    this.props.delBack(this.props.data.index)
-                    DialogUtils.showMsg("订单已取消")
-                } else {
-                    DialogUtils.showToast(result.msg)
-                }
-                DialogUtils.hideLoading()
-            })
-          
+        cancelOrder = () => {
+            DialogUtils.showLoading()
+            let url = BaseUrl.getCncelBalanceOrder(this.userInfo.sessionId, this.props.data.item.id)
+            HttpUtils.getData(url)
+                .then(result => {
+                    //alert(JSON.stringify(result))
+                    if (result.code === 1) {
+                        this.props.delBack(this.props.data.index)
+                        DialogUtils.showMsg("订单已取消")
+                    } else {
+                        DialogUtils.showToast(result.msg)
+                    }
+                    DialogUtils.hideLoading()
+                })
+
         }
-       DialogUtils.showPop("您确认要取消此订单？",()=>cancelOrder(),null,"取消订单","点错了")
+        DialogUtils.showPop("您确认要取消此订单？", () => cancelOrder(), null, "取消订单", "点错了")
     }
 
-     //卖出-确认收款-修改状态为确认收款
-     confirmState() {
+    //买入-确认打款-修改状态为确认收款
+    confirmState() {
         DialogUtils.showLoading()
-        let url = BaseUrl.getOutAPUpdate(this.userInfo.sessionId,this.props.id)
+        let url = BaseUrl.getOutAPUpdate(this.userInfo.sessionId, this.props.id)
         HttpUtils.getData(url)
             .then(result => {
                 //alert(JSON.stringify(result))
                 if (result.code === 1) {
-                    DialogUtils.showMsg("已确认收款","知道了",
-                    ()=>{
-                        this.navigation.state.params.callback()
-                        this.props.navigation.goBack()
-                    })
+                    DialogUtils.showMsg("已确认收款", "知道了",
+                        () => {
+                            this.navigation.state.params.callback()
+                            this.props.navigation.goBack()
+                        })
                 } else {
                     DialogUtils.showToast(result.msg)
                 }
@@ -168,30 +169,30 @@ export default class BuyOrderItem extends BaseComponent {
      * 提交选择的照片 确认打款
      * @param {*} imgs 
      */
-    uploadImage(imgs){
-       let url =  BaseUrl.getInAPUpdateUrl()
-        HttpUtils.uploadImage(url,{sessionId:this.userInfo.sessionId,id:this.props.data.item.id},imgs,(result)=>{
-            if(result.code===1){
+    uploadImage(imgs) {
+        let url = BaseUrl.getInAPUpdateUrl()
+        HttpUtils.uploadImage(url, { sessionId: this.userInfo.sessionId, id: this.props.data.item.id }, imgs, (result) => {
+            if (result.code === 1) {
                 DialogUtils.showToast("上传成功")
                 this.setState({
                     headImg: this.source
                 })
-            }else{
+            } else {
                 DialogUtils.showToast(result.msg)
             }
         })
     }
 
     //确认按钮点击事件  一种是上传打款图片接口  一个确认订单接口
-    confirmButton(){
+    confirmButton() {
         this.uploadImage(this.state.image)
     }
 
     //上传图片 
-    onClickImage(){
+    onClickImage() {
         this.handleAsyncSelectPhoto()
     }
-    
+
     render() {
         let backgroundColor = "#f8f8f8"
         //取消订单按钮
@@ -203,31 +204,28 @@ export default class BuyOrderItem extends BaseComponent {
             <Text style={{ fontSize: 14, color: "#d11", textAlign: "center" }} >取消订单</Text>
         </TouchableOpacity>
 
-        let addImage = <TouchableOpacity onPress={()=>this. onClickImage()}>
-            <Image style={{ width: 140, height: 140 ,borderWidth:0.5,borderColor:"#999",marginTop:10}} source={this.state.defaultImage} />
-        </TouchableOpacity>
-
-        //确认按钮
-        let confirmOrder = <TouchableOpacity
-            onPress={()=>this.confirmButton()}
-            style={{
-                marginTop: 10, borderRadius: 15, backgroundColor: mainColor,
-                width: 100, height: 30, alignItems: "center", justifyContent: "center",
-                alignSelf:"flex-end"
-            }} >
-            <Text style={{ fontSize: 14, color: "#fff", textAlign: "center" }} >确认打款</Text>
-        </TouchableOpacity>
-
         //隐藏布局 -imageview
-        let imageView = <View style={{ flexDirection: "column" ,backgroundColor:backgroundColor,}}>
-         <View style={{ backgroundColor: "#c1c1c1", height: 2, marginBottom:10}}/>
+        let imageView = <View style={{ flexDirection: "column", backgroundColor: backgroundColor, }}>
+            <View style={{ backgroundColor: "#c1c1c1", height: 2, marginBottom: 10 }} />
             <Text style={Styles.text}>打款截图:</Text>
-             <View style={{ flexDirection: "row" ,backgroundColor:backgroundColor}}>
-             {addImage} <View style={{flex:1}}></View>{confirmOrder}
-            </View> 
+            <View style={{ flexDirection: "row", backgroundColor: backgroundColor }}>
+                <TouchableOpacity onPress={() => this.onClickImage()}>
+                    <Image style={{ width: 140, height: 140, borderWidth: 0.5, borderColor: "#999", marginTop: 10 }} source={this.state.defaultImage} />
+                </TouchableOpacity>
+                <View style={{ flex: 1 }}></View>
+                <TouchableOpacity
+                    onPress={() => this.confirmButton()}
+                    style={{
+                        marginTop: 10, borderRadius: 15, backgroundColor: mainColor,
+                        width: 100, height: 30, alignItems: "center", justifyContent: "center",
+                        alignSelf: "flex-end"
+                    }} >
+                    <Text style={{ fontSize: 14, color: "#fff", textAlign: "center" }} >确认打款</Text>
+                </TouchableOpacity>
+            </View>
         </View>
         return (
-            <View style={{flex:this.state.flex, flexDirection: "column", marginBottom: 5, }}>
+            <View style={{ flex: this.state.flex, flexDirection: "column", marginBottom: 5, }}>
                 <View style={{ backgroundColor: "#fff", flexDirection: "column", padding: 12, flex: 1, }}>
 
                     <TouchableOpacity activeOpacity={0.9}
@@ -243,15 +241,17 @@ export default class BuyOrderItem extends BaseComponent {
 
                         </View>
                     </TouchableOpacity>
-                    <View style={{ flexDirection: 'row', }}>           
-                    <Text style={{ color: "#666666", fontSize: 14, marginTop: 10,flex:1 }}>
-                        {Utils.formatDateTime(this.props.data.item.payTime * 1000)}
-                    </Text>
-                    <Text style={{ color: "#666666",  fontSize: 14, marginTop: 10, marginRight: 10,}}
-                    >收款人： {this.props.data.item.userName}
-                    </Text>
-                   </View>             
-                    {this.props.data.item.payState === 2 ? null : cancleOrder}
+                    <View style={{ flexDirection: 'row', }}>
+                        <Text style={{ color: "#666666", fontSize: 14, marginTop: 10, flex: 1 }}>
+                            {Utils.formatDateTime(this.props.data.item.payTime * 1000)}
+                        </Text>
+                        <Text style={{ color: "#666666", fontSize: 14, marginTop: 10, marginRight: 10, }}
+                        >收款人： {this.props.data.item.userName}
+                        </Text>
+                    </View>
+                    {/* <View>
+                        {this.props.data.item.payState === 2 ? null : cancleOrder}
+                    </View> */}
                 </View>
                 <Animated.View
                     style={{
@@ -308,7 +308,9 @@ export default class BuyOrderItem extends BaseComponent {
                             <Text style={Styles.text}>状态:</Text>
                             <Text style={[Styles.textValue, { color: "#2828FF" }]}>{this.getOrderState(this.props.data.item.payState)}</Text>
                         </View>
-                        {imageView}
+                        <View>
+                            {imageView}
+                        </View>
                     </View>
                 </Animated.View>
             </View>

@@ -79,6 +79,7 @@ export default class ExcinttegralRecord extends BaseComponent {
                         onRefreshs={() => {
                             this._refreshData()
                         }}
+                        isDownLoad={true}
                         onLoadData={() => {
                             this._onLoadData()
                         }}

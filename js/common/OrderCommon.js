@@ -6,6 +6,7 @@ import {
     View,
     TouchableOpacity,
     Image,
+    Linking,
 } from 'react-native';
 import BaseComponent, { BaseStyles, mainColor, window_width } from "../page/BaseComponent";
 import HttpUtils from "../util/HttpUtils";
@@ -53,31 +54,28 @@ export default class OrderCommon extends BaseComponent {
     * @param {*} pageIndex 
     */
     getData(isRefesh) {
-        //alert(JSON.stringify(this.props))
         if (this.type === 1) {
             this.url = BaseUrl.getMyOrderBy(this.userInfo.sessionId, this.pageIndex, this.orderStatus)
         } else {
             this.url = BaseUrl.getStoreOrderBy(this.userInfo.sessionId, this.pageIndex, this.orderStatus)
         }
-        // alert(this.tabLabel)
         HttpUtils.getData(this.url)
             .then(result => {
+
                 if (result.code === 1) {
                     if (isRefesh) {
                         this.refList.setData(result.data)
-                        if(result.data.length<1){
-                            DialogUtils.showToast("暂无记录") }
+                        if (result.data.length < 1) {
+                            DialogUtils.showToast("暂无记录")
+                        }
                     } else {
                         this.refList.addData(result.data)
                     }
                     this.pageIndex += 1
-                  
+
                 } else {
                     DialogUtils.showToast(result.msg)
                 }
-            })
-            .catch(error => {
-                
             })
     }
     onClickDelect(data) {
@@ -86,7 +84,8 @@ export default class OrderCommon extends BaseComponent {
 
     render() {
         return (
-            <View style={[BaseStyles.container_column, { backgroundColor:"#f1f1f1"}]}>
+            <View style={[BaseStyles.container_column,
+            { backgroundColor: "#f1f1f1" }]}>
                 <RefreshFlatList
                     ref={refList => this.refList = refList}
                     numColumns={this.numColumns}
@@ -112,12 +111,6 @@ export default class OrderCommon extends BaseComponent {
             this.refList.addData(this.state.dataArray)
         }, 2000)
     }
-    //联系商家
-    goStoreDetails(data) {
-        this.props.navigation.navigate('StoreDetails', {
-            storeId: data.item.id,
-        });
-    }
 
     //修改订单状态
     confirmBtn(data, status) {
@@ -132,7 +125,7 @@ export default class OrderCommon extends BaseComponent {
             let url = BaseUrl.updateOrderStatus(this.userInfo.sessionId, data.item.id, status)
             HttpUtils.getData(url)
                 .then(result => {
-                    //alert(JSON.stringify(result))
+
                     if (result.code === 1) {
                         this.props.delBack(this.props.data.index)
                         DialogUtils.showMsg("订单已取消")
@@ -144,75 +137,85 @@ export default class OrderCommon extends BaseComponent {
         }
         DialogUtils.showPop(conten, () => editOrder(), null, "确认", "取消")
     }
-    /**
-      * 绘制itemView 我的订单
-      * @param data
-      * @returns {*}
-      * @private
-      */
+
+
     _getOrder1(data) {
-        //联系商家
-        let store = <TouchableOpacity
-            onPress={() => this.goStoreDetails(data)}
-            style={{
-                borderWidth: 0.5, borderColor: "#666", borderRadius: 18, height: 30,
-                justifyContent: "center", alignItems: "center",
-                paddingLeft: 9, paddingRight: 9, paddingTop: 5, paddingBottom: 5
-            }}>
-            <Text style={{ color: "#666", fontSize: 13, }}>联系商家</Text>
-        </TouchableOpacity>
-        //确认收货
-        let confirm = <TouchableOpacity
-            onPress={() => this.confirmBtn(data, 3)}
-            style={{ borderRadius: 18, backgroundColor: mainColor, height: 30,
-                justifyContent: "center", alignItems: "center", marginRight: 10,
-                paddingLeft: 9, paddingRight: 9, paddingTop: 5, paddingBottom: 5 }}>
-            <Text style={{ color: "#fff", fontSize: 13, }} >确认收货</Text>
-        </TouchableOpacity>
         //订单时间
-        let orderDate1 = <Text style={{ color: "#888", fontSize: 13, marginLeft: 10, marginTop: 5, }}
+        let orderDate1 = <Text style={{ color: "#888", fontSize: 13,  marginTop: 5, }}
             numberOfLines={1} >下单时间：{Utils.formatDateTime(data.item.buyTime * 1000)}</Text>
 
-        let orderDate2 = <Text style={{ color: "#888", fontSize: 13, marginLeft: 10, marginTop: 5, }}
+        let orderDate2 = <Text style={{ color: "#888", fontSize: 13,  marginTop: 5, }}
             numberOfLines={1} >发货时间：{Utils.formatDateTime(data.item.deliveryTime * 1000)}</Text>
-        
-        let orderDate3 = <Text style={{ color: "#888", fontSize: 13, marginLeft: 10, marginTop: 5, }}
+
+        let orderDate3 = <Text style={{ color: "#888", fontSize: 13,   marginTop: 5, }}
             numberOfLines={1} >完成时间：{Utils.formatDateTime(data.item.dealTime * 1000)}</Text>
         //获得的积分
-        let buyIntegral = <Text style={{ color: "#d60", fontSize: 13, marginTop: 5 }} 
+        let buyIntegral = <Text style={{ color: "#d60", fontSize: 13, marginTop: 5 }}
             numberOfLines={1} >获得{data.item.buyIntegral}积分</Text>
 
-        return <View style={{ backgroundColor: "#fff", marginBottom: 8, paddingBottom: 10 }}>
-            <View style={{ flexDirection: "row", padding: 10 }}>
+        return <View style={{ backgroundColor: "#fff", padding: 10 }}>
+            <View style={{ flexDirection: "row" }}>
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('ShopDetails', {
                     shopId: data.item.goodsId,
                 })}>
-                    <Image style={{ width: 100, height: 120 }} source={{ uri: this.getImgUrl(data.item.goodsImg) }} />
+                    <Image style={{ width: 100, height: 120 }}
+                        source={{ uri: this.getImgUrl(data.item.goodsImg) }} />
                 </TouchableOpacity>
-                <View style={{ flex: 1, flexDirection: "column", marginLeft: 10 }}>
-                    <Text style={{ color: "#333", fontSize: 18, }} numberOfLines={1} >{data.item.goodsName}</Text>
-                    <View style={{ flexDirection: "row", alignItems: "center" }}>
-                        <Text style={{ color: "#d11", fontSize: 16, marginTop: 8 }} numberOfLines={1} >￥{data.item.payMoney}</Text>
-                        <Text style={{ color: "#999", fontSize: 12, marginTop: 8 }} numberOfLines={1} >x{data.item.goodsNum}</Text>
+                <View style={{ flexDirection: "column", marginLeft: 10, flex: 1 }}>
+                    <Text style={{ color: "#333", fontSize: 16, }} numberOfLines={1} >{data.item.goodsName}</Text>
+                    <View style={{ flexDirection: "row", alignItems: "center", marginTop: 8 }}>
+                        <Text style={{ color: "#d11", fontSize: 18, }} numberOfLines={1} >￥{data.item.payMoney}</Text>
+                        <Text style={{ color: "#999", fontSize: 12, }} numberOfLines={1} >  x{data.item.goodsNum}</Text>
                     </View>
-                   
-                    <View style={{ flexDirection: "row-reverse", alignSelf: "flex-end", flex: 1, alignItems: "flex-end" }}>
-                        {store} {this.orderStatus === 2 ? confirm : null}
+
+                    {this.orderStatus === 3 ? buyIntegral : null}
+
+                    <View style={{ flexDirection: "row", flex: 1, alignItems: "flex-end", justifyContent: "flex-end" }} >
+                        <TouchableOpacity
+                            onPress={() => this.callStore(data.item.phone)}
+                            style={{
+                                borderWidth: 0.5, borderColor: "#666", borderRadius: 18, height: 30,
+                                justifyContent: "center", alignItems: "center", paddingLeft: 9,
+                                paddingRight: 9, paddingTop: 5, paddingBottom: 5,
+                            }}>
+                            <Text style={{ color: "#666", fontSize: 13, }}>联系商家</Text>
+                        </TouchableOpacity>
+                        {
+                            this.orderStatus === 3 ?
+                            <TouchableOpacity
+                                onPress={() => this.confirmBtn(data, 3)}
+                                style={{
+                                    borderRadius: 18, backgroundColor: mainColor, height: 30,
+                                    justifyContent: "center", alignItems: "center", marginRight: 10,
+                                    paddingLeft: 9, paddingRight: 9, paddingTop: 5, paddingBottom: 5,
+                                    marginLeft: 15,
+                                }}>
+                                <Text style={{ color: "#fff", fontSize: 13, }} >确认收货</Text>
+                            </TouchableOpacity>
+                            :null
+                        }
                     </View>
                 </View>
             </View>
-            <Text style={{ color: "#888", fontSize: 13, marginLeft: 10}}  numberOfLines={1} >订单编号：{data.item.orderNo}</Text>
+            <Text style={{ color: "#888", fontSize: 13,marginTop:10}} numberOfLines={1} >订单编号：{data.item.orderNo}</Text>
             {orderDate1}
             {this.orderStatus === 2 ? orderDate2 : null}
             {this.orderStatus === 3 ? orderDate3 : null}
         </View>
+     }
+   
+    //打电话  联系商家 //暂时返回失败， 可能要真机测试才可以
+    callStore(phone) {
+        let url = 'tel: ' + phone;
+        Linking.canOpenURL(url).then(supported => {
+            if (!supported) {
+                DialogUtils.showToast('Can\'t handle url: ' + url)
+                console.log('Can\'t handle url: ' + url);
+            } else {
+                return Linking.openURL(url);
+            }
+        }).catch(err => DialogUtils.showToast('An error occurred', err));
     }
-
-    //买家信息
-    showBuyerInfo(data) {
-        DialogUtils.showMsg("买家信息")
-    }
-
     /**
       * 绘制itemView 商铺订单
       * @param data

@@ -16,6 +16,7 @@ import BaseUrl from '../util/BaseUrl';
 import RefreshFlatList from '../common/RefreshFlatList';
 import SellOrderItem from '../item/SellOrderItem';
 import BuyOrderItem from '../item/BuyOrderItem';
+import DialogUtils from '../util/DialogUtils';
 
 /**
  * 买入/卖出  未完成订单

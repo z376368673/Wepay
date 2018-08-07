@@ -18,6 +18,7 @@ import SplashScreen from "react-native-splash-screen"
 import ViewUtils from '../../util/ViewUtils';
 import RefreshFlatList from "../../common/RefreshFlatList"
 import DialogUtils from '../../util/DialogUtils';
+import ShopDetails from './ShopDetails';
 
 //商铺详情
 const window_w = Utils.getWidth();
@@ -59,6 +60,8 @@ export default class StroeDetails extends BaseComponent {
                         shopPhone: this.info.shopPhone,
                         imgHead: { uri: this.getImgUrl(this.info.imgHead) },
                     })
+                }else if (result.code === 2) {
+                    this.goLogin()
                 } else {
                     DialogUtils.showToast(result.msg)
                 }

@@ -151,7 +151,7 @@ export default class SellUnfinshedorderItem extends BaseComponent {
                     }}>
                         <View style={Styles.view}>
                             <Text style={Styles.text}>姓名:</Text>
-                            <Text style={Styles.textValue}>{this.props.data.item.userName}</Text>
+                            <Text style={Styles.textValue}>{this.props.data.item.holdName}</Text>
                         </View>
 
                         <View style={{ backgroundColor: "#c1c1c1", height: 0.5 }}></View>

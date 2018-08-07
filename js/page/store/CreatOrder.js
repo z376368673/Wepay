@@ -2,7 +2,7 @@ import React from 'react';
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View, ScrollView } from 'react-native';
 import AutoGrowingTextInput from '../../common/AutoGrowingTextInput';
 import NavigationBar from "../../common/NavigationBar";
-import BaseComponent, { BaseStyles, mainColor } from "../BaseComponent";
+import BaseComponent, { BaseStyles, upDataUserInfo } from "../BaseComponent";
 import { PullPicker } from 'teaset';
 import SYImagePicker from 'react-native-syan-image-picker'
 import Utils from '../../util/Utils';
@@ -30,7 +30,6 @@ export default class CreatOrder extends BaseComponent {
             shopImage:require("../../../res/images/ruzhu.png"),
         }
         this.userInfo = this.getUserInfo()
-        this.navigation = this.props.navigation;
         this.params = this.props.navigation.state.params;
         this.data = this.params ? this.params.data : null;
     }
@@ -66,9 +65,10 @@ export default class CreatOrder extends BaseComponent {
         //alert(JSON.stringify(data))
         HttpUtils.postData(this.url,data)
             .then(result => {
-                alert(JSON.stringify(result))
+                //alert(JSON.stringify(result))
                 if (result.code === 1) {
                     DialogUtils.showMsg("购买成功")
+                    upDataUserInfo(this.props.AppStore)
                     //this.props.navigation.goBack()
                 } else if (result.code === 2) {
                     this.goLogin(this.props.navigation)
@@ -161,7 +161,7 @@ export default class CreatOrder extends BaseComponent {
                  if(counter.get()>1){
                     counter.set(counter.get() - 1);
                  }
-             }}>-</Text>
+             }}>—</Text>
              <Text style={{fontSize:16,color:"#333",marginLeft:15,marginRight:15}}>{counter.get()}</Text>
               <Text style={{fontSize:18,color:"#333",borderWidth:1,borderColor:"#aaa",backgroundColor:"#aaa",paddingLeft:8,paddingRight:8}} onPress={()=>{
                   if(counter.get()<=this.data.goodsStock){
@@ -186,8 +186,8 @@ export default class CreatOrder extends BaseComponent {
                         {/* 店铺信息 */}
                          <TouchableOpacity onPress={() => this.goStoreDetails(this.data.shopId)}>
                             <View style={{ flexDirection: 'row', padding: 10, backgroundColor: "#fff",marginTop:10,alignItems:"center" }}>
-                                <Image style={{ width: 40, height: 40 }} source={this.state.shopImage} />
-                                <Text style={{ color: '#333', fontSize: 17, flex: 1 ,marginLeft:10}}>商家名称</Text> 
+                                <Image style={{ width: 35, height: 35,}} source={this.state.shopImage} />
+                                <Text style={{ color: '#333', fontSize: 17, flex: 1 ,marginLeft:10}}>{this.state.shopName}</Text> 
                                 <Image style={{ width: 25, height: 25 }} source={require("../../../res/images/ic_tiaozhuan.png")} />
                             </View>
                         </TouchableOpacity>
@@ -195,7 +195,7 @@ export default class CreatOrder extends BaseComponent {
                             {/* 商品信息 */}
                             <View style={{ flexDirection: "row",padding: 10,backgroundColor:"#fff", }}>
                                 <TouchableOpacity onPress={() => this.props.navigation.navigate('ShopDetails', {
-                                    shopId: data.item.goodsId,
+                                    shopId: this.data.id,
                                 })}>
                                     <Image style={{ width: 110, height: 100 }} source={{ uri: this.getImgUrl(this.data.coverPlan) }} />
                                 </TouchableOpacity>

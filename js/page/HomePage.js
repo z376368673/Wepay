@@ -225,7 +225,7 @@ export default class HomePage extends BaseComponent {
                 break;
             case 5://数字资产
                 // this.props.navigation.navigate('ApplyStore');
-                DialogUtils.showToast("此功能暂不开放")
+                DialogUtils.showToast("此模块正在升级中...")
                 break;
             case 6://商城
                 this.props.navigation.navigate('StoreMall');

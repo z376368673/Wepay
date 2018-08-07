@@ -38,6 +38,9 @@ export default class AsySorUtils {
         });
     }
 
+   
+
+
     static  getUser(callback) {
         AsyncStorage.getItem('userInfo', (error, result) => {
             if (!error) {
@@ -49,6 +52,25 @@ export default class AsySorUtils {
         })
     }
     
+
+    static saveAccountPwd(info, callback) {
+        AsyncStorage.setItem('account and password', JSON.stringify(info), (error) => {
+            if (error) {
+                DialogUtils.showToast("保存异常" + error.message)
+            }
+        });
+    }
+    static getAccountPwd(callback) {
+        AsyncStorage.getItem('account and password', (error, result) => {
+            if (!error) {
+                callback(JSON.parse(result))    
+            } else {
+                callback(null);
+            }
+            return result
+        })
+    }
+
     static async getUserByAwait() {
         try {
             let userInfo =   await AsyncStorage.getItem('userInfo')

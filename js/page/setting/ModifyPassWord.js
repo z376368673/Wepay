@@ -38,11 +38,10 @@ export default class ModifyPassWord extends BaseComponent {
                 })
                 break
             case 1://确定
-
                 if(this.state.pwd.length<6){
                     DialogUtils.showPop("请输入旧密码")
                 }else  if(this.state.pwdAgain.length<6){
-                    DialogUtils.showPop("请输入旧密码")
+                    DialogUtils.showPop("请输入新密码")
                 }else  if(this.state.type === 1&&this.state.pwdAgain.length!==6){
                     DialogUtils.showPop("请输入6位支付密码")
                 }else{

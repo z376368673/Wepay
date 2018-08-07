@@ -27,15 +27,23 @@ export default class LoginPage extends BaseComponent {
         this.state = {
             // text: '26641',
             // text: '26536', 
-             text: '18629448593',
             // text: '13923044417',
             //text: '15989426734',
             //pwd: 'huazhongno1',
+            text: '18629448593',
             pwd: '123456',
         }
     }
     componentDidMount() {
         SplashScreen.hide();
+        AsySorUtils.getAccountPwd((result)=>{
+            if(result){
+                this.setState({
+                    text:result[0],
+                    pwd: result[1],
+                })
+            }
+        })
     }
     render() {
         return (
@@ -134,7 +142,14 @@ export default class LoginPage extends BaseComponent {
                 break
             case 2://登陆
                 // this.props.navigation.navigate('HomePage');
-                this.loginByPwd();
+                if(this.state.text.length<1){
+                    DialogUtils.showMsg("请输入UID或者手机号")
+                }else if(this.state.text.length<1){
+                        DialogUtils.showMsg("请输入密码")
+                }else{
+                    this.loginByPwd();
+                }
+               
                 break
         }
     }
@@ -155,13 +170,7 @@ export default class LoginPage extends BaseComponent {
                     this.props.navigation.navigate('HomePage');
                     DialogUtils.showToast("登陆成功")
                     //异步保存到本地文件  
-                    // AsySorUtils.saveUser(result.data, () => {
-                    //     UserInfo.userInfo = result.data
-                    //     //alert("userInfo:"+JSON.stringify(UserInfo.userInfo))
-                    //     
-                    //     //this.props.navigation.navigate('SettingView');
-                    //     DialogUtils.showToast("登陆成功")
-                    // })
+                    AsySorUtils.saveAccountPwd([this.state.text, this.state.pwd])
                 } else {
                     DialogUtils.showToast(result.msg)
                 }

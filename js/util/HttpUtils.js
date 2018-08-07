@@ -27,7 +27,8 @@ export default class HttpUtils {
      * @param {*} error 
      */
     static errorMsg(error ){
-        console.error(error.message)
+        //console.error(error.message)
+        console.warn(error.message)
         var message  = JSON.stringify(error.message)
         if(message.startsWith("Network")&&message.endsWith("failed")){
             DialogUtils.showToast("网络异常，请检查网络")

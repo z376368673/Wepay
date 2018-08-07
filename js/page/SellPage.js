@@ -83,7 +83,7 @@ export default class SellPage extends BaseComponent {
                                 paddingTop: 15,
                                 paddingLeft: 15,
                                 paddingBottom: 15,
-                            }}> 请选择买入金额</Text>
+                            }}> 请选择卖出金额</Text>
                             {ViewUtils.getLineView()}
                             <CheckMoney
                                 arrText={[500, 1000, 3000, 5000, 10000, 30000]}

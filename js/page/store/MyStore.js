@@ -77,7 +77,9 @@ export default class MyStore extends BaseComponent {
                     if (isRefesh) {
                         this.refList.setData(result.data)
                         if(result.data.length<3){
-                            DialogUtils.showToast("暂无消息") }
+                            DialogUtils.showToast("暂无商品") }
+                    }else if (result.code === 2) {
+                        this.goLogin()
                     } else {
                         this.refList.addData(result.data)
                     }

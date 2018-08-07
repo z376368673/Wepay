@@ -1164,8 +1164,8 @@ export default class BaseUrl {
      3.16	uid		用户id
      */
     
-    static getShopDetail(sessionId, id) {
-        var path = url + "/goods/detail?sessionId=" + sessionId + "&id=" + id;
+    static getShopDetail(sessionId, goodsId) {
+        var path = url + "/goods/particulars?sessionId=" + sessionId + "&goodsId=" + goodsId;
         return path
     }
 

@@ -41,9 +41,10 @@ export default class SellOrderItem extends BaseComponent {
     }
     componentDidMount(){
         if(this.props.data.item.transImg){
-            let transImg = this.getImgUrl()+this.props.data.item.transImg
+            let transImg = this.getImgUrl(this.props.data.item.transImg)
+            //alert(transImg)
             this.setState({
-               // defaultImage:{uri:transImg},
+               defaultImage:{uri:transImg},
             })
         }
     }
@@ -95,55 +96,7 @@ export default class SellOrderItem extends BaseComponent {
         }
         return stateText;
     }
-
-    /**
-     * 使用方式sync/await
-     * 相册参数暂时只支持默认参数中罗列的属性；
-     * 选择照片 并显示设置headImg
-     * @returns {Promise<void>}
-     */
-    handleAsyncSelectPhoto = async () => {
-        SYImagePicker.removeAllPhoto()
-        try {
-            const photos = await SYImagePicker.asyncShowImagePicker({ imageCount: 1, isCrop: true, showCropCircle: false });
-            photos.map((photo, index) => {
-                let source = { uri: photo.uri };
-                if (photo.enableBase64) {
-                    source = { uri: photo.base64 };
-                }
-                this.setState({
-                    defaultImage:source,
-                    image:[photo]
-                })
-            })
-        } catch (err) {
-            DialogUtils.showToast(err.message)
-            // 取消选择，err.message为"取消"
-            // alert(err.message)
-        }
-    };
-
     
-    //取消订单
-    cancelState() {
-        cancelOrder=()=> { DialogUtils.showLoading()
-        let url = BaseUrl.getCncelBalanceOrder(this.userInfo.sessionId,this.props.data.item.id)
-        HttpUtils.getData(url)
-            .then(result => {
-                //alert(JSON.stringify(result))
-                if (result.code === 1) {
-                    this.props.delBack(this.props.data.index)
-                    DialogUtils.showMsg("订单已取消")
-                } else {
-                    DialogUtils.showToast(result.msg)
-                }
-                DialogUtils.hideLoading()
-            })
-         
-        }
-       DialogUtils.showPop("您确认要取消此订单？",()=>cancelOrder(),null,"取消订单","点错了")
-    }
-
     /**
      * 提交选择的照片 确认打款
      * @param {*} imgs 
@@ -183,21 +136,6 @@ export default class SellOrderItem extends BaseComponent {
 
     }
 
-    onClickImage(){
-        //alert("查看大图")   
-        // if(this.props.data.item.payState===2){
-        //     if(this.state.image.length>0){
-        //         this.props.navigation.navigate('ImageBorwser',{
-        //             images:this.state.image,
-        //         });
-        //     }else{
-        //         this.handleAsyncSelectPhoto()
-        //     }
-        // }else if(this.props.data.item.payState===3){
-        //      alert("查看大图")   
-        // }
-    }
-    
     render() {
         let backgroundColor = "#f8f8f8"
         //取消订单按钮
@@ -209,7 +147,7 @@ export default class SellOrderItem extends BaseComponent {
             <Text style={{ fontSize: 14, color: "#d11", textAlign: "center" }} >取消订单</Text>
         </TouchableOpacity>
 
-        let addImage = <TouchableOpacity onPress={()=>this. onClickImage()}>
+        let addImage = <TouchableOpacity >
             <Image style={{ width: 140, height: 140 ,borderWidth:0.5,borderColor:"#999",marginTop:10}} source={this.state.defaultImage} />
         </TouchableOpacity>
 
@@ -229,7 +167,13 @@ export default class SellOrderItem extends BaseComponent {
          <View style={{ backgroundColor: "#c1c1c1", height: 2, marginBottom:10}}/>
             <Text style={Styles.text}>打款截图:</Text>
              <View style={{ flexDirection: "row" ,backgroundColor:backgroundColor}}>
-             {addImage} <View style={{flex:1}}></View>{this.props.data.item.payState===3?null:confirmOrder}
+             <View>
+             {addImage} 
+             </View>
+             <View style={{flex:1}}></View>
+             <View style={{justifyContent:"flex-end",alignItems:"flex-end"}}>
+             {this.props.data.item.payState===3?null:confirmOrder}
+             </View>
             </View> 
         </View>
         return (
@@ -272,7 +216,7 @@ export default class SellOrderItem extends BaseComponent {
                     }}>
                         <View style={Styles.view}>
                             <Text style={Styles.text}>姓名:</Text>
-                            <Text style={Styles.textValue}>{this.props.data.item.userName}</Text>
+                            <Text style={Styles.textValue}>{this.props.data.item.holdName}</Text>
                         </View>
 
                         <View style={{ backgroundColor: "#c1c1c1", height: 0.5 }}></View>

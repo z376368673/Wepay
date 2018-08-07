@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View, ScrollView } from 'react-native';
+import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View, ScrollView, Linking } from 'react-native';
 import AutoGrowingTextInput from '../../common/AutoGrowingTextInput';
 import NavigationBar from "../../common/NavigationBar";
 import BaseComponent, { BaseStyles, mainColor, window_width, window_height } from "../BaseComponent";
@@ -17,110 +17,101 @@ const width_w = Utils.getWidth() / 2 - 20;
 export default class ShopDetails extends BaseComponent {
     constructor(props) {
         super(props);
-        const { params } = this.props.navigation.state
-        //商品id
-        shopId = params ? params.shopId : null, 
             this.state = {
-                shopName: "商品名称",
-                shopPrice: 23.23,
-                shopNum: 100,
-                shopImage: require("../../../res/images/default_shop.png"),
-                storeId:"",//		店铺id
+                data: null,
+                coverPlan: null,
             }
         this.navigation = this.props.navigation;
         this.userInfo = this.getUserInfo()
     }
-    componentDidMount(){
-       this.getShopDetail()
+   
+    shouldComponentUpdate(){
+        this.shopId =  this.props.navigation.state.params.shopId
+        this.getShopDetail(this.shopId)
+        return true
+    }
+    componentDidMount() {
+        this.shopId =  this.props.navigation.state.params.shopId
+        this.getShopDetail(this.shopId)
     }
     /**
      * 获取商品信息 by id 
      */
-    getShopDetail(){
-        let url =  BaseUrl.getShopDetail(this.userInfo.sessionId,shopId)
+    getShopDetail(shopId) {
+        let url = BaseUrl.getShopDetail(this.userInfo.sessionId, shopId)
         HttpUtils.getData(url)
-        .then(result => {
-            if (result.code===1) {
-                this.info = result.data
-                this.setState({
-                    shopName: this.info.goodsName,
-                    shopPrice: this.info.goodsPrice,
-                    shopNum: this.info.goodsStock,
-                    shopImage: {uri:this.getImgUrl(this.info.coverPlan)},
-                    storeId:this.info.shopId,
-                })
-            }else{
-                DialogUtils.showToast(result.msg)
-            }
-        })
-     
+            .then(result => {
+                if (result.code === 1) {
+                    //alert(JSON.stringify(result.data))
+                    this.setState({
+                        data: result.data,
+                        coverPlan: { uri: this.getImgUrl(result.data.coverPlan) },
+                    })
+                } else if (result.code === 2) {
+                    this.goLogin()
+                } else {
+                    DialogUtils.showToast(result.msg)
+                }
+            })
+
     }
-
-    /**
-    * 使用方式sync/await
-    * 相册参数暂时只支持默认参数中罗列的属性；
-    * @returns {Promise<void>}
-    */
-    // handleAsyncSelectPhoto = async (isCrop, showCropCircle) => {
-    //     SYImagePicker.removeAllPhoto()
-    //     try {
-    //         const photos = await SYImagePicker.asyncShowImagePicker({ imageCount: 1, isCrop: isCrop, showCropCircle: showCropCircle });
-    //         photos.map((photo, index) => {
-    //             let source = { uri: photo.uri };
-    //             if (photo.enableBase64) {
-    //                 source = { uri: photo.base64 };
-    //             }
-    //             this.setState({ shopImage: source }, )
-    //         })
-    //     } catch (err) {
-    //         // 取消选择，err.message为"取消"
-    //         // alert(err,photos)
-    //     }
-    // };
-
 
     render() {
         return (
             <View style={BaseStyles.container_column}>
                 <NavigationBar
-                    title={this.state.shopName}
+                    title={this.state.data ? this.state.data.goodsName : "商品详情"}
                     navigation={this.props.navigation}
                 />
                 <ScrollView >
                     <View style={[BaseStyles.container_column, { backgroundColor: "#f1f1f1" }]}>
-                        <TouchableOpacity
-                            onPress={() => this.handleAsyncSelectPhoto(false, false)}
-                        ><Image
-                                style={{ flex: 1, width: window_width, height: window_height / 3 * 1.7, backgroundColor: "#fff" }}
-                                source={this.state.shopImage}
+                        <TouchableOpacity>
+                            <Image
+                                style={{
+                                    flex: 1, width: window_width, height: window_height / 3 * 1.7,
+                                    backgroundColor: "#fff", resizeMode: "cover"
+                                }}
+                                source={this.state.coverPlan}
                             /></TouchableOpacity>
-                        <View style={{ flexDirection: 'row', padding: 10 }}>
+                        <View style={{ flexDirection: 'row', padding: 10, backgroundColor: "#fff" }}>
                             <Text
                                 style={{
                                     alignSelf: "center",
                                     color: '#333',
                                     fontSize: 16,
-                                }}>{this.state.shopName}</Text>
+                                }}>{this.state.data ? this.state.data.goodsName : "0"}</Text>
                         </View>
-                        <View style={{ flexDirection: 'row', marginLeft: 10, marginRight: 10 ,marginBottom:10,}}>
+                        <View style={{ flexDirection: 'row', padding: 10, backgroundColor: "#fff" }}>
                             <Text style={{
                                 color: "#d11",
-                                fontSize: 15,
-                            }}>￥{this.state.shopPrice}</Text>
+                                fontSize: 18,
+                                flex: 1,
+                            }}>￥{this.state.data ? this.state.data.goodsPrice : "0"}</Text>
                             <Text style={{
                                 color: "#888",
                                 fontSize: 15,
-                                marginLeft: 30,
-                                flex: 1,
-                            }}>库存:{this.state.shopNum}</Text>
-
-                            {/* <Text style={{
-                                color: "#888",
-                                fontSize: 15,
-                                marginLeft: 30,
-                            }}>距离:{3}km</Text> */}
+                                marginLeft: 50,
+                            }}>库存:{this.state.data ? this.state.data.goodsStock : "0"}</Text>
                         </View>
 
+                        <TouchableOpacity
+                            activeOpacity={0.8}
+                            onPress={() => this.onClicks("store")}
+                            style={{
+                                borderWidth: 1, borderColor: "#999", justifyContent: "center",
+                                alignItems: "center", margin: 15, backgroundColor: "#fff", borderRadius: 1000
+                            }}>
+                            <Text style={{ fontSize: 18, color: "#333", padding: 8 }}>{this.state.data ? this.state.data.shopName : ""}</Text>
+                        </TouchableOpacity>
+
+                        {/* <View style={{ flexDirection: 'row', padding: 10  ,backgroundColor:"#fff"}}>
+                            <Text
+                                style={{
+                                    alignSelf: "center",
+                                    color: '#333',
+                                    fontSize: 16,
+                                }}>商品详情</Text>
+                        </View> */}
                     </View>
                 </ScrollView>
 
@@ -138,7 +129,7 @@ export default class ShopDetails extends BaseComponent {
                     <TouchableOpacity
                         style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: "#fff", }}
                         activeOpacity={0.8}
-                        onPress={() => this.onClicks("store")}>
+                        onPress={() => this.callStore(this.state.data.phone)}>
                         <View style={{ flex: 1, }}>
                             <Text style={{
                                 alignSelf: "center",
@@ -163,8 +154,6 @@ export default class ShopDetails extends BaseComponent {
                         </View>
                     </TouchableOpacity>
                 </View>
-
-
             </View>
 
         );
@@ -172,21 +161,35 @@ export default class ShopDetails extends BaseComponent {
     onClicks(type) {
         if (type === "sumbitApply") {
             this.props.navigation.navigate('MyStore');
-        }else if (type === "store") {
-            this.props.navigation.navigate('StoreDetails',{
-                storeId:this.state.storeId
-            });
-        }else if (type === "buy") {
-            this.props.navigation.navigate('StoreDetails',{
-                storeId:this.state.storeId
+        } else if (type === "store") {
+            this.props.navigation.navigate('StoreDetails', {
+                storeId: this.state.data.shopId
             });
         }
     }
-
-    buy(){
-        this.props.navigation.navigate('CreatOrder',{
-            data:this.info
-        });
+    //打电话  联系商家 //暂时返回失败， 可能要真机测试才可以
+    callStore(phone) {
+        let url = 'tel: ' + phone;
+        Linking.canOpenURL(url).then(supported => {
+            if (!supported) {
+                DialogUtils.showToast('Can\'t handle url: ' + url)
+                console.log('Can\'t handle url: ' + url);
+            } else {
+                return Linking.openURL(url);
+            }
+        }).catch(err => DialogUtils.showToast('An error occurred', err));
+    }
+    /**
+     * 购买
+     */
+    buy() {
+        if (this.state.data) {
+            this.props.navigation.navigate('CreatOrder', {
+                data: this.state.data
+            });
+        } else {
+            this.goLogin(this.props.navigation)
+        }
     }
 
 }

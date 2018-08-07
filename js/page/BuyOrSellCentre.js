@@ -165,7 +165,7 @@ export default class BuyOrSellCentre extends BaseComponent {
                     alignSelf: "flex-end",
                 }}
                     numberOfLines={1}
-                >实付金额:{data.item.payNums}</Text>
+                >实付金额:{data.item.payNums*0.85}</Text>
                 <TouchableOpacity
                     style={{
                         backgroundColor: "#d11",
