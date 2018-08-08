@@ -106,8 +106,8 @@ android {
         applicationId "com.wepay"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        versionCode 24
+        versionName "1.2.4"
 
         ndk {
             abiFilters "armeabi-v7a", "x86"

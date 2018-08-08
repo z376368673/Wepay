@@ -1,6 +1,7 @@
-import React from 'react'
+import React from ''
 import {createStackNavigator, createBottomTabNavigator} from 'react-navigation'
 import Welcome from '../page/Welcome'
+import MyWebView from '../page/MyWebView'
 import ImageBorwser from '../page/ImageBorwser'
 import HomePage from "../page/HomePage";
 import SettingView from "../page/setting/SettingView";
@@ -113,8 +114,6 @@ export default AppNavigator = createStackNavigator({
     BuyOrSellRecord: {// 买入/卖出记录 
         screen: BuyOrSellRecord
     },
-
-    
     BuyOrSellUnfinishedOrder: {// 买入/卖出 未完成订单
         screen: BuyOrSellUnfinishedOrder
     },
@@ -124,7 +123,6 @@ export default AppNavigator = createStackNavigator({
     ZhuanRu: { //转入
         screen: ZhuanRu
     },
-  
     ZhuanChu: {//转出
         screen: ZhuanChu
     },
@@ -161,9 +159,6 @@ export default AppNavigator = createStackNavigator({
     BankCardList: {//我的银行卡
         screen: BankCardList
     },
-  
-   
-
     ModifyPassWord: {//修改 登陆/支付 密码
         screen: ModifyPassWord
     },
@@ -202,11 +197,16 @@ export default AppNavigator = createStackNavigator({
     Country: {//选择国家 
         screen: Country
     },
+
+    MyWebView: {
+        screen: MyWebView,
+    },
     Welcome: {//欢迎页 
         screen: Welcome,
         path:'app/homeTwo',//使用url导航时用到, 如 web app 和 Deep Linking
         //navigationOptions: {}  // 此处设置了, 会覆盖组件内的`static navigationOptions`设置. 具体参数详见下文
     },
+    
     
 }, {
     initialRouteName: 'LoginPage', // 默认显示界面
