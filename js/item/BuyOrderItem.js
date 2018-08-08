@@ -43,9 +43,9 @@ export default class BuyOrderItem extends BaseComponent {
     }
     componentDidMount() {
         if (this.props.data.item.transImg) {
-            let transImg = this.getImgUrl() + this.props.data.item.transImg
+            let transImg = this.getImgUrl(this.props.data.item.transImg)
             this.setState({
-                // defaultImage:{uri:transImg},
+                defaultImage:{uri:transImg},
             })
         }
     }
@@ -198,6 +198,8 @@ export default class BuyOrderItem extends BaseComponent {
                     <Image style={{ width: 140, height: 140, borderWidth: 0.5, borderColor: "#999", marginTop: 10 }} source={this.state.defaultImage} />
                 </TouchableOpacity>
                 <View style={{ flex: 1 }}></View>
+
+                {this.props.data.item.payState===3?null:
                 <TouchableOpacity
                     onPress={() => this.confirmButton()}
                     style={{
@@ -206,7 +208,7 @@ export default class BuyOrderItem extends BaseComponent {
                         alignSelf: "flex-end"
                     }} >
                     <Text style={{ fontSize: 14, color: "#fff", textAlign: "center" }} >确认打款</Text>
-                </TouchableOpacity>
+                </TouchableOpacity>}
             </View>
         </View>
         return (
@@ -221,7 +223,7 @@ export default class BuyOrderItem extends BaseComponent {
 
                             <Text style={{
                                 color: "#2828FF", marginTop: 5, fontSize: 15,
-                            }}>{this.getOrderState(this.props.data.item.payState)}+{this.props.data.item.payState}</Text>
+                            }}>{this.getOrderState(this.props.data.item.payState)}</Text>
                             <Image style={{ transform: [{ rotate: this.state.rotate }] }} source={require("../../res/images/ic_tiaozhuan.png")} />
 
                         </View>

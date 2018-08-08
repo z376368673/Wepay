@@ -126,11 +126,11 @@ export default class TranMoneyRecord extends BaseComponent {
                         
                     <View style={{ flexDirection: 'column',justifyContent:"center", flex: 1, marginLeft: 10,marginRight:10 }}>
                         <Text
-                            style={{ color: "#333333", fontSize: 14 }}>{data.item ? data.item.username : "name"}</Text>
+                            style={{ color: "#333333", fontSize: 14 }}>{data.item ? data.item.username : ""}</Text>
                         
                         <Text style={{color: "#888",fontSize: 14,marginTop:5}}
                                 numberOfLines={1}
-                            >UID:{data.item ? data.item.getId : "name"}</Text>
+                            >UID:{data.item ? data.item.payId : ""}</Text>
                     </View>
 
                     <View style={{ flexDirection: 'column',justifyContent:"center",flex: 1, marginLeft: 10,marginRight:10 }}>

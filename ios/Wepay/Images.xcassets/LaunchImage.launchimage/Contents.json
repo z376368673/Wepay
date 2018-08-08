@@ -35,11 +35,12 @@
       "scale" : "3x"
     },
     {
-      "orientation" : "portrait",
-      "idiom" : "iphone",
       "extent" : "full-screen",
-      "minimum-system-version" : "8.0",
+      "idiom" : "iphone",
       "subtype" : "667h",
+      "filename" : "launch_screen@2x_750X1334.png",
+      "minimum-system-version" : "8.0",
+      "orientation" : "portrait",
       "scale" : "2x"
     },
     {
@@ -62,6 +63,7 @@
     {
       "orientation" : "portrait",
       "idiom" : "iphone",
+      "filename" : "launch_screen@2x-2.png",
       "extent" : "full-screen",
       "scale" : "1x"
     },

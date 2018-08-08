@@ -122,7 +122,7 @@ export default class SellUnfinshedorderItem extends BaseComponent {
 
                             <Text style={{
                                 color: "#2828FF", marginTop: 5, fontSize: 15,
-                            }}>{this.getOrderState(this.props.data.item.payState)}+{this.props.data.item.payState}</Text>
+                            }}>{this.getOrderState(this.props.data.item.payState)}</Text>
                             <Image style={{ transform: [{ rotate: this.state.rotate }] }} source={require("../../res/images/ic_tiaozhuan.png")} />
 
                         </View>
