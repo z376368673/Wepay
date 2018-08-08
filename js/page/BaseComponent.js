@@ -108,6 +108,7 @@ export const window_width = width;
         .then(result => {
             if (result.code === 1) {
                 upDataUserInfo(AppStore)
+                DialogUtils.showToast("红包领取成功")
             } else {    
                 DialogUtils.showToast(result.msg)
             }

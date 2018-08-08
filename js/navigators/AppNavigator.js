@@ -1,7 +1,7 @@
-import React from ''
+import React from 'react'
 import {createStackNavigator, createBottomTabNavigator} from 'react-navigation'
 import Welcome from '../page/Welcome'
-import MyWebView from '../page/MyWebView'
+import AboutOur from '../page/AboutOur'
 import ImageBorwser from '../page/ImageBorwser'
 import HomePage from "../page/HomePage";
 import SettingView from "../page/setting/SettingView";
@@ -198,8 +198,8 @@ export default AppNavigator = createStackNavigator({
         screen: Country
     },
 
-    MyWebView: {
-        screen: MyWebView,
+    AboutOur: {
+        screen: AboutOur,
     },
     Welcome: {//欢迎页 
         screen: Welcome,

@@ -174,7 +174,11 @@ export default class SettingView extends BaseComponent {
                 }
                 DialogUtils.showPop(content,
                     () => {
-                        this.state.storeStatus === 0 ? {} : this.props.navigation.navigate('ApplyStore');
+                        this.state.storeStatus === 0 ? {} : this.props.navigation.navigate('ApplyStore',{
+                            status:()=>this.setState({
+                                storeStatus:0,
+                            })
+                        });
                     },
                     () => { },
                     btn, "取消"
@@ -190,6 +194,9 @@ export default class SettingView extends BaseComponent {
                 DialogUtils.showPop("您已经是最新版本了", () => {
                     DialogUtils.showToast("检查完毕");
                 });
+                break
+            case "about"://关于
+                this.props.navigation.navigate('AboutOur');
                 break
             case 66://退出登录
                 this.goLogin(this.props.navigation)
@@ -242,7 +249,7 @@ export default class SettingView extends BaseComponent {
                         {ViewUtils.getSettingItem(require('../../../res/images/zhifumima.png'), '支付密码', '点击修改',
                             () => this.onClicks("password2"))}
                         <View style={[BaseStyles.container_center, { marginTop: 12 }]} />
-                        {ViewUtils.getSettingItem1(require('../../../res/images/gonggao.png'), '公告', false,
+                        {ViewUtils.getSettingItem1(require('../../../res/images/gonggao.png'), '公告', true,
                             () => this.onClicks("notice"))}
                         {ViewUtils.getSettingItem1(require('../../../res/images/gonggao.png'), '个人消息',
                             this.state.newMessage === 1 ? true : false, () => this.onClicks("geren"))}
@@ -256,10 +263,10 @@ export default class SettingView extends BaseComponent {
                         <View style={[BaseStyles.container_center, { marginTop: 12 }]} />
                         {ViewUtils.getSettingItem1(require('../../../res/images/tousujianyi.png'), '投诉建议', false,
                             () => this.onClicks("Complaint"))}
-                        {ViewUtils.getSettingItem(require('../../../res/images/banben.png'), '版本', '1.0.0',
+                        {ViewUtils.getSettingItem(require('../../../res/images/banben.png'), '版本', '1.2.4',
                             () => this.onClicks("version"))}
-                        {/* {ViewUtils.getSettingItem1(require('../../../res/images/guanyu.png'), '关于', false,
-                            () => this.onClicks(14))} */}
+                        {ViewUtils.getSettingItem1(require('../../../res/images/guanyu.png'), '关于', false,
+                            () => this.onClicks("about"))}
 
                         <View style={[BaseStyles.container_center, { marginTop: 25 }]} />
                         <TouchableOpacity

@@ -356,6 +356,9 @@ export default class ApplyStore extends BaseComponent {
             },
             this.cardImg,(result)=>{
             if(result.code===1){
+                // status
+               let  status =  this.props.navigation.state.params.status
+                status()
                 DialogUtils.showMsg("提交成功，我们会认真审查您的信息,请耐心等待!","知道了",()=>{
                      this.props.navigation.goBack()
                 });

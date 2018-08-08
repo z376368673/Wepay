@@ -36,7 +36,7 @@ export default class HomePage extends BaseComponent {
     componentDidMount() {
         SplashScreen.hide();
         this.getBanner();
-        if (this.props.AppStore.userInfo.isReward === 0) {
+        if (this.props.AppStore.userInfo.isReward === 0&&this.props.AppStore.userInfo.todayReleas >0) {
             DialogUtils.redPacket(this.props.AppStore.userInfo.todayReleas,
                 () => integralRelease(this.props.AppStore))
         }

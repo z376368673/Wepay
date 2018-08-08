@@ -82,11 +82,11 @@ export default class YueOrIntegralRecord extends BaseComponent {
                         onRefreshs={() => {
                             this._refreshData()
                         }}
-                        isDownLoad = {true}
+                        isDownLoad={true}
                         onLoadData={() => {
                             this._onLoadData()
                         }}
-                        
+
                         renderItem={(item) => this._getItem(item)} />
                 </View>
             </View>
@@ -114,21 +114,22 @@ export default class YueOrIntegralRecord extends BaseComponent {
                 if (result.code === 1) {
                     if (isRefesh) {
                         this.refList.setData(result.data)
-                        if(result.data.length<1){
-                            DialogUtils.showToast("暂无记录") }
+                        if (result.data.length < 1) {
+                            DialogUtils.showToast("暂无记录")
+                        }
                     } else {
                         this.refList.addData(result.data)
                     }
                     this.pageIndex += 1
-                
-                }  else if(result.code === 2){
+
+                } else if (result.code === 2) {
                     DialogUtils.showToast(result.msg)
                     this.goLogin(this.props.navigation)
-                }else {
+                } else {
                     DialogUtils.showToast(result.msg)
                 }
             })
-        
+
     }
     //刷新数据
     _refreshData() {
@@ -154,13 +155,13 @@ export default class YueOrIntegralRecord extends BaseComponent {
                         <Text style={{
                             color: '#333',
                             fontSize: 13,
-                        }}>{this.type === 0 ? this.getYueType(data) : this.getJifenType(data)}</Text>
+                        }}>{this.type === 0 ? this.getYueType(data)[0] : this.getJifenType(data)[0]}</Text>
                     </View>
                     <View style={{ justifyContent: "center", alignItems: 'center', width: width / 4 - 10, }}>
                         <Text style={{
                             color: '#333',
                             fontSize: 13,
-                        }}>{this.type === 0 ? this.getYueTypeNum(data) : this.getJifenTypeNum(data)}</Text>
+                        }}>{this.type === 0 ? this.getYueType(data)[1]  : this.getJifenType(data)[1]}</Text>
                     </View>
                     <View style={{ justifyContent: "center", alignItems: 'center', width: width / 4 + 4, }}>
                         <Text style={{
@@ -182,40 +183,79 @@ export default class YueOrIntegralRecord extends BaseComponent {
     //获取余额类型
     getYueType(data) {
         let type = data.item.getType
+        let payId = data.item.payId
+        let getId = data.item.getId
+
+        let yue = data.item.getNums
         var typeText;
+        var typeValue;
         switch (type) {
             case 0:
-                typeText = "转出"
+                typeText = "转出("+getId+")"
+                typeValue = "-" + yue
                 break;
             case 2:
                 typeText = "积分释放"
+                typeValue = "+" + yue
+                break;
+            case 3:
+                typeText = "Wepay币求购"
+                typeValue = "-" + yue
+                break;
+            case 4:
+                typeText = "Wepay币购买"
+                typeValue = "-" + data.item.nowNums
+                break;
+            case 5:
+                typeText = "Wepay币出售"
+                typeValue = "+" + yue
+                break;
+            case 6:
+                typeText = "Wepay币\n取消求购"
+                typeValue = "+" + yue
+                break;
+           case 7:
+                typeText = "购买众筹"
+                typeValue = "-" + yue
                 break;
             case 8:
                 typeText = "买入"
+                typeValue = "+" + yue
                 break;
             case 9:
                 typeText = "卖出"
+                typeValue = "-" + yue
                 break;
             case 10:
                 typeText = "取消卖出"
+                typeValue = "+" + yue
                 break;
             case 11:
                 typeText = "后台操作"
+                if (yue >= 0) {
+                    typeValue = "+" + yue
+                } else {
+                    typeValue = yue
+                }
                 break;
             case 13:
                 typeText = "兑换积分"
+                typeValue = "-" + yue
                 break;
             case 20:
                 typeText = "商城消费"
+                typeValue = "-" + yue
                 break;
             case 21:
                 typeText = "店铺收益"
+                typeValue = "+" + yue
                 break;
             case 31:
-                typeText = "转入"
+                typeText = "("+payId+")转入"
+                typeValue = "+" + yue
                 break;
         }
-        return typeText;
+        return [typeText,typeValue];
     }
 
     //获取积分类型
@@ -223,6 +263,7 @@ export default class YueOrIntegralRecord extends BaseComponent {
         let type = data.item.getType
         let jifen = data.item.getNums
         var typeText;
+        var typeValue;
         switch (type) {
             case 1:
                 if (jifen < 0) {
@@ -249,56 +290,12 @@ export default class YueOrIntegralRecord extends BaseComponent {
                 typeText = "转出获得"
                 break;
         }
-        return typeText
-    }
-
-
-    //获取余额正负
-    getYueTypeNum(data) {
-        let type = data.item.getType
-        let yue = data.item.getNums
-        var typeText;
-        switch (type) {
-            case 0:
-                typeText = "-" + yue
-                break;
-            case 2:
-            case 8:
-                typeText = "+" + yue
-                break;
-            case 9:
-                typeText = "-" + yue
-                break;
-            case 10:
-                typeText = "+" + yue
-                break;
-            case 11:
-                if (yue >= 0) {
-                    typeText = "+" + yue
-                } else {
-                    typeText =  yue
-                }
-                break;
-            case 13:
-            case 20:
-                typeText = "-" + yue
-                break;
-            case 21:
-            case 31:
-                typeText = "+" + yue
-                break;
+        if (jifen > 0) {
+            typeValue = "+" + jifen
+        }else{
+            typeValue = jifen
         }
-        return typeText;
-    }
-
-    //获取积分正负
-    getJifenTypeNum(data) {
-        let jifen = data.item.getNums
-        var typeText = jifen;
-        if (jifen >= 0) {
-            typeText = "+" + jifen
-        }
-        return typeText
+        return [typeText,typeValue]
     }
 
 }
