@@ -42,7 +42,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>是否允许此App使用你的相机进行拍照？</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>请允许访问相册以选取照片</string>
 	<key>NSPhotoLibraryUsageDescription</key>

@@ -11,6 +11,7 @@ import BaseComponent, { BaseStyles, mainColor, window_width } from "./BaseCompon
 import NavigationBar from "../common/NavigationBar";
 import QRCode from "react-native-qrcode";
 import ExcIntegral from "./ExcIntegral";
+import DialogUtils from '../util/DialogUtils';
 
 
 export default class ZhuanRu extends BaseComponent {
@@ -107,9 +108,14 @@ export default class ZhuanRu extends BaseComponent {
                 });
                 break;
             case 2:
-                this.props.navigation.navigate('ZhuanChuNext', {
-                    account: this.state.account,
-                });
+                if(this.state.account.length>0){
+                    this.props.navigation.navigate('ZhuanChuNext', {
+                        account: this.state.account,
+                    });
+                }else{
+                    DialogUtils.showToast("请输入账号/UID")
+                }
+               
                 break;
             case 3:
                 this.props.navigation.navigate('ExcIntegral', {
