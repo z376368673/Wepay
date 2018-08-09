@@ -49,30 +49,29 @@ export default class ExcIntegral extends BaseComponent {
         .then(result => {
             DialogUtils.hideLoading()
             if (result.code===1) {
-               DialogUtils.showMsg("兑换成功")
+               DialogUtils.showToast("兑换成功")
                upDataUserInfo(this.props.AppStore)
+               this.props.navigation.navigate('HomePage');
             } else if(result.code === 2){
                 DialogUtils.showToast(result.msg)
                 this.goLogin(this.props.navigation)
             } else{
                DialogUtils.showToast(result.msg)
             }
-          
         })
      
     }
 
-      //更新用户信息  想办法更新全局的 用户信息
-      upDataUserInfo() {
-        let url = BaseUrl.getUserInfoBy(this.getUserInfo().sessionId)
+     //  获取兑换的积分  
+     getExchangeIntegral() {
+        let url = BaseUrl.getExchangeIntegral(this.props.AppStore.userInfo.sessionId,this.state.exchangeMoney)
+        console.warn(url)
         HttpUtils.getData(url)
             .then(result => {
                 if (result.code === 1) {
-                    //Mobx保存方式
-                    this.props.AppStore.setUserInfo(result.data)
-                    //全局保存
-                    UserInfo.userInfo = result.data
-                   
+                    PassWordInput.showPassWordInput((safetyPwd)=>{
+                        this.creditsExchange(safetyPwd)
+                     },"实际获得积分",result.code)
                 } else {
                     DialogUtils.showToast(result.msg)
                 }
@@ -180,15 +179,11 @@ export default class ExcIntegral extends BaseComponent {
                 this.props.navigation.navigate('ExcinttegralRecord');
                 break;
             case "sumbit"://确定兑换
-           //this. upDataUserInfo()
-           //强制隐藏键盘
-           Keyboard.dismiss();
             if(this.state.exchangeMoney<100||this.state.exchangeMoney%100!==0){
                 DialogUtils.showMsg("请输入大于等于100的整数倍")
             }else{
-                PassWordInput.showPassWordInput((safetyPwd)=>{
-                    this.creditsExchange(safetyPwd)
-                 })
+                this.getExchangeIntegral()
+               
             }
                 break;
             default:

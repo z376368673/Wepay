@@ -63,7 +63,7 @@ export default class LoginPage extends BaseComponent {
                        source={require('../../../res/images/user.png')}/>
                     <TextInput
                         style={styles.itemTextInput}
-                        placeholder={"请输入手机号/账号"}
+                        placeholder={"请输入手机号/UID"}
                         defaultValue={this.state.text ? this.state.text : undefined}
                         placeholderTextColor={'#fff'}
                         underlineColorAndroid='transparent'
@@ -90,7 +90,7 @@ export default class LoginPage extends BaseComponent {
                             fontSize: 15,
                             color: "#f82929",
                             marginLeft:25,
-                        }}>忘记密码</Text>
+                        }}>忘记密码?</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => this.onClicks(0)} style={{ flex: 1, height: 50, justifyContent:"center",alignItems:"flex-end" }}>
@@ -119,6 +119,7 @@ export default class LoginPage extends BaseComponent {
                         alignSelf: "center",
                         color: '#FFF',
                         fontSize: 20,
+                        fontWeight:"900",
                     }}>登 陆</Text>
                 </TouchableOpacity>
             </View>
@@ -142,7 +143,8 @@ export default class LoginPage extends BaseComponent {
                 })
                 break
             case 2://登陆
-              //  PassWordInput.showPassWordInput((safetyPwd) => alert(safetyPwd))
+               //PassWordInput.showPassWordInput((safetyPwd) => alert(safetyPwd),"支付描述内容",100)
+                // PassWordInput.showPassWordInput((safetyPwd) => alert(safetyPwd))
                 if(this.state.text.length<1){
                     DialogUtils.showMsg("请输入UID或者手机号")
                 }else if(this.state.text.length<1){
@@ -204,7 +206,7 @@ export const styles = StyleSheet.create({
     },
     itemTextInput: {
         flex: 1,
-        fontSize: 18,
+        fontSize: 15,
         color: '#fff',
     }
 });

@@ -118,15 +118,9 @@ export default class SharedRecord extends BaseComponent {
         this.pageIndex = 1;
         this.getData(true)
     }
-
-    /**
-     * 进入公告详情
-     * @param data
-     */
+    
     onClick(news) {
-        this.props.navigation.navigate('NoticDetails', {
-            id: news.id,
-        })
+      
     }
 
     /**

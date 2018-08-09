@@ -21,6 +21,7 @@ import HttpUtils from '../util/HttpUtils';
 import UserInfo from '../model/UserInfo';
 import SplashScreen from "react-native-splash-screen"
 import { observer, inject } from 'mobx-react';
+import gcj02towgs84 from "../util/location"
 const screen_width = Utils.getWidth();
 
 @inject('AppStore') @observer
@@ -29,24 +30,28 @@ export default class HomePage extends BaseComponent {
         super(props);
         this.state = {
             bannerArray: [],
-            isRefresh:false,
+            isRefresh: false,
         }
         //this.props.AppStore.userInfo = this.props.AppStore.userInfo
     }
     componentDidMount() {
         SplashScreen.hide();
         this.getBanner();
-        if (this.props.AppStore.userInfo.isReward === 0&&this.props.AppStore.userInfo.todayReleas >0) {
+        if (this.props.AppStore.userInfo.isReward === 0 && this.props.AppStore.userInfo.todayReleas > 0) {
             DialogUtils.redPacket(this.props.AppStore.userInfo.todayReleas,
                 () => integralRelease(this.props.AppStore))
         }
         //获取经纬度 并赋值给全局变量
-        Utils.getLocation((coords)=>{
-                    UserInfo.longitude =coords.longitude
-                    UserInfo.latitude =coords.latitude
+        Utils.getLocation((coords) => {
+            // let arr = gcj02towgs84(coords.longitude, coords.latitude)
+            // UserInfo.longitude = arr[0]
+            // UserInfo.latitude = arr[1]
+            UserInfo.longitude = coords.longitude
+            UserInfo.latitude = coords.latitude
+            //console.warn(JSON.stringify(coords))
         })
     }
-    
+
     setImgToBanner(bannerArray) {
         var views = []
         bannerArray.forEach((element, index) => {
@@ -102,47 +107,47 @@ export default class HomePage extends BaseComponent {
             />
         </View>
     }
-    onRefreshs(){
-        this.setState({isRefresh:true})
+    onRefreshs() {
+        this.setState({ isRefresh: true })
         let url = BaseUrl.getUserInfoBy(this.props.AppStore.userInfo.sessionId)
         HttpUtils.getData(url)
             .then(result => {
-               // alert(JSON.stringify(result))
-                this.setState({isRefresh:false})
+                // alert(JSON.stringify(result))
+                this.setState({ isRefresh: false })
                 if (result.code === 1) {
                     //Mobx保存方式
                     this.props.AppStore.setUserInfo(result.data)
                     //全局保存
-                   UserInfo.userInfo = result.data
-                } else {    
+                    UserInfo.userInfo = result.data
+                } else {
                     DialogUtils.showToast(result.msg)
                 }
             }).catch(error => {
-                this.setState({isRefresh:false})
+                this.setState({ isRefresh: false })
             })
-              
+
     }
     render() {
         return (
             <View style={BaseStyles.container_column}>
                 {this._StatusBar("#48b1a3")}
                 <ScrollView
-                 refreshControl={
-                    <RefreshControl
-                        //Android下只有一个 colors 是转圈的颜色
-                        colors={['#d11', '#000']}
-                        //ios 下 可以设置标题，转圈颜色，标题颜色
-                        title={'Loading...'}
-                        tintColor={'#d11'}
-                        titleColor={'#d11'}
-                        //刷新状态 false:隐藏，true:显示
-                        refreshing={this.state.isRefresh}
-                        //刷新触发的后执行的方法
-                        onRefresh={() => this.onRefreshs()}
-                    />
-                }
-               //onScroll={this._onScroll.bind(this)}
-               scrollEventThrottle={50}
+                    refreshControl={
+                        <RefreshControl
+                            //Android下只有一个 colors 是转圈的颜色
+                            colors={['#d11', '#000']}
+                            //ios 下 可以设置标题，转圈颜色，标题颜色
+                            title={'Loading...'}
+                            tintColor={'#d11'}
+                            titleColor={'#d11'}
+                            //刷新状态 false:隐藏，true:显示
+                            refreshing={this.state.isRefresh}
+                            //刷新触发的后执行的方法
+                            onRefresh={() => this.onRefreshs()}
+                        />
+                    }
+                    //onScroll={this._onScroll.bind(this)}
+                    scrollEventThrottle={50}
                 >
                     <View style={BaseStyles.container_column}>
 

@@ -504,6 +504,18 @@ export default class BaseUrl {
     static creditsExchange() {
         return url + "/store/creditsExchange?"
     }
+    /**
+     * 获取积分兑换的数量
+     * @param {*} sessionId 
+     * @param {*} exchangeMoney 需要兑换余额 
+     * 请求方式:POST/GET
+     * 
+     * @returns data 实际获得积分 , "data": 720
+     */
+    static getExchangeIntegral(sessionId,exchangeMoney) {
+        return url + "/store/actualGetIntegral?sessionId=" + sessionId
+        + "&exchangeMoney=" + exchangeMoney;
+    }
 
 
 

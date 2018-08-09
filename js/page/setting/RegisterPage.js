@@ -174,7 +174,7 @@ export default class RegisterPage extends BaseComponent {
                         //defaultValue={userName}
                         placeholderTextColor={'#fff'}
                         underlineColorAndroid='transparent'
-                        keyboardType={"default"}
+                        keyboardType={"numeric"}
                         onChangeText={(text) => this.setState({ recommendPhone: text })} />
                 </View>
                 <View style={styles.itemView}>
@@ -184,7 +184,7 @@ export default class RegisterPage extends BaseComponent {
                         //defaultValue={userName}
                         placeholderTextColor={'#fff'}
                         underlineColorAndroid='transparent'
-                        keyboardType={"default"}
+                        keyboardType={"numeric"}
                         onChangeText={(text) => this.setState({ paymentPwd: text })} />
                 </View>
 

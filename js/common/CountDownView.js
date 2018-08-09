@@ -31,7 +31,7 @@ export default class CountDownView extends Component {
                 activeOpacity={0.7}
                 onPress={() => this.getVerificationCode()}
                 >
-                <Text style={[ { fontSize: 15, color: "#EAC100", padding: 5 },textStyle]}> {this.state.codeText}</Text>
+                <Text style={[ { fontSize: 15, color: "#EAC100", padding: 5 },textStyle]}> {this.state.codeText}  </Text>
             </TouchableOpacity>
         );
     }
@@ -56,6 +56,10 @@ export default class CountDownView extends Component {
      * 获取验证码
      */
     getVerificationCode() {
+        if(!this.props.phone){
+            DialogUtils.showToast("请输入手机号码")
+            return
+        }
         let url = BaseUrl.getVerificationCodeUrl(this.props.phone);
         //设置不可点击
         this.setState({
