@@ -219,17 +219,28 @@ export default class DialogUtils {
             >
                 <View style={{
                     minWidth: 300, minHeight: 100,
-                    flexDirection: 'column', justifyContent: "center", alignItems: "center"
+                    flexDirection: 'column', justifyContent: "center", alignItems: "center",
+                    marginTop:-150,paddingBottom:50,
                 }}>
-                    <TouchableOpacity
-                        onPress={() => {
-                            this.MsgView && this.MsgView.close(),
-                                confirm ? confirm() : {}
-                        }}>
-                        <Image source={require("../../res/images/hongbao.png")} />
-                    </TouchableOpacity>
-
-                    <Text style={{ flex: 1, fontSize: 23, color: "#fff", position: "absolute", }}>{text}元</Text>
+                   <Image source={require("../../res/images/hongbao.png")} />
+                    <Text style={{ flex: 1, fontSize: 25, color: "#d11", position: "absolute",paddingBottom:50}}>{new Number(text).toFixed(2)}元</Text>
+                    <View style={{ justifyContent: "center", alignItems: "center", 
+                    flexDirection: "row", position: "absolute",bottom:0,zIndex:1}}>
+                        <TouchableOpacity
+                            style={{
+                                justifyContent: "center",
+                                alignItems: "center", height: 48,
+                                backgroundColor: "#f9f900", borderRadius: 24,
+                                borderColor: "#EAC100", borderWidth: 3, margin: 30,
+                                paddingLeft: 40, paddingRight: 40
+                            }}
+                            onPress={() => {
+                                this.MsgView && this.MsgView.close(),
+                                    confirm ? confirm() : {}
+                            }} >
+                            <Text style={{ fontSize: 20, color: "#d11" }}>存入余额</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </Overlay.PopView>
         );

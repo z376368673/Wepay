@@ -5,7 +5,7 @@ import {
     View,
     TextInput,
     TouchableOpacity,
-    Button,
+    Keyboard,
 } from 'react-native';
 import BaseComponent, {BaseStyles, mainColor, upDataUserInfo} from "./BaseComponent";
 import NavigationBar from "../common/NavigationBar";
@@ -181,6 +181,8 @@ export default class ExcIntegral extends BaseComponent {
                 break;
             case "sumbit"://确定兑换
            //this. upDataUserInfo()
+           //强制隐藏键盘
+           Keyboard.dismiss();
             if(this.state.exchangeMoney<100||this.state.exchangeMoney%100!==0){
                 DialogUtils.showMsg("请输入大于等于100的整数倍")
             }else{
