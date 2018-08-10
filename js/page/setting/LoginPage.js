@@ -54,7 +54,7 @@ export default class LoginPage extends BaseComponent {
                     navigation={this.props.navigation}
                 />
                 <View style={{height:150,justifyContent:"center",alignItems:"center"}}>
-                <Image style={{height:100,width:100,resizeMode:"center",}} 
+                <Image style={{resizeMode:"center",}} 
                        source={require('../../../res/images/logo-d.png')}/>
                 </View>
                 

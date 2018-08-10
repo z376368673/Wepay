@@ -25,7 +25,6 @@ export default class StoreCommon extends BaseComponent {
             text: '',
         }
         this.userInfo = this.getUserInfo();
-
     }
 
     setType(data) {
@@ -33,11 +32,21 @@ export default class StoreCommon extends BaseComponent {
     }
     //界面加载完成
     componentDidMount() {
-        this._refreshData()
-
+        if (this.tabLabel === '商品') {
+            this._refreshData()
+        }else{
+           // 每次进入商城 刷新获取一下经纬度
+            Utils.getLocation((coords) => {
+                UserInfo.longitude = coords.longitude
+                UserInfo.latitude = coords.latitude
+                this._refreshData()
+            })
+        }
+       
     }
-    //刷新数据
+    //刷新数据  
     _refreshData() {
+        //获取经纬度 并赋值给全局变量
         this.refList.refreshStar()
         this.pageIndex = 1;
         this.getData(true)
@@ -65,20 +74,21 @@ export default class StoreCommon extends BaseComponent {
                 if (result.code === 1) {
                     if (isRefesh) {
                         this.refList.setData(result.data)
-                        if(result.data.length<1){
-                            DialogUtils.showToast("暂无记录") }
+                        if (result.data.length < 1) {
+                            DialogUtils.showToast("暂无记录")
+                        }
                     } else {
                         this.refList.addData(result.data)
                     }
                     this.pageIndex += 1
-                } else if(result.code === 2){
+                } else if (result.code === 2) {
                     DialogUtils.showToast(result.msg)
                     this.goLogin(this.props.navigation)
                 } else {
                     DialogUtils.showToast(result.msg)
                 }
             })
-            
+
     }
     render() {
         return (
@@ -114,7 +124,7 @@ export default class StoreCommon extends BaseComponent {
                 flexDirection: "column",
                 marginLeft: 2,
                 marginRight: 2,
-                maxWidth:window_width/2-4,
+                maxWidth: window_width / 2 - 4,
             }}>
             <TouchableOpacity
                 activeOpacity={0.8}

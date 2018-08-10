@@ -57,7 +57,8 @@ export default class Utils {
      */
     static getLocation(callback) {
         //获取经纬度
-        navigator.geolocation.watchPosition(
+        navigator.geolocation.getCurrentPosition(
+            // navigator.geolocation.watchPosition(
             (location) => {
                 var result = "速度：" + location.coords.speed +
                     "\n经度：" + location.coords.longitude +
@@ -71,8 +72,11 @@ export default class Utils {
                 // let latitude = JSON.stringify(location.coords.latitude);//纬度 
                 callback(location.coords)
             },
-            (error) => { DialogUtils.showToast("getLocation:" + error.message) },
-            { enableHighAccuracy: true, timeout: 5000, maximumAge: 5000 }
+            (error) => {
+                DialogUtils.showToast("获取定位失败" + error.message)
+                console.warn(error.message)
+            },
+            { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
         );
     }
 
@@ -95,8 +99,8 @@ export default class Utils {
             })
     };
 
-    static formatDateTime(inputTime,symbol) {
-        let sb = symbol?symbol:'/'
+    static formatDateTime(inputTime, symbol) {
+        let sb = symbol ? symbol : '/'
         var date = new Date(inputTime);
         var y = date.getFullYear();
         var m = date.getMonth() + 1;
@@ -109,7 +113,7 @@ export default class Utils {
         var second = date.getSeconds();
         minute = minute < 10 ? ('0' + minute) : minute;
         second = second < 10 ? ('0' + second) : second;
-        return y + sb + m + sb+ d + ' ' + h + ':' + minute + ':' + second;
+        return y + sb + m + sb + d + ' ' + h + ':' + minute + ':' + second;
     }
 
     /**

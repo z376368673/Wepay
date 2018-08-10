@@ -48,7 +48,7 @@ export default class HomePage extends BaseComponent {
             // UserInfo.latitude = arr[1]
             UserInfo.longitude = coords.longitude
             UserInfo.latitude = coords.latitude
-            //console.warn(JSON.stringify(coords))
+            console.warn(JSON.stringify(coords))
         })
     }
 

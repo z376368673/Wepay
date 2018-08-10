@@ -1,4 +1,6 @@
 const url = 'http://wp.wepay168.com/wepay'
+//const url = 'http://192.168.0.105:8081'
+
 
 export default class BaseUrl {
 

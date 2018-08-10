@@ -34,7 +34,7 @@ export default class HttpUtils {
             DialogUtils.showToast("网络异常，请检查网络")
         }else if(error){
             // DialogUtils.showMsg("系统错误"+error.message)
-            DialogUtils.showMsg("服务器繁忙")
+            DialogUtils.showToast("服务器繁忙")
         }
     }
     /**

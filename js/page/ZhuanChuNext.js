@@ -88,7 +88,7 @@ export default class ZhuanChuNext extends BaseComponent {
                 if (result.code === 1) {
                     DialogUtils.showToast("转出成功")
                     upDataUserInfo(this.props.AppStore)
-                    this.props.navigation.goBack()
+                    this.props.navigation.navigate('HomePage');
                 } else {
                     DialogUtils.showToast(result.msg)
                 }

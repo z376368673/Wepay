@@ -64,14 +64,16 @@ export default class ExcIntegral extends BaseComponent {
 
      //  获取兑换的积分  
      getExchangeIntegral() {
+        DialogUtils.showLoading()
         let url = BaseUrl.getExchangeIntegral(this.props.AppStore.userInfo.sessionId,this.state.exchangeMoney)
         console.warn(url)
         HttpUtils.getData(url)
             .then(result => {
+                DialogUtils.hideLoading()
                 if (result.code === 1) {
                     PassWordInput.showPassWordInput((safetyPwd)=>{
                         this.creditsExchange(safetyPwd)
-                     },"实际获得积分",result.code)
+                     },"实际获得积分",result.data)
                 } else {
                     DialogUtils.showToast(result.msg)
                 }
