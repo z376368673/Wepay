@@ -2,6 +2,7 @@ import DialogUtils from './DialogUtils';
 import area from "../../res/raw/area.json"
 import React from 'react';
 import { Platform, CameraRoll } from 'react-native';
+
 export default class Utils {
 
     static getWidth() {
@@ -55,7 +56,7 @@ export default class Utils {
      * 
      * @param {*} callback 
      */
-    static getLocation(callback) {
+    static getLocation(callback,error) {
         //获取经纬度
         navigator.geolocation.getCurrentPosition(
             // navigator.geolocation.watchPosition(
@@ -73,6 +74,7 @@ export default class Utils {
                 callback(location.coords)
             },
             (error) => {
+                error(error.message)
                 DialogUtils.showToast("获取定位失败" + error.message)
                 console.warn(error.message)
             },
@@ -135,5 +137,7 @@ export default class Utils {
         }
         return data;
     }
+
+
 }
 

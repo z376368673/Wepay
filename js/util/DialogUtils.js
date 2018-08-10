@@ -9,6 +9,7 @@ import {
     ActivityIndicator,
 } from 'react-native';
 import { Overlay, Toast, ActionSheet } from "teaset";
+import codePush from "react-native-code-push"
 
 export default class DialogUtils {
 
@@ -220,12 +221,14 @@ export default class DialogUtils {
                 <View style={{
                     minWidth: 300, minHeight: 100,
                     flexDirection: 'column', justifyContent: "center", alignItems: "center",
-                    marginTop:-150,paddingBottom:50,
+                    marginTop: -150, paddingBottom: 50,
                 }}>
-                   <Image source={require("../../res/images/hongbao.png")} />
-                    <Text style={{ flex: 1, fontSize: 25, color: "#d11", position: "absolute",paddingBottom:50}}>{new Number(text).toFixed(2)}元</Text>
-                    <View style={{ justifyContent: "center", alignItems: "center", 
-                    flexDirection: "row", position: "absolute",bottom:0,zIndex:1}}>
+                    <Image source={require("../../res/images/hongbao.png")} />
+                    <Text style={{ flex: 1, fontSize: 25, color: "#d11", position: "absolute", paddingBottom: 50 }}>{new Number(text).toFixed(2)}元</Text>
+                    <View style={{
+                        justifyContent: "center", alignItems: "center",
+                        flexDirection: "row", position: "absolute", bottom: 0, zIndex: 1
+                    }}>
                         <TouchableOpacity
                             style={{
                                 justifyContent: "center",
@@ -246,5 +249,52 @@ export default class DialogUtils {
         );
         Overlay.show(overlayView);
     }
+
+
+
+    /** 热更新
+    * 
+    * sync方法，提供了如下属性以允许你定制sync方法的默认行为
+    deploymentKey （String）： 部署key，指定你要查询更新的部署秘钥，默认情况下该值来自于Info.plist(Ios)和MianActivity.java(Android)文件，你可以通过设置该属性来动态查询不同部署key下的更新。
+    installMode (codePush.InstallMode)： 安装模式，用在向CodePush推送更新时没有设置强制更新(mandatory为true)的情况下，默认codePush.InstallMode.ON_NEXT_RESTART即下一次启动的时候安装。
+    mandatoryInstallMode (codePush.InstallMode):强制更新,默认codePush.InstallMode.IMMEDIATE。
+    minimumBackgroundDuration (Number):该属性用于指定app处于后台多少秒才进行重启已完成更新。默认为0。该属性只在installMode为InstallMode.ON_NEXT_RESUME情况下有效。
+    updateDialog (UpdateDialogOptions) :可选的，更新的对话框，默认是null,包含以下属性
+    appendReleaseDescription (Boolean) - 是否显示更新description，默认false
+    descriptionPrefix (String) - 更新说明的前缀。 默认是” Description: “
+    mandatoryContinueButtonLabel (String) - 强制更新的按钮文字. 默认 to “Continue”.
+    mandatoryUpdateMessage (String) - 强制更新时，更新通知. Defaults to “An update is available that must be installed.”.
+    optionalIgnoreButtonLabel (String) - 非强制更新时，取消按钮文字. Defaults to “Ignore”.
+    optionalInstallButtonLabel (String) - 非强制更新时，确认文字. Defaults to “Install”.
+    optionalUpdateMessage (String) - 非强制更新时，更新通知. Defaults to “An update is available. Would you like to install it?”.
+    title (String) - 要显示的更新通知的标题. Defaults to “Update available”.
+    * 
+    */
+    static upDataApp() {
+        codePush.checkForUpdate()
+            .then((update) => {
+                if (!update) {
+                    DialogUtils.showToast("已是最新版本")
+                } else {
+                    codePush.sync({
+                        updateDialog: {
+                            appendReleaseDescription: true,
+                            title: '更新',
+                            descriptionPrefix: '\n\n更新内容：\n',
+                            mandatoryUpdateMessage: '强制更新时，更新通知',
+                            mandatoryContinueButtonLabel: '更新',
+                            optionalIgnoreButtonLabel: "忽略",
+                            optionalInstallButtonLabel: "安装",
+                            optionalUpdateMessage: "发现新的更新，您是否要安装最新版本"
+                        },
+                        mandatoryInstallMode: codePush.InstallMode.IMMEDIATE,
+                        //指定那个环境下 直接填写key 就行    但是不建议使用 因为 苹果和Android的是分开的 无法做到同时更新 Android 和 IOS
+                        //deploymentKey: "v-5TDPSESydQj-n9alBgCVEab3Mefdf2b04e-456b-420f-8acd-58a99c8306be",
+                    });
+                }
+            });
+       
+    }
+
 
 }

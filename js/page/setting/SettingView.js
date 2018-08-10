@@ -191,9 +191,10 @@ export default class SettingView extends BaseComponent {
                 this.props.navigation.navigate('Complaint');
                 break
             case "version"://版本管理
-                DialogUtils.showPop("您已经是最新版本了", () => {
-                    DialogUtils.showToast("检查完毕");
-                });
+                // DialogUtils.showPop("您已经是最新版本了", () => {
+                //     DialogUtils.showToast("检查完毕");
+                // });
+                DialogUtils.upDataApp()
                 break
             case "about"://关于
                 this.props.navigation.navigate('AboutOur');
@@ -263,7 +264,7 @@ export default class SettingView extends BaseComponent {
                         <View style={[BaseStyles.container_center, { marginTop: 12 }]} />
                         {ViewUtils.getSettingItem1(require('../../../res/images/tousujianyi.png'), '投诉建议', false,
                             () => this.onClicks("Complaint"))}
-                        {ViewUtils.getSettingItem(require('../../../res/images/banben.png'), '版本', '1.2.4',
+                        {ViewUtils.getSettingItem(require('../../../res/images/banben.png'), '版本检测', '1.2.4',
                             () => this.onClicks("version"))}
                         {ViewUtils.getSettingItem1(require('../../../res/images/guanyu.png'), '关于', false,
                             () => this.onClicks("about"))}

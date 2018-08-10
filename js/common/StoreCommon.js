@@ -32,7 +32,7 @@ export default class StoreCommon extends BaseComponent {
     }
     //界面加载完成
     componentDidMount() {
-        if (this.tabLabel === '商品') {
+        if (this.tabLabel === '商品列表') {
             this._refreshData()
         }else{
            // 每次进入商城 刷新获取一下经纬度
@@ -40,7 +40,11 @@ export default class StoreCommon extends BaseComponent {
                 UserInfo.longitude = coords.longitude
                 UserInfo.latitude = coords.latitude
                 this._refreshData()
-            })
+            },
+            ()=>{
+                this._refreshData()
+            }
+          )
         }
        
     }
@@ -62,7 +66,7 @@ export default class StoreCommon extends BaseComponent {
     * @param {*} pageIndex 
     */
     getData(isRefesh) {
-        if (this.tabLabel === '商品') {
+        if (this.tabLabel === '商品列表') {
             this.url = BaseUrl.getShopBySearch(this.userInfo.sessionId, this.pageIndex)
         } else {
             this.url = BaseUrl.getStoreList(this.userInfo.sessionId,

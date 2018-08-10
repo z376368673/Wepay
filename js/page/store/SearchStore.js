@@ -91,7 +91,7 @@ export default class SearchStore extends BaseComponent {
                 style={{ flexDirection: 'row', alignItems: 'center', }}
                 onPress={() => this.leftDrawView()}
             >
-               <Text style={{fontSize:16,color:"#fff",padding:5}}>筛选</Text>
+               <Text style={{fontSize:16,color:"#fff",padding:5}}>分类</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 style={{ flexDirection: 'row', alignItems: 'center', }}

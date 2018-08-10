@@ -58,18 +58,12 @@ export default class ZhuanRu extends BaseComponent {
                 </View>
                 <TouchableOpacity
                     onPress={() => this.onClicks("inRecord")}
-                    style={{
-                        alignSelf: "center",
-                        color: '#FFF',
-                        fontSize: 20,
-                        position: "absolute",
-                        zIndex: 1,
-                        bottom: 70
-                    }}
+                    style={{ alignSelf: "center",color: '#FFF',fontSize: 20,zIndex: 1,}}
                 >
                     <Text style={{
                         color: '#FFF',
                         fontSize: 20,
+                        marginTop:30,
                     }}> 转入记录</Text>
                 </TouchableOpacity>
             </View>

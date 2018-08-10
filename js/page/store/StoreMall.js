@@ -31,8 +31,8 @@ export default class StoreMall extends BaseComponent {
             typeArr:[]
         }
         this.barItems = [
-            '商品',
-            '商铺',
+            '商品列表',
+            '附近商家',
         ];
     }
     //界面加载完成
@@ -83,8 +83,8 @@ export default class StoreMall extends BaseComponent {
                     {this.renderCustomItems()}
                 </SegmentedBar>
                 <View style={{ flex: 1, backgroundColor: "#f1f1f1",marginTop:12, }}>
-                    {this.state.activeIndex === 0 ? <StoreCommon navigation={this.props.navigation} tabLabel='商品' numColumns={2} {...this.props}/> : <View />}
-                    {this.state.activeIndex === 1 ? <StoreCommon navigation={this.props.navigation} tabLabel='商铺' numColumns={1} {...this.props}/> : <View />}
+                    {this.state.activeIndex === 0 ? <StoreCommon navigation={this.props.navigation} tabLabel='商品列表' numColumns={2} {...this.props}/> : <View />}
+                    {this.state.activeIndex === 1 ? <StoreCommon navigation={this.props.navigation} tabLabel='附近商家' numColumns={1} {...this.props}/> : <View />}
                 </View>
             </View>
         );

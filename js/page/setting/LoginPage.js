@@ -18,6 +18,7 @@ import UserInfo from '../../model/UserInfo';
 import ViewUtils from '../../util/ViewUtils';
 import SplashScreen from "react-native-splash-screen"
 import PassWordInput from '../../common/PassNumInput';
+import Colors from '../../util/Colors';
 /**
  * 登陆页面
  */
@@ -111,7 +112,7 @@ export default class LoginPage extends BaseComponent {
                         borderRadius: 8,
                         justifyContent: 'center',
                         alignItems: 'center',
-                        backgroundColor: "#004B9f",
+                        backgroundColor: Colors.blue1,
                     }}
                     onPress={() => this.onClicks(2)}
                 >

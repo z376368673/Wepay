@@ -39,7 +39,7 @@ export default class SharePage extends BaseComponent {
                 (uri) => {
                     var promise = CameraRoll.saveToCameraRoll(uri);
                     promise.then(function (result) {
-                        DialogUtils.showMsg('保存成功！地址如下：\n' + result)
+                        DialogUtils.showToast('保存成功')
                     }).catch(function (error) {
                         DialogUtils.showToast('保存失败！\n' + error);
                     });
@@ -93,14 +93,14 @@ export default class SharePage extends BaseComponent {
 
                 <TouchableOpacity
                     onPress={() => { this.onClicks(1) }}
-                    style={{ alignSelf: "center", position: "absolute", zIndex: 1, bottom: 95 }}>
+                    style={{ alignSelf: "center", position: "absolute", zIndex: 1, bottom: 145 }}>
                     <Text style={{ color: '#FFF', fontSize: 16, borderColor: "#fff", borderBottomWidth: 1, }}>
                         复制Wepay下载地址</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
                     onPress={() => { this.onClicks(2) }}
-                    style={{ alignSelf: "center", position: "absolute", zIndex: 1, bottom: 50 }}>
+                    style={{ alignSelf: "center", position: "absolute", zIndex: 1, bottom: 100 }}>
                     <Text style={{ color: '#FFF', fontSize: 16, }}>分享记录</Text>
                 </TouchableOpacity>
             </View >

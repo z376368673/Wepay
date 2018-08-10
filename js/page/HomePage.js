@@ -92,7 +92,7 @@ export default class HomePage extends BaseComponent {
             }, styles.itemView]}>
                 <Image source={img}
                     style={styles.itemImage} />
-                <Text style={{ fontSize: 18, color: '#333', marginTop: 10 }}>{text}</Text>
+                <Text style={{ fontSize: 15, color: '#333', marginTop: 10 }}>{text}</Text>
             </View>
         </TouchableOpacity>
     }
@@ -168,7 +168,7 @@ export default class HomePage extends BaseComponent {
                                         </Text>
                                         {ViewUtils.getCreditView(this.props.AppStore.userInfo.userCredit, 16, 15, "#fff")}
                                     </View>
-                                    <Image style={{ width: 30, height: 30, borderRadius: 15 }}
+                                    <Image style={{ width: 25, height: 25, borderRadius: 13 }}
                                         source={require('../../res/images/shezhi.png')}
                                     />
                                 </View></TouchableOpacity>
@@ -222,10 +222,10 @@ export default class HomePage extends BaseComponent {
                             {this.setImgToBanner(this.state.bannerArray)}
                         </Carousel>
                         <View style={[BaseStyles.container_row, { flexWrap: 'wrap', }]}>
-                            {this._itemView(() => this.onClicks(1), require('../../res/images/zhuanchu.png'), "转出")}
-                            {this._itemView(() => this.onClicks(2), require('../../res/images/zhuanru.png'), "转入")}
-                            {this._itemView(() => this.onClicks(3), require('../../res/images/mairu.png'), "买入")}
-                            {this._itemView(() => this.onClicks(4), require('../../res/images/maichu.png'), "卖出")}
+                            {this._itemView(() => this.onClicks(1), require('../../res/images/zhuanchu.png'), "余额转出")}
+                            {this._itemView(() => this.onClicks(2), require('../../res/images/zhuanru.png'), "余额转入")}
+                            {this._itemView(() => this.onClicks(3), require('../../res/images/mairu.png'), "余额买入")}
+                            {this._itemView(() => this.onClicks(4), require('../../res/images/maichu.png'), "余额卖出")}
                             {this._itemView(() => this.onClicks(5), require('../../res/images/shuzi.png'), "数字资产")}
                             {this._itemView(() => this.onClicks(6), require('../../res/images/shangcheng.png'), "超级商城")}
                         </View>
