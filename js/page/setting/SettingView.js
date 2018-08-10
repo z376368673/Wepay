@@ -7,7 +7,7 @@ import {
     View,
     TouchableOpacity,
 } from 'react-native';
-import BaseComponent, { BaseStyles, mainColor ,upDataUserInfo} from "../BaseComponent";
+import BaseComponent, { BaseStyles, mainColor, upDataUserInfo } from "../BaseComponent";
 import NavigationBar from "../../common/NavigationBar";
 import ViewUtils from "../../util/ViewUtils";
 import DialogUtils from '../../util/DialogUtils';
@@ -45,14 +45,14 @@ export default class SettingView extends BaseComponent {
                     this.setState({
                         newMessage: this.info.newMessage,
                     })
-                }else if (result.code === 2) {
+                } else if (result.code === 2) {
                     DialogUtils.showToast(result.msg)
                     this.goLogin(this.props.navigation)
-                }else {
+                } else {
                     DialogUtils.showToast(result.msg)
                 }
             })
-        }
+    }
 
     /**
     * 申请店铺-店铺状态
@@ -66,7 +66,7 @@ export default class SettingView extends BaseComponent {
                     this.setState({
                         storeStatus: result.data,
                     })
-                }else {
+                } else {
                     DialogUtils.showToast(result.msg)
                 }
             })
@@ -174,9 +174,9 @@ export default class SettingView extends BaseComponent {
                 }
                 DialogUtils.showPop(content,
                     () => {
-                        this.state.storeStatus === 0 ? {} : this.props.navigation.navigate('ApplyStore',{
-                            status:()=>this.setState({
-                                storeStatus:0,
+                        this.state.storeStatus === 0 ? {} : this.props.navigation.navigate('ApplyStore', {
+                            status: () => this.setState({
+                                storeStatus: 0,
                             })
                         });
                     },
@@ -223,10 +223,18 @@ export default class SettingView extends BaseComponent {
                             >
                                 <Image source={{ uri: this.getImgUrl(this.props.AppStore.userInfo.imgHead) }}
                                     style={styles.headImg} />
-                                <View style={{ flex: 1, marginLeft: 10 }}>
-                                    <Text style={{ color: "#333", fontSize: 16, }}>
-                                        UID:{this.props.AppStore.userInfo.userid}
-                                    </Text>
+                                <View style={{ flex: 1, marginLeft: 10 ,justifyContent:"center"}}>
+
+
+                                    <View style={{ flexDirection: "row",marginTop:10 }}>
+                                        <Text style={{ color: "#333", fontSize: 16, }}>
+                                            UID:{this.props.AppStore.userInfo.userid}
+                                        </Text>
+                                        {this.props.AppStore.userInfo.useGrade === 3 ? <Image source={require("../../../res/images/huangguan.png")}
+                                            style={{ height: 16, width: 16, marginLeft: 5 }} /> : null}
+                                    </View>
+
+
                                     {ViewUtils.getCreditView(this.props.AppStore.userInfo.userCredit, 16, 15, "#333")}
                                 </View>
                                 <Text style={{ color: "#666", fontSize: 16, marginRight: 10 }}>

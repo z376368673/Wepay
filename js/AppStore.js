@@ -5,6 +5,10 @@ class  AppStore{
     @observable userInfo; //用户信息
     @action 
     setUserInfo(userInfo){
+        var cangkuNum = userInfo.cangkuNum
+        var fengmiNum = userInfo.fengmiNum
+        userInfo.cangkuNum = new Number(cangkuNum).toFixed(2)
+        userInfo.fengmiNum = new Number(fengmiNum).toFixed(2)
         this.userInfo = userInfo;
     }
     //屏幕宽高

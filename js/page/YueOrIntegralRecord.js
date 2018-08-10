@@ -161,7 +161,7 @@ export default class YueOrIntegralRecord extends BaseComponent {
                         <Text style={{
                             color: '#333',
                             fontSize: 13,
-                        }}>{this.type === 0 ? this.getYueType(data)[1]  : this.getJifenType(data)[1]}</Text>
+                        }}>{this.type === 0 ? this.getYueType(data)[1] : this.getJifenType(data)[1]}</Text>
                     </View>
                     <View style={{ justifyContent: "center", alignItems: 'center', width: width / 4 + 4, }}>
                         <Text style={{
@@ -191,7 +191,7 @@ export default class YueOrIntegralRecord extends BaseComponent {
         var typeValue;
         switch (type) {
             case 0:
-                typeText = "转出("+getId+")"
+                typeText = "转出(" + getId + ")"
                 typeValue = "-" + yue
                 break;
             case 2:
@@ -214,7 +214,7 @@ export default class YueOrIntegralRecord extends BaseComponent {
                 typeText = "Wepay币\n取消求购"
                 typeValue = "+" + yue
                 break;
-           case 7:
+            case 7:
                 typeText = "购买众筹"
                 typeValue = "-" + yue
                 break;
@@ -231,7 +231,7 @@ export default class YueOrIntegralRecord extends BaseComponent {
                 typeValue = "+" + yue
                 break;
             case 11:
-                typeText = "后台操作"
+                typeText = "系统操作"
                 if (yue >= 0) {
                     typeValue = "+" + yue
                 } else {
@@ -250,12 +250,20 @@ export default class YueOrIntegralRecord extends BaseComponent {
                 typeText = "店铺收益"
                 typeValue = "+" + yue
                 break;
+            case 24:
+                typeText = "扣除保证金"
+                typeValue = "-" + yue
+                break;
+            case 25:
+                typeText = "退还保证金"
+                typeValue = "+" + yue
+                break;
             case 31:
-                typeText = "("+payId+")转入"
+                typeText = "(" + payId + ")转入"
                 typeValue = "+" + yue
                 break;
         }
-        return [typeText,typeValue];
+        return [typeText, typeValue];
     }
 
     //获取积分类型
@@ -275,7 +283,7 @@ export default class YueOrIntegralRecord extends BaseComponent {
                 }
                 break;
             case 12:
-                typeText = "后台操作"
+                typeText = "系统操作"
                 break;
             case 16:
                 typeText = "vip获得"
@@ -292,10 +300,10 @@ export default class YueOrIntegralRecord extends BaseComponent {
         }
         if (jifen > 0) {
             typeValue = "+" + jifen
-        }else{
+        } else {
             typeValue = jifen
         }
-        return [typeText,typeValue]
+        return [typeText, typeValue]
     }
 
 }

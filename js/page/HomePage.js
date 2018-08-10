@@ -41,15 +41,15 @@ export default class HomePage extends BaseComponent {
             DialogUtils.redPacket(this.props.AppStore.userInfo.todayReleas,
                 () => integralRelease(this.props.AppStore))
         }
-        //获取经纬度 并赋值给全局变量
-        Utils.getLocation((coords) => {
-            // let arr = gcj02towgs84(coords.longitude, coords.latitude)
-            // UserInfo.longitude = arr[0]
-            // UserInfo.latitude = arr[1]
-            UserInfo.longitude = coords.longitude
-            UserInfo.latitude = coords.latitude
-            console.warn(JSON.stringify(coords))
-        })
+        // //获取经纬度 并赋值给全局变量
+        // Utils.getLocation((coords) => {
+        //     // let arr = gcj02towgs84(coords.longitude, coords.latitude)
+        //     // UserInfo.longitude = arr[0]
+        //     // UserInfo.latitude = arr[1]
+        //     UserInfo.longitude = coords.longitude
+        //     UserInfo.latitude = coords.latitude
+        //     console.warn(JSON.stringify(coords))
+        // })
     }
 
     setImgToBanner(bannerArray) {
@@ -160,12 +160,20 @@ export default class HomePage extends BaseComponent {
                                 <View
                                     style={[BaseStyles.container_row, { alignItems: 'center' }]}
                                 >
+
+
                                     <Image source={{ uri: this.getImgUrl(this.props.AppStore.userInfo.imgHead) }}
                                         style={styles.headImg} />
                                     <View style={{ flex: 1, marginLeft: 10 }}>
-                                        <Text style={styles.text}>
-                                            UID:{this.props.AppStore.userInfo.userid}
-                                        </Text>
+                                    
+                                        <View style={{ flexDirection: "row" }}>
+                                            <Text style={styles.text}>
+                                                UID:{this.props.AppStore.userInfo.userid}
+                                            </Text>
+                                            {this.props.AppStore.userInfo.useGrade === 3 ? <Image source={require("../../res/images/huangguan.png")}
+                                                style={{ height: 15, width: 15, marginLeft: 5 }} /> : null}
+                                        </View>
+
                                         {ViewUtils.getCreditView(this.props.AppStore.userInfo.userCredit, 16, 15, "#fff")}
                                     </View>
                                     <Image style={{ width: 25, height: 25, borderRadius: 13 }}
