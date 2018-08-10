@@ -5,4 +5,6 @@
     "files.autoSave": "onFocusChange",
     "java.configuration.updateBuildConfiguration": "automatic",
     "search.followSymlinks": false,
+     //解决复制文件出现路径变成绝对路径问题
+    "javascript.updateImportsOnFileMove.enabled": "never"
 }
