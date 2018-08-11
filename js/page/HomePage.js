@@ -5,10 +5,9 @@ import {
     View,
     Image,
     ScrollView,
-    TouchableHighlight,
     TouchableOpacity,
     RefreshControl,
-    StatusBar, Platform,
+    StatusBar,
 } from 'react-native';
 import BaseComponent, { BaseStyles, integralRelease, upDataUserInfo } from "./BaseComponent";
 import ViewUtils from "../util/ViewUtils";
@@ -37,19 +36,7 @@ export default class HomePage extends BaseComponent {
     componentDidMount() {
         SplashScreen.hide();
         this.getBanner();
-        if (this.props.AppStore.userInfo.isReward === 0 && this.props.AppStore.userInfo.todayReleas > 0) {
-            DialogUtils.redPacket(this.props.AppStore.userInfo.todayReleas,
-                () => integralRelease(this.props.AppStore))
-        }
-        // //获取经纬度 并赋值给全局变量
-        // Utils.getLocation((coords) => {
-        //     // let arr = gcj02towgs84(coords.longitude, coords.latitude)
-        //     // UserInfo.longitude = arr[0]
-        //     // UserInfo.latitude = arr[1]
-        //     UserInfo.longitude = coords.longitude
-        //     UserInfo.latitude = coords.latitude
-        //     console.warn(JSON.stringify(coords))
-        // })
+        this.showRedPacket();
     }
 
     setImgToBanner(bannerArray) {
@@ -107,6 +94,9 @@ export default class HomePage extends BaseComponent {
             />
         </View>
     }
+    /**
+     * 下拉刷新
+     */
     onRefreshs() {
         this.setState({ isRefresh: true })
         let url = BaseUrl.getUserInfoBy(this.props.AppStore.userInfo.sessionId)
@@ -119,6 +109,8 @@ export default class HomePage extends BaseComponent {
                     this.props.AppStore.setUserInfo(result.data)
                     //全局保存
                     UserInfo.userInfo = result.data
+                    //刷新红包数据
+                    this.showRedPacket()
                 } else {
                     DialogUtils.showToast(result.msg)
                 }
@@ -126,6 +118,16 @@ export default class HomePage extends BaseComponent {
                 this.setState({ isRefresh: false })
             })
 
+    }
+
+    /**
+     * 显示红包
+     */
+    showRedPacket(){
+        if (this.props.AppStore.userInfo.isReward === 0 && this.props.AppStore.userInfo.todayReleas > 0) {
+            DialogUtils.redPacket(this.props.AppStore.userInfo.todayReleas,
+                () => integralRelease(this.props.AppStore))
+        }
     }
     render() {
         return (
@@ -165,10 +167,13 @@ export default class HomePage extends BaseComponent {
                                     <Image source={{ uri: this.getImgUrl(this.props.AppStore.userInfo.imgHead) }}
                                         style={styles.headImg} />
                                     <View style={{ flex: 1, marginLeft: 10 }}>
-                                    
+
                                         <View style={{ flexDirection: "row" }}>
-                                            <Text style={styles.text}>
+                                            <Text 
+                                            onPress={()=>alert("uid:"+this.props.AppStore.userInfo.userid)}
+                                            style={styles.text}>
                                                 UID:{this.props.AppStore.userInfo.userid}
+                                               
                                             </Text>
                                             {this.props.AppStore.userInfo.useGrade === 3 ? <Image source={require("../../res/images/huangguan.png")}
                                                 style={{ height: 15, width: 15, marginLeft: 5 }} /> : null}

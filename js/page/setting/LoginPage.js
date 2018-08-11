@@ -64,7 +64,7 @@ export default class LoginPage extends BaseComponent {
                        source={require('../../../res/images/user.png')}/>
                     <TextInput
                         style={styles.itemTextInput}
-                        placeholder={"请输入手机号/UID"}
+                        placeholder={"请输入手机号 / UID"}
                         defaultValue={this.state.text ? this.state.text : undefined}
                         placeholderTextColor={'#fff'}
                         underlineColorAndroid='transparent'

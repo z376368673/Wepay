@@ -25,7 +25,7 @@ export default class ModifyPassWord extends BaseComponent {
         this.state = {
             phone: "",
             code: 0,//当前验证码
-            sms: 10086,//短信验证码
+            sms: 10868866,//短信验证码
             pwd: "",//第一次密码
             pwdAgain: "",//第二次密码
             type: type,

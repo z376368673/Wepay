@@ -52,8 +52,7 @@ export default class BaseComponent extends Component {
      getUserInfo(){
         if(user.userInfo===null){
             //下面的方法不同步 很烦 正在找方法
-            //return  this.userInfo =async()=> await JSON.parse(AsyncStorage.getItem('userInfo'))
-            user.userInfo = new UserInfo();
+            return null
         } 
         return  user.userInfo;
     }

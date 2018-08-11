@@ -45,7 +45,7 @@ code-push deployment -k ls <appName>  获取 部署秘钥
 如： code-push deployment  ls  -k  Wepay-IOS 
                                                                                  Production Staging                 
                         （codepush上项目名称） （更新平台）     （版本号）           （环境，分为测试，和发布）       （更新说明）   (是否强制更新)
-code-push release-react     Wepay-IOS           ios       --t 1.2.4 --dev false --d Staging             --des "更新说明" --m true
+code-push release-react     Wepay-IOS           ios       --t 1.2.4 --dev false --d Production             --des "更新说明" --m true
 code-push release-react     Wepay-Android     android     --t 1.2.4 --dev false --d Production             --des "更新说明" --m true
 
 关于code-push release-react更多可选的参数，可以在终端输入code-push release-react进行查看。

@@ -271,29 +271,46 @@ export default class DialogUtils {
     * 
     */
     static upDataApp() {
+        codePush.getUpdateMetadata(UpdateState.PENDING).then((update) => {
+            if (update) {
+                // There's a pending update, do we want to force a restart?
+                alert(JSON.stringify(update))
+            }
+        });
         codePush.checkForUpdate()
             .then((update) => {
                 if (!update) {
                     DialogUtils.showToast("已是最新版本")
                 } else {
                     codePush.sync({
+                        //可选的，更新的对话框，默认是null,包含以下属性
                         updateDialog: {
-                            appendReleaseDescription: true,
+                            appendReleaseDescription: true,//是否显示更新description，默认false
+                            //要显示的更新通知的标题. Defaults to “Update available”.
                             title: '更新',
-                            descriptionPrefix: '\n\n更新内容：\n',
-                            mandatoryUpdateMessage: '强制更新时，更新通知',
+                            //更新说明的前缀。 默认是” Description: “
+                            descriptionPrefix: '\n\n更新内容：\n', 
+                            //强制更新时，更新通知. Defaults to “An update is available that must be installed.”.
+                            mandatoryUpdateMessage: '强制更新时，更新通知', 
+                            //强制更新的按钮文字. 默认 to “Continue”.
                             mandatoryContinueButtonLabel: '更新',
+                            //非强制更新时，取消按钮文字. Defaults to “Ignore”.
                             optionalIgnoreButtonLabel: "忽略",
+                            //非强制更新时，确认文字. Defaults to “Install”.
                             optionalInstallButtonLabel: "安装",
+                            //非强制更新时，更新通知. Defaults to “An update is available. Would you like to install it?”.
                             optionalUpdateMessage: "发现新的更新，您是否要安装最新版本"
                         },
+                        //(codePush.InstallMode)： 安装模式，用在向CodePush推送更新时没有设置强制更新(mandatory为true)的情况下，默认codePush.InstallMode.ON_NEXT_RESTART即下一次启动的时候安装。
+                        //installMode :codePush.InstallMode.ON_NEXT_RESTART
+                        // (codePush.InstallMode):强制更新,默认codePush.InstallMode.IMMEDIATE。
                         mandatoryInstallMode: codePush.InstallMode.IMMEDIATE,
                         //指定那个环境下 直接填写key 就行    但是不建议使用 因为 苹果和Android的是分开的 无法做到同时更新 Android 和 IOS
                         //deploymentKey: "v-5TDPSESydQj-n9alBgCVEab3Mefdf2b04e-456b-420f-8acd-58a99c8306be",
                     });
                 }
             });
-       
+
     }
 
 
