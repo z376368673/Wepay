@@ -164,6 +164,7 @@ export default class MyStore extends BaseComponent {
                 <View style={{ flex: 1, backgroundColor: "#f1f1f1" }}>
                     <RefreshFlatList
                         ref={refList => this.refList = refList}
+                        isDownLoad={true}
                         renderItem={(items) => this._getBuyOrSellItem(items)}
                         onRefreshs={() => this._refreshData()}
                     />

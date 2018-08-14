@@ -77,9 +77,8 @@ export default class BuyOrSellRecord extends BaseComponent {
                         onRefreshs={() => {
                             this._refreshData()
                         }}
-                        onLoadData={() => {
-                            this._onLoadData()
-                        }}
+                        onLoadData={() =>this._onLoadData()}
+                        isDownLoad={true}
                         renderItem={(items) => this._getBuyOrSellItem(items)}/>
                 </View>
             </View>

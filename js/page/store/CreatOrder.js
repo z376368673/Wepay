@@ -160,7 +160,7 @@ export default class CreatOrder extends BaseComponent {
                  if(counter.get()>1){
                     counter.set(counter.get() - 1);
                  }
-             }}>—</Text>
+             }}>-</Text>
              <Text style={{fontSize:16,color:"#333",marginLeft:15,marginRight:15}}>{counter.get()}</Text>
               <Text style={{fontSize:18,color:"#333",borderWidth:1,borderColor:"#aaa",backgroundColor:"#aaa",paddingLeft:8,paddingRight:8}} onPress={()=>{
                   if(counter.get()<=this.data.goodsStock){

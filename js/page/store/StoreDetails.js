@@ -88,7 +88,7 @@ export default class StroeDetails extends BaseComponent {
                         onPress={() => this.callStore(this.state.shopPhone)}
                     >
                         <Image
-                            style={{ width: 33, height: 35, resizeMode:"center"}}
+                            style={{ width: 33, height: 35, resizeMode:"stretch"}}
                             source={require("../../../res/images/dianhua.png")} />
                     </TouchableOpacity>
                 </View>
@@ -96,6 +96,7 @@ export default class StroeDetails extends BaseComponent {
                     <RefreshFlatList
                         ref={refList => this.refList = refList}
                         numColumns={2}
+                        isDownLoad={true}
                         onRefreshs={() => this.getStoreDetail()}
                         renderItem={(items) => this._getStore(items)} />
 

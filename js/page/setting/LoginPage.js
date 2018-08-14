@@ -53,12 +53,11 @@ export default class LoginPage extends BaseComponent {
                     navigation={this.props.navigation}
                 />
                 <View style={{height:150,justifyContent:"center",alignItems:"center"}}>
-                <Image style={{resizeMode:"center",}} 
-                       source={require('../../../res/images/logo-d.png')}/>
+                <Image source={require('../../../res/images/logo-d.png')}/>
                 </View>
                 
                 <View style={styles.itemView}>
-                <Image style={{height:30,width:30,resizeMode:"center",marginRight:10}} 
+                <Image style={{height:30,width:30,resizeMode:"stretch",marginRight:10}} 
                        source={require('../../../res/images/user.png')}/>
                     <TextInput
                         style={styles.itemTextInput}
@@ -71,7 +70,7 @@ export default class LoginPage extends BaseComponent {
                 </View>
 
                 <View style={styles.itemView}>
-                <Image style={{height:30,width:30,resizeMode:"center",marginRight:10}} 
+                <Image style={{height:30,width:30,resizeMode:"contain",marginRight:10}} 
                        source={require('../../../res/images/password.png')}/>
                     <TextInput
                         style={styles.itemTextInput}
