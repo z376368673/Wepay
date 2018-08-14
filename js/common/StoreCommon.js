@@ -102,6 +102,7 @@ export default class StoreCommon extends BaseComponent {
                     numColumns={this.numColumns}
                     onRefreshs={() => this._refreshData()}
                     onLoadData={() => this._onLoadData()}
+                    isDownLoad={true}
                     renderItem={(items) => this.numColumns === 1 ? this._getStoreMall(items) : this._getStore(items)} />
             </View>
         );

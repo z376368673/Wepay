@@ -93,6 +93,7 @@ export default class OrderCommon extends BaseComponent {
                     numColumns={this.numColumns}
                     onRefreshs={() => this._refreshData()}
                     onLoadData={() => this._onLoadData()}
+                    isDownLoad={true}
                     renderItem={(data) => this.type === 1 ? this._getOrder1(data) : this._getOrder2(data)} />
             </View>
         );

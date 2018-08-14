@@ -93,14 +93,14 @@ export default class SharePage extends BaseComponent {
 
                 <TouchableOpacity
                     onPress={() => { this.onClicks(1) }}
-                    style={{ alignSelf: "center", position: "absolute", zIndex: 1, bottom: 145 }}>
+                    style={{ alignSelf: "center", position: "absolute", zIndex: 1, bottom: 115 }}>
                     <Text style={{ color: '#FFF', fontSize: 16, borderColor: "#fff", borderBottomWidth: 1, }}>
                         复制Wepay下载地址</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
                     onPress={() => { this.onClicks(2) }}
-                    style={{ alignSelf: "center", position: "absolute", zIndex: 1, bottom: 100 }}>
+                    style={{ alignSelf: "center", position: "absolute", zIndex: 1, bottom: 70 }}>
                     <Text style={{ color: '#FFF', fontSize: 16, }}>分享记录</Text>
                 </TouchableOpacity>
             </View >

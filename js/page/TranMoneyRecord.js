@@ -130,7 +130,7 @@ export default class TranMoneyRecord extends BaseComponent {
                         
                         <Text style={{color: "#888",fontSize: 14,marginTop:5}}
                                 numberOfLines={1}
-                            >UID:{data.item ? data.item.payId : ""}</Text>
+                            >UID:{this.tranType === "out" ? data.item.getId : data.item.payId}</Text>
                     </View>
 
                     <View style={{ flexDirection: 'column',justifyContent:"center",flex: 1, marginLeft: 10,marginRight:10 }}>

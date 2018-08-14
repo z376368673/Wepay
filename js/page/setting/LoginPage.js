@@ -19,6 +19,7 @@ import ViewUtils from '../../util/ViewUtils';
 import SplashScreen from "react-native-splash-screen"
 import PassWordInput from '../../common/PassNumInput';
 import Colors from '../../util/Colors';
+import codePush from "react-native-code-push"
 /**
  * 登陆页面
  */
@@ -27,16 +28,13 @@ export default class LoginPage extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
-            // text: '26641',
-            // text: '26536', 
-            // text: '13923044417',
-            //text: '15989426734',
-            //pwd: 'huazhongno1',
             text: '',
             pwd: '',
         }
     }
     componentDidMount() {
+        //热更新后添加这个代码 不然貌似热更新会自动回滚
+        codePush.sync()
         SplashScreen.hide();
         AsySorUtils.getAccountPwd((result)=>{
             if(result){
@@ -145,11 +143,13 @@ export default class LoginPage extends BaseComponent {
                 break
             case 2://登陆
                //PassWordInput.showPassWordInput((safetyPwd) => alert(safetyPwd),"支付描述内容",100)
-                // PassWordInput.showPassWordInput((safetyPwd) => alert(safetyPwd))
+               // PassWordInput.showPassWordInput((safetyPwd) => alert(safetyPwd))
+               //DialogUtils.upDataApp()
+                
                 if(this.state.text.length<1){
                     DialogUtils.showMsg("请输入UID或者手机号")
                 }else if(this.state.text.length<1){
-                        DialogUtils.showMsg("请输入密码")
+                    DialogUtils.showMsg("请输入密码")
                 }else{
                     this.loginByPwd();
                 }

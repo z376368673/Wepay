@@ -209,8 +209,8 @@ export default AppNavigator = createStackNavigator({
     
     
 }, {
-    //initialRouteName: 'LoginPage', // 默认显示界面
-    initialRouteName: 'BuyPage', // 默认显示界面
+    initialRouteName: 'LoginPage', // 默认显示界面
+    //initialRouteName: 'BuyPage', // 默认显示界面
     mode: 'card',
     navigationOptions: {
         header: null,

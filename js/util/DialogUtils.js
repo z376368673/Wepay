@@ -271,12 +271,6 @@ export default class DialogUtils {
     * 
     */
     static upDataApp() {
-        codePush.getUpdateMetadata(UpdateState.PENDING).then((update) => {
-            if (update) {
-                // There's a pending update, do we want to force a restart?
-                alert(JSON.stringify(update))
-            }
-        });
         codePush.checkForUpdate()
             .then((update) => {
                 if (!update) {
@@ -288,16 +282,16 @@ export default class DialogUtils {
                             appendReleaseDescription: true,//是否显示更新description，默认false
                             //要显示的更新通知的标题. Defaults to “Update available”.
                             title: '更新',
-                            //更新说明的前缀。 默认是” Description: “
-                            descriptionPrefix: '\n\n更新内容：\n', 
                             //强制更新时，更新通知. Defaults to “An update is available that must be installed.”.
-                            mandatoryUpdateMessage: '强制更新时，更新通知', 
+                            mandatoryUpdateMessage: '发现新的更新，请您安装最新版本', 
                             //强制更新的按钮文字. 默认 to “Continue”.
                             mandatoryContinueButtonLabel: '更新',
                             //非强制更新时，取消按钮文字. Defaults to “Ignore”.
                             optionalIgnoreButtonLabel: "忽略",
                             //非强制更新时，确认文字. Defaults to “Install”.
                             optionalInstallButtonLabel: "安装",
+                            //更新说明的前缀。 默认是” Description: “
+                            descriptionPrefix: '更新内容：\n', 
                             //非强制更新时，更新通知. Defaults to “An update is available. Would you like to install it?”.
                             optionalUpdateMessage: "发现新的更新，您是否要安装最新版本"
                         },
