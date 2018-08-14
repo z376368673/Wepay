@@ -20,8 +20,9 @@ export default class ZhuanRu extends BaseComponent {
         this.state = {
             account: "",
         }
+        
     }
-
+  
     render() {
         return (
             <View style={[BaseStyles.container_column, { backgroundColor: "#f1f1f1" }]}>
@@ -48,10 +49,14 @@ export default class ZhuanRu extends BaseComponent {
                         style={{ height: 40, flex: 1, fontSize: 16, color: '#333', marginLeft: 8 }}
                         placeholder={'请输入手机号码/UID'}
                         placeholderTextColor={'#999'}
-                        defaultValue={this.state.account}
                         underlineColorAndroid='transparent'
                         keyboardType='numeric'
-                        onChangeText={(text) => this.setState({ account: text })}
+                       // defaultValue={this.state.account}
+                        value={this.state.account+""}
+                        onChangeText={(text) => {
+                            const newText = text.replace(/[^\d]+/, '0')
+                            this.setState({ account:newText})
+                        }}
                         //失去焦点时
                         onBlur={() => this.onClicks(4)}
                     />

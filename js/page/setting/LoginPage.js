@@ -20,6 +20,7 @@ import SplashScreen from "react-native-splash-screen"
 import PassWordInput from '../../common/PassNumInput';
 import Colors from '../../util/Colors';
 import codePush from "react-native-code-push"
+import HomePage from '../HomePage';
 /**
  * 登陆页面
  */
@@ -165,20 +166,25 @@ export default class LoginPage extends BaseComponent {
         let url = BaseUrl.loginUrl(this.state.text, this.state.pwd)
         HttpUtils.getData(url)
             .then(result => {
+                DialogUtils.hideLoading()
                 if (result.code === 1) {
                     //alert(JSON.stringify(result))
                     //Mobx保存方式
                     this.props.AppStore.setUserInfo(result.data)
                     //全局保存，    
                     UserInfo.userInfo = result.data
-                    this.props.navigation.navigate('HomePage');
+                   
                     DialogUtils.showToast("登陆成功")
                     //异步保存到本地文件  
                     AsySorUtils.saveAccountPwd([this.state.text, this.state.pwd])
+                   // this.props.navigation.goBack()
+                   // this.props.navigation.navigate('HomePage');
+                    this.goHome(this.props.navigation)
+                   // this.props.navigator.push({name: HomePage,reset:true});
                 } else {
                     DialogUtils.showToast(result.msg)
                 }
-                DialogUtils.hideLoading()
+                
             })
     }
 

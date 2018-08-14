@@ -141,7 +141,11 @@ export default class AddBankCard extends BaseComponent {
                         placeholderTextColor={'#999'}
                         underlineColorAndroid='transparent'
                         keyboardType='numeric'
-                        onChangeText={(text) => this.setState({ bankNum: text })} />
+                        value={this.state.bankNum+""}
+                        onChangeText={(text) => {
+                            const newText = text.replace(/[^\d]+/, '0')
+                            this.setState({ bankNum: newText })}} 
+                        />
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center',backgroundColor: "#fff",}}>
                     <Text style={{height:0}}>

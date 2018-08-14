@@ -291,7 +291,8 @@ export default class DialogUtils {
                             //非强制更新时，确认文字. Defaults to “Install”.
                             optionalInstallButtonLabel: "安装",
                             //更新说明的前缀。 默认是” Description: “
-                            descriptionPrefix: '更新内容：\n', 
+                           // descriptionPrefix: '更新内容：\n', 
+                            descriptionPrefix: '  \n',
                             //非强制更新时，更新通知. Defaults to “An update is available. Would you like to install it?”.
                             optionalUpdateMessage: "发现新的更新，您是否要安装最新版本"
                         },

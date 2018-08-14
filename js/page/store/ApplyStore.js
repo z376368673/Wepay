@@ -179,7 +179,11 @@ export default class ApplyStore extends BaseComponent {
                                 maxLength={11}
                                 underlineColorAndroid='transparent'
                                 keyboardType={"numeric"}
-                                onChangeText={(text) => this.setState({ phone: text })} />
+                                value={this.state.phone+""}
+                                onChangeText={(text) => {
+                                    const newText = text.replace(/[^\d]+/, '0')
+                                    this.setState({ phone: newText })}} 
+                                />
                         </View>
 
                         <Text style={{

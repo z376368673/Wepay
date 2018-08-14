@@ -126,7 +126,11 @@ export default class RegisterPage extends BaseComponent {
                         placeholderTextColor={'#fff'}
                         underlineColorAndroid='transparent'
                         //keyboardType={"default"}
-                        onChangeText={(text) => this.setState({ phone: text })} />
+                        value={this.state.phone}
+                        onChangeText={(text) => {
+                            const newText = text.replace(/[^\d]+/, '0')
+                            this.setState({ phone: newText })}} 
+                      />
                 </View>
 
                 <View style={styles.itemView}>
@@ -175,7 +179,11 @@ export default class RegisterPage extends BaseComponent {
                         placeholderTextColor={'#fff'}
                         underlineColorAndroid='transparent'
                         keyboardType={"numeric"}
-                        onChangeText={(text) => this.setState({ recommendPhone: text })} />
+                        value={this.state.recommendPhone}
+                        onChangeText={(text) => {
+                            const newText = text.replace(/[^\d]+/, '0')
+                            this.setState({ recommendPhone: newText })}} 
+                         />
                 </View>
                 <View style={styles.itemView}>
                     <TextInput
@@ -185,7 +193,11 @@ export default class RegisterPage extends BaseComponent {
                         placeholderTextColor={'#fff'}
                         underlineColorAndroid='transparent'
                         keyboardType={"numeric"}
-                        onChangeText={(text) => this.setState({ paymentPwd: text })} />
+                        value={this.state.paymentPwd}
+                        onChangeText={(text) => {
+                            const newText = text.replace(/[^\d]+/, '0')
+                            this.setState({ paymentPwd: newText })}} 
+                       />
                 </View>
 
                 <TouchableOpacity

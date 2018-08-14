@@ -139,7 +139,10 @@ export default class ExcIntegral extends BaseComponent {
                         placeholderTextColor={'#999'}
                         underlineColorAndroid='transparent'
                         keyboardType='numeric'
-                        onChangeText={(text) => this.setState({exchangeMoney:text})}
+                        value={this.state.exchangeMoney}
+                        onChangeText={(text) => {
+                            const newText = text.replace(/[^\d]+/, '0')
+                            this.setState({ exchangeMoney: newText })}} 
                         //失去焦点时
                         // onBlur={()=>this.onClicks(4)}
                     />

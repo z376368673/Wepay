@@ -58,7 +58,10 @@ export default class SharedRecord extends BaseComponent {
                         underlineColorAndroid='transparent'
                         keyboardType={"default"}
                         maxLength={12}
-                        onChangeText={(text) => this.setState({ keyword: text })} />
+                        value={this.state.keyword}
+                        onChangeText={(text) => {
+                            const newText = text.replace(/[^\d]+/, '0')
+                            this.setState({ keyword: newText })}} />
                     <Text style={{
                         backgroundColor: "#d15", color: "#fff", fontSize: 15,
                         borderRadius: 10, paddingLeft: 12, paddingRight: 12,

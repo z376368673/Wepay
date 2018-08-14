@@ -12,7 +12,7 @@ import AsySorUtils from '../dao/AsySorUtils';
 import { inject } from 'mobx-react';
 
 import { PullPicker } from 'teaset';
-import  SplashScreen from "react-native-splash-screen"
+import SplashScreen from "react-native-splash-screen"
 import BaseUrl from '../util/BaseUrl';
 import user from '../model/UserInfo';
 import UserInfo from '../model/UserInfo';
@@ -22,15 +22,15 @@ import { NavigationActions, StackActions } from 'react-navigation';
 export default class BaseComponent extends Component {
     constructor(props) {
         super(props);
-       // this.navigation = this.props.navigation;
-       //this.props.navigation.navigate('name');
-       // this.props.navigation.goBack()
-       //this.props.AppStore.userInfo.sessionId,
-       //const { userName, sessionId } = this.props.navigation.state.params
+        // this.navigation = this.props.navigation;
+        //this.props.navigation.navigate('name');
+        // this.props.navigation.goBack()
+        //this.props.AppStore.userInfo.sessionId,
+        //const { userName, sessionId } = this.props.navigation.state.params
     }
 
-     //qu登录
-     goLogin(navigation) {
+    //qu登录
+    goLogin(navigation) {
         //然后设置新路由的第0个路由为home 
         const resetAction = StackActions.reset({
             index: 0,
@@ -41,42 +41,56 @@ export default class BaseComponent extends Component {
         //执行重置路由方法
         navigation.dispatch(resetAction)
     }
-    componentDidMount(){
-       // SplashScreen.hide();
+
+    //跳转并替换当前路由
+    goHome(navigation ) {
+        //然后设置新路由的第0个路由为home 
+        const resetAction = StackActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({ routeName: 'HomePage' }),
+            ],
+        });
+        //执行重置路由方法
+        navigation.dispatch(resetAction)
     }
 
-    getUser(){
-        return  user;
+    componentDidMount() {
+        // SplashScreen.hide();
+    }
+
+    getUser() {
+        return user;
     }
     //获取用户信息
-     getUserInfo(){
-        if(user.userInfo===null){
+    getUserInfo() {
+        if (user.userInfo === null) {
             //下面的方法不同步 很烦 正在找方法
             return null
-        } 
-        return  user.userInfo;
+        }
+        return user.userInfo;
     }
-     //获取用户信息 sessionId
-    getSessionId(){
-        return  user.sessionId;
+    //获取用户信息 sessionId
+    getSessionId() {
+        return user.sessionId;
     }
     getCallBackValue = (params) => this.setState(params)
     //获取图片拼接的地址，有些图片不需要拼接
-    getImgUrl(){
+    getImgUrl() {
         return "http://wepay.hxksky.com/"
     }
-    getImgUrl(imgName){
-        return "http://wepay.hxksky.com/"+imgName
+    getImgUrl(imgName) {
+        return "http://wepay.hxksky.com/" + imgName
     }
-    getSharedUrl(userId){
-        return "http://wp.wepay168.com/wepay/share?userId="+userId
+    getSharedUrl(userId) {
+        return "http://wp.wepay168.com/wepay/share?userId=" + userId
     }
 
-    setQRcode(text){
-       return qrcodetext+text
+    setQRcode(text) {
+        return qrcodetext + text
     }
-    getQRcode(text){
-        return text.substr(qrcodetext.length,text.length)
+    getQRcode(text) {
+        return text.substr(qrcodetext.length, text.length)
     }
 }
 const qrcodetext = "567309251673029316273928";
@@ -84,8 +98,8 @@ const { height, width } = Dimensions.get('window');
 export const mainColor = '#48b1a3';
 export const window_height = height;
 export const window_width = width;
- //更新用户信息  想办法更新全局的 用户信息
- export const  upDataUserInfo=(AppStore)=>{
+//更新用户信息  想办法更新全局的 用户信息
+export const upDataUserInfo = (AppStore) => {
     let url = BaseUrl.getUserInfoBy(AppStore.userInfo.sessionId)
     HttpUtils.getData(url)
         .then(result => {
@@ -93,26 +107,26 @@ export const window_width = width;
                 //Mobx保存方式
                 AppStore.setUserInfo(result.data)
                 //全局保存
-               UserInfo.userInfo = result.data
-            } else {    
+                UserInfo.userInfo = result.data
+            } else {
                 DialogUtils.showToast(result.msg)
             }
         })
 }
 
- //领红包 积分释放到余额
- export const  integralRelease=(AppStore)=>{
+//领红包 积分释放到余额
+export const integralRelease = (AppStore) => {
     let url = BaseUrl.integralRelease(AppStore.userInfo.sessionId)
     HttpUtils.getData(url)
         .then(result => {
             if (result.code === 1) {
                 upDataUserInfo(AppStore)
                 DialogUtils.showToast("红包领取成功")
-            } else {    
+            } else {
                 DialogUtils.showToast(result.msg)
             }
         })
-     
+
 }
 
 
@@ -134,7 +148,7 @@ export const BaseStyles = StyleSheet.create({
 
 });
 
- 
+
 /*
 flexWrap enum('wrap', 'nowrap')
 

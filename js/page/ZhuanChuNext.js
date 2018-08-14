@@ -188,10 +188,6 @@ export default class ZhuanChuNext extends BaseComponent {
                             keyboardType='numeric'
                             value={this.state.tranMoney}
                             onChangeText={(text) => this.setState({ tranMoney: this.chkPrice(text) })}
-                            onChangeText={(text) => {
-                                // const newText = text.replace(/[^\d]+/, '');
-                                this.setState({ tranMoney: this.chkPrice(text) })
-                            }}
                             //纯数字
                             // onChangeText={(text) => {
                             //     const newText = text.replace(/[^\d]+/, '');
@@ -222,7 +218,10 @@ export default class ZhuanChuNext extends BaseComponent {
                         placeholderTextColor={'#999'}
                         underlineColorAndroid='transparent'
                         keyboardType='numeric'
-                        onChangeText={(text) => this.setState({ mobile4: text })}
+                        value={this.state.mobile4}
+                        onChangeText={(text) => {
+                            const newText = text.replace(/[^\d]+/, '0')
+                            this.setState({ mobile4: newText })}} 
                         //失去焦点时
                         onBlur={() => this.onClicks(4)}
                     />

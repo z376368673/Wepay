@@ -78,11 +78,14 @@ export default class ModifyPassWord extends BaseComponent {
                     <TextInput
                         style={styles.itemTextInput}
                         placeholder={'请输入手机号码'}
-                        defaultValue={this.state.phone}
                         placeholderTextColor={'#fff'}
                         underlineColorAndroid='transparent'
                         keyboardType="numeric"
-                        onChangeText={(text) => this.setState({phone: text})}/>
+                        value={this.state.phone}
+                        onChangeText={(text) => {
+                            const newText = text.replace(/[^\d]+/, '0')
+                            this.setState({ phone: newText })}} 
+                        />
                 </View>
 
                 <View style={styles.itemView}>
@@ -108,7 +111,11 @@ export default class ModifyPassWord extends BaseComponent {
                         underlineColorAndroid='transparent'
                         secureTextEntry={true}
                         keyboardType={this.state.type === 0 ? "default" : "numeric"}
-                        onChangeText={(text) => this.setState({pwd: text})}/>
+                        value={this.state.pwd}
+                        onChangeText={(text) => {
+                            const newText = this.state.type === 0 ?text:text.replace(/[^\d]+/, '0')
+                            this.setState({ pwd: newText })}} 
+                        />
                 </View>
 
                 <View style={styles.itemView}>
@@ -120,7 +127,11 @@ export default class ModifyPassWord extends BaseComponent {
                         secureTextEntry={true}
                         underlineColorAndroid='transparent'
                         keyboardType={this.state.type === 0 ? "default" : "numeric"}
-                        onChangeText={(text) => this.setState({pwdAgain: text})}/>
+                        value={this.state.pwdAgain}
+                        onChangeText={(text) => {
+                            const newText = this.state.type === 0 ?text:text.replace(/[^\d]+/, '0')
+                            this.setState({ pwdAgain: newText })}} 
+                       />
                 </View>
 
                 <TouchableOpacity

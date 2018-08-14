@@ -178,7 +178,10 @@ export default class AddShop extends BaseComponent {
                                 underlineColorAndroid='transparent'
                                 keyboardType={"numeric"}
                                 maxLength={12}
-                                onChangeText={(text) => this.setState({ shopPrice: text })} />
+                                value={this.state.shopPrice+""}
+                                onChangeText={(text) => {
+                                    this.setState({ shopPrice: Utils.chkPrice(text) })}} 
+                                />
                                 <Text style={[styles.itemText,{marginLeft:10}]}>
                                 元</Text>
                         </View>
@@ -188,12 +191,15 @@ export default class AddShop extends BaseComponent {
                             <TextInput
                                 style={[styles.itemTextInput,{width:60}]}
                                 placeholder={'请输入库存数量'}
-                                defaultValue={this.state.shopNum+""}
                                 placeholderTextColor={'#999'}
                                 underlineColorAndroid='transparent'
                                 keyboardType={"numeric"}
                                 maxLength={12}
-                                onChangeText={(text) => this.setState({ shopNum: text })} />
+                                value={this.state.shopNum+""}
+                                onChangeText={(text) => {
+                                    const newText = text.replace(/[^\d]+/, '0')
+                                    this.setState({ shopNum: newText })}} 
+                                />
                                  <Text style={[styles.itemText,{marginLeft:10}]}>
                                 件</Text>
                         </View>

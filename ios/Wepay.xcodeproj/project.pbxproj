@@ -163,13 +163,6 @@
 			remoteGlobalIDString = 4107012F1ACB723B00C6AA39;
 			remoteInfo = RCTCamera;
 		};
-		04E39D3B21046FFF002E1A3B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C3D7F4640AB9479AB7DE5623 /* RNCamera.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 4107012F1ACB723B00C6AA39;
-			remoteInfo = RNCamera;
-		};
 		139105C01AF99BAD00B5F7CC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */;
@@ -455,7 +448,6 @@
 		BE0927C01D5D22240ED9AB25 /* libPods-Wepay.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Wepay.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C20EC66ECC9145CEB5D2EFA3 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		C28F0342133C46FFBBC076F7 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
-		C3D7F4640AB9479AB7DE5623 /* RNCamera.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RNCamera.xcodeproj"; sourceTree = "<group>"; };
 		DA8EB83A95D0430A96DE024E /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		DF9C8E025D484111BBC9ADBE /* RNSyanImagePicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSyanImagePicker.xcodeproj; path = "../node_modules/react-native-syan-image-picker/ios/RNSyanImagePicker.xcodeproj"; sourceTree = "<group>"; };
 		E151D2054EF444E989763BFD /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
@@ -660,14 +652,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		04E39D1021046FFE002E1A3B /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				04E39D3C21046FFF002E1A3B /* libRNCamera.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		139105B71AF99BAD00B5F7CC /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -777,7 +761,6 @@
 				28A4579FFD374C67BE563455 /* SplashScreen.xcodeproj */,
 				E151D2054EF444E989763BFD /* RNVectorIcons.xcodeproj */,
 				4AB9384633F047F799147B16 /* RCTCamera.xcodeproj */,
-				C3D7F4640AB9479AB7DE5623 /* RNCamera.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1041,10 +1024,6 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
-					ProductGroup = 04E39D1021046FFE002E1A3B /* Products */;
-					ProjectRef = C3D7F4640AB9479AB7DE5623 /* RNCamera.xcodeproj */;
-				},
-				{
 					ProductGroup = 04C7BDBF20EF842400E649D7 /* Products */;
 					ProjectRef = DF9C8E025D484111BBC9ADBE /* RNSyanImagePicker.xcodeproj */;
 				},
@@ -1157,13 +1136,6 @@
 			fileType = archive.ar;
 			path = libRCTCamera.a;
 			remoteRef = 04E39CFC21046E5C002E1A3B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		04E39D3C21046FFF002E1A3B /* libRNCamera.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNCamera.a;
-			remoteRef = 04E39D3B21046FFF002E1A3B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		139105C11AF99BAD00B5F7CC /* libRCTSettings.a */ = {
