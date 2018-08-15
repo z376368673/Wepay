@@ -75,7 +75,7 @@ export default class SharedRecord extends BaseComponent {
                     <RefreshFlatList
                         ref={refList => this.refList = refList}
                         renderItem={(items) => this._getItem(items)}
-                        isDownLoad={true}
+                        // isDownLoad={true}
                         onRefreshs={() => this._refreshData()}
                         onLoadData={() => this._onLoadData()}
                     />
@@ -95,24 +95,24 @@ export default class SharedRecord extends BaseComponent {
      */
     getData(isRefesh) {
         this.url = BaseUrl.shareRecord(this.userInfo.sessionId, this.pageIndex, this.state.keyword)
-        //alert(this.url)
+        // alert(this.url)
         HttpUtils.getData(this.url)
             .then(result => {
                 // alert(JSON.stringify(result))
+               // alert(JSON.stringify(result))
                 if (result.code === 1) {
                     if (isRefesh) {
                         this.refList.setData(result.data)
                         if (result.data.length < 1) {
                             DialogUtils.showToast("暂无消息")
                         }
-                    } else if (result.code === 2) {
-                        DialogUtils.showToast(result.msg)
-                        this.goLogin(this.props.navigation)
-                    } else {
+                    }else {
                         this.refList.addData(result.data)
                     }
                     this.pageIndex += 1
-
+                }else if (result.code === 2) {
+                    DialogUtils.showToast(result.msg)
+                    this.goLogin(this.props.navigation)
                 } else {
                     DialogUtils.showToast(result.msg)
                 }

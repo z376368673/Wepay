@@ -33,7 +33,7 @@ export default class SellPage extends BaseComponent {
             bankCard: null,
             describe: "",//描述
         }
-        // this.userInfo = this.getUserInfo();
+        this.userInfo = this.getUserInfo();
     }
     componentDidMount() {
         SplashScreen.hide();
@@ -54,6 +54,7 @@ export default class SellPage extends BaseComponent {
                 safetyPwd: safetyPwd,
             })
             .then(result => {
+                DialogUtils.hideLoading()
                 if (result.code === 1) {
                     upDataUserInfo(this.props.AppStore)
                     this.props.navigation.navigate('HomePage');
@@ -62,7 +63,7 @@ export default class SellPage extends BaseComponent {
                 } else {
                     DialogUtils.showToast(result.msg)
                 }
-                DialogUtils.hideLoading()
+              
             })
 
     }
@@ -188,7 +189,7 @@ export default class SellPage extends BaseComponent {
         //orderType    1，未完成订单， 2，确定打款订单  3 已完成订单
         switch (index) {
              case 0:
-                alert(index+"")
+               // alert(index+"")
                 break;
             case 1:
                 this.props.navigation.navigate('BuyOrSellUnfinishedOrder', { type: 1, orderType: 1 });
