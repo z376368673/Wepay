@@ -20,7 +20,17 @@ cd android && ./gradlew clean && ./gradlew assembleRelease
 //运行打包后app 安装到手机 安装release版app 必须打包后才能执行 
 react-native run-android --variant=release
 
-热更新发布 Wepay-IOS Wepay-Android
+
+
+
+
+
+
+
+
+
+
+热更新发布 Wepay-IOS Wepay-Android  (忘记当时注册填了什么)
 
 code-push login 登陆
 code-push loout 注销
@@ -51,3 +61,7 @@ code-push release-react     Wepay-Android     android     --t 1.2.4 --dev false 
 关于code-push release-react更多可选的参数，可以在终端输入code-push release-react进行查看。
 我们可以通过code-push deployment ls <appName>来查看发布详情与此次更新的安装情况
 如： code-push deployment ls Wepay-IOS
+
+
+回滚指定版本 v21 代表 label
+code-push rollback Wepay-IOS Production --targetRelease v21
