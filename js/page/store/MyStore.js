@@ -78,13 +78,13 @@ export default class MyStore extends BaseComponent {
                         this.refList.setData(result.data)
                         if(result.data.length<1){
                             DialogUtils.showToast("暂无商品") }
-                    }else if (result.code === 2) {
-                        DialogUtils.showToast(result.msg)
-                        this.goLogin(this.props.navigation)
-                    } else {
+                    }else {
                         this.refList.addData(result.data)
                     }
                     this.pageIndex += 1
+                } else if (result.code === 2) {
+                    DialogUtils.showToast(result.msg)
+                    this.goLogin(this.props.navigation)
                 } else {
                     DialogUtils.showToast(result.msg)
                 }

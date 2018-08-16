@@ -88,9 +88,16 @@ export default class HttpUtils {
             // 获取文件名end
             // 判断文件的类型(视频-图片等)end
             //let file = { uri: imgAry[i].uri, type: imgAry[i].mime, name: arr[arr.length - 1] };   //这里的key(uri和type和name)不能改变,
-            let file = { uri: imgAry[i].uri, type: "application/octet-stream", name: arr[arr.length - 1] };   //这里的key(uri和type和name)不能改变,
-            formData.append("file", file);   //这里的files就是后台需要的key
-            //这里的files就是后台需要的key
+            let uri =  imgAry[i].uri
+            let starIndex =  uri.lastIndexOf(".")
+            let suffix  =  uri. substring(starIndex,uri.length).toLocaleLowerCase()
+            if(suffix===".jpg"||suffix===".png"||suffix===".jpeg"){
+                let file = { uri: imgAry[i].uri, type: "application/octet-stream", name: arr[arr.length - 1] };   //这里的key(uri和type和name)不能改变,
+                formData.append("file", file);   //这里的files就是后台需要的key
+            }else{
+                DialogUtils.showMsg("只支持png或jpg格式图片....")
+                return;
+            }
         }
         for (const key in obj) {
             formData.append(key, obj[key]);  
@@ -109,7 +116,7 @@ export default class HttpUtils {
         })
         .catch((error) => {
                 DialogUtils.hideLoading()
-                DialogUtils.showToast("上传失败"+error.message)
+                //DialogUtils.showToast("上传失败"+error.message)
             });
     }
 

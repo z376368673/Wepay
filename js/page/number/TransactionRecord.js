@@ -4,8 +4,6 @@ import {
     Text,
     View,
     TouchableOpacity,
-    Image,
-    Animated,
 } from 'react-native';
 import BaseComponent, { BaseStyles, mainColor } from "../BaseComponent";
 import NavigationBar from "../../common/NavigationBar";
@@ -14,9 +12,8 @@ import HttpUtils from "../../util/HttpUtils";
 import { SegmentedBar, Label } from 'teaset';
 import BaseUrl from '../../util/BaseUrl';
 import RefreshFlatList from '../../common/RefreshFlatList';
-import SellUnfinshedorderItem from '../../item/SellUnfinshedorderItem';
-import BuyUnfinshedorderItem from '../../item/BuyUnfinshedorderItem';
 import DialogUtils from '../../util/DialogUtils';
+import Colors from "../../util/Colors"
 
 /**
  * 交易记录
@@ -35,7 +32,7 @@ export default class TransactionRecord extends BaseComponent {
             '转入记录',
         ];
         this.userInfo = this.getUserInfo()
-        this.activeIndex=0;
+        this.activeIndex = 0;
     }
     //界面加载完成
     componentDidMount() {
@@ -57,7 +54,7 @@ export default class TransactionRecord extends BaseComponent {
             let tintColor = isActive ? mainColor : '#333';
             return (
                 <View key={index} style={{ padding: 15, alignItems: 'center' }}>
-                    <Text style={{ fontSize: 17, color: tintColor, paddingTop: 4 ,}} >{item}</Text>
+                    <Text style={{ fontSize: 17, color: tintColor, paddingTop: 4, }} >{item}</Text>
                 </View>
             );
         });
@@ -71,10 +68,10 @@ export default class TransactionRecord extends BaseComponent {
             <View style={BaseStyles.container_column}>
                 <NavigationBar
                     title={"交易记录"}
-                    navigation={this.props.navigation}/>
+                    navigation={this.props.navigation} />
                 <SegmentedBar
                     justifyItem={"fixed"}
-                    indicatorLineColor={mainColor}
+                    indicatorLineColor={Colors.r1}
                     indicatorLineWidth={2}
                     indicatorPositionPadding={5}
                     activeIndex={activeIndex}
@@ -82,24 +79,27 @@ export default class TransactionRecord extends BaseComponent {
                     {this.renderCustomItems()}
                 </SegmentedBar>
 
-                <View style={{ flex: 1, backgroundColor: "#f1f1f1", marginTop: 1 ,}}>
+                <View style={{ flex: 1, backgroundColor: "#f1f1f1", marginTop: 1, }}>
                     <RefreshFlatList
                         ref={refList => this.refList = refList}
                         isDownLoad={true}
                         onRefreshs={() => this._refreshData()}
                         onLoadData={() => this._onLoadData()}
-                        renderItem={(items) =>this.renderItem(items)}
+                        renderItem={(items) => this.renderItem(items)}
                     />
                 </View>
             </View>
         );
     }
 
-    renderItem(data){
-        let view = <SellUnfinshedorderItem data={data} 
-        delBack={(index)=>this.refList.delData(index)}  
-        {...this.props}/>
-        return view
+    renderItem(data) {
+        return <View style={{ padding: 15,marginTop:1 }}>
+            <Text style={{ fontSize: 15, color: Colors.text3 }}>转出 5000.0 Wepay</Text>
+            <View style={{ flexDirection: "row" }}>
+                <Text style={{ fontSize: 14, color: Colors.text6, flex: 1 }}>转出 5000.0 Wepay</Text>
+                <Text style={{ fontSize: 15, color: Colors.r1 }}>与 xxxx 完成交易</Text>
+            </View>
+        </View>
     }
 
     //刷新数据
@@ -112,7 +112,7 @@ export default class TransactionRecord extends BaseComponent {
     _onLoadData() {
         this.getData(false)
     }
-    
+
     /**
      * 获取数据
      * @param {*} isRefesh  是否刷新
@@ -121,7 +121,7 @@ export default class TransactionRecord extends BaseComponent {
     getData(isRefesh) {
         if (this.activeIndex === 0) { //卖出 未选择付款人
             this.url = BaseUrl.getOutUndoneUnselectedUrl(this.userInfo.sessionId, this.pageIndex)
-        }else  if (this.activeIndex === 1) {//卖出 已选择付款人
+        } else if (this.activeIndex === 1) {//卖出 已选择付款人
             this.url = BaseUrl.getOutUndoneSelectedUrl(this.userInfo.sessionId, this.pageIndex)
         }
 
@@ -131,20 +131,21 @@ export default class TransactionRecord extends BaseComponent {
                     //alert(JSON.stringify(result.data))
                     if (isRefesh) {
                         this.refList.setData(result.data)
-                        if(result.data.length<1){
-                            DialogUtils.showToast("暂无信息") }
+                        if (result.data.length < 1) {
+                            DialogUtils.showToast("暂无信息")
+                        }
                     } else {
                         this.refList.addData(result.data)
                     }
                     this.pageIndex += 1
-                   
-                } else if(result.code === 2){
+
+                } else if (result.code === 2) {
                     DialogUtils.showToast(result.msg)
                     this.goLogin(this.props.navigation)
                 } else {
                     DialogUtils.showToast(result.msg)
                 }
             })
-            
+
     }
 }

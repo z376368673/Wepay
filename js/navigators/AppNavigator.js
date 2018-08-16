@@ -51,6 +51,9 @@ import MyOrder from "../page/setting/MyOrder";
 import PassNumInput from "../common/PassNumInput";
 import NumberHome from "../page/number/NumberHome"
 import TransactionRecord from "../page/number/TransactionRecord"
+import TranWepay from "../page/number/TranWepay"
+import ZhongChou from "../page/number/ZhongChou"
+import ZhongChouRecord from "../page/number/ZhongChouRecord"
 
 
 
@@ -73,7 +76,15 @@ export default AppNavigator = createStackNavigator({
     TransactionRecord: {//交易记录
         screen: TransactionRecord
     },
-
+    TranWepay: {//Wepay转出
+        screen: TranWepay
+    },
+    ZhongChou: {//众筹
+        screen: ZhongChou
+    },
+    ZhongChouRecord: {//众筹项目记录
+        screen: ZhongChouRecord
+    },
     SettingView: {//设置
         screen: SettingView
     },
@@ -221,8 +232,8 @@ export default AppNavigator = createStackNavigator({
     },
     
 }, {
-     initialRouteName: 'LoginPage', // 默认显示界面
-    // initialRouteName: 'NumberAssets', // 默认显示界面
+      initialRouteName: 'LoginPage', // 默认显示界面
+    //initialRouteName: 'TranWepay', // 默认显示界面
     mode: 'card',
     navigationOptions: {
         header: null,
