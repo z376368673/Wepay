@@ -123,7 +123,7 @@ export default class HomePage extends BaseComponent {
     /**
      * 显示红包
      */
-    showRedPacket(){
+    showRedPacket() {
         if (this.props.AppStore.userInfo.isReward === 0 && this.props.AppStore.userInfo.todayReleas > 0) {
             DialogUtils.redPacket(this.props.AppStore.userInfo.todayReleas,
                 () => integralRelease(this.props.AppStore))
@@ -169,11 +169,11 @@ export default class HomePage extends BaseComponent {
                                     <View style={{ flex: 1, marginLeft: 10 }}>
 
                                         <View style={{ flexDirection: "row" }}>
-                                            <Text 
-                                            onPress={()=>alert("uid:"+this.props.AppStore.userInfo.userid)}
-                                            style={styles.text}>
+                                            <Text
+                                                onPress={() => alert("uid:" + this.props.AppStore.userInfo.userid)}
+                                                style={styles.text}>
                                                 UID:{this.props.AppStore.userInfo.userid}
-                                               
+
                                             </Text>
                                             {this.props.AppStore.userInfo.useGrade === 3 ? <Image source={require("../../res/images/huangguan.png")}
                                                 style={{ height: 15, width: 15, marginLeft: 5 }} /> : null}
@@ -274,8 +274,8 @@ export default class HomePage extends BaseComponent {
                 this.props.navigation.navigate('SellPage');
                 break;
             case 5://数字资产
-                // this.props.navigation.navigate('ApplyStore');
-                DialogUtils.showToast("此模块正在升级中...")
+                this.props.navigation.navigate('NumberHome');
+                // DialogUtils.showToast("此模块正在升级中...")
                 break;
             case 6://商城
                 this.props.navigation.navigate('StoreMall');

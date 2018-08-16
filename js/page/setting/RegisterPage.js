@@ -80,8 +80,8 @@ export default class RegisterPage extends BaseComponent {
                     DialogUtils.showMsg("请输入6位以上的密码")
                 } else if (this.state.pwd != this.state.pwdAgain) {
                     DialogUtils.showMsg("两次输入的密码不一致")
-                } else if (this.state.recommendPhone.length  !== 11) {
-                    DialogUtils.showMsg("请输入11位推荐人手机号")
+                } else if (this.state.recommendPhone.length  < 4) {
+                    DialogUtils.showMsg("请输入4位以上的uuid或者手机号")
                 } else if (this.state.paymentPwd.length  !== 6) {
                     DialogUtils.showMsg("请输入6位交易密码")
                 } else {

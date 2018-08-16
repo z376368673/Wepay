@@ -4,6 +4,7 @@ export default  Colors={
     white:"#fff",
     text3:"#333",
     text6:"#666",
+    lineColor:"#ddd",
 
     gray:"#999",
     green:"#02DF82",
@@ -11,4 +12,13 @@ export default  Colors={
     blue:"#0072E3",
     red:"#d11",
     blue1:"#266ee5",
+
+
+    //数字资产的颜色 
+
+    y1:"#f3a600",
+    y2:"#fcc711",
+    r1:"#bf3936",
+    r2:"#c95c36",
+    b1:"#3658bf",
 }

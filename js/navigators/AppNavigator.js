@@ -49,6 +49,10 @@ import MyStoreOrder from "../page/store/MyStoreOrder";
 import CreatOrder from "../page/store/CreatOrder";
 import MyOrder from "../page/setting/MyOrder";
 import PassNumInput from "../common/PassNumInput";
+import NumberHome from "../page/number/NumberHome"
+import TransactionRecord from "../page/number/TransactionRecord"
+
+
 
 export default AppNavigator = createStackNavigator({
     // PassNumInput: {//密码输入
@@ -61,6 +65,15 @@ export default AppNavigator = createStackNavigator({
     HomePage: {//首页
         screen: HomePage
     },
+
+    NumberHome: {//数字资产
+        screen: NumberHome
+    },
+
+    TransactionRecord: {//交易记录
+        screen: TransactionRecord
+    },
+
     SettingView: {//设置
         screen: SettingView
     },
@@ -207,10 +220,9 @@ export default AppNavigator = createStackNavigator({
         //navigationOptions: {}  // 此处设置了, 会覆盖组件内的`static navigationOptions`设置. 具体参数详见下文
     },
     
-    
 }, {
-    initialRouteName: 'LoginPage', // 默认显示界面
-    //initialRouteName: 'BuyPage', // 默认显示界面
+     initialRouteName: 'LoginPage', // 默认显示界面
+    // initialRouteName: 'NumberAssets', // 默认显示界面
     mode: 'card',
     navigationOptions: {
         header: null,

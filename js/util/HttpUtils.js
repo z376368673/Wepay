@@ -32,10 +32,8 @@ export default class HttpUtils {
         var message  = JSON.stringify(error.message)
         if(message.startsWith("Network")&&message.endsWith("failed")){
             DialogUtils.showToast("网络异常，请检查网络")
-        }else if(message.indexOf("Network")>0||message.indexOf("network")>0){
-            DialogUtils.showToast("网络异常")
         }else{
-             DialogUtils.showToast("服务器繁忙")
+            DialogUtils.showToast("网络状态不佳，请检查网络")
         }
     }
     /**
