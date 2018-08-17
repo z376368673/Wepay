@@ -95,6 +95,7 @@ export default class HttpUtils {
                 let file = { uri: imgAry[i].uri, type: "application/octet-stream", name: arr[arr.length - 1] };   //这里的key(uri和type和name)不能改变,
                 formData.append("file", file);   //这里的files就是后台需要的key
             }else{
+                DialogUtils.hideLoading()
                 DialogUtils.showMsg("只支持png或jpg格式图片....")
                 return;
             }
