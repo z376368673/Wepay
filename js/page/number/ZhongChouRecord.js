@@ -61,7 +61,7 @@ export default class ZhongChouRecord extends BaseComponent {
                             borderColor: Colors.r1, borderWidth: 1, borderTopRightRadius: 18, borderBottomRightRadius: 18,
                             justifyContent: "center", alignItems: "center", backgroundColor: activeIndex ? Colors.red : Colors.white
                         }} >
-                        <Text style={{ padding: 8, fontSize: 16, marginLeft: 25, marginRight: 10, color: activeIndex ? Colors.white : Colors.red }}>购买记录</Text>
+                        <Text style={{ padding: 8, fontSize: 16, marginLeft: 25, marginRight: 10, color: activeIndex ? Colors.white : Colors.red }}>释放记录</Text>
                     </TouchableOpacity>
                 </View>
 

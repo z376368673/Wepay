@@ -54,7 +54,8 @@ import TransactionRecord from "../page/number/TransactionRecord"
 import TranWepay from "../page/number/TranWepay"
 import ZhongChou from "../page/number/ZhongChou"
 import ZhongChouRecord from "../page/number/ZhongChouRecord"
-
+import TradeHome from "../page/number/TradeHome"
+import EchartsDemo from "../page/number/EchartsDemo"
 
 
 export default AppNavigator = createStackNavigator({
@@ -85,6 +86,14 @@ export default AppNavigator = createStackNavigator({
     ZhongChouRecord: {//众筹项目记录
         screen: ZhongChouRecord
     },
+    TradeHome: {//交易
+        screen: TradeHome
+    },
+
+    EchartsDemo: {//统计图
+        screen: EchartsDemo
+    },
+
     SettingView: {//设置
         screen: SettingView
     },
@@ -232,8 +241,10 @@ export default AppNavigator = createStackNavigator({
     },
     
 }, {
-      initialRouteName: 'LoginPage', // 默认显示界面
-    //initialRouteName: 'TranWepay', // 默认显示界面
+     // initialRouteName: 'LoginPage', // 默认显示界面
+    initialRouteName: 'TradeHome', // 默认显示界面
+    //initialRouteName: 'EchartsDemo', // 默认显示界面
+
     mode: 'card',
     navigationOptions: {
         header: null,

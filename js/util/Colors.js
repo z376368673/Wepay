@@ -1,9 +1,12 @@
 export default  Colors={
 
+    bgColor:"#f1f1f1",
     mainColor:"#48b1a3",
     white:"#fff",
+    black:"#000",
     text3:"#333",
     text6:"#666",
+    text8:"#888",
     lineColor:"#ddd",
 
     gray:"#999",

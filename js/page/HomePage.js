@@ -274,8 +274,8 @@ export default class HomePage extends BaseComponent {
                 this.props.navigation.navigate('SellPage');
                 break;
             case 5://数字资产
-                // this.props.navigation.navigate('NumberHome');
-                DialogUtils.showToast("此模块正在升级中...")
+                 this.props.navigation.navigate('NumberHome');
+                //DialogUtils.showToast("此模块正在升级中...")
                 break;
             case 6://商城
                 this.props.navigation.navigate('StoreMall');

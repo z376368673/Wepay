@@ -4,8 +4,17 @@
 用本文件夹下的 QRScanner.js 替换 node_modules/ac-qrcode/QRScanner.js
 
 找个机会把以上两句 用一个命令来代替
+
 cp 项目说明/QRScanner.js node_modules/ac-qrcode/
 cp 项目说明/index.js node_modules/react-native-camera/index.js
+
+在
+Wepay/node_modules/native-echarts/src/components/Echarts/index.js 
+修改：
+source={Platform.OS==="ios"?require('./tpl.html'):{uri:"file:///android_asset/tpl.html"}}
+
+
+
 
 
 IOS 打包

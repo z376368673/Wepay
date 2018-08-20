@@ -216,6 +216,7 @@ export default class DialogUtils {
                 style={{ alignItems: 'center', justifyContent: 'center', padding: 40 }}
                 type={"zoomIn"}//动画效果
                 modal={true}//点击任意区域消失 
+                overlayOpacity={0}
                 ref={v => this.MsgView = v}
             >
                 <View style={{

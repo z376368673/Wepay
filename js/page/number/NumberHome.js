@@ -192,6 +192,7 @@ export default class NumberHome extends BaseComponent {
             case 3://W宝
                 break;
             case 4://交易
+                this.props.navigation.navigate('TradeHome');
                 break;
         }
     }
