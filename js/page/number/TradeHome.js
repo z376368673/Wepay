@@ -1,24 +1,17 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
     StyleSheet,
     Text,
-    Clipboard,
     TouchableOpacity,
     Image,
     ScrollView,
-    ImageBackground,
-    AppRegistry,
     Platform,
     View,
 } from 'react-native';
-import BaseComponent, { BaseStyles, mainColor, window_width, window_height } from "../BaseComponent";
-import NavigationBar from "../../common/NavigationBar";
-import HttpUtils from "../../util/HttpUtils";
-import BaseUrl from "../../util/BaseUrl";
+import BaseComponent, { mainColor } from "../BaseComponent";
 import RefreshFlatList2 from "../../common/RefreshFlatList2"
-import DialogUtils from '../../util/DialogUtils';
 import Colors from "../../util/Colors"
-import {Overlay, Label} from 'teaset';
+import { Overlay } from 'teaset';
 import Echarts from 'native-echarts';
 import Dimensions from 'Dimensions';
 const { width } = Dimensions.get('window');
@@ -31,6 +24,7 @@ export default class TradeHome extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
+            cid:1,  //1.Wepay 2.比特币 3.莱特币  4.以太坊  5.狗狗币
             wepayNum: "0.00", //Wepay资产
             yueNum: "0.00", //余额
             echartsType: 0,  //0：5分钟 ， 1：5小时 ，2：日线 
@@ -42,7 +36,6 @@ export default class TradeHome extends BaseComponent {
         SplashScreen.hide();
         this._refreshData()
     }
-
     render() {
 
         let { activeIndex } = this.state;
@@ -72,24 +65,25 @@ export default class TradeHome extends BaseComponent {
 
         return (
             <View style={styles.container}>
-                
-                <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center",
-                     backgroundColor: Colors.mainColor, height: 45,marginTop:Platform.OS === "ios" ? 20 : 0
+
+                <View style={{
+                    flexDirection: "row", justifyContent: "center", alignItems: "center",
+                    backgroundColor: Colors.mainColor, height: 45, marginTop: Platform.OS === "ios" ? 20 : 0
                 }}>
                     <TouchableOpacity
-                        style={[{ paddingRight: 20, paddingTop: 10, paddingBottom: 10 ,position:"absolute",left:10},]}
-                        onPress={() =>this.props.navigation.goBack(null)} >
+                        style={[{ paddingRight: 20, paddingTop: 10, paddingBottom: 10, position: "absolute", left: 10 },]}
+                        onPress={() => this.props.navigation.goBack(null)} >
                         <Image source={require('../../../res/images/fanhui.png')} />
                     </TouchableOpacity>
-                    <TouchableOpacity 
-                    ref={title=>this.title=title}
-                    onPress={() => this.showPopover(this.title)} 
+                    <TouchableOpacity
+                        ref={title => this.title = title}
+                        onPress={() => this.showPopover(this.title)}
                     >
-                    <View style={{alignItems:"center"}}> 
-                      <Text style={{fontSize:18,color:Colors.white,marginBottom:3}}>Wepay</Text>
-                      <Image  source={require("../../../res/images/sanjiao.png")} />
-                    </View></TouchableOpacity>
-                    
+                        <View style={{ alignItems: "center" }}>
+                            <Text style={{ fontSize: 18, color: Colors.white, marginBottom: 3 }}>Wepay</Text>
+                            <Image source={require("../../../res/images/sanjiao.png")} />
+                        </View></TouchableOpacity>
+
                 </View>
                 <ScrollView>
                     <View style={{ backgroundColor: Colors.bgColor }}>
@@ -129,22 +123,22 @@ export default class TradeHome extends BaseComponent {
 
                         <View style={{ flexDirection: "row", alignItems: "center", paddingTop: 15, paddingBottom: 15, backgroundColor: Colors.white, marginTop: 1 }}>
 
-                            <TouchableOpacity onPress={() => this.onClick(0)} style={{ flex: 1 }}>
+                            <TouchableOpacity onPress={() => this.onClick(1)} style={{ flex: 1 }}>
                                 <View style={{ alignItems: "center", justifyContent: "center" }}>
                                     <Image source={require("../../../res/images/fabuchushou.png")} style={{ height: 40, width: 40, }} />
                                     <Text style={{ color: this.state.selectIndex === 0 ? Colors.mainColor : Colors.text6, fontSize: 13, marginTop: 5 }}>发布出售订单</Text>
                                 </View></TouchableOpacity>
-                            <TouchableOpacity onPress={() => this.onClick(1)} style={{ flex: 1 }}>
+                            <TouchableOpacity onPress={() => this.onClick(2)} style={{ flex: 1 }}>
                                 <View style={{ alignItems: "center", justifyContent: "center" }}>
                                     <Image source={require("../../../res/images/fabugoumai.png")} style={{ height: 40, width: 40, }} />
                                     <Text style={{ color: this.state.selectIndex === 1 ? Colors.mainColor : Colors.text6, fontSize: 13, marginTop: 5 }}>发布购买订单</Text>
                                 </View></TouchableOpacity>
-                            <TouchableOpacity onPress={() => this.onClick(2)} style={{ flex: 1 }}>
+                            <TouchableOpacity onPress={() => this.onClick(3)} style={{ flex: 1 }}>
                                 <View style={{ alignItems: "center", justifyContent: "center", }}>
                                     <Image source={require("../../../res/images/dingdan-shu.png")} style={{ height: 40, width: 40, }} />
                                     <Text style={{ color: this.state.selectIndex === 2 ? Colors.mainColor : Colors.text6, fontSize: 13, marginTop: 5 }}>订单</Text>
                                 </View></TouchableOpacity>
-                            <TouchableOpacity onPress={() => this.onClick(2)} style={{ flex: 1 }}>
+                            <TouchableOpacity onPress={() => this.onClick(4)} style={{ flex: 1 }}>
                                 <View style={{ alignItems: "center", justifyContent: "center", }}>
                                     <Image source={require("../../../res/images/jiaoyijilu-shu.png")} style={{ height: 40, width: 40, }} />
                                     <Text style={{ color: this.state.selectIndex === 2 ? Colors.mainColor : Colors.text6, fontSize: 13, marginTop: 5 }}>交易记录</Text>
@@ -198,7 +192,7 @@ export default class TradeHome extends BaseComponent {
                                 <Text style={{ padding: 8, fontSize: 16, marginLeft: 25, marginRight: 10, color: activeIndex ? Colors.white : Colors.red }}>释放记录</Text>
                             </TouchableOpacity>
                         </View>
-                        <View style={{ backgroundColor: Colors.white }}>
+                        <View style={{ backgroundColor: Colors.bgColor }}>
                             <RefreshFlatList2
                                 ref={refList => this.refList = refList}
                                 renderItem={(items) => this._getItem(items)}
@@ -210,15 +204,28 @@ export default class TradeHome extends BaseComponent {
             </View>
         );
     }
+    onClick(i) {
+        this.action = i
+        switch (i) {
+            case 1:
+            case 2:
+                this.props.navigation.navigate('CreateBSOrder', {
+                    cid: this.state.cid,
+                    type: i,
+                });
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
+    }
     //选择折线图类型
     magicType(i) {
         //alert(i)
         this.setState({ echartsType: i })
     }
-    onClick(i) {
-        this.action = i
-        this.props.navigation.navigate('EchartsDemo');
-    }
+    //购买 出售 订单
     selectIndex(index) {
         this.setState({ activeIndex: index })
         this.activeIndex = index;
@@ -231,17 +238,56 @@ export default class TradeHome extends BaseComponent {
      * @private
      */
     _getItem(data) {
-        return <View style={{ flex: 1 }}>
-            <Text style={{ padding: 15, fontSize: 15, color: Colors.black }}>{this.state.activeIndex ? "购买" : "出售"}</Text>
-        </View>
+        // return <View style={{ flex: 1 }}>
+        //     <Text style={{ padding: 15, fontSize: 15, color: Colors.black }}>{this.state.activeIndex ? "购买" : "出售"}</Text>
+        // </View>
+        return <TouchableOpacity >
+            <View
+                key={data.item.index}
+                style={{
+                    backgroundColor: '#fff', alignItems: 'center',
+                    justifyContent: "center", marginBottom: 1,
+                    flexDirection: 'row', padding: 10,
+                }}>
+                <Image
+                    style={{ width: 45, height: 45, borderWidth: 1, borderRadius: 23, borderColor: "#666" }}
+                    // source={{uri:imgPath}} 
+                    source={require("../../../res/images/touxiang-xiao.png")}
+                />
+
+                <View style={{ flexDirection: 'column', justifyContent: "center", flex: 1, marginLeft: 10, marginRight: 10 }}>
+                    <Text
+                        style={{ color: "#333333", fontSize: 16 }}>{"usernamsssss"}</Text>
+
+                    <Text style={{ color: "#888", fontSize: 14, marginTop: 5 }}
+                        numberOfLines={1}
+                    >限 额:{1213.23}</Text>
+                </View>
+
+                <View style={{ flexDirection: 'column', justifyContent: "center", marginLeft: 10, marginRight: 10 }}>
+                    <Text
+                        style={{ color: Colors.blue, fontSize: 16, textAlign: "right" }}>{45.3121}</Text>
+                    <Text style={{
+                        paddingLeft: 8, paddingRight: 8, paddingTop: 3, paddingBottom: 3, color: Colors.r1,
+                        fontSize: 13, textAlign: "center", borderWidth: 1, borderColor: Colors.r1, borderRadius: 10
+                    }} numberOfLines={1}>{this.state.activeIndex ? "购买" : "出售"}</Text>
+                </View>
+            </View>
+        </TouchableOpacity>
     }
     //刷新数据
-    _refreshData() {
+    _refreshData(cid) {
         var data = []
         for (const i = 0; i < 15; i++) {
             data.push("武平" + i)
         }
         this.refList.setData(data)
+    }
+    //选择币种  cid 各种货币id
+    //1.Wepay 2.比特币 3.莱特币  4.以太坊  5.狗狗币
+    selectCid(cid){
+        this.setState({cid:cid})
+        this._refreshData(cid)
     }
     /**
      * onPress={() => this.showPopover(this.refs['downcenter'], 'down', 'center')} 
@@ -250,43 +296,79 @@ export default class TradeHome extends BaseComponent {
      * @param {*} align 
      */
     showPopover(view) {
-        let {black, shadow, showArrow} = this.state;
+        let { black, shadow, showArrow } = this.state;
         let blackStyle = {
-        //   backgroundColor: 'rgba(0, 0, 0, 0.8)',
-        //   paddingTop: 8,
-        //   paddingBottom: 8,
-        //   paddingLeft: 12,
-        //   paddingRight: 12,
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            //   paddingTop: 1,
+            //   paddingBottom: 1,
+            paddingLeft: 12,
+            paddingRight: 12,
         };
         let whiteStyle = {
-          ...blackStyle,
-          backgroundColor: Colors.black,
+            ...blackStyle,
+            backgroundColor: Colors.bgColor,
         };
         let shadowStyle = {
-          shadowColor: '#777',
-          shadowOffset: {width: 1, height: 1},
-          shadowOpacity: 0.5,
-          shadowRadius: 2,
+            shadowColor: '#777',
+            shadowOffset: { width: 1, height: 1 },
+            shadowOpacity: 0.5,
+            shadowRadius: 2,
         };
         let popoverStyle = [].concat(black ? blackStyle : whiteStyle).concat(shadow ? shadowStyle : null);
-        var bi = []
 
         view.measure((x, y, width, height, pageX, pageY) => {
-          let fromBounds = {x: pageX, y: pageY, width, height};
-          let overlayView = (
-            <Overlay.PopoverView popoverStyle={popoverStyle} fromBounds={fromBounds} direction={"down"} align={"center"} directionInsets={4} showArrow={showArrow}>
-              <View>
-                  <Text style={{fontSize:15,color:Colors.white,paddingLeft:20,paddingRight:20,paddingTop:10,paddingBottom:10}}>
-                  Wepay资产</Text>  
-                  <View style={{backgroundColor:Colors.white,height:0.5}}/>
-                  <Text style={{fontSize:15,color:Colors.white,paddingLeft:20,paddingRight:20,paddingTop:10,paddingBottom:10}}>
-                  Wepay资产</Text>  
-              </View>
-            </Overlay.PopoverView>
-          );
-          Overlay.show(overlayView);
+            let fromBounds = { x: pageX, y: pageY, width, height };
+            let overlayView = (
+                <Overlay.PopoverView popoverStyle={popoverStyle}
+                    fromBounds={fromBounds} direction={"down"} align={"center"}
+                    directionInsets={4} showArrow={showArrow}
+                    ref={v => this.view = v}>
+                    <View>
+                        <Text
+                            onPress={() => {
+                                this.view.close()
+                                selectCid(1)
+                            }}
+                            style={{ fontSize: 14, color: Colors.black, paddingLeft: 20, paddingRight: 20, paddingTop: 10, paddingBottom: 10 }}>
+                            Wepay</Text>
+                        <View style={{ backgroundColor: Colors.black, height: 0.5 }} />
+                        <Text
+                            onPress={() => {
+                                this.view.close()
+                                selectCid(2)
+                            }}
+                            style={{ fontSize: 14, color: Colors.text3, paddingLeft: 20, paddingRight: 20, paddingTop: 10, paddingBottom: 10 }}>
+                            比特币</Text>
+                        <View style={{ backgroundColor: Colors.black, height: 0.5 }} />
+                        <Text
+                            onPress={() => {
+                                this.view.close()
+                                selectCid(3)
+                            }}
+                            style={{ fontSize: 14, color: Colors.text3, paddingLeft: 20, paddingRight: 20, paddingTop: 10, paddingBottom: 10 }}>
+                            莱特币</Text>
+                        <View style={{ backgroundColor: Colors.black, height: 0.5 }} />
+                        <Text
+                            onPress={() => {
+                                this.view.close()
+                                selectCid(4)
+                            }}
+                            style={{ fontSize: 14, color: Colors.text3, paddingLeft: 20, paddingRight: 20, paddingTop: 10, paddingBottom: 10 }}>
+                            以太坊</Text>
+                        <View style={{ backgroundColor: Colors.black, height: 0.5 }} />
+                        <Text
+                            onPress={() => {
+                                this.view.close()
+                                selectCid(5)
+                            }}
+                            style={{ fontSize: 14, color: Colors.text3, paddingLeft: 20, paddingRight: 20, paddingTop: 10, paddingBottom: 10 }}>
+                            狗狗币</Text>
+                    </View>
+                </Overlay.PopoverView>
+            );
+            Overlay.show(overlayView);
         });
-      }
+    }
 
 }
 

@@ -13,6 +13,9 @@ import QRCode from "react-native-qrcode";
 import ExcIntegral from "../ExcIntegral";
 import DialogUtils from '../../util/DialogUtils';
 import Utils from '../../util/Utils';
+import BaseUrl from '../../util/BaseUrl';
+import HttpUtils from '../../util/HttpUtils';
+import PassWordInput from '../../common/PassNumInput';
 
 //Wepay 转出
 export default class TranWepay extends BaseComponent {
@@ -20,8 +23,9 @@ export default class TranWepay extends BaseComponent {
         super(props);
         this.state = {
             account: "",
-            wepayNum:"",
+            wepayNum: "",
         }
+        this.userInfo = this.getUserInfo()
     }
 
     render() {
@@ -37,8 +41,8 @@ export default class TranWepay extends BaseComponent {
                 <View style={[{ flexDirection: 'row', alignItems: 'center', padding: 10, backgroundColor: "#fff", marginTop: 8 }]}>
                     <Text style={{
                         color: '#333',
-                        fontSize: 18,
-                        width:80,
+                        fontSize: 16,
+                        width: 80,
                     }}>Wepay</Text>
                     <TextInput
                         style={{ height: 40, flex: 1, fontSize: 16, color: '#333', marginLeft: 8 }}
@@ -48,7 +52,7 @@ export default class TranWepay extends BaseComponent {
                         keyboardType='numeric'
                         value={this.state.wepayNum + ""}
                         onChangeText={(text) => {
-                            const newText = Utils.chkPrice(text)
+                            var newText = Utils.chkPrice(text)
                             this.setState({ wepayNum: newText })
                         }}
                         //失去焦点时
@@ -58,8 +62,8 @@ export default class TranWepay extends BaseComponent {
                 <View style={[{ flexDirection: 'row', alignItems: 'center', padding: 10, backgroundColor: "#fff", marginTop: 1 }]}>
                     <Text style={{
                         color: '#333',
-                        fontSize: 18,
-                        width:80,
+                        fontSize: 16,
+                        width: 80,
                     }}>转出地址</Text>
                     <TextInput
                         style={{ height: 40, flex: 1, fontSize: 16, color: '#333', marginLeft: 8 }}
@@ -97,22 +101,62 @@ export default class TranWepay extends BaseComponent {
         );
     }
 
+    //描述: 用于输入交易密码显示对方用户名
+    getUserName(transferAddress, wepayNum) {
+        DialogUtils.showLoading("");
+        let url = BaseUrl.getUserName(transferAddress)
+        HttpUtils.getData(url)
+            .then(result => {
+                DialogUtils.hideLoading()
+                if (result.code === 1) {
+                    PassWordInput.showPassWordInput((safetyPwd) => {
+                        this.payTransfer(transferAddress, safetyPwd)
+                    }, result.data, wepayNum)
+                } else {
+                    DialogUtils.showToast(result.msg)
+                }
+
+            })
+    }
+    //支付转出
+    payTransfer(transferAddress, safetyPwd) {
+        this.url = BaseUrl.transfer()
+        DialogUtils.showLoading();
+        HttpUtils.postData(this.url,
+            {
+                sessionId: this.userInfo.sessionId,
+                transferNum: this.state.wepayNum,
+                transferAddress: transferAddress,
+                safetyPwd: safetyPwd
+            })
+            .then(result => {
+                if (result.code === 1) {
+                    DialogUtils.showToast("转出成功")
+                    this.props.navigation.goBack()
+                } else {
+                    DialogUtils.showToast(result.msg)
+                }
+                DialogUtils.hideLoading()
+            })
+    }
+
+
     onClicks(index) {
         switch (index) {
             case "outRecord":
                 this.props.navigation.navigate('TransactionRecord');
                 break;
             case 2:
-                if (this.state.wepayNum.length <1) {
+                if (this.state.wepayNum.length < 1) {
                     DialogUtils.showToast("请输入转出数量")
-                }else if (this.state.account.length <1) {
+                }  else if (!Utils.regPrice(this.state.wepayNum)) {
+                    DialogUtils.showMsg("最多输入2位小数"+this.state.wepayNum)
+                } else if (this.state.account.length < 1) {
                     DialogUtils.showToast("请输入账号/UID")
                 } else {
-                   
+                    this.getUserName(this.state.account, this.state.wepayNum)
                 }
-
                 break;
-           
             default:
                 break;
         }

@@ -24,4 +24,5 @@ export default  Colors={
     r1:"#bf3936",
     r2:"#c95c36",
     b1:"#3658bf",
+    z1:"#362133",
 }

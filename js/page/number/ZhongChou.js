@@ -1,15 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
     StyleSheet,
     Text,
     View,
-    Clipboard,
     TouchableOpacity,
     Image,
-    Button,
-    ImageBackground,
 } from 'react-native';
-import BaseComponent, { BaseStyles, mainColor, window_width } from "../BaseComponent";
+import BaseComponent, { BaseStyles } from "../BaseComponent";
 import NavigationBar from "../../common/NavigationBar";
 import HttpUtils from "../../util/HttpUtils";
 import BaseUrl from "../../util/BaseUrl";

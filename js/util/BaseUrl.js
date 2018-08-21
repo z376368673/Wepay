@@ -1,5 +1,5 @@
-const url = 'http://wp.wepay168.com/wepay'
-//const url = 'http://192.168.0.105:8081/wepay'
+//const url = 'http://wp.wepay168.com/wepay'
+const url = 'http://192.168.0.105:8081/wepay'
 
 
 export default class BaseUrl {
@@ -1329,5 +1329,75 @@ export default class BaseUrl {
     static getOutRecord(sessionId, pageIndex) {
         return url + "/tranMoney/outRecord?sessionId=" + sessionId
             + "&pageIndex=" + pageIndex;
+    }
+
+
+
+
+    //数字货币
+
+     /**
+     * 用于输入交易密码显示对方用户名
+     * @param {*} transferAddress 
+     *  // 1	code	是	状态码 
+        // 2	msg	是	错误信息
+        //data	是	数据(对方用户名)
+     */
+    static getUserName(transferAddress) {
+        return url + "/coin/getUserName?transferAddress=" + transferAddress
+    }
+
+     /**
+     * 转出wepay币给对方
+     * 
+     * POST
+     * 
+     * @param:
+     1	sessionId 是	用户标识	string
+     2	transferNum 是	转出数量	double
+     3	transferAddress 是	转出地址（UID/手机号/钱包地址）	String
+     4	safetyPwd 是	交易密码	int
+     * 
+     */
+    static transfer() {
+        return url + "/coin/transfer";
+    }
+
+
+
+     /**
+     * 原为交易记录需要修改为转账记录
+     * @param {*} sessionId 
+     * @param {*} pageIndex 
+     *  // 1	code	是	状态码 
+        // 2	msg	是	错误信息
+        // 3	data	是	数据(code=1返回集合数据)
+            "getNums": 0.22,
+            "getTime": "1534322728",
+            "userName": "零零8"
+     */
+    static tradingRecord(sessionId, pageIndex,recordType) {
+        return url + "/wetrans/tradingRecord?sessionId=" + sessionId
+            + "&pageIndex=" + pageIndex  + "&recordType=" + recordType;
+    }
+
+    /**
+     * 数字资产首页
+     * @param {*} sessionId 
+     序号	参数名称	一定会返回	描述
+     1	code	是	状态码 
+     2	msg	是	错误信息
+     3	data	是	数据
+     3.1	currPrice		当前价格
+     3.2	num		Wepay资产
+     3.3	walletAddress		钱包地址
+     3.4	coinVos		货币信息集合
+     3.4.1	cid		货币id
+     3.4.2	num		货币数量
+     3.4.3	coinPrice		当前价格
+     3.4.5	coinName		货币名称
+     */
+    static numberIndex(sessionId) {
+        return url + "/coin/index?sessionId=" + sessionId
     }
 }

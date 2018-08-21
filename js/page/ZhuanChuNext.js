@@ -14,6 +14,7 @@ import DialogUtils from '../util/DialogUtils';
 import HttpUtils from '../util/HttpUtils';
 import PassWordInput from '../common/PassNumInput';
 import { inject } from 'mobx-react';
+import Utils from '../util/Utils';
 //转出 下一步
 @inject('AppStore') 
 export default class ZhuanChuNext extends BaseComponent {
@@ -95,17 +96,6 @@ export default class ZhuanChuNext extends BaseComponent {
               
             })
     }
-    chkPrice(obj) { //方法1
-        obj = obj.replace(/[^\d.]/g, "");
-        //必须保证第一位为数字而不是. 
-        obj = obj.replace(/^\./g, "");
-        //保证只有出现一个.而没有多个. 
-        obj = obj.replace(/\.{2,}/g, ".");
-        //保证.只出现一次，而不能出现两次以上 
-        obj = obj.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
-        return obj;
-    }
-
     selectMoney() {
         let type = !this.state.moneyType
         this.setState({
@@ -187,7 +177,7 @@ export default class ZhuanChuNext extends BaseComponent {
                             underlineColorAndroid='transparent'
                             keyboardType='numeric'
                             value={this.state.tranMoney}
-                            onChangeText={(text) => this.setState({ tranMoney: this.chkPrice(text) })}
+                            onChangeText={(text) => this.setState({ tranMoney: Utils.chkPrice(text) })}
                             //纯数字
                             // onChangeText={(text) => {
                             //     const newText = text.replace(/[^\d]+/, '');

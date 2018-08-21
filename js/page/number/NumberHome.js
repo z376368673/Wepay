@@ -22,9 +22,10 @@ export default class NumberHome extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
-            assetsNum: 0.00,//   wepay资产
+            wepayPrice:"18.19",//当前价格
+            assetsNum: 0.00,//   拥有wepay资产
             purseAddress: "njadnahdnqjeio123qdhsuydy891209ejh1d",//   钱包地址
-
+            coinVos:[],  // 货币信息集合
         }
         this.userInfo = this.getUserInfo();
     }
@@ -33,36 +34,23 @@ export default class NumberHome extends BaseComponent {
         this._refreshData()
     }
 
-    //刷新数据
-    _refreshData() {
-        this.refList.refreshStar()
-        this.pageIndex = 1;
-        this.getData(true)
-    }
-    //加载更多数据
-    _onLoadData() {
-        this.getData(false)
-    }
 
     /**
     * 获取数据
     * @param {*} isRefesh  是否刷新
     * @param {*} pageIndex 
     */
-    getData(isRefesh) {
-        this.url = BaseUrl.getMyStoreShop(this.userInfo.sessionId, this.pageIndex)
+   _refreshData() {
+        this.url = BaseUrl.numberIndex(this.userInfo.sessionId)
         HttpUtils.getData(this.url)
             .then(result => {
                 if (result.code === 1) {
-                    if (isRefesh) {
-                        this.refList.setData(result.data)
-                        if (result.data.length < 1) {
-                            DialogUtils.showToast("暂无商品")
-                        }
-                    } else {
-                        this.refList.addData(result.data)
-                    }
-                    this.pageIndex += 1
+                   this.setState({
+                     wepayPrice:result.data.currPrice,
+                     wepayNum:result.data.num,
+                     purseAddress:result.data.walletAddress
+                   })
+                   this.refList.setData(result.data.coinVos)
                 } else if (result.code === 2) {
                     DialogUtils.showToast(result.msg)
                     this.goLogin(this.props.navigation)
@@ -94,7 +82,7 @@ export default class NumberHome extends BaseComponent {
                     <View style={{ flexDirection: "row", alignItems: "center", marginTop: 10 }}>
                         <View style={{ backgroundColor: Colors.y1, width: 8, height: 8 }} />
                         <Text style={{ color: Colors.text6, fontSize: 16, marginLeft: 5 }}>Wepay资产</Text>
-                        <Text style={{ color: Colors.text3, fontSize: 16, marginLeft: 10 }}>{this.state.assetsNum}</Text>
+                        <Text style={{ color: Colors.text3, fontSize: 16, marginLeft: 10 }}>{this.state.wepayNum}</Text>
                     </View>
                     <View style={{ flexDirection: "row", alignItems: "center", marginTop: 10 }}>
                         <View style={{ backgroundColor: Colors.r1, width: 8, height: 8 }} />
@@ -138,7 +126,6 @@ export default class NumberHome extends BaseComponent {
                 <View style={{ flex: 1, backgroundColor: "#f1f1f1", marginTop: 10, }}>
                     <RefreshFlatList
                         ref={refList => this.refList = refList}
-                        isDownLoad={true}
                         renderItem={(items) => this._getBuyOrSellItem(items)}
                         onRefreshs={() => this._refreshData()}
                     />
@@ -153,11 +140,29 @@ export default class NumberHome extends BaseComponent {
      * @private
      */
     _getBuyOrSellItem(data) {
-
+         let cid = data.item?data.item.cid:1
+         var name = "Wepay"
+         var color = Colors.y1
+         if(cid===2){
+            name = "比特币"
+            color = Colors.r1
+         }else if(cid===3){
+            name = "莱特币"
+            color = Colors.r2
+         }else if(cid===4){
+            name = "以太坊"
+            color = Colors.b1
+         }else if(cid===5){
+            name = "狗狗币"
+            color = Colors.z1
+         }else {
+            name = "Wepay"
+            color = Colors.y1
+         }
         return <View style={{ padding: 10, backgroundColor: Colors.white }}>
             <View style={{ flexDirection: "row" }}>
                 <View style={{ backgroundColor: Colors.y1, width: 8, height: 8 }} />
-                <Text style={{ color: Colors.text3, fontSize: 16, marginLeft: 5 }}>Wepay资产</Text>
+                <Text style={{ color: Colors.text3, fontSize: 16, marginLeft: 5 }}>{name}}</Text>
             </View>
             <View style={{ flexDirection: "row",marginTop:5}}>
                 <Text style={{ color: Colors.text3, fontSize: 15, marginLeft: 5, flex: 1 }}>0.0000</Text>

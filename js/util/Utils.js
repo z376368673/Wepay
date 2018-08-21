@@ -107,8 +107,58 @@ export default class Utils {
         obj = obj.replace(/\.{2,}/g, ".");
         //保证.只出现一次，而不能出现两次以上 
         obj = obj.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+         //newText =  new Number(newText).toFixed(2)
+        if(obj.indexOf(".")>=0&&obj.length-obj.indexOf(".")>2){
+            obj = new Number(obj).toFixed(2)
+        }
         return obj;
     }
+    static chkCurrency(obj,num) { //方法1
+        obj = obj.replace(/[^\d.]/g, "");
+        //必须保证第一位为数字而不是. 
+        obj = obj.replace(/^\./g, "");
+        //保证只有出现一个.而没有多个. 
+        obj = obj.replace(/\.{2,}/g, ".");
+        //保证.只出现一次，而不能出现两次以上 
+        obj = obj.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+        if(obj.indexOf(".")>=0&&obj.length-obj.indexOf(".")>num){
+            obj = new Number(obj).toFixed(num)
+        }
+        return obj;
+    }
+    /**
+     * 格式化小数点保留位数
+     * @param {*} str  数字
+     * @param {*} num  保留小数位
+     */
+    static formatNumBer(str,num){
+       return new Number(str).toFixed(num)?new Number(str).toFixed(num):0
+    }
+    /**
+     * 检测是否是几位小数    比如 regNumber(0.21234,3) 
+     * @param {*} str 
+     * @param {*} num 小数位
+     */
+    static regNumber(str,num){
+        let regPrice = /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/
+        if (!regPrice.test(num)) {
+            return false
+        }
+        return true
+    }
+
+    /** 
+     * 检测是否是2位小数    比如 regNumber(0.21234) 返回 false    regNumber(0.24) 返回 true  
+     * @param {*} num 
+     */
+    static regPrice(num){
+        let regPrice = /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/
+        if (regPrice.test(num)) {
+            return true
+        }
+        return false
+    }
+
     static formatDateTime(inputTime, symbol) {
         let sb = symbol ? symbol : '/'
         var date = new Date(inputTime);

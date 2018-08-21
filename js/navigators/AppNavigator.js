@@ -56,6 +56,8 @@ import ZhongChou from "../page/number/ZhongChou"
 import ZhongChouRecord from "../page/number/ZhongChouRecord"
 import TradeHome from "../page/number/TradeHome"
 import EchartsDemo from "../page/number/EchartsDemo"
+import CreateBSOrder from "../page/number/CreateBSOrder"
+
 
 
 export default AppNavigator = createStackNavigator({
@@ -88,6 +90,9 @@ export default AppNavigator = createStackNavigator({
     },
     TradeHome: {//交易
         screen: TradeHome
+    },
+    CreateBSOrder: {//发布购买卖出订单
+        screen: CreateBSOrder
     },
 
     EchartsDemo: {//统计图
@@ -241,8 +246,8 @@ export default AppNavigator = createStackNavigator({
     },
     
 }, {
-     // initialRouteName: 'LoginPage', // 默认显示界面
-    initialRouteName: 'TradeHome', // 默认显示界面
+    // initialRouteName: 'LoginPage', // 默认显示界面
+     initialRouteName: 'TradeHome', // 默认显示界面
     //initialRouteName: 'EchartsDemo', // 默认显示界面
 
     mode: 'card',

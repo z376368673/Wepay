@@ -15,9 +15,8 @@ export default class HttpUtils {
                     resolve(result);
                 })
                 .catch(error => {
-                   reject(error);
                    this.errorMsg(error)
-                   DialogUtils.hideLoading()
+                   reject(error);
                 })
         })
     }
@@ -27,6 +26,7 @@ export default class HttpUtils {
      * @param {*} error 
      */
     static errorMsg(error ){
+        DialogUtils.hideLoading()
         //console.error(error.message)
         console.warn(error.message)
         var message  = JSON.stringify(error.message)
