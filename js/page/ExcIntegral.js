@@ -52,7 +52,7 @@ export default class ExcIntegral extends BaseComponent {
                DialogUtils.showToast("兑换成功")
                upDataUserInfo(this.props.AppStore)
                this.props.navigation.navigate('HomePage');
-            } else if(result.code === 2){
+            } else if(result.code === 2||result.code === 4){
                 DialogUtils.showToast(result.msg)
                 this.goLogin(this.props.navigation)
             } else{

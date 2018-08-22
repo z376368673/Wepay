@@ -60,7 +60,7 @@ export default class StroeDetails extends BaseComponent {
                         shopPhone: this.info.shopPhone,
                         imgHead: { uri: this.getImgUrl(this.info.imgHead) },
                     })
-                }else if (result.code === 2) {
+                }else if (result.code === 2||result.code === 4) {
                     DialogUtils.showToast(result.msg)
                     this.goLogin(this.props.navigation)
                 } else {

@@ -72,7 +72,7 @@ export default class OrderCommon extends BaseComponent {
                         this.refList.addData(result.data)
                     }
                     this.pageIndex += 1
-                } else if(result.code === 2){
+                } else if(result.code === 2||result.code === 4){
                     DialogUtils.showToast(result.msg)
                     this.goLogin(this.props.navigation)
                 } else {
@@ -137,7 +137,7 @@ export default class OrderCommon extends BaseComponent {
                             upDataUserInfo(this.props.AppStore)   
                         }
                         this.refList.delData(data.index)
-                    } else if (result.code === 2) {
+                    } else if (result.code === 2||result.code === 4) {
                         DialogUtils.showToast(result.msg)
                         this.goLogin(this.props.navigation)
                     }else {

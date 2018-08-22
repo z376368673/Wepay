@@ -46,7 +46,7 @@ export default class NoticDetails extends BaseComponent {
                         textInfo:result.data.content,
                         title:result.data.title
                     })
-                } else if (result.code === 2) {
+                } else if (result.code === 2||result.code === 4) {
                     DialogUtils.showToast(result.msg)
                     this.goLogin(this.props.navigation)
                 }else {

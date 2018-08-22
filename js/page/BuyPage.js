@@ -52,7 +52,7 @@ export default class BuyPage extends BaseComponent {
                 if (result.code === 1) {
                     this.props.navigation.navigate('HomePage');
                      DialogUtils.showToast("创建订单成功")
-                } else if(result.code === 2){
+                } else if(result.code === 2||result.code === 4){
                     DialogUtils.showToast(result.msg)
                     this.goLogin(this.props.navigation)
                 } else {

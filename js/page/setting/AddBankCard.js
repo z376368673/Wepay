@@ -73,7 +73,7 @@ export default class AddBankCard extends BaseComponent {
                             this.navigation.state.params.callback()
                             this.props.navigation.goBack()
                         })
-                } else if (result.code === 2) {
+                } else if (result.code === 2||result.code === 4) {
                     DialogUtils.showToast(result.msg)
                     this.goLogin(this.props.navigation)
                 }else {

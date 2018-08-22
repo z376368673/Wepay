@@ -111,7 +111,7 @@ export default class SellOrderItem extends BaseComponent {
                         DialogUtils.showMsg("已确认收款",)
                         this.props.navigation.goBack()
                        // this.props.delBack(this.props.data.index)
-                    } else if(result.code === 2){
+                    } else if(result.code === 2||result.code === 4){
                         DialogUtils.showToast(result.msg)
                         this.goLogin(this.props.navigation)
                     } else {

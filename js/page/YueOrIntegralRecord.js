@@ -122,7 +122,7 @@ export default class YueOrIntegralRecord extends BaseComponent {
                     }
                     this.pageIndex += 1
 
-                } else if (result.code === 2) {
+                } else if (result.code === 2||result.code === 4) {
                     DialogUtils.showToast(result.msg)
                     this.goLogin(this.props.navigation)
                 } else {

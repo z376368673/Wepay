@@ -19,6 +19,7 @@ import StoreCommon from '../../common/StoreCommon';
 import SplashScreen from "react-native-splash-screen"
 import ViewUtils from '../../util/ViewUtils';
 import RefreshFlatList from "../../common/RefreshFlatList"
+import DialogUtils from '../../util/DialogUtils';
 
 //商品搜索页
 const window_w = Utils.getWidth();
@@ -73,7 +74,7 @@ export default class SearchStore extends BaseComponent {
                     if(result.data.length<1){
                         DialogUtils.showToast("暂无数据")
                     }
-                }  else if(result.code === 2){
+                }  else if(result.code === 2||result.code === 4){
                     DialogUtils.showToast(result.msg)
                     this.goLogin(this.props.navigation)
                 }else {
