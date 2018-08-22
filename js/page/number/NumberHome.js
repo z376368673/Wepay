@@ -67,7 +67,7 @@ export default class NumberHome extends BaseComponent {
                     title='数字资产'
                     navigation={this.props.navigation}
                     rightView={NavigationBar.getRightStyle_Text('交易记录', {
-                        fontSize: 16,
+                        fontSize: 15,
                         color: "#fff"
                     }, () => this.transactionRecord())}
                 />
@@ -81,21 +81,21 @@ export default class NumberHome extends BaseComponent {
                 <View style={{ marginTop: 10, backgroundColor: Colors.white, paddingLeft: 10, paddingBottom: 10, paddingRight: 10 }}>
                     <View style={{ flexDirection: "row", alignItems: "center", marginTop: 10 }}>
                         <View style={{ backgroundColor: Colors.y1, width: 8, height: 8 }} />
-                        <Text style={{ color: Colors.text6, fontSize: 16, marginLeft: 5 }}>Wepay资产</Text>
-                        <Text style={{ color: Colors.text3, fontSize: 16, marginLeft: 10 }}>{this.state.wepayNum}</Text>
+                        <Text style={{ color: Colors.text6, fontSize: 15, marginLeft: 5 }}>Wepay资产</Text>
+                        <Text style={{ color: Colors.text3, fontSize: 15, marginLeft: 10 }}>{this.state.wepayNum}</Text>
                     </View>
                     <View style={{ flexDirection: "row", alignItems: "center", marginTop: 10 }}>
                         <View style={{ backgroundColor: Colors.r1, width: 8, height: 8 }} />
-                        <Text style={{ color: Colors.text6, fontSize: 16, marginLeft: 5 }}>钱包地址</Text>
+                        <Text style={{ color: Colors.text6, fontSize: 15, marginLeft: 5 }}>钱包地址</Text>
                     </View>
-                    <Text style={{ color: Colors.text3, fontSize: 16, marginTop: 5 }}>{this.state.purseAddress}</Text>
+                    <Text style={{ color: Colors.text3, fontSize: 14, marginTop: 5 }}>{this.state.purseAddress}</Text>
                     <View style={{ marginTop: 8, backgroundColor: Colors.gray, height: 0.5 }} />
                     <TouchableOpacity style={{ borderColor: Colors.red, borderRadius: 5, borderWidth: 0.5, height: 30, width: 80, justifyContent: "center", alignItems: "center", position: "absolute", right: 20, top: 30, }}
                         onPress={() => {
                             Clipboard.setString(this.state.purseAddress);
                             DialogUtils.showToast("已复制到剪贴板")
                         }}>
-                        <Text style={{ color: Colors.red, fontSize: 16 }}>复制地址</Text>
+                        <Text style={{ color: Colors.red, fontSize: 13 }}>复制地址</Text>
                     </TouchableOpacity>
 
                     <View style={{ flexDirection: "row", alignItems: "center", marginTop: 10, }}>
@@ -160,9 +160,9 @@ export default class NumberHome extends BaseComponent {
             color = Colors.y1
          }
         return <View style={{ padding: 10, backgroundColor: Colors.white }}>
-            <View style={{ flexDirection: "row" }}>
-                <View style={{ backgroundColor: Colors.y1, width: 8, height: 8 }} />
-                <Text style={{ color: Colors.text3, fontSize: 16, marginLeft: 5 }}>{name}}</Text>
+            <View style={{ flexDirection: "row",alignItems:"center" }}>
+                <View style={{ backgroundColor: color, width: 8, height: 8 }} />
+                <Text style={{ color: Colors.text3, fontSize: 16, marginLeft: 5 }}>{name}</Text>
             </View>
             <View style={{ flexDirection: "row",marginTop:5}}>
                 <Text style={{ color: Colors.text3, fontSize: 15, marginLeft: 5, flex: 1 }}>0.0000</Text>
@@ -195,6 +195,7 @@ export default class NumberHome extends BaseComponent {
                 this.props.navigation.navigate('ZhongChou');
                 break;
             case 3://W宝
+            this.props.navigation.navigate('Wbao');
                 break;
             case 4://交易
                 this.props.navigation.navigate('TradeHome');

@@ -57,6 +57,10 @@ import ZhongChouRecord from "../page/number/ZhongChouRecord"
 import TradeHome from "../page/number/TradeHome"
 import EchartsDemo from "../page/number/EchartsDemo"
 import CreateBSOrder from "../page/number/CreateBSOrder"
+import Wbao from "../page/number/Wbao"
+import TranWB from "../page/number/TranWB"
+
+
 
 
 
@@ -88,6 +92,13 @@ export default AppNavigator = createStackNavigator({
     ZhongChouRecord: {//众筹项目记录
         screen: ZhongChouRecord
     },
+    Wbao: {//W宝
+        screen: Wbao
+    },
+    TranWB: {//W宝 转出 转入 锁定
+        screen: TranWB
+    },
+    
     TradeHome: {//交易
         screen: TradeHome
     },
@@ -246,8 +257,8 @@ export default AppNavigator = createStackNavigator({
     },
     
 }, {
-    // initialRouteName: 'LoginPage', // 默认显示界面
-     initialRouteName: 'TradeHome', // 默认显示界面
+     initialRouteName: 'LoginPage', // 默认显示界面
+     //initialRouteName: 'TradeHome', // 默认显示界面
     //initialRouteName: 'EchartsDemo', // 默认显示界面
 
     mode: 'card',
