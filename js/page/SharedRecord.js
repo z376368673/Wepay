@@ -48,9 +48,8 @@ export default class SharedRecord extends BaseComponent {
                 <View style={{ height: 35, flexDirection: "row", alignItems: "center", margin: 5 }}>
                     <TextInput
                         style={[{
-                            borderRadius: 5, backgroundColor: "#fff",
-                            height: 35, flex: 1, fontSize: 13, color: '#333', backgroundColor: "#fff", padding: 5,
-                            borderColor: "#ccc",
+                            borderRadius: 5, height: 35, flex: 1, fontSize: 13, color: '#333',
+                            backgroundColor: "#fff", padding: 5, borderColor: "#ccc",
                         }]}
                         placeholder={'搜索UID/手机号码'}
                         //defaultValue={userName}

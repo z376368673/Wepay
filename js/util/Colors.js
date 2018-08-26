@@ -16,7 +16,6 @@ export default  Colors={
     golden:"##796400",
     blue:"#0072E3",
     red:"#d11",
-    red_d9:"#d96f6c",
     blue1:"#266ee5",
     blue_66:"#6679b6",
 

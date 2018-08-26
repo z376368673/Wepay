@@ -22,9 +22,11 @@ export default class Wbao extends BaseComponent {
         this.state = {
             selectIndex: 0,
             isNull: false,
-
-            WBAssets: "0.00", //W宝资产
-            MyAssets: "0.00", //可用资产
+            yesterdayEarnings:"0.00",//昨日收益
+            totalAssets:"0.00", //W宝资产
+            availableAssets:"0.00", //可用资产
+            wepayNum:"0.00", //wepay资产
+            grade:0,//用户等级
         }
         this.userInfo = this.getUserInfo();
         this.action = 0
@@ -51,36 +53,39 @@ export default class Wbao extends BaseComponent {
     * @param {*} pageIndex 
     */
     getData(isRefesh) {
-        this.refList.setData([1, 2, 3, 4, 5])
-        // if (this.action === 1) {
-        //     this.url = BaseUrl.getOutUndoneUnselectedUrl(this.userInfo.sessionId, this.pageIndex)
-        // } else if (this.action === 2) {
-        //     this.url = BaseUrl.getOutUndoneUnselectedUrl(this.userInfo.sessionId, this.pageIndex)
-        // } else {
-        //     this.url = BaseUrl.getOutUndoneUnselectedUrl(this.userInfo.sessionId, this.pageIndex)
-        // }
-        // HttpUtils.getData(this.url)
-        //     .then(result => {
-        //         if (result.code === 1) {
-        //             if (isRefesh) {
-        //                 this.refList.setData(result.data)
-        //                 if (result.data.length < 1) {
-        //                     DialogUtils.showToast("暂无商品")
-        //                 }
-        //                 this.setState({
-        //                     isNull: result.data.length < 1 ? true : false,
-        //                 })
-        //             } else {
-        //                 this.refList.addData(result.data)
-        //             }
-        //             this.pageIndex += 1
-        //         } else if (result.code === 2||result.code === 4) {
-        //             DialogUtils.showToast(result.msg)
-        //             this.goLogin(this.props.navigation)
-        //         } else {
-        //             DialogUtils.showToast(result.msg)
-        //         }
-        //     })
+        if (this.action === 1) {
+            this.url = BaseUrl.getWBIndex(this.userInfo.sessionId, this.pageIndex,2)
+        } else if (this.action === 2) {
+            this.url = BaseUrl.getWBIndex(this.userInfo.sessionId, this.pageIndex,3)
+        } else {
+            this.url = BaseUrl.getWBIndex(this.userInfo.sessionId, this.pageIndex,1)
+        }
+        HttpUtils.getData(this.url)
+            .then(result => {
+                if (result.code === 1) {
+                    this.setState({
+                        yesterdayEarnings:result.data.yesterdayEarnings,
+                        totalAssets:result.data.totalAssets,
+                        availableAssets:result.data.availableAssets,
+                        wepayNum:result.data.wepayNum,
+                        grade:result.data.grade,
+                    })
+                    if (isRefesh) {
+                        this.refList.setData(result.data.yskWbaoDetails)
+                        if (result.data.yskWbaoDetails.length < 1) {
+                            DialogUtils.showToast("暂无商品")
+                        }
+                    } else {
+                        this.refList.addData(result.data.yskWbaoDetails)
+                    }
+                    this.pageIndex += 1
+                } else if (result.code === 2||result.code === 4) {
+                    DialogUtils.showToast(result.msg)
+                    this.goLogin(this.props.navigation)
+                } else {
+                    DialogUtils.showToast(result.msg)
+                }
+            })
 
     }
 
@@ -97,7 +102,7 @@ export default class Wbao extends BaseComponent {
                         <Text>昨日收益 (余额)</Text>
                         <Image source={require("../../../res/images/logo-d.png")} style={{ height: 15, width: 15, resizeMode: "stretch" }} />
                     </View>
-                    <Text style={{ fontSize: 15, color: "#fff", marginTop: 10, }}>{18.123131}</Text>
+                    <Text style={{ fontSize: 15, color: "#fff", marginTop: 10, }}>{this.state.yesterdayEarnings}</Text>
                 </View>
                 {/* 顶部布局  资产  余额*/}
                 <View style={[{
@@ -107,12 +112,12 @@ export default class Wbao extends BaseComponent {
                         activeOpacity={0.8} >
                         <View style={{ padding: 10, flexDirection: 'column', alignItems: "center", justifyContent: "center", width: Utils.getWidth() / 2, backgroundColor: "#62abad" }}>
                             <Text style={{ fontSize: 14, color: '#fff' }}>W宝总资产</Text>
-                            <Text style={{ fontSize: 16, color: '#fff', marginTop: 5 }}>{this.state.WBAssets}</Text>
+                            <Text style={{ fontSize: 16, color: '#fff', marginTop: 5 }}>{this.state.totalAssets}</Text>
                         </View></TouchableOpacity>
                     <TouchableOpacity activeOpacity={0.8}  onPress={()=>this._goTran(3)}>
                         <View style={{ padding: 10, flexDirection: 'column', alignItems: "center", justifyContent: "center", width: Utils.getWidth() / 2, backgroundColor: "#62a2a4" }}>
                             <Text style={{ fontSize: 14, color: '#fff' }}> 可用资产</Text>
-                            <Text style={{ fontSize: 16, color: '#fff', marginTop: 5 }}>{this.state.MyAssets}</Text>
+                            <Text style={{ fontSize: 16, color: '#fff', marginTop: 5 }}>{this.state.availableAssets}</Text>
                         </View></TouchableOpacity>
                 </View>
                 <View style={{ marginTop: 5, flexDirection: "row", alignItems: "center", padding: 5, backgroundColor: Colors.white }}>
@@ -135,15 +140,14 @@ export default class Wbao extends BaseComponent {
                 {
                     this._getItemTiele()
                 }
-                <View style={{ flex: 1, marginTop: 1, marginBottom: 45 }}>
-                    {
-                        this.state.isNull ? <Text style={{ color: "#333", fontSize: 16, backgroundColor: Colors.white, padding: 10 }}>没找到相关数据</Text> : null
-                    }
+                <View style={{ flex: 1, marginTop: 1 }}>
+
                     <RefreshFlatList
                         ref={refList => this.refList = refList}
                         isDownLoad={true}
                         renderItem={(items) => this._getItem(items)}
                         onRefreshs={() => this._refreshData()}
+                        onLoadData={()=>this._onLoadData()}
                     />
 
                 </View>
@@ -168,7 +172,6 @@ export default class Wbao extends BaseComponent {
                         <Text style={{ fontSize: 16, color: '#fff' }}>转出</Text>
                     </TouchableOpacity>
                 </View>
-
 
             </View>
         );
@@ -206,20 +209,33 @@ export default class Wbao extends BaseComponent {
      * @private
      */
     _getItem(data) {
+        let typeNmae
+            if ( data.item.type===1){
+                typeNmae = "转出"
+            } else if ( data.item.type===2){
+                typeNmae = "转入"
+            } else if ( data.item.type===3){
+                typeNmae = "静态收益"
+            } else if ( data.item.type===4){
+                typeNmae = "动态收益"
+            } else if ( data.item.type===5){
+                typeNmae = "冻结"
+            }
+
         let item1 = <View style={{ flexDirection: 'row', marginTop: 2, backgroundColor: Colors.white }}>
-            <Text style={{ padding: 8, color: "#333", fontSize: 13, width: Utils.getWidth() / 4, textAlign: "center" }}>{"静态收益"}</Text>
-            <Text style={{ padding: 8, color: "#333", fontSize: 13, width: Utils.getWidth() / 4, textAlign: "center" }}>{Utils.formatNumBer("0.2231", 4)}</Text>
-            <Text style={{ padding: 8, color: "#333", fontSize: 13, width: Utils.getWidth() / 2, textAlign: "center" }}>{"2018/12/25 21:12:20"}</Text>
+            <Text style={{ padding: 8, color: "#333", fontSize: 13, width: Utils.getWidth() / 4, textAlign: "center" }}>{typeNmae}</Text>
+            <Text style={{ padding: 8, color: "#333", fontSize: 13, width: Utils.getWidth() / 4, textAlign: "center" }}>{Utils.formatNumBer(data.item.num, 4)}</Text>
+            <Text style={{ padding: 8, color: "#333", fontSize: 13, width: Utils.getWidth() / 2, textAlign: "center" }}>{Utils.formatDateTime(data.item.createTime*1000)}</Text>
         </View>
 
         let item2 = <View style={{ flexDirection: 'row', marginTop: 2, backgroundColor: Colors.white }}>
-            <Text style={{ padding: 8, color: "#333", fontSize: 13, width: Utils.getWidth() / 2, textAlign: "center" }}>{Utils.formatNumBer("0.2231", 4)}</Text>
-            <Text style={{ padding: 8, color: "#333", fontSize: 13, width: Utils.getWidth() / 2, textAlign: "center" }}>{"2018/12/25 21:12:20"}</Text>
+            <Text style={{ padding: 8, color: "#333", fontSize: 13, width: Utils.getWidth() / 2, textAlign: "center" }}>{Utils.formatNumBer(data.item.num, 4)}</Text>
+            <Text style={{ padding: 8, color: "#333", fontSize: 13, width: Utils.getWidth() / 2, textAlign: "center" }}>{Utils.formatDateTime(data.item.createTime*1000)}</Text>
         </View>
         let item3 = <View style={{ flexDirection: 'row', marginTop: 2, backgroundColor: Colors.white }}>
-            <Text style={{ padding: 8, color: "#333", fontSize: 13, width: Utils.getWidth() / 4, textAlign: "center" }}>{"Wepay资产"}</Text>
-            <Text style={{ padding: 8, color: "#333", fontSize: 13, width: Utils.getWidth() / 4, textAlign: "center" }}>{Utils.formatNumBer("0.2231", 4)}</Text>
-            <Text style={{ padding: 8, color: "#333", fontSize: 13, width: Utils.getWidth() / 2, textAlign: "center" }}>{"2018/12/25 21:12:20"}</Text>
+            <Text style={{ padding: 8, color: "#333", fontSize: 13, width: Utils.getWidth() / 4, textAlign: "center" }}>{typeNmae}</Text>
+            <Text style={{ padding: 8, color: "#333", fontSize: 13, width: Utils.getWidth() / 4, textAlign: "center" }}>{Utils.formatNumBer(data.item.num, 4)}</Text>
+            <Text style={{ padding: 8, color: "#333", fontSize: 13, width: Utils.getWidth() / 2, textAlign: "center" }}>{Utils.formatDateTime(data.item.createTime*1000)}</Text>
         </View>
         if (this.state.selectIndex === 0) {
             return item1
@@ -228,10 +244,6 @@ export default class Wbao extends BaseComponent {
         } else {
             return item3
         }
-    }
-
-    transactionRecord() {//交易记录
-        this.props.navigation.navigate('ZhongChouRecord');
     }
 
     onClick(type) {
@@ -248,10 +260,26 @@ export default class Wbao extends BaseComponent {
         }
     }
 
-    _goTran(number) {
-        this.props.navigation.navigate('TranWB',{
-            type:number
-        });
+    _goTran(type) {
+        if (type===2){
+            this.props.navigation.navigate('TranWB',{
+                type:type,
+                number:this.state.wepayNum,
+                setCallback:()=>this._refreshData()
+            });
+        } else if (type===3){
+            this.props.navigation.navigate('TranWB',{
+                type:type,
+                number:this.state.availableAssets,
+                setCallback:()=>this._refreshData()
+            });
+        }else {
+            this.props.navigation.navigate('TranWB',{
+                type:type,
+                number:this.state.availableAssets,
+                setCallback:()=>this._refreshData()
+            });
+        }
     }
 }
 export const styles = StyleSheet.create({

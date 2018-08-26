@@ -8,40 +8,114 @@ import {
     Platform,
     View,
 } from 'react-native';
-import BaseComponent, { mainColor } from "../BaseComponent";
+import BaseComponent, {mainColor, upDataUserInfo} from "../BaseComponent";
 import RefreshFlatList2 from "../../common/RefreshFlatList2"
 import Colors from "../../util/Colors"
 import { Overlay } from 'teaset';
 import Echarts from 'native-echarts';
 import Dimensions from 'Dimensions';
-const { width } = Dimensions.get('window');
 import SplashScreen from "react-native-splash-screen"
+import DialogUtils from "../../util/DialogUtils";
+import BaseUrl from "../../util/BaseUrl";
+import HttpUtils from "../../util/HttpUtils";
+import Utils from "../../util/Utils";
 
-
-//Wepay交易
+//交易中心首页
 
 export default class TradeHome extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
             cid:1,  //1.Wepay 2.比特币 3.莱特币  4.以太坊  5.狗狗币
-            wepayNum: "0.00", //Wepay资产
-            yueNum: "0.00", //余额
-            echartsType: 0,  //0：5分钟 ， 1：5小时 ，2：日线 
+            title:"Wepay",
+
+            coinBalance: "0.00", //Wepay资产
+            walletBalance: "0.00", //余额
+
+            coinPrice:"0.00",//当前价格
+            maxPrice:"0.00",//最高价
+            minPrice:"0.00",//最低价
+
+            echartsType: 0,  //0：5分钟 ， 1：5小时 ，2：日线
+            xdata:[],
+            ydata:[],
             activeIndex: 0,//0余额购买 ，1余额出售
         }
+        this.userInfo = this.getUserInfo()
+
+        this.cid = 1;
+        this.activeIndex = 0;
+
+        this.oneHour = [];
+        this.fiveHour = [];
+        this.dateLine = [];
+
     }
 
     componentDidMount() {
-        SplashScreen.hide();
+       // SplashScreen.hide();
+        this.geTopData(this.cid)
         this._refreshData()
     }
+
+    geTopData(){
+        DialogUtils.showLoading()
+        let url = BaseUrl.coinDeal(this.userInfo.sessionId,this.cid)
+        HttpUtils.getData(url)
+            .then(result => {
+                DialogUtils.hideLoading()
+                if (result.code === 1) {
+                    //alert(JSON.stringify(result.data))
+                    this.setState({
+                        coinBalance: result.data.coinBalance,
+                        walletBalance: result.data.walletBalance,
+                        coinPrice: result.data.coinPrices,//当前价格
+                        maxPrice: result.data.maxPrice,//最高价
+                        minPrice: result.data.minPrice,//最低价
+                    })
+                    this.oneHour = result.data.oneHour;
+                    this.fiveHour = result.data.fiveHour;
+                    this.dateLine = result.data.dateLine;
+                    this.getEchartsData(this.state.echartsType)
+                }  else if (result.code === 2||result.code === 4) {
+                    DialogUtils.showToast(result.msg)
+                    this.goLogin(this.props.navigation)
+                } else {
+                    DialogUtils.showToast(result.msg)
+                }
+
+            })
+    }
+
+    getEchartsData(i){
+        let data
+        if (i===0){
+            data = this.oneHour;
+        }else if (i===1){
+            data = this.fiveHour;
+        }else if (i===2){
+            data = this.dateLine;
+        }
+        var dateArr = []
+        var dataArr = []
+        for (let i = 0; i <data.length; i++) {
+            let obj = data[i]
+           let dates  = Utils.formatDateGetHour(obj.coinAddtime*1000)
+            dateArr.push(dates)
+            dataArr.push(obj.coinPrice)
+        }
+       // alert(JSON.stringify(dateArr))
+        this.setState({
+            xdata:dateArr.reverse(),
+            ydata:dataArr.reverse(),
+        })
+
+    }
+
     render() {
-
         let { activeIndex } = this.state;
-
         // 指定图表的配置项和数据
-        var option = {
+        var options = {
             //点击某一个点的数据的时候，显示出悬浮窗
             tooltip: {
                 trigger: 'axis'
@@ -49,15 +123,15 @@ export default class TradeHome extends BaseComponent {
             xAxis: {
                 type: 'category',
                 boundaryGap: false,
-                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                 data:this.state.xdata,
             },
             yAxis: {
                 type: 'value'
             },
             color: ["#d15"],
             series: [{
-                name: '苹果',
-                data: [20, 30, 6, 24, 40, 60, 67],
+                name: this.state.title,
+                data: this.state.ydata,
                 type: 'line',
                 areaStyle: { color: "#d15", origin: "auto" }
             }]
@@ -80,7 +154,7 @@ export default class TradeHome extends BaseComponent {
                         onPress={() => this.showPopover(this.title)}
                     >
                         <View style={{ alignItems: "center" }}>
-                            <Text style={{ fontSize: 18, color: Colors.white, marginBottom: 3 }}>Wepay</Text>
+                            <Text style={{ fontSize: 18, color: Colors.white, marginBottom: 3 }}>{this.state.title}</Text>
                             <Image source={require("../../../res/images/sanjiao.png")} />
                         </View></TouchableOpacity>
 
@@ -95,29 +169,29 @@ export default class TradeHome extends BaseComponent {
                         }]}>
                             <TouchableOpacity
                                 activeOpacity={0.8} >
-                                <View style={{ flexDirection: 'column', alignItems: "center", width: width / 2 }}>
+                                <View style={{ flexDirection: 'column', alignItems: "center", width: Utils.getWidth() / 2 }}>
                                     <Text style={{ fontSize: 16, color: '#fff' }}>Wepay资产</Text>
-                                    <Text style={{ fontSize: 16, color: '#fff' }}>{this.state.wepayNum}</Text>
+                                    <Text style={{ fontSize: 16, color: '#fff' }}>{this.state.coinBalance}</Text>
                                 </View></TouchableOpacity>
                             <View style={{ height: 30, width: 0.5, backgroundColor: '#fff' }} />
                             <TouchableOpacity activeOpacity={0.8}>
-                                <View style={{ flexDirection: 'column', alignItems: "center", width: width / 2 }}>
+                                <View style={{ flexDirection: 'column', alignItems: "center", width: Utils.getWidth() / 2 }}>
                                     <Text style={{ fontSize: 16, color: '#fff' }}>余  额</Text>
-                                    <Text style={{ fontSize: 16, color: '#fff' }}>{this.state.yueNum}</Text>
+                                    <Text style={{ fontSize: 16, color: '#fff' }}>{this.state.walletBalance}</Text>
                                 </View></TouchableOpacity>
                         </View>
                         <View style={{ padding: 15, flexDirection: "row", backgroundColor: Colors.white }}>
                             <View style={{ flexDirection: "row", flex: 1, justifyContent: "center" }}>
                                 <Text style={{ fontSize: 14, color: Colors.text8, }}>当前价格</Text>
-                                <Text style={{ fontSize: 14, color: Colors.black, }}>53.2121</Text>
+                                <Text style={{ fontSize: 14, color: Colors.black, }}>{this.state.coinPrice}</Text>
                             </View>
                             <View style={{ flexDirection: "row", flex: 1, justifyContent: "center" }}>
                                 <Text style={{ fontSize: 14, color: Colors.text8, }}>高</Text>
-                                <Text style={{ fontSize: 14, color: Colors.black, }}>53.2121</Text>
+                                <Text style={{ fontSize: 14, color: Colors.black, }}>{this.state.maxPrice}</Text>
                             </View>
                             <View style={{ flexDirection: "row", flex: 1, justifyContent: "center" }}>
                                 <Text style={{ fontSize: 14, color: Colors.text8, }}>低</Text>
-                                <Text style={{ fontSize: 14, color: Colors.black, }}>53.2121</Text>
+                                <Text style={{ fontSize: 14, color: Colors.black, }}>{this.state.minPrice}</Text>
                             </View>
                         </View>
 
@@ -153,7 +227,7 @@ export default class TradeHome extends BaseComponent {
                                 color: this.state.echartsType !== 0 ? Colors.blue1 : Colors.white
                             }}
                                 onPress={() => this.magicType(0)}
-                            >5分钟</Text>
+                            >一小时</Text>
                             <Text style={{
                                 borderColor: Colors.blue1, flex: 1, padding: 10, textAlign: "center", borderWidth: 0.5,
                                 backgroundColor: this.state.echartsType === 1 ? Colors.blue1 : Colors.white,
@@ -171,7 +245,7 @@ export default class TradeHome extends BaseComponent {
                         </View>
                         {/* 折线统计图 */}
                         <View style={{ marginTop: -50, zIndex: -1, backgroundColor: Colors.white }}>
-                            <Echarts option={option} height={240} width={width} />
+                            <Echarts option={options} height={240} width={Utils.getWidth()} />
                         </View>
 
                         <View style={{ flexDirection: "row", backgroundColor: Colors.bgColor, justifyContent: "center", padding: 10, marginTop: -30 }}>
@@ -181,7 +255,7 @@ export default class TradeHome extends BaseComponent {
                                     borderColor: Colors.r1, borderWidth: 1, borderTopLeftRadius: 18, borderBottomLeftRadius: 18,
                                     justifyContent: "center", alignItems: "center", backgroundColor: activeIndex ? Colors.white : Colors.red
                                 }}>
-                                <Text style={{ padding: 8, fontSize: 16, marginLeft: 25, marginRight: 10, color: activeIndex ? Colors.red : Colors.white }}>购买记录</Text>
+                                <Text style={{ padding: 8, fontSize: 16, marginLeft: 25, marginRight: 10, color: activeIndex ? Colors.red : Colors.white }}>购买</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 onPress={() => this.selectIndex(1)}
@@ -189,7 +263,7 @@ export default class TradeHome extends BaseComponent {
                                     borderColor: Colors.r1, borderWidth: 1, borderTopRightRadius: 18, borderBottomRightRadius: 18,
                                     justifyContent: "center", alignItems: "center", backgroundColor: activeIndex ? Colors.red : Colors.white
                                 }} >
-                                <Text style={{ padding: 8, fontSize: 16, marginLeft: 25, marginRight: 10, color: activeIndex ? Colors.white : Colors.red }}>释放记录</Text>
+                                <Text style={{ padding: 8, fontSize: 16, marginLeft: 25, marginRight: 10, color: activeIndex ? Colors.white : Colors.red }}>出售</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={{ backgroundColor: Colors.bgColor }}>
@@ -211,10 +285,12 @@ export default class TradeHome extends BaseComponent {
             case 2:
                 this.props.navigation.navigate('CreateBSOrder', {
                     cid: this.state.cid,
+                    title: this.state.title,
                     type: i,
                 });
                 break;
             case 3:
+                this.props.navigation.navigate('OrderRecord')
                 break;
             case 4:
                 break;
@@ -224,11 +300,13 @@ export default class TradeHome extends BaseComponent {
     magicType(i) {
         //alert(i)
         this.setState({ echartsType: i })
+        this.getEchartsData(i)
     }
     //购买 出售 订单
     selectIndex(index) {
         this.setState({ activeIndex: index })
         this.activeIndex = index;
+        this._refreshData()
     }
 
     /**
@@ -251,49 +329,111 @@ export default class TradeHome extends BaseComponent {
                 }}>
                 <Image
                     style={{ width: 45, height: 45, borderWidth: 1, borderRadius: 23, borderColor: "#666" }}
-                    // source={{uri:imgPath}} 
-                    source={require("../../../res/images/touxiang-xiao.png")}
+                    source={data.item?{uri:this.getImgUrl(data.item.imgHead)}:require("../../../res/images/touxiang-xiao.png")}
                 />
 
                 <View style={{ flexDirection: 'column', justifyContent: "center", flex: 1, marginLeft: 10, marginRight: 10 }}>
                     <Text
-                        style={{ color: "#333333", fontSize: 16 }}>{"usernamsssss"}</Text>
+                        style={{ color: "#333333", fontSize: 16 }}>{data.item.username}</Text>
 
                     <Text style={{ color: "#888", fontSize: 14, marginTop: 5 }}
                         numberOfLines={1}
-                    >限 额:{1213.23}</Text>
+                    >限 额:{data.item.num}</Text>
                 </View>
 
                 <View style={{ flexDirection: 'column', justifyContent: "center", marginLeft: 10, marginRight: 10 }}>
                     <Text
-                        style={{ color: Colors.blue, fontSize: 16, textAlign: "right" }}>{45.3121}</Text>
-                    <Text style={{
+                        style={{ color: Colors.blue, fontSize: 16, textAlign: "right" }}>{data.item.dprice}</Text>
+                    <Text
+                        onPress={()=>this.trade()}
+                        style={{
                         paddingLeft: 8, paddingRight: 8, paddingTop: 3, paddingBottom: 3, color: Colors.r1,
                         fontSize: 13, textAlign: "center", borderWidth: 1, borderColor: Colors.r1, borderRadius: 10
-                    }} numberOfLines={1}>{this.state.activeIndex ? "购买" : "出售"}</Text>
+                    }} numberOfLines={1}>{!this.state.activeIndex ? "购买" : "卖出"}</Text>
                 </View>
             </View>
         </TouchableOpacity>
     }
-    //刷新数据
-    _refreshData(cid) {
-        var data = []
-        for (const i = 0; i < 15; i++) {
-            data.push("武平" + i)
-        }
-        this.refList.setData(data)
+
+    /**
+     * 交易
+     */
+    trade(safetyPwd, id,num){
+        DialogUtils.showLoading();
+        this.url = !this.state.activeIndex ?BaseUrl.dealBuy():BaseUrl.dealSell();
+        HttpUtils.postData(this.url,
+            {  sessionId: this.userInfo.sessionId,
+                id: id,
+                num: num,
+                safetyPwd: safetyPwd,
+            })
+            .then(result => {
+                DialogUtils.hideLoading()
+                if (result.code === 1) {
+                    let tip  = !this.state.activeIndex ? "购买" : "出售"
+                    DialogUtils.showToast(tip+ "成功")
+                    //this.props.navigation.goBack()
+                } else {
+                    DialogUtils.showToast(result.msg)
+                }
+
+            })
     }
+
+    //刷新数据
+    _refreshData() {
+        this.refList.refreshStar()
+        this.pageIndex = 1;
+        this.getData(true)
+    }
+    //加载更多数据
+    _onLoadData() {
+        this.getData(false)
+    }
+
+    getData(isRefesh) {
+        if (this.activeIndex === 1) { //购买
+            this.url = BaseUrl.dealOrder(this.userInfo.sessionId, this.pageIndex,1,this.cid)
+        } else if (this.activeIndex === 0) {//出售
+            this.url = BaseUrl.dealOrder(this.userInfo.sessionId, this.pageIndex,2,this.cid)
+        }
+        //alert(this.url)
+        HttpUtils.getData(this.url)
+            .then(result => {
+                if (result.code === 1) {
+                    alert(JSON.stringify(result.data))
+                    if (isRefesh) {
+                        this.refList.setData(result.data)
+                        if (result.data.length < 1) {
+                            DialogUtils.showToast("暂无记录")
+                        }
+                    } else {
+                        this.refList.addData(result.data)
+                    }
+                    this.pageIndex += 1
+
+                } else if (result.code === 2||result.code === 4) {
+                    DialogUtils.showToast(result.msg)
+                    this.goLogin(this.props.navigation)
+                } else {
+                    DialogUtils.showToast(result.msg)
+                }
+            })
+    }
+
     //选择币种  cid 各种货币id
     //1.Wepay 2.比特币 3.莱特币  4.以太坊  5.狗狗币
-    selectCid(cid){
-        this.setState({cid:cid})
-        this._refreshData(cid)
+    selectCid(cid,title){
+        this.cid = cid
+        this.setState({cid:cid, title :title})
+        this.geTopData()
+        this._refreshData()
     }
     /**
-     * onPress={() => this.showPopover(this.refs['downcenter'], 'down', 'center')} 
-     * @param {*} view 
-     * @param {*} direction 
-     * @param {*} align 
+     * onPress={() => this.showPopover(this.refs['downcenter'], 'down', 'center')}
+     * @param {*} view
+     * @param {*} direction
+     * @param {*} align
      */
     showPopover(view) {
         let { black, shadow, showArrow } = this.state;
@@ -306,7 +446,7 @@ export default class TradeHome extends BaseComponent {
         };
         let whiteStyle = {
             ...blackStyle,
-            backgroundColor: Colors.bgColor,
+            backgroundColor: Colors.white,
         };
         let shadowStyle = {
             shadowColor: '#777',
@@ -327,39 +467,39 @@ export default class TradeHome extends BaseComponent {
                         <Text
                             onPress={() => {
                                 this.view.close()
-                                selectCid(1)
+                                this.selectCid(1,"Wepay")
                             }}
-                            style={{ fontSize: 14, color: Colors.black, paddingLeft: 20, paddingRight: 20, paddingTop: 10, paddingBottom: 10 }}>
+                            style={{ fontSize: 14, color: Colors.text3, paddingLeft: 20, paddingRight: 20, paddingTop: 10, paddingBottom: 10 }}>
                             Wepay</Text>
-                        <View style={{ backgroundColor: Colors.black, height: 0.5 }} />
+                        <View style={{ backgroundColor: Colors.lineColor, height: 0.5 }} />
                         <Text
                             onPress={() => {
                                 this.view.close()
-                                selectCid(2)
+                                this.selectCid(2,"比特币")
                             }}
                             style={{ fontSize: 14, color: Colors.text3, paddingLeft: 20, paddingRight: 20, paddingTop: 10, paddingBottom: 10 }}>
                             比特币</Text>
-                        <View style={{ backgroundColor: Colors.black, height: 0.5 }} />
+                        <View style={{ backgroundColor: Colors.lineColor, height: 0.5 }} />
                         <Text
                             onPress={() => {
                                 this.view.close()
-                                selectCid(3)
+                                this.selectCid(3,"莱特币")
                             }}
                             style={{ fontSize: 14, color: Colors.text3, paddingLeft: 20, paddingRight: 20, paddingTop: 10, paddingBottom: 10 }}>
                             莱特币</Text>
-                        <View style={{ backgroundColor: Colors.black, height: 0.5 }} />
+                        <View style={{ backgroundColor: Colors.lineColor, height: 0.5 }} />
                         <Text
                             onPress={() => {
                                 this.view.close()
-                                selectCid(4)
+                                this.selectCid(4,"以太坊")
                             }}
                             style={{ fontSize: 14, color: Colors.text3, paddingLeft: 20, paddingRight: 20, paddingTop: 10, paddingBottom: 10 }}>
                             以太坊</Text>
-                        <View style={{ backgroundColor: Colors.black, height: 0.5 }} />
+                        <View style={{ backgroundColor: Colors.lineColor, height: 0.5 }} />
                         <Text
                             onPress={() => {
                                 this.view.close()
-                                selectCid(5)
+                                this.selectCid(5,"狗狗币")
                             }}
                             style={{ fontSize: 14, color: Colors.text3, paddingLeft: 20, paddingRight: 20, paddingTop: 10, paddingBottom: 10 }}>
                             狗狗币</Text>

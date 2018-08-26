@@ -11,7 +11,7 @@ export default class HttpUtils {
             fetch(url)
                 .then(response => response.json())
                 .then(result => {
-                    console.log(JSON.stringify(result))
+                   // console.log(JSON.stringify(result))
                     resolve(result);
                 })
                 .catch(error => {

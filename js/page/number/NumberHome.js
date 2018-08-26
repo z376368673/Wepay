@@ -22,7 +22,7 @@ export default class NumberHome extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
-            wepayPrice:"18.19",//当前价格
+            wepayPrice:"0.00",//当前价格
             assetsNum: 0.00,//   拥有wepay资产
             purseAddress: "njadnahdnqjeio123qdhsuydy891209ejh1d",//   钱包地址
             coinVos:[],  // 货币信息集合
@@ -159,20 +159,20 @@ export default class NumberHome extends BaseComponent {
             name = "Wepay"
             color = Colors.y1
          }
-        return <View style={{ padding: 10, backgroundColor: Colors.white }}>
+        return <View style={{ padding: 10, backgroundColor: Colors.white,marginTop:1 }}>
             <View style={{ flexDirection: "row",alignItems:"center" }}>
                 <View style={{ backgroundColor: color, width: 8, height: 8 }} />
-                <Text style={{ color: Colors.text3, fontSize: 16, marginLeft: 5 }}>{name}</Text>
+                <Text style={{ color: Colors.text3, fontSize: 16, marginLeft: 5 }}>{data.item.coinName}</Text>
             </View>
             <View style={{ flexDirection: "row",marginTop:5}}>
-                <Text style={{ color: Colors.text3, fontSize: 15, marginLeft: 5, flex: 1 }}>0.0000</Text>
-                <Text style={{ color: Colors.text3, fontSize: 15, marginLeft: 5, flex: 1 }}>18.3000</Text>
+                <Text style={{ color: Colors.text3, fontSize: 15, marginLeft: 5, flex: 1 }}>{data.item.num}</Text>
+                <Text style={{ color: Colors.text3, fontSize: 15, marginLeft: 5, flex: 1 }}>{data.item.coinPrice}</Text>
                 <TouchableOpacity style={{ flex: 1, justifyContent: "center", alignItems: "center", padding: 5, backgroundColor: Colors.y1 }}>
                     <Text style={{ color: Colors.white, fontSize: 14, }}>余额交易</Text>
                 </TouchableOpacity>
             </View>
             <View style={{ flexDirection: "row" ,marginTop:5}}>
-                <Text style={{ color: Colors.text6, fontSize: 14, marginLeft: 5, flex: 1 }}>Wepay</Text>
+                <Text style={{ color: Colors.text6, fontSize: 14, marginLeft: 5, flex: 1 }}>{data.item.coinName}</Text>
                 <Text style={{ color: Colors.text6, fontSize: 14, marginLeft: 5, flex: 1 }}>当前价格</Text>
                 <TouchableOpacity style={{ flex: 1, justifyContent: "center", alignItems: "center", padding: 5, backgroundColor: Colors.mainColor }}>
                     <Text style={{ color: Colors.white, fontSize: 14, }}>现金交易</Text>

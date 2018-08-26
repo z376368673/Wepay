@@ -1400,4 +1400,157 @@ export default class BaseUrl {
     static numberIndex(sessionId) {
         return url + "/coin/index?sessionId=" + sessionId
     }
+
+    /**
+     * .订单
+     * @param sessionId
+     * @param pageIndex
+     * @param status 订单状态（0.进行中，1.已完成）
+     * @param cid  币种id
+     * @returns {
+        3.1	id		订单id
+        3.2	num		订单剩余数量
+        3.3	sellId		用户id
+        3.4	feeNum		手续费
+        3.5	createTime		订单创建时间
+        3.6	status		订单状态（0.进行中，1.已完成）
+        3.7	cid		币种id
+        3.8	type		1,出售 2,购买
+        3.9	tprice		总价
+        3.10	dprice		单价
+        3.11	ynum		数量
+     * }
+     */
+    static orderRecord(sessionId, pageIndex,status,cid) {
+        return url + "/deal/order?sessionId=" + sessionId
+            + "&pageIndex=" + pageIndex  + "&status=" + status + "&cid=" + cid
+    }
+
+    /**
+     *  取消订单
+     * @param {*} sessionId
+     * @id {*} id  挂单id
+     */
+    static cancelOrder(sessionId, orderId) {
+        return url + "/deal/cancelOrder?sessionId=" + sessionId + "&orderId=" + orderId;
+    }
+
+    /**
+     * W宝首页所有数据
+     * @param sessionId
+     * @param pageIndex
+     * @param recordType
+     * @returns {string}
+     */
+    static getWBIndex(sessionId, pageIndex,recordType) {
+        return url + "/wbao/index?sessionId=" + sessionId
+            + "&pageIndex=" + pageIndex  + "&recordType=" + recordType
+    }
+
+    /**
+     * 锁定
+     * @param sessionId
+     * @param num
+     * @param safetyPwd
+     * @returns {string}
+     */
+    static lockAssetWb() {
+        return url + "/wbao/lockAsset"
+    }
+    /**
+     * 转入
+     * @param sessionId
+     * @param num
+     * @param safetyPwd
+     * @returns {string}
+     */
+    static rollInWb() {
+        return url + "/wbao/rollIn"
+    }
+
+    /**
+     * 转出
+     * @param sessionId
+     * @param num
+     * @param safetyPwd
+     * @returns {string}
+     */
+    static rollOut() {
+        return url + "/wbao/rollOut"
+    }
+
+
+    /**
+     * 众筹记录
+     * @param {*} sessionId
+     * @param {*} pageIndex
+     *  // 1	code	是	状态码
+     // 2	msg	是	错误信息
+     // 3	data	是	数据(code=1返回集合数据)
+     "getNums": 0.22,
+     "getTime": "1534322728",
+     "userName": "零零8"
+     */
+    static zhongchouRecord(sessionId, pageIndex,recordType) {
+        return url + "/crowdsDetail/record?sessionId=" + sessionId
+            + "&pageIndex=" + pageIndex  + "&recordType=" + recordType;
+    }
+
+    /**
+     * 数字资产交易中心数据
+     * @param sessionId
+     * @param coinId 货币id
+     * @returns {string}
+     *
+     * 3.1	coinPrice		当前价格
+     3.2	coinId		货币id
+     3.3	walletBalance		钱包余额
+     3.4	coinBalance		货币余额
+     3.5	maxPrice		最高价
+     3.6	minPrice		最低价
+     3.7	oneHour		1小时数据
+     3.8	fiveHour		5小时数据
+     3.9	dateLine		1天数据
+
+     coinPrice		价格
+     coinAddtime		时间
+     */
+    static coinDeal(sessionId, coinId) {
+        return url + "/coin/deal?sessionId=" + sessionId + "&coinId=" + coinId;
+    }
+
+    /**数字资产交易中心订单列表
+     *
+     * @param sessionId
+     * @param pageIndex
+     * @param coinId  货币id
+     * @param orderType 订单类型1.购买，2.出售
+     * @returns {string}
+     */
+    static dealOrder(sessionId, pageIndex,orderType ,coinId) {
+        return url + "/coin/dealOrder?sessionId=" + sessionId + "&pageIndex=" + pageIndex  + "&orderType=" + orderType+ "&coinId=" + coinId;
+    }
+
+
+    /**
+     * 数字资产交易中心购买
+     * 1	sessionId  是	用户标识	string
+     2	safetyPwd	是	交易密码	String
+     3	id	是	订单id	int
+     4	num	是	购买数量	double
+     */
+    static dealBuy() {
+        return url + "/deal/buy"
+    }
+    /**
+     * 数字资产交易中心出售
+     * 1	sessionId  是	用户标识	string
+     2	safetyPwd	是	交易密码	String
+     3	id	是	订单id	int
+     4	num	是	购买数量	double
+     */
+    static dealSell() {
+        return url + "/deal/sell"
+    }
+
 }

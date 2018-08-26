@@ -47,35 +47,36 @@ export default class ZhongChou extends BaseComponent {
     * @param {*} pageIndex 
     */
     getData(isRefesh) {
-        if (this.action === 1) {
-            this.url = BaseUrl.getOutUndoneUnselectedUrl(this.userInfo.sessionId, this.pageIndex)
-        } else if (this.action === 2) {
-            this.url = BaseUrl.getOutUndoneUnselectedUrl(this.userInfo.sessionId, this.pageIndex)
-        } else {
-            this.url = BaseUrl.getOutUndoneUnselectedUrl(this.userInfo.sessionId, this.pageIndex)
-        }
-        HttpUtils.getData(this.url)
-            .then(result => {
-                if (result.code === 1) {
-                    if (isRefesh) {
-                        this.refList.setData(result.data)
-                        if (result.data.length < 1) {
-                            DialogUtils.showToast("暂无商品")
-                        }
-                        this.setState({
-                            isNull: result.data.length < 1 ? true : false,
-                        })
-                    } else {
-                        this.refList.addData(result.data)
-                    }
-                    this.pageIndex += 1
-                } else if (result.code === 2||result.code === 4) {
-                    DialogUtils.showToast(result.msg)
-                    this.goLogin(this.props.navigation)
-                } else {
-                    DialogUtils.showToast(result.msg)
-                }
-            })
+        DialogUtils.showToast("暂无活动")
+        // if (this.action === 1) {
+        //     this.url = BaseUrl.getOutUndoneUnselectedUrl(this.userInfo.sessionId, this.pageIndex)
+        // } else if (this.action === 2) {
+        //     this.url = BaseUrl.getOutUndoneUnselectedUrl(this.userInfo.sessionId, this.pageIndex)
+        // } else {
+        //     this.url = BaseUrl.getOutUndoneUnselectedUrl(this.userInfo.sessionId, this.pageIndex)
+        // }
+        // HttpUtils.getData(this.url)
+        //     .then(result => {
+        //         if (result.code === 1) {
+        //             if (isRefesh) {
+        //                 this.refList.setData(result.data)
+        //                 if (result.data.length < 1) {
+        //                     DialogUtils.showToast("暂无信息")
+        //                 }
+        //                 this.setState({
+        //                     isNull: result.data.length < 1 ? true : false,
+        //                 })
+        //             } else {
+        //                 this.refList.addData(result.data)
+        //             }
+        //             this.pageIndex += 1
+        //         } else if (result.code === 2||result.code === 4) {
+        //             DialogUtils.showToast(result.msg)
+        //             this.goLogin(this.props.navigation)
+        //         } else {
+        //             DialogUtils.showToast(result.msg)
+        //         }
+        //     })
 
     }
 

@@ -59,8 +59,7 @@ import EchartsDemo from "../page/number/EchartsDemo"
 import CreateBSOrder from "../page/number/CreateBSOrder"
 import Wbao from "../page/number/Wbao"
 import TranWB from "../page/number/TranWB"
-
-
+import OrderRecord from "../page/number/OrderRecord"
 
 
 
@@ -104,6 +103,9 @@ export default AppNavigator = createStackNavigator({
     },
     CreateBSOrder: {//发布购买卖出订单
         screen: CreateBSOrder
+    },
+    OrderRecord: {//订单记录
+        screen: OrderRecord
     },
 
     EchartsDemo: {//统计图

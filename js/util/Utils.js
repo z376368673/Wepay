@@ -135,16 +135,16 @@ export default class Utils {
        return new Number(str).toFixed(num)?new Number(str).toFixed(num):0
     }
     /**
-     * 检测是否是几位小数    比如 regNumber(0.21234,3) 
+     * 检测是否是数字 包含小数点
      * @param {*} str 
      * @param {*} num 小数位
      */
-    static regNumber(str,num){
-        let regPrice = /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/
-        if (!regPrice.test(num)) {
-            return false
+    static regNumber(str){
+        let regPrice =/^[0-9]+.?[0-9]*$/
+        if (regPrice.test(str)) {
+            return true
         }
-        return true
+        return false
     }
 
     /** 
@@ -175,6 +175,25 @@ export default class Utils {
         second = second < 10 ? ('0' + second) : second;
         return y + sb + m + sb + d + ' ' + h + ':' + minute + ':' + second;
     }
+
+
+    static formatDateGetHour(inputTime) {
+        let sb =  '/'
+        var date = new Date(inputTime);
+        var y = date.getFullYear();
+        var m = date.getMonth() + 1;
+        m = m < 10 ? ('0' + m) : m;
+        var d = date.getDate();
+        d = d < 10 ? ('0' + d) : d;
+        var h = date.getHours();
+        h = h < 10 ? ('0' + h) : h;
+        var minute = date.getMinutes();
+        var second = date.getSeconds();
+        minute = minute < 10 ? ('0' + minute) : minute;
+        second = second < 10 ? ('0' + second) : second;
+        return  h + ':' + minute
+    }
+
 
     /**
      *   获取省市区数据

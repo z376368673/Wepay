@@ -28,10 +28,10 @@ export default class TradeHome extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
-
             wepayNum: "0.00", //Wepay资产
             yueNum: "0.00", //余额
 
+            title:this.props.navigation.state.params.title,
             cid: this.props.navigation.state.params.cid,
             price: 18.21,  
 
@@ -65,7 +65,7 @@ export default class TradeHome extends BaseComponent {
                         onPress={() => this.showPopover(this.title)}
                     >
                         <View style={{ alignItems: "center" }}>
-                            <Text style={{ fontSize: 18, color: Colors.white, marginBottom: 3 }}>Wepay</Text>
+                            <Text style={{ fontSize: 18, color: Colors.white, marginBottom: 3 }}>{this.state.title}</Text>
                             <Image source={require("../../../res/images/sanjiao.png")} />
                         </View></TouchableOpacity>
 
@@ -161,12 +161,7 @@ export default class TradeHome extends BaseComponent {
     _refreshData(cid) {
 
     }
-    //选择币种  cid 各种货币id
-    //1.Wepay 2.比特币 3.莱特币  4.以太坊  5.狗狗币
-    selectCid(cid) {
-        setState({ cid: cid })
-        this._refreshData(cid)
-    }
+
     /**
      * onPress={() => this.showPopover(this.refs['downcenter'], 'down', 'center')} 
      * @param {*} view 
@@ -184,7 +179,7 @@ export default class TradeHome extends BaseComponent {
         };
         let whiteStyle = {
             ...blackStyle,
-            backgroundColor: Colors.bgColor,
+            backgroundColor: Colors.white,
         };
         let shadowStyle = {
             shadowColor: '#777',
@@ -205,40 +200,40 @@ export default class TradeHome extends BaseComponent {
                         <Text
                             onPress={() => {
                                 this.view.close()
-                                this.selectCid(1)
+                                this.selectCid(1,"Wepay")
                             }}
 
-                            style={{ fontSize: 14, color: Colors.black, paddingLeft: 20, paddingRight: 20, paddingTop: 10, paddingBottom: 10 }}>
+                            style={{ fontSize: 14, color: Colors.text3, paddingLeft: 20, paddingRight: 20, paddingTop: 10, paddingBottom: 10 }}>
                             Wepay</Text>
-                        <View style={{ backgroundColor: Colors.black, height: 0.5 }} />
+                        <View style={{ backgroundColor: Colors.lineColor, height: 0.5 }} />
                         <Text
                             onPress={() => {
                                 this.view.close()
-                                this.selectCid(2)
+                                this.selectCid(2,"比特币")
                             }}
                             style={{ fontSize: 14, color: Colors.text3, paddingLeft: 20, paddingRight: 20, paddingTop: 10, paddingBottom: 10 }}>
                             比特币</Text>
-                        <View style={{ backgroundColor: Colors.black, height: 0.5 }} />
+                        <View style={{ backgroundColor: Colors.lineColor, height: 0.5 }} />
                         <Text
                             onPress={() => {
                                 this.view.close()
-                                this.selectCid(3)
+                                this.selectCid(3,"莱特币")
                             }}
                             style={{ fontSize: 14, color: Colors.text3, paddingLeft: 20, paddingRight: 20, paddingTop: 10, paddingBottom: 10 }}>
                             莱特币</Text>
-                        <View style={{ backgroundColor: Colors.black, height: 0.5 }} />
+                        <View style={{ backgroundColor: Colors.lineColor, height: 0.5 }} />
                         <Text
                             onPress={() => {
                                 this.view.close()
-                                this.selectCid(4)
+                                this.selectCid(4,"以太坊")
                             }}
                             style={{ fontSize: 14, color: Colors.text3, paddingLeft: 20, paddingRight: 20, paddingTop: 10, paddingBottom: 10 }}>
                             以太坊</Text>
-                        <View style={{ backgroundColor: Colors.black, height: 0.5 }} />
+                        <View style={{ backgroundColor: Colors.lineColor, height: 0.5 }} />
                         <Text
                             onPress={() => {
                                 this.view.close()
-                                this.selectCid(5)
+                                this.selectCid(5,"狗狗币")
                             }}
                             style={{ fontSize: 14, color: Colors.text3, paddingLeft: 20, paddingRight: 20, paddingTop: 10, paddingBottom: 10 }}>
                             狗狗币</Text>
@@ -250,8 +245,8 @@ export default class TradeHome extends BaseComponent {
     }
     //选择币种  cid 各种货币id
     //1.Wepay 2.比特币 3.莱特币  4.以太坊  5.狗狗币
-    selectCid(cid){
-        this.setState({cid:cid})
+    selectCid(cid,title){
+        this.setState({cid:cid, title :title})
         this._refreshData(cid)
     }
 }

@@ -144,8 +144,7 @@ export default class LoginPage extends BaseComponent {
             case 2://登陆
                //PassWordInput.showPassWordInput((safetyPwd) => alert(safetyPwd),"支付描述内容",100)
                // PassWordInput.showPassWordInput((safetyPwd) => alert(safetyPwd))
-               //DialogUtils.upDataApp()
-                
+                //DialogUtils.showPay()
                 if(this.state.text.length<1){
                     DialogUtils.showMsg("请输入UID或者手机号")
                 }else if(this.state.text.length<1){
@@ -153,7 +152,6 @@ export default class LoginPage extends BaseComponent {
                 }else{
                     this.loginByPwd();
                 }
-               
                 break
         }
     }

@@ -23,29 +23,29 @@ export default class TranWB extends BaseComponent {
         super(props);
         this.state = {
             account: "", //数量
-            wepayNum: "0.00",//资产
+            wepayNum:this.props.navigation.state.params.number, // 当前数量
         }
         this.userInfo = this.getUserInfo()
         this.type = this.props.navigation.state.params.type // 1转出 2转入  3锁定
+        this.title = "W宝转出"
     }
 
     render() {
-        let title
         let name
         if(this.type===1){
-            title = "W宝转出"
+            this.title = "W宝转出"
             name = "转出"
         }else if(this.type===2){
-            title = "W宝转入"
+            this.title = "W宝转入"
             name = "转入"
         } else{
-            title = "W宝锁定资产"
+            this.title = "W宝锁定资产"
             name = "锁定"
         }
         return (
             <View style={[BaseStyles.container_column, { backgroundColor: "#f1f1f1" }]}>
                 <NavigationBar
-                    title={title}
+                    title={this.title}
                     navigation={this.props.navigation}
                 />
                 <View style={[{ flexDirection: 'row', alignItems: 'center', padding: 10, backgroundColor: "#fff", marginTop: 8 }]}>
@@ -57,11 +57,7 @@ export default class TranWB extends BaseComponent {
                         keyboardType='numeric'
                         editable={false}
                         value={this.state.wepayNum + ""}
-                        onChangeText={(text) => {
-                            //保留四位小数
-                            var newText = Utils.formatNumBer(text,4)
-                            this.setState({ wepayNum: newText })
-                        }}
+
                     />
                 </View>
                 <View style={[{ flexDirection: 'row', alignItems: 'center', padding: 10, backgroundColor: "#fff", marginTop: 1 }]}>
@@ -71,9 +67,10 @@ export default class TranWB extends BaseComponent {
                         placeholder={'可输入最多四位小数'}
                         placeholderTextColor={'#999'}
                         underlineColorAndroid='transparent'
+                        keyboardType='numeric'
                         value={this.state.account + ""}
                         onChangeText={(text) => {
-                            var newText = Utils.formatNumBer(text,4)
+                            const newText = Utils.chkCurrency(text,4)
                             this.setState({ account: newText })
                         }}
                     />
@@ -102,45 +99,42 @@ export default class TranWB extends BaseComponent {
         );
     }
 
-    //描述: 用于输入交易密码显示对方用户名
-    getUserName(transferAddress, wepayNum) {
-        DialogUtils.showLoading("");
-        let url = BaseUrl.getUserName(transferAddress)
-        HttpUtils.getData(url)
-            .then(result => {
-                DialogUtils.hideLoading()
-                if (result.code === 1) {
-                    PassWordInput.showPassWordInput((safetyPwd) => {
-                        this.payTransfer(transferAddress, safetyPwd)
-                    }, result.data, wepayNum)
-                } else {
-                    DialogUtils.showToast(result.msg)
-                }
-
-            })
-    }
     //支付转出
     payTransfer(transferAddress, safetyPwd) {
-        this.url = BaseUrl.transfer()
+        if (this.type===2){
+            this.url = BaseUrl.rollInWb()
+        } else   if (this.type===3){
+            this.url = BaseUrl.lockAssetWb()
+        }else {
+            this.url = BaseUrl.rollOut()
+        }
         DialogUtils.showLoading();
         HttpUtils.postData(this.url,
             {
                 sessionId: this.userInfo.sessionId,
-                transferNum: this.state.wepayNum,
-                transferAddress: transferAddress,
+                num: transferAddress,
                 safetyPwd: safetyPwd
             })
             .then(result => {
+                DialogUtils.hideLoading()
                 if (result.code === 1) {
-                    DialogUtils.showToast("转出成功")
+                    if (this.type===2){
+                        DialogUtils.showToast("转入成功")
+                        this.props.navigation.state.params.setCallback()
+                    } else if (this.type===3){
+                        DialogUtils.showToast("锁定成功")
+                        this.props.navigation.state.params.setCallback()
+                    }else {
+                        DialogUtils.showToast("转出成功")
+                        this.props.navigation.state.params.setCallback()
+                    }
                     this.props.navigation.goBack()
                 } else {
                     DialogUtils.showToast(result.msg)
                 }
-                DialogUtils.hideLoading()
+
             })
     }
-
 
     onClicks(index) {
         switch (index) {
@@ -148,14 +142,12 @@ export default class TranWB extends BaseComponent {
                 this.props.navigation.navigate('TransactionRecord');
                 break;
             case 2:
-                if (this.state.wepayNum.length < 1) {
-                    DialogUtils.showToast("请输入转出数量")
-                }  else if (!Utils.regPrice(this.state.wepayNum)) {
-                    DialogUtils.showMsg("最多输入2位小数"+this.state.wepayNum)
-                } else if (this.state.account.length < 1) {
-                    DialogUtils.showToast("请输入账号/UID")
+                if (this.state.account.length < 1) {
+                    DialogUtils.showToast("请输入数量")
                 } else {
-                    this.getUserName(this.state.account, this.state.wepayNum)
+                    PassWordInput.showPassWordInput((safetyPwd) => {
+                        this.payTransfer(this.state.account, safetyPwd)
+                    },this.title,this.state.account)
                 }
                 break;
             default:
