@@ -34,8 +34,6 @@ export default class LoginPage extends BaseComponent {
         }
     }
     componentDidMount() {
-        //热更新后添加这个代码 不然貌似热更新会自动回滚
-        codePush.sync()
         SplashScreen.hide();
         AsySorUtils.getAccountPwd((result)=>{
             if(result){
