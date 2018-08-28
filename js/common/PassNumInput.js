@@ -5,9 +5,11 @@ import {
     Dimensions,
     TouchableOpacity,
     Image,
-    Keyboard,
+    Keyboard, TextInput,
 } from 'react-native';
 import { Theme, Overlay, Button } from 'teaset';
+import Utils from "../util/Utils";
+import Colors from "../util/Colors";
 
 
 
@@ -218,6 +220,124 @@ var PassWordInput = {
         }
     }
 }
+ class PayInfoView extends Component {
+     constructor(props) {
+         super(props);
+         this.state = {
+         }
+     }
+
+    static defaultProps = {
+        overView:null,
+        onClose: () => { }, //关闭
+        onChangePassWord: () => { },//当密码改变时调用
+        onComplete: () => { },// 当密码长度等于6时调用， 也就是说 当密码输入完成时
+        data:"", //支付描述
+        type:0,//支付价格
+    }
+
+
+    render() {
+        return (
+            <View style={{backgroundColor: "#fff",marginTop:20, padding: 20, borderRadius: 8, alignItems: 'center'}}>
+                <View style={{flexDirection:"row",width: Utils.getWidth()-80}}>
+                    <Text style={{fontSize:15,color:Colors.text6, alignSelf:"center"}}>限 额:</Text>
+                    <TextInput
+                        style={{ flex:1,height:40,fontSize: 15, color: '#333',backgroundColor: "#fff"}}
+                        placeholderTextColor={'#999'}
+                        underlineColorAndroid='transparent'
+                        keyboardType={"numeric"}
+                        editable={false}
+                        value={"1"}
+                        maxLength={10}
+                    />
+                    <Text  style={{fontSize:15,color:Colors.text6, alignSelf:"center"}}>Wepay</Text>
+                </View>
+                <View style={{backgroundColor:Colors.red,height: 1,width: Utils.getWidth()-80}}></View>
+
+                <View style={{flexDirection:"row",width: Utils.getWidth()-80}}>
+                    <Text style={{fontSize:15,color:Colors.text6, alignSelf:"center"}}>价 格:</Text>
+                    <TextInput
+                        style={{ flex:1,height:40,fontSize: 15, color: '#333',backgroundColor: "#fff"}}
+                        placeholder={'请输入出售价格'}
+                        placeholderTextColor={'#999'}
+                        underlineColorAndroid='transparent'
+                        keyboardType={"numeric"}
+                        maxLength={12}
+                    />
+                    <Text  style={{fontSize:15,color:Colors.text6, alignSelf:"center"}}>Wepay</Text>
+                </View>
+                <View style={{backgroundColor:Colors.red,height: 1,width: Utils.getWidth()-80}}></View>
+
+                <View style={{flexDirection:"row",width: Utils.getWidth()-80,alignItems:"center"}}>
+                    <Text style={{fontSize:15,color:Colors.text6, alignSelf:"center"}}>数 量:</Text>
+                    <TextInput
+                        style={{ flex:1,height:40,fontSize: 15, color: '#333',backgroundColor: "#fff"}}
+                        placeholder={'请输入数量'}
+                        placeholderTextColor={'#999'}
+                        underlineColorAndroid='transparent'
+                        keyboardType={"numeric"}
+                        editable={true}
+                        maxLength={12}
+                    />
+                    <Text  style={{fontSize:13,color:Colors.white,paddingLeft:8,paddingRight:8,
+                        backgroundColor:Colors.red,borderRadius:5,height:25,paddingTop:4,paddingBottom:4,}}>全额</Text>
+                </View>
+                <View style={{backgroundColor:Colors.red,height: 1,width: Utils.getWidth()-80}}></View>
+
+                <View style={{flexDirection:"row",width: Utils.getWidth()-80}}>
+                    <Text style={{fontSize:15,color:Colors.text6, alignSelf:"center"}}>余 额:</Text>
+                    <TextInput
+                        style={{ flex:1,height:40,fontSize: 15, color: '#333',backgroundColor: "#fff"}}
+                        placeholderTextColor={'#999'}
+                        underlineColorAndroid='transparent'
+                        keyboardType={"numeric"}
+                        editable={false}
+                        maxLength={12}
+                    />
+                    <Text  style={{fontSize:15,color:Colors.text6, alignSelf:"center"}}>Wepay</Text>
+                </View>
+                <View style={{backgroundColor:Colors.red,height: 1,width: Utils.getWidth()-80}}></View>
+
+                <TouchableOpacity
+                    onPress={() => this.props.overView&& this.overView.close()}
+                    style={{position:"absolute", left:0,top:0,padding:10}} >
+                    <Image source={require('../../res/images/close.png')}/>
+                </TouchableOpacity>
+                <Button title='确认交易' onPress={() =>
+                    PassWordInput.showPassWordInput((safetyPwd)=>{
+                    },"出售1 wepay,单价:18.31","18.31")} />
+
+            </View>
+        )}
+}
+/**
+ * 交易中心的购买 出售 弹框
+ *
+ * @param payCall  回调方法
+ * @param data  数据
+ * @param type  0 购买 或者 1 出售
+ */
+export var payInfoDialog = (payCall,data,type) => {
+    let overlayView = (
+        <Overlay.View
+            style={{alignItems: 'center', justifyContent: 'flex-start'}}
+            modal={true}
+            overlayOpacity={false ? 0 : null}
+            ref={v => this.overView1 = v}
+        >
+            <PayInfoView
+                overView ={this.overView1}
+                data = {data}
+                type = {type}
+                {...this.props}
+            />
+        </Overlay.View>
+    );
+    Overlay.show(overlayView);
+}
+
+
 
 export default PassWordInput;
 

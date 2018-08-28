@@ -7,9 +7,14 @@ import {
     Text,
     View,
     ActivityIndicator,
+    TextInput,
 } from 'react-native';
-import { Overlay, Toast, ActionSheet } from "teaset";
+import {Overlay, Toast, ActionSheet, Theme, Label, Button} from "teaset";
 import codePush from "react-native-code-push"
+import Colors from "./Colors";
+import Utils from "./Utils";
+import {mainColor} from "../page/BaseComponent";
+import PassWordInput,{PayInfoView} from "../common/PassNumInput";
 
 export default class DialogUtils {
 
@@ -277,6 +282,8 @@ export default class DialogUtils {
         codePush.checkForUpdate()
             .then((update) => {
                 if (!update) {
+                    //热更新后添加这个代码 不然貌似热更新会自动回滚
+                    codePush.sync()
                     DialogUtils.showToast("已是最新版本")
                 } else {
                     codePush.sync({
@@ -308,8 +315,9 @@ export default class DialogUtils {
                     });
                 }
             });
-
     }
+
+
 
 
 }

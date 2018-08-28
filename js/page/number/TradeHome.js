@@ -6,28 +6,28 @@ import {
     Image,
     ScrollView,
     Platform,
-    View,
+    View, TextInput,Modal
 } from 'react-native';
 import BaseComponent, {mainColor, upDataUserInfo} from "../BaseComponent";
 import RefreshFlatList2 from "../../common/RefreshFlatList2"
 import Colors from "../../util/Colors"
-import { Overlay } from 'teaset';
+import {Button, Overlay} from 'teaset';
 import Echarts from 'native-echarts';
-import Dimensions from 'Dimensions';
-import SplashScreen from "react-native-splash-screen"
 import DialogUtils from "../../util/DialogUtils";
 import BaseUrl from "../../util/BaseUrl";
 import HttpUtils from "../../util/HttpUtils";
 import Utils from "../../util/Utils";
+import PassWordInput from "../../common/PassNumInput";
 
 //交易中心首页
 
 export default class TradeHome extends BaseComponent {
     constructor(props) {
         super(props);
-        this.state = {
-            cid:1,  //1.Wepay 2.比特币 3.莱特币  4.以太坊  5.狗狗币
-            title:"Wepay",
+        const cid = this.props.navigation.state.params.cid
+            this.state = {
+            cid:cid,  //1.Wepay 2.比特币 3.莱特币  4.以太坊  5.狗狗币
+            title:this.getTitleByCid(cid),
 
             coinBalance: "0.00", //Wepay资产
             walletBalance: "0.00", //余额
@@ -40,10 +40,15 @@ export default class TradeHome extends BaseComponent {
             xdata:[],
             ydata:[],
             activeIndex: 0,//0余额购买 ，1余额出售
+
+            modalVisible:false,
+            unitPrice:"0.00",//单价
+            number:"0.00",//数量
+
         }
         this.userInfo = this.getUserInfo()
 
-        this.cid = 1;
+        this.cid = cid;
         this.activeIndex = 0;
 
         this.oneHour = [];
@@ -111,7 +116,9 @@ export default class TradeHome extends BaseComponent {
         })
 
     }
-
+    setModalVisible(visible) {
+        this.setState({ modalVisible: visible });
+    }
     render() {
         let { activeIndex } = this.state;
         // 指定图表的配置项和数据
@@ -275,6 +282,107 @@ export default class TradeHome extends BaseComponent {
                         </View>
                     </View>
                 </ScrollView>
+                <Modal
+                    animationType="fade"
+                    transparent={true}
+                    visible={this.state.modalVisible}
+                    onRequestClose={() => {
+                        alert("Modal has been closed.");
+                    }}
+                >
+                    <View style={{backgroundColor:'rgba(0,0,0,0.4)',flex:1,height:Utils.getHeight(),justifyContent:"center"}}>
+                    <View style={{backgroundColor: "#fff",marginLeft:20,marginRight:20, padding: 20, borderRadius: 8,justifyContent:"center", alignItems: 'center'}}>
+
+                        <Text style={{fontSize:15,color:Colors.text6, alignSelf:"center"}}>像[{this.data?this.data.item.username:"xx"}]{this.state.activeIndex?"购买":"出售"}{this.state.title}</Text>
+
+                        <View style={{flexDirection:"row",width: Utils.getWidth()-80}}>
+                            <Text style={{fontSize:15,color:Colors.text6, alignSelf:"center"}}>限 额:</Text>
+                            <TextInput
+                                style={{ flex:1,height:40,fontSize: 15, color: '#333',backgroundColor: "#fff"}}
+                                placeholderTextColor={'#999'}
+                                underlineColorAndroid='transparent'
+                                keyboardType={"numeric"}
+                                editable={false}
+                                value={this.data?this.data.item.num+"":"1"}
+                                maxLength={10}
+                            />
+                            <Text  style={{fontSize:15,color:Colors.text6, alignSelf:"center"}}>Wepay</Text>
+                        </View>
+                        <View style={{backgroundColor:Colors.red,height: 1,width: Utils.getWidth()-80}}></View>
+
+                        <View style={{flexDirection:"row",width: Utils.getWidth()-80}}>
+                            <Text style={{fontSize:15,color:Colors.text6, alignSelf:"center"}}>价 格:</Text>
+                            <TextInput
+                                style={{ flex:1,height:40,fontSize: 15, color: '#333',backgroundColor: "#fff"}}
+                                placeholder={'请输入出售价格'}
+                                placeholderTextColor={'#999'}
+                                underlineColorAndroid='transparent'
+                                keyboardType={"numeric"}
+                                editable={false}
+                                value={this.data?this.data.item.dprice+"":""}
+                                maxLength={12}
+                                onChangeText={(text)=>{
+                                    this.setState({unitPrice:text})
+                                }}
+                            />
+                            <Text  style={{fontSize:15,color:Colors.text6, alignSelf:"center"}}></Text>
+                        </View>
+                        <View style={{backgroundColor:Colors.red,height: 1,width: Utils.getWidth()-80}}></View>
+
+                        <View style={{flexDirection:"row",width: Utils.getWidth()-80,alignItems:"center"}}>
+                            <Text style={{fontSize:15,color:Colors.text6, alignSelf:"center"}}>数 量:</Text>
+                            <TextInput
+                                style={{ flex:1,height:40,fontSize: 15, color: '#333',backgroundColor: "#fff"}}
+                                placeholder={'请输入数量'}
+                                placeholderTextColor={'#999'}
+                                underlineColorAndroid='transparent'
+                                keyboardType={"numeric"}
+                                editable={true}
+                                maxLength={12}
+                                value={this.state.number}
+                                onChangeText={(text)=>{
+                                    this.setState({number:text,unitPrice:this.data?this.data.item.dprice+"":""})
+                                }}
+                            />
+                            <Text  style={{fontSize:13,color:Colors.white,paddingLeft:8,paddingRight:8,
+                                backgroundColor:Colors.red,borderRadius:5,height:25,paddingTop:4,paddingBottom:4,}}>全额</Text>
+                        </View>
+                        <View style={{backgroundColor:Colors.red,height: 1,width: Utils.getWidth()-80}}></View>
+
+                        <View style={{flexDirection:"row",width: Utils.getWidth()-80}}>
+                            <Text style={{fontSize:15,color:Colors.text6, alignSelf:"center"}}>余 额:</Text>
+                            <TextInput
+                                style={{ flex:1,height:40,fontSize: 15, color: '#333',backgroundColor: "#fff"}}
+                                placeholderTextColor={'#999'}
+                                underlineColorAndroid='transparent'
+                                keyboardType={"numeric"}
+                                editable={false}
+                                value={Utils.formatNumBer(this.state.number* this.state.unitPrice,4)}
+                                maxLength={12}
+                            />
+                            {/*<Text  style={{fontSize:15,color:Colors.text6, alignSelf:"center"}}>{Utils.formatNumBer(this.state.number* this.state.unitPrice,4)}</Text>*/}
+                        </View>
+                        <View style={{backgroundColor:Colors.red,height: 1,width: Utils.getWidth()-80}}></View>
+
+                        <TouchableOpacity
+                            onPress={() => this.setModalVisible(false)}
+                            style={{position:"absolute", left:0,top:0,padding:10}} >
+                            <Image source={require('../../../res/images/close.png')}/>
+                        </TouchableOpacity>
+                        <Button style={{marginTop:20}} title='确认交易' onPress={() =>{
+                            if(Utils.regNumber(this.state.number)&&this.state.number>0){
+                                this.setModalVisible(false)
+                                PassWordInput.showPassWordInput((safetyPwd)=>{
+                                    this.trade(safetyPwd,this.state.number)
+
+                                },"出售1 wepay,单价:18.31","18.31")
+                            }else {
+                                DialogUtils.showToast("请输入正确的数量")
+                            }
+                            }}/>
+                    </View>
+                    </View>
+                </Modal>
             </View>
         );
     }
@@ -290,9 +398,11 @@ export default class TradeHome extends BaseComponent {
                 });
                 break;
             case 3:
-                this.props.navigation.navigate('OrderRecord')
+                this.props.navigation.navigate('OrderRecord',{cid:this.cid})
                 break;
             case 4:
+                this.props.navigation.navigate('TeadeRecord',{cid:this.cid})
+                break;
                 break;
         }
     }
@@ -341,14 +451,17 @@ export default class TradeHome extends BaseComponent {
                     >限 额:{data.item.num}</Text>
                 </View>
 
-                <View style={{ flexDirection: 'column', justifyContent: "center", marginLeft: 10, marginRight: 10 }}>
+                <View style={{ flexDirection: 'column', justifyContent: "center", alignItems:"flex-end",marginLeft: 10, marginRight: 10 }}>
                     <Text
                         style={{ color: Colors.blue, fontSize: 16, textAlign: "right" }}>{data.item.dprice}</Text>
                     <Text
-                        onPress={()=>this.trade()}
-                        style={{
+                        onPress={()=>{
+                            this.data = data
+                            this.setModalVisible(true)
+                        }}
+                        style={{ width:50,
                         paddingLeft: 8, paddingRight: 8, paddingTop: 3, paddingBottom: 3, color: Colors.r1,
-                        fontSize: 13, textAlign: "center", borderWidth: 1, borderColor: Colors.r1, borderRadius: 10
+                        fontSize: 13, textAlign: "center", borderWidth: 1, borderColor: Colors.r1, borderRadius: 5
                     }} numberOfLines={1}>{!this.state.activeIndex ? "购买" : "卖出"}</Text>
                 </View>
             </View>
@@ -358,26 +471,26 @@ export default class TradeHome extends BaseComponent {
     /**
      * 交易
      */
-    trade(safetyPwd, id,num){
-        DialogUtils.showLoading();
-        this.url = !this.state.activeIndex ?BaseUrl.dealBuy():BaseUrl.dealSell();
-        HttpUtils.postData(this.url,
-            {  sessionId: this.userInfo.sessionId,
-                id: id,
-                num: num,
-                safetyPwd: safetyPwd,
-            })
-            .then(result => {
-                DialogUtils.hideLoading()
-                if (result.code === 1) {
-                    let tip  = !this.state.activeIndex ? "购买" : "出售"
-                    DialogUtils.showToast(tip+ "成功")
-                    //this.props.navigation.goBack()
-                } else {
-                    DialogUtils.showToast(result.msg)
-                }
+    trade(safetyPwd,num){
+             DialogUtils.showLoading();
+             this.url = !this.state.activeIndex ?BaseUrl.dealBuy():BaseUrl.dealSell();
+             // alert(this.data.item.id)
+            HttpUtils.postData(this.url,
+                {   sessionId: this.userInfo.sessionId,
+                    id: this.data.item.id,
+                    num: num,
+                    safetyPwd: safetyPwd,
+                })
+                .then(result => {
+                    DialogUtils.hideLoading()
+                    if (result.code === 1) {
+                        let tip  = !this.state.activeIndex ? "购买" : "出售"
+                        DialogUtils.showToast(tip+ "成功")
+                    } else {
+                        DialogUtils.showToast(result.msg)
+                    }
 
-            })
+                })
     }
 
     //刷新数据
@@ -392,16 +505,16 @@ export default class TradeHome extends BaseComponent {
     }
 
     getData(isRefesh) {
-        if (this.activeIndex === 1) { //购买
+        if (this.activeIndex === 0) { //购买
             this.url = BaseUrl.dealOrder(this.userInfo.sessionId, this.pageIndex,1,this.cid)
-        } else if (this.activeIndex === 0) {//出售
+        } else if (this.activeIndex === 1) {//出售
             this.url = BaseUrl.dealOrder(this.userInfo.sessionId, this.pageIndex,2,this.cid)
         }
         //alert(this.url)
         HttpUtils.getData(this.url)
             .then(result => {
                 if (result.code === 1) {
-                    alert(JSON.stringify(result.data))
+                    // alert(JSON.stringify(result.data))
                     if (isRefesh) {
                         this.refList.setData(result.data)
                         if (result.data.length < 1) {
@@ -509,7 +622,25 @@ export default class TradeHome extends BaseComponent {
             Overlay.show(overlayView);
         });
     }
+ getTitleByCid(cid){
+     let title
+     if (cid===2){
+         title = "比特币"
 
+     } else  if (cid===3){
+         title = "莱特币"
+
+     }else  if (cid===4){
+         title = "以太坊"
+
+     }else  if (cid===5){
+         title = "狗狗币"
+
+     }else {
+          title = "Wepay"
+     }
+     return title ;
+ }
 }
 
 

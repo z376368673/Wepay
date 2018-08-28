@@ -102,7 +102,7 @@ export default class TradeHome extends BaseComponent {
                             <View style={{ flexDirection: "row", flex: 1, alignItems: "center", paddingLeft: 12, }}>
                                 <Text style={{ fontSize: 14, color: Colors.text6, }}>{this.type===1?"出售":"购买"}价格:</Text>
                                 <TextInput
-                                    style={{ flex: 1,height:30 }}
+                                    style={{ flex: 1,height:40 }}
                                     placeholder={this.state.price+""}
                                     placeholderTextColor={'#666'}
                                     underlineColorAndroid='transparent'
@@ -125,15 +125,15 @@ export default class TradeHome extends BaseComponent {
                                     /></View>
                             </View>
                             <View style={{ backgroundColor: Colors.lineColor, height: 0.5 }} />
-                            <View style={{ flexDirection: "row", flex: 1, alignItems: "center", padding: 12 }}>
+                            <View style={{ flexDirection: "row", flex: 1, alignItems: "center", padding: 12 ,height:40}}>
                                 <Text style={{ fontSize: 14, color: Colors.text6, }}>{this.type===1?"出售":"购买"}数量:</Text>
                                 <TextInput
-                                    style={{ flex: 1 }}
+                                    style={{ flex: 1 ,height:40}}
                                     underlineColorAndroid='transparent'
                                     keyboardType={"numeric"}
                                     value={this.state.num+""}
                                     onChangeText={(text) => {
-                                        const newText =text.replace(/[^\d]+/, '0')
+                                        const newText =text.replace(/[^\d]+/, '')
                                         this.setState({ num: newText })
                                     }}
                                 />
@@ -146,8 +146,7 @@ export default class TradeHome extends BaseComponent {
                             <View style={{ backgroundColor: Colors.lineColor, height: 0.5 }} />
                             <TouchableOpacity
                             activeOpacity={0.8}
-                            style={{borderRadius:10,backgroundColor:Colors.red,justifyContent:"center",alignItems:"center",
-                        margin:30,padding:10}}
+                            style={{borderRadius:10,backgroundColor:Colors.red,justifyContent:"center",alignItems:"center", margin:30,padding:10}}
                             ><Text style={{color:Colors.white,fontSize:15}}>发布</Text>
                             </TouchableOpacity>
                         </View>

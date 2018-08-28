@@ -48,6 +48,7 @@ export default class ZhongChou extends BaseComponent {
     */
     getData(isRefesh) {
         DialogUtils.showToast("暂无活动")
+        this.refList.setData([])
         // if (this.action === 1) {
         //     this.url = BaseUrl.getOutUndoneUnselectedUrl(this.userInfo.sessionId, this.pageIndex)
         // } else if (this.action === 2) {

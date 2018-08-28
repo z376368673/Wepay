@@ -1553,4 +1553,30 @@ export default class BaseUrl {
         return url + "/deal/sell"
     }
 
+
+    /**
+     * .订单
+     * @param sessionId
+     * @param pageIndex
+     * @param status 订单状态（0.进行中，1.已完成）
+     * @param cid  币种id
+     * @returns {
+        3.1	id		订单id
+        3.2	num		订单剩余数量
+        3.3	sellId		用户id
+        3.4	feeNum		手续费
+        3.5	createTime		订单创建时间
+        3.6	status		订单状态（0.进行中，1.已完成）
+        3.7	cid		币种id
+        3.8	type		1,出售 2,购买
+        3.9	tprice		总价
+        3.10	dprice		单价
+        3.11	ynum		数量
+     * }
+     */
+    static teadeRecord(sessionId, pageIndex,cid) {
+        return url + "/dealDetail/record?sessionId=" + sessionId
+            + "&pageIndex=" + pageIndex  + "&cid=" + cid
+    }
+
 }

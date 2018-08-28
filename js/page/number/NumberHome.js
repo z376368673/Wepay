@@ -167,7 +167,11 @@ export default class NumberHome extends BaseComponent {
             <View style={{ flexDirection: "row",marginTop:5}}>
                 <Text style={{ color: Colors.text3, fontSize: 15, marginLeft: 5, flex: 1 }}>{data.item.num}</Text>
                 <Text style={{ color: Colors.text3, fontSize: 15, marginLeft: 5, flex: 1 }}>{data.item.coinPrice}</Text>
-                <TouchableOpacity style={{ flex: 1, justifyContent: "center", alignItems: "center", padding: 5, backgroundColor: Colors.y1 }}>
+                <TouchableOpacity
+                    onPress={()=>{
+                        this.props.navigation.navigate('TradeHome',{cid:cid})
+                    }}
+                    style={{ flex: 1, justifyContent: "center", alignItems: "center", padding: 5, backgroundColor: Colors.y1 }}>
                     <Text style={{ color: Colors.white, fontSize: 14, }}>余额交易</Text>
                 </TouchableOpacity>
             </View>
@@ -198,7 +202,7 @@ export default class NumberHome extends BaseComponent {
             this.props.navigation.navigate('Wbao');
                 break;
             case 4://交易
-                this.props.navigation.navigate('TradeHome');
+                this.props.navigation.navigate('TradeHome',{cid:1});
                 break;
         }
     }

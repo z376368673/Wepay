@@ -60,6 +60,7 @@ import CreateBSOrder from "../page/number/CreateBSOrder"
 import Wbao from "../page/number/Wbao"
 import TranWB from "../page/number/TranWB"
 import OrderRecord from "../page/number/OrderRecord"
+import TeadeRecord from "../page/number/TeadeRecord"
 
 
 
@@ -101,6 +102,10 @@ export default AppNavigator = createStackNavigator({
     TradeHome: {//交易
         screen: TradeHome
     },
+    TeadeRecord: {//交易记录
+        screen: TeadeRecord
+    },
+
     CreateBSOrder: {//发布购买卖出订单
         screen: CreateBSOrder
     },

@@ -16,22 +16,16 @@ import DialogUtils from '../../util/DialogUtils';
 import Colors from "../../util/Colors"
 
 /**
- * 订单记录
+ * 交易记录
  */
 
 const width = Utils.getWidth()
-export default class OrderRecord extends BaseComponent {
+export default class TeadeRecord extends BaseComponent {
     pageIndex = 1;
-
     constructor(props) {
         super(props);
-        this.state = {
-            activeIndex: 0,
-        }
         this.userInfo = this.getUserInfo()
-        this.activeIndex = 0;
         const cid = this.props.navigation.state.params.cid
-
         this.cid = cid
     }
 
@@ -40,72 +34,16 @@ export default class OrderRecord extends BaseComponent {
         this._refreshData()
     }
 
-    selectIndex(index) {
-        this.setState({activeIndex: index})
-        this.activeIndex = index;
-        this._refreshData()
-    }
-
-
     render() {
-        let {activeIndex} = this.state;
         return (
             <View style={BaseStyles.container_column}>
                 <NavigationBar
-                    title={"订单记录"}
+                    title={"交易记录"}
                     navigation={this.props.navigation}
                     rightView={NavigationBar.getRightStyle_More((view) => {
                         this.showPopover(view)
                     })}/>
-                <View style={{
-                    flexDirection: "row",
-                    backgroundColor: Colors.white,
-                    justifyContent: "center",
-                    padding: 10
-                }}>
-                    <TouchableOpacity
-                        onPress={() => this.selectIndex(0)}
-                        style={{
-                            borderColor: Colors.r1,
-                            borderWidth: 1,
-                            borderTopLeftRadius: 18,
-                            borderBottomLeftRadius: 18,
-                            justifyContent: "center",
-                            alignItems: "center",
-                            backgroundColor: activeIndex ? Colors.white : Colors.red,
-                            paddingLeft: 35,
-                            paddingRight: 25
-                        }}>
-                        <Text style={{
-                            padding: 8,
-                            fontSize: 16,
-                            color: activeIndex ? Colors.red : Colors.white
-                        }}>进行中</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        onPress={() => this.selectIndex(1)}
-                        style={{
-                            borderColor: Colors.r1,
-                            borderWidth: 1,
-                            borderTopRightRadius: 18,
-                            borderBottomRightRadius: 18,
-                            justifyContent: "center",
-                            alignItems: "center",
-                            backgroundColor: activeIndex ? Colors.red : Colors.white,
-                            paddingRight: 35,
-                            paddingLeft: 25
-                        }}>
-                        <Text style={{
-                            padding: 8,
-                            fontSize: 16,
-                            color: activeIndex ? Colors.white : Colors.red
-                        }}>已完成</Text>
-                    </TouchableOpacity>
-                </View>
-
                 {this.getItemTitle()}
-
                 <View style={{flex: 1, backgroundColor: "#f1f1f1", marginTop: 1,}}>
                     <RefreshFlatList
                         ref={refList => this.refList = refList}
@@ -122,39 +60,25 @@ export default class OrderRecord extends BaseComponent {
     getItemTitle() {
         let title1 =
             <View style={{flexDirection: "row", padding: 8, marginTop: 1, backgroundColor: Colors.bgColor}}>
-                <View style={{flexDirection: "row", alignItems: "center", width: width / 5}}>
-                    <Text style={{fontSize: 14, color: Colors.text3, flex: 1, textAlign: "center"}}>类型</Text>
+                <View style={{flexDirection: "row", alignItems: "center", width: width / 7}}>
+                    <Text style={{fontSize: 15, color: Colors.text3, flex: 1, textAlign: "center"}}>类型</Text>
                 </View>
                 <View style={{flexDirection: "row", alignItems: "center", width: width / 5}}>
-                    <Text style={{fontSize: 14, color: Colors.text3, flex: 1, textAlign: "center"}}>数量</Text>
+                    <Text style={{fontSize: 15, color: Colors.text3, flex: 1, textAlign: "center"}}>对方</Text>
                 </View>
                 <View style={{flexDirection: "row", alignItems: "center", width: width / 5}}>
-                    <Text style={{fontSize: 14, color: Colors.text3, flex: 1, textAlign: "center"}}>总价</Text>
+                    <Text style={{fontSize: 15, color: Colors.text3, flex: 1, textAlign: "center"}}>数量</Text>
                 </View>
                 <View style={{flexDirection: "row", alignItems: "center", width: width / 5}}>
-                    <Text style={{fontSize: 14, color: Colors.text3, flex: 1, textAlign: "center"}}>时间</Text>
+                    <Text style={{fontSize: 15, color: Colors.text3, flex: 1, textAlign: "center"}}>总价</Text>
                 </View>
-                <View style={{flexDirection: "row", alignItems: "center", width: width / 5}}>
-                    <Text style={{fontSize: 14, color: Colors.text3, flex: 1, textAlign: "center"}}>操作</Text>
+                <View style={{flexDirection: "row", alignItems: "center", flex:1}}>
+                    <Text style={{fontSize: 15, color: Colors.text3, flex: 1, textAlign: "center"}}>时间</Text>
                 </View>
-            </View>
-        let title2 =
-            <View style={{flexDirection: "row", padding: 8, marginTop: 1, backgroundColor: Colors.bgColor}}>
-                <View style={{flexDirection: "row", alignItems: "center", width: width / 4}}>
-                    <Text style={{fontSize: 14, color: Colors.text3, flex: 1, textAlign: "center"}}>类型</Text>
-                </View>
-                <View style={{flexDirection: "row", alignItems: "center", width: width / 4}}>
-                    <Text style={{fontSize: 14, color: Colors.text3, flex: 1, textAlign: "center"}}>数量</Text>
-                </View>
-                <View style={{flexDirection: "row", alignItems: "center", width: width / 4}}>
-                    <Text style={{fontSize: 14, color: Colors.text3, flex: 1, textAlign: "center"}}>总价</Text>
-                </View>
-                <View style={{flexDirection: "row", alignItems: "center", width: width / 4}}>
-                    <Text style={{fontSize: 14, color: Colors.text3, flex: 1, textAlign: "center"}}>时间</Text>
-                </View>
+
             </View>
 
-        return this.state.activeIndex === 0 ? title1 : title2;
+        return title1
     }
 
     renderItem(data) {
@@ -180,93 +104,43 @@ export default class OrderRecord extends BaseComponent {
                 marginTop: 1,
                 backgroundColor: Colors.white
             }}>
-                <View style={{flexDirection: "row", alignItems: "center", width: width / 5}}>
+                <View style={{flexDirection: "row", alignItems: "center", width: width / 7}}>
                     <Text style={{fontSize: 14, color: Colors.text3, flex: 1, textAlign: "center"}}>{data.item.type===1?"出售":"购买"}</Text>
                 </View>
-                <View style={{flexDirection: "row", alignItems: "center", width: width / 5}}>
-                    <Text style={{
-                        fontSize: 14,
-                        color: Colors.text3,
-                        flex: 1,
-                        textAlign: "center"
-                    }}>{data.item.ynum} {cname}</Text>
-                </View>
-                <View style={{flexDirection: "row", alignItems: "center", width: width / 5}}>
-                    <Text style={{fontSize: 14, color: Colors.text3, flex: 1, textAlign: "center"}}>{data.item.tprice}</Text>
-                </View>
-                <View style={{flexDirection: "row", alignItems: "center", width: width / 5}}>
-                    <Text style={{
-                        fontSize: 14,
-                        color: Colors.text3,
-                        flex: 1,
-                        textAlign: "center"
-                    }}>{Utils.formatDateTime(data.item.createTime*1000)}</Text>
-                </View>
-                <View style={{flexDirection: "row", alignItems: "center",justifyContent:"center", width: width / 5}}>
-                    <Text style={{fontSize: 13, color: Colors.red, textAlign: "center",borderColor: Colors.red,
-                        borderWidth:1,borderRadius:10,paddingLeft:10,paddingRight:10,paddingTop:3,paddingBottom:3}}
-                        onPress={()=>this.cancelOrder(data)}>取消</Text>
-                </View>
-            </View>
-        let view2 =
-            <View style={{
-                flexDirection: "row",
-                paddingLeft: 2,
-                paddingRight: 2,
-                paddingTop: 10,
-                paddingBottom: 10,
-                marginTop: 1,
-                backgroundColor: Colors.white
-            }}>
-                <View style={{flexDirection: "row", alignItems: "center", width: width / 4}}>
-                    <Text style={{fontSize: 14, color: Colors.text3, flex: 1, textAlign: "center"}}>{data.item.type===1?"出售":"购买"}</Text>
-                </View>
-                <View style={{flexDirection: "row", alignItems: "center", width: width / 4}}>
-                    <Text style={{
-                        fontSize: 14,
-                        color: Colors.text3,
-                        flex: 1,
-                        textAlign: "center"
-                    }}>{data.item.ynum} {cname}</Text>
-                </View>
-                <View style={{flexDirection: "row", alignItems: "center", width: width / 4}}>
-                    <Text style={{fontSize: 14, color: Colors.text3, flex: 1, textAlign: "center"}}>{data.item.tprice}</Text>
-                </View>
-                <View style={{flexDirection: "row", alignItems: "center", width: width / 4}}>
-                    <Text style={{
-                        fontSize: 14,
-                        color: Colors.text3,
-                        flex: 1,
-                        textAlign: "center"
-                    }}>{Utils.formatDateTime(data.item.createTime*1000)}</Text>
-                </View>
-            </View>
-        return this.state.activeIndex === 0 ? view1 : view2;
-    }
-    //取消订单
-    cancelOrder(data) {
-        action = () => {
-            DialogUtils.showLoading()
-            let url = BaseUrl.cancelOrder(this.userInfo.sessionId,data.item.id)
-            HttpUtils.getData(url)
-                .then(result => {
-                    //alert(JSON.stringify(result))
-                    if (result.code === 1) {
-                        this.refList.delData(data.index)
-                        DialogUtils.showMsg("订单已取消")
-                        upDataUserInfo(this.props.AppStore)
-                    } else if(result.code === 2||result.code === 4){
-                        DialogUtils.showToast(result.msg)
-                        this.goLogin(this.props.navigation)
-                    } else {
-                        DialogUtils.showToast(result.msg)
-                    }
-                    DialogUtils.hideLoading()
-                })
 
-        }
-        DialogUtils.showPop("您确认要取消此订单？", () => action(), null, "取消订单", "点错了")
+                <View style={{flexDirection: "row", alignItems: "center", width: width / 5}}>
+                    <Text style={{
+                        fontSize: 14,
+                        color: Colors.text3,
+                        flex: 1,
+                        textAlign: "center"
+                    }}>{data.item.opposite}</Text>
+                </View>
+
+                <View style={{flexDirection: "row", alignItems: "center", width: width / 5}}>
+                    <Text style={{
+                        fontSize: 14,
+                        color: Colors.text3,
+                        flex: 1,
+                        textAlign: "center"
+                    }}>{data.item.num+"\n"}{cname}</Text>
+                </View>
+                <View style={{flexDirection: "row", alignItems: "center", width: width / 5}}>
+                    <Text style={{fontSize: 14, color: Colors.text3, flex: 1, textAlign: "center"}}>{data.item.tprice}</Text>
+                </View>
+                <View style={{flexDirection: "row", alignItems: "center", flex:1}}>
+                    <Text style={{
+                        fontSize: 14,
+                        color: Colors.text3,
+                        flex: 1,
+                        textAlign: "center"
+                    }}>{Utils.formatDateTime(data.item.createTime*1000)}</Text>
+                </View>
+
+            </View>
+        return view1
     }
+
     //刷新数据
     _refreshData() {
         this.refList.refreshStar()
@@ -285,11 +159,7 @@ export default class OrderRecord extends BaseComponent {
      * @param {*} pageIndex
      */
     getData(isRefesh) {
-        if (this.activeIndex === 0) { //进行中
-            this.url = BaseUrl.orderRecord(this.userInfo.sessionId, this.pageIndex,0,this.cid)
-        } else if (this.activeIndex === 1) {//已完成
-            this.url = BaseUrl.orderRecord(this.userInfo.sessionId, this.pageIndex,1,this.cid)
-        }
+        this.url = BaseUrl.teadeRecord(this.userInfo.sessionId, this.pageIndex,this.cid)
         HttpUtils.getData(this.url)
             .then(result => {
                 if (result.code === 1) {
@@ -320,7 +190,6 @@ export default class OrderRecord extends BaseComponent {
      * @param {*} align
      */
     showPopover(view) {
-        let { black, shadow, showArrow } = this.state;
         let blackStyle = {
             backgroundColor: 'rgba(0, 0, 0, 0.8)',
             //   paddingTop: 1,
@@ -338,14 +207,14 @@ export default class OrderRecord extends BaseComponent {
             shadowOpacity: 0.5,
             shadowRadius: 2,
         };
-        let popoverStyle = [].concat(black ? blackStyle : whiteStyle).concat(shadow ? shadowStyle : null);
+        let popoverStyle = [].concat(whiteStyle).concat(shadowStyle);
 
         view.measure((x, y, width, height, pageX, pageY) => {
             let fromBounds = { x: pageX, y: pageY, width, height };
             let overlayView = (
                 <Overlay.PopoverView popoverStyle={popoverStyle}
                                      fromBounds={fromBounds} direction={"down"} align={"left"}
-                                     directionInsets={4} showArrow={showArrow}
+                                     directionInsets={4} showArrow={true}
                                      ref={v => this.view = v}>
                     <View>
                         <Text
