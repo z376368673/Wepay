@@ -68,18 +68,16 @@ export default class OrderRecord extends BaseComponent {
                         style={{
                             borderColor: Colors.r1,
                             borderWidth: 1,
-                            borderTopLeftRadius: 18,
-                            borderBottomLeftRadius: 18,
+                            borderTopLeftRadius: 24,
+                            borderBottomLeftRadius: 24,
                             justifyContent: "center",
                             alignItems: "center",
                             backgroundColor: activeIndex ? Colors.white : Colors.red,
-                            paddingLeft: 35,
-                            paddingRight: 25
+                            paddingLeft: 35,paddingRight: 25,
+                             paddingTop:12,paddingBottom:12
                         }}>
                         <Text style={{
-                            padding: 8,
-                            fontSize: 16,
-                            color: activeIndex ? Colors.red : Colors.white
+                            fontSize: 16,color: activeIndex ? Colors.red : Colors.white
                         }}>进行中</Text>
                     </TouchableOpacity>
 
@@ -88,18 +86,17 @@ export default class OrderRecord extends BaseComponent {
                         style={{
                             borderColor: Colors.r1,
                             borderWidth: 1,
-                            borderTopRightRadius: 18,
-                            borderBottomRightRadius: 18,
+                            borderTopRightRadius: 24,
+                            borderBottomRightRadius: 24,
                             justifyContent: "center",
                             alignItems: "center",
                             backgroundColor: activeIndex ? Colors.red : Colors.white,
                             paddingRight: 35,
-                            paddingLeft: 25
+                            paddingLeft: 25,
+                            paddingTop:12,paddingBottom:12
                         }}>
                         <Text style={{
-                            padding: 8,
-                            fontSize: 16,
-                            color: activeIndex ? Colors.white : Colors.red
+                            fontSize: 16, color: activeIndex ? Colors.white : Colors.red
                         }}>已完成</Text>
                     </TouchableOpacity>
                 </View>

@@ -5,18 +5,14 @@ import {
     View,
     TextInput,
     TouchableOpacity,
-    Keyboard,
 } from 'react-native';
 import BaseComponent, {BaseStyles, mainColor, upDataUserInfo} from "./BaseComponent";
 import NavigationBar from "../common/NavigationBar";
-import QRCode from "react-native-qrcode";
-import ViewUtils from "../util/ViewUtils";
 import BaseUrl from '../util/BaseUrl';
 import DialogUtils from '../util/DialogUtils';
 import HttpUtils from '../util/HttpUtils';
 import PassWordInput from '../common/PassNumInput';
 import { observer, inject } from 'mobx-react';
-import AsySorUtils from '../dao/AsySorUtils';
 import HomePage from './HomePage';
 //兑换积分
 @inject('AppStore')@observer

@@ -1,6 +1,6 @@
 //const url = 'http://wp.wepay168.com/wepay'
-const url = 'http://192.168.0.105:8081/wepay'
-
+//const url = 'http://192.168.0.105:8081/wepay'
+const url = 'http://121.201.46.206/wepay'
 
 export default class BaseUrl {
 
@@ -1577,6 +1577,44 @@ export default class BaseUrl {
     static teadeRecord(sessionId, pageIndex,cid) {
         return url + "/dealDetail/record?sessionId=" + sessionId
             + "&pageIndex=" + pageIndex  + "&cid=" + cid
+    }
+
+
+    /**
+     * 发布出售订单
+     *
+     * POST
+     *
+     1	sessionId
+     是	用户标识	string
+     2	cid
+     是	币种id	int
+     3	num	是	出售数量	double
+     4	price	是	出售价格	double
+     5	safetyPwd	是	交易密码	String
+     *
+     *
+     */
+    static createSellOrder() {
+        return url + "/deal/createOutOrder";
+    }
+    /**
+     * 发布求购订单
+     *
+     * POST
+     *
+     1	sessionId
+     是	用户标识	string
+     2	cid
+     是	币种id	int
+     3	num	是	出售数量	double
+     4	price	是	出售价格	double
+     5	safetyPwd	是	交易密码	String
+     *
+     *
+     */
+    static createBuyOrder() {
+        return url + "/deal/createInOrder";
     }
 
 }

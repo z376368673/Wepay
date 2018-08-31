@@ -9,7 +9,7 @@ import {
     View,
     TextInput,
 } from 'react-native';
-import BaseComponent, { mainColor } from "../BaseComponent";
+import BaseComponent, {mainColor, upDataUserInfo} from "../BaseComponent";
 import RefreshFlatList2 from "../../common/RefreshFlatList2"
 import SliderView from "../../common/SliderView"
 import Colors from "../../util/Colors"
@@ -17,8 +17,12 @@ import { Overlay } from 'teaset';
 import Echarts from 'native-echarts';
 import Dimensions from 'Dimensions';
 const { width } = Dimensions.get('window');
-import SplashScreen from "react-native-splash-screen"
 import Utils from '../../util/Utils';
+import DialogUtils from "../../util/DialogUtils";
+import PassWordInput from "../../common/PassNumInput";
+import BaseUrl from "../../util/BaseUrl";
+import HttpUtils from "../../util/HttpUtils";
+import Values from "../../model/CurrencyValues"
 
 
 
@@ -28,21 +32,22 @@ export default class TradeHome extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
-            wepayNum: "0.00", //Wepay资产
-            yueNum: "0.00", //余额
+            wepayNum: Values.coinBalance, //Wepay资产
+            yueNum:  Values.walletBalance, //余额
 
             title:this.props.navigation.state.params.title,
             cid: this.props.navigation.state.params.cid,
-            price: 18.21,  
+            price: Values.coinPrice,
 
-            myPrice:"18.21", //我的定价 
+            myPrice:Values.coinPrice, //我的定价
             num: 0, //购买数量
         }
         this.type = this.props.navigation.state.params.type // 1 出售， 2 购买
+        this.userInfo = this.getUserInfo();
+
     }
 
     componentDidMount() {
-        SplashScreen.hide();
         this._refreshData()
     }
 
@@ -62,13 +67,12 @@ export default class TradeHome extends BaseComponent {
                     </TouchableOpacity>
                     <TouchableOpacity
                         ref={title => this.title = title}
-                        onPress={() => this.showPopover(this.title)}
+                       // onPress={() => this.showPopover(this.title)}
                     >
                         <View style={{ alignItems: "center" }}>
                             <Text style={{ fontSize: 18, color: Colors.white, marginBottom: 3 }}>{this.state.title}</Text>
-                            <Image source={require("../../../res/images/sanjiao.png")} />
+                            {/*<Image source={require("../../../res/images/sanjiao.png")} />*/}
                         </View></TouchableOpacity>
-
                 </View>
                 <ScrollView style={{ flex:1,backgroundColor: Colors.bgColor }}>
                     <View >
@@ -96,7 +100,7 @@ export default class TradeHome extends BaseComponent {
                         }}>
                             <View style={{ flexDirection: "row", flex: 1, alignItems: "center", padding: 12 }}>
                                 <Text style={{ fontSize: 14, color: Colors.text6, }}>当前价格:</Text>
-                                <Text style={{ fontSize: 14, color: Colors.blue, }}> {this.state.price}</Text>
+                                <Text style={{ fontSize: 14, color: Colors.blue, }}> {price}</Text>
                             </View>
                             <View style={{ backgroundColor: Colors.lineColor, height: 0.5 }} />
                             <View style={{ flexDirection: "row", flex: 1, alignItems: "center", paddingLeft: 12, }}>
@@ -107,6 +111,7 @@ export default class TradeHome extends BaseComponent {
                                     placeholderTextColor={'#666'}
                                     underlineColorAndroid='transparent'
                                     keyboardType={"numeric"}
+                                    editable={true}
                                     value={this.state.myPrice}
                                     onChangeText={(text) => {
                                         this.setState({ myPrice: Utils.chkCurrency(text,4) })
@@ -114,12 +119,13 @@ export default class TradeHome extends BaseComponent {
                                 />
                                 <View style={{ flex: 1 ,paddingTop:5}}>
                                     <SliderView
-                                        style={{width: 120, marginTop: -5 }}
+                                        style={{width: 150, marginTop: -5 }}
                                         maximumTrackTintColor={Colors.mainColor}
                                         minimumTrackTintColor={Colors.mainColor}
                                         minimumValue={-20} maximumValue={20}
-                                        onSlidingComplete={(value)=>{
-                                            var num = this.state.price+this.state.price*value/100
+                                        //value={Number(this.state.myPrice)}
+                                        onValueChanges={(value)=>{
+                                            const num = this.state.price+this.state.price*value/100
                                             this.setState({myPrice:Utils.formatNumBer(num,4)})
                                         }}
                                     /></View>
@@ -132,9 +138,9 @@ export default class TradeHome extends BaseComponent {
                                     underlineColorAndroid='transparent'
                                     keyboardType={"numeric"}
                                     value={this.state.num+""}
+                                    maxLength={8}
                                     onChangeText={(text) => {
-                                        const newText =text.replace(/[^\d]+/, '')
-                                        this.setState({ num: newText })
+                                        this.setState({ num: Utils.chkPrice(text) })
                                     }}
                                 />
                             </View>
@@ -145,6 +151,7 @@ export default class TradeHome extends BaseComponent {
                             </View>
                             <View style={{ backgroundColor: Colors.lineColor, height: 0.5 }} />
                             <TouchableOpacity
+                                onPress={()=>this.submitOrder()}
                             activeOpacity={0.8}
                             style={{borderRadius:10,backgroundColor:Colors.red,justifyContent:"center",alignItems:"center", margin:30,padding:10}}
                             ><Text style={{color:Colors.white,fontSize:15}}>发布</Text>
@@ -154,6 +161,45 @@ export default class TradeHome extends BaseComponent {
                 </ScrollView>
             </View>
         );
+    }
+
+    /**
+     * 提交 发布
+     */
+    submitOrder(){
+        try{
+        if (!Number(this.state.myPrice)>0) {
+            DialogUtils.showMsg("请输入正确的价格(大于0的数字)")
+        } else if (!Number(this.state.num)>0) {
+            DialogUtils.showMsg("请输入正确的数量(大于0的数字)")
+        } else {
+            PassWordInput.showPassWordInput((safetyPwd) => {
+                DialogUtils.showLoading();
+                this.url =  this.type ===1 ?BaseUrl.createSellOrder():BaseUrl.createBuyOrder()
+                HttpUtils.postData(this.url,
+                    {
+                        sessionId: this.userInfo.sessionId,
+                        cid: this.state.cid, //币种id
+                        num: this.state.num, //出售数量
+                        price: this.state.myPrice, //价格
+                        safetyPwd: safetyPwd,
+                    })
+                    .then(result => {
+                        DialogUtils.hideLoading()
+                        if (result.code === 1) {
+                            //upDataUserInfo(this.props.AppStore)
+                            //this.props.navigation.navigate('HomePage');
+                            DialogUtils.showToast("发布订单成功")
+                            this.props.navigation.goBack()
+                        } else {
+                            DialogUtils.showToast(result.msg)
+                        }
+                    })
+            })
+        }
+        }catch (e) {
+            DialogUtils.showToast("请输入正确的数字")
+        }
     }
 
     //刷新数据

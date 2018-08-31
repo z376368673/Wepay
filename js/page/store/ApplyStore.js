@@ -163,7 +163,7 @@ export default class ApplyStore extends BaseComponent {
                                 //defaultValue={userName}
                                 placeholderTextColor={'#999'}
                                 underlineColorAndroid='transparent'
-                                keyboardType={"numeric"}
+                                keyboardType={"default"}
                                 maxLength={18}
                                 onChangeText={(text) => this.setState({ idcard: text })} />
                         </View>

@@ -18,6 +18,7 @@ import BaseUrl from "../../util/BaseUrl";
 import HttpUtils from "../../util/HttpUtils";
 import Utils from "../../util/Utils";
 import PassWordInput from "../../common/PassNumInput";
+import Values from "../../model/CurrencyValues"
 
 //交易中心首页
 
@@ -78,6 +79,9 @@ export default class TradeHome extends BaseComponent {
                         maxPrice: result.data.maxPrice,//最高价
                         minPrice: result.data.minPrice,//最低价
                     })
+                    Values.coinBalance=result.data.coinBalance
+                    Values.walletBalance=result.data.walletBalance
+                    Values.coinPrice=result.data.coinPrices
                     this.oneHour = result.data.oneHour;
                     this.fiveHour = result.data.fiveHour;
                     this.dateLine = result.data.dateLine;
@@ -122,6 +126,7 @@ export default class TradeHome extends BaseComponent {
     render() {
         let { activeIndex } = this.state;
         // 指定图表的配置项和数据
+        var min =  Math.min.apply(Math, this.state.ydata);
         var options = {
             //点击某一个点的数据的时候，显示出悬浮窗
             tooltip: {
@@ -133,17 +138,36 @@ export default class TradeHome extends BaseComponent {
                  data:this.state.xdata,
             },
             yAxis: {
-                type: 'value'
+                //offset:-String(min).length*2+5, //y轴偏移位置
+                type: 'value',
+                name:"y",
+                min:"dataMin",//min,
+                // axisLabel: { //格式化y轴数据，奈何数字长短 太不规律 格式化了也没用
+                //     margin: 2,
+                //     formatter: function (value, index) {
+                //         if (value >= 1000) {
+                //             value =  new Number(value / 1000) + "k";
+                //         }
+                //         return value;
+                //     }
+                // },
             },
+            grid: { //设置折线图与周边的距离
+                left: 45,
+                 right:20,
+                // top:10,
+                // bottom:10,
+            },
+            show:false,
             color: ["#d15"],
+            animation:false,
             series: [{
                 name: this.state.title,
                 data: this.state.ydata,
                 type: 'line',
-                areaStyle: { color: "#d15", origin: "auto" }
+                areaStyle: { color: "#d15", origin: "auto",opacity:0.5 }
             }]
         };
-
         return (
             <View style={styles.container}>
 
@@ -259,18 +283,20 @@ export default class TradeHome extends BaseComponent {
                             <TouchableOpacity
                                 onPress={() => this.selectIndex(0)}
                                 style={{
-                                    borderColor: Colors.r1, borderWidth: 1, borderTopLeftRadius: 18, borderBottomLeftRadius: 18,
-                                    justifyContent: "center", alignItems: "center", backgroundColor: activeIndex ? Colors.white : Colors.red
+                                    borderColor: Colors.r1, borderWidth: 1, borderTopLeftRadius: 24, borderBottomLeftRadius: 24,
+                                    justifyContent: "center", alignItems: "center", backgroundColor: activeIndex ? Colors.white : Colors.red,
+                                    paddingLeft:35,paddingRight:20,paddingTop:12,paddingBottom:12
                                 }}>
-                                <Text style={{ padding: 8, fontSize: 16, marginLeft: 25, marginRight: 10, color: activeIndex ? Colors.red : Colors.white }}>购买</Text>
+                                <Text style={{ color: activeIndex ? Colors.red : Colors.white }}>购买</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 onPress={() => this.selectIndex(1)}
                                 style={{
-                                    borderColor: Colors.r1, borderWidth: 1, borderTopRightRadius: 18, borderBottomRightRadius: 18,
-                                    justifyContent: "center", alignItems: "center", backgroundColor: activeIndex ? Colors.red : Colors.white
+                                    borderColor: Colors.r1, borderWidth: 1, borderTopRightRadius: 24, borderBottomRightRadius: 24,
+                                    justifyContent: "center", alignItems: "center", backgroundColor: activeIndex ? Colors.red : Colors.white,
+                                    paddingLeft:20,paddingRight:35,paddingTop:12,paddingBottom:12
                                 }} >
-                                <Text style={{ padding: 8, fontSize: 16, marginLeft: 25, marginRight: 10, color: activeIndex ? Colors.white : Colors.red }}>出售</Text>
+                                <Text style={{ color: activeIndex ? Colors.white : Colors.red }}>出售</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={{ backgroundColor: Colors.bgColor }}>
@@ -293,7 +319,7 @@ export default class TradeHome extends BaseComponent {
                     <View style={{backgroundColor:'rgba(0,0,0,0.4)',flex:1,height:Utils.getHeight(),justifyContent:"center"}}>
                     <View style={{backgroundColor: "#fff",marginLeft:20,marginRight:20, padding: 20, borderRadius: 8,justifyContent:"center", alignItems: 'center'}}>
 
-                        <Text style={{fontSize:15,color:Colors.text6, alignSelf:"center"}}>像[{this.data?this.data.item.username:"xx"}]{this.state.activeIndex?"购买":"出售"}{this.state.title}</Text>
+                        <Text style={{fontSize:15,color:Colors.text6, alignSelf:"center"}}>像[{this.data?this.data.item.username:"xx"}]{!this.state.activeIndex?"购买":"出售"}{this.state.title}</Text>
 
                         <View style={{flexDirection:"row",width: Utils.getWidth()-80}}>
                             <Text style={{fontSize:15,color:Colors.text6, alignSelf:"center"}}>限 额:</Text>
@@ -339,12 +365,22 @@ export default class TradeHome extends BaseComponent {
                                 keyboardType={"numeric"}
                                 editable={true}
                                 maxLength={12}
-                                value={this.state.number}
+                                value={this.state.number+""}
                                 onChangeText={(text)=>{
+                                    //限额
+                                    var num = this.data?this.data.item.num:0.00;
+                                    if(text>num){
+                                        text = num
+                                    }
                                     this.setState({number:text,unitPrice:this.data?this.data.item.dprice+"":""})
                                 }}
                             />
-                            <Text  style={{fontSize:13,color:Colors.white,paddingLeft:8,paddingRight:8,
+                            <Text
+                                onPress={()=>{
+                                    var text = this.data?this.data.item.num:0.00;
+                                    this.setState({number:text,unitPrice:this.data?this.data.item.dprice+"":""})
+                                }}
+                                style={{fontSize:13,color:Colors.white,paddingLeft:8,paddingRight:8,
                                 backgroundColor:Colors.red,borderRadius:5,height:25,paddingTop:4,paddingBottom:4,}}>全额</Text>
                         </View>
                         <View style={{backgroundColor:Colors.red,height: 1,width: Utils.getWidth()-80}}></View>
@@ -372,10 +408,17 @@ export default class TradeHome extends BaseComponent {
                         <Button style={{marginTop:20}} title='确认交易' onPress={() =>{
                             if(Utils.regNumber(this.state.number)&&this.state.number>0){
                                 this.setModalVisible(false)
+                                var des = this.activeIndex?"出售":"购买"
+                                //单价
+                                var dprice   = this.data?this.data.item.dprice:0.00;
+                                //描述
+                                des =  des +this.state.number +" "+ this.state.title+", 单价:"+dprice
+                                //总价
+                                var total = Utils.formatNumBer(dprice*this.state.number,4)
                                 PassWordInput.showPassWordInput((safetyPwd)=>{
                                     this.trade(safetyPwd,this.state.number)
 
-                                },"出售1 wepay,单价:18.31","18.31")
+                                },des,total)
                             }else {
                                 DialogUtils.showToast("请输入正确的数量")
                             }
@@ -457,6 +500,7 @@ export default class TradeHome extends BaseComponent {
                     <Text
                         onPress={()=>{
                             this.data = data
+                            this.setState({number:"0.00"})
                             this.setModalVisible(true)
                         }}
                         style={{ width:50,
@@ -486,6 +530,7 @@ export default class TradeHome extends BaseComponent {
                     if (result.code === 1) {
                         let tip  = !this.state.activeIndex ? "购买" : "出售"
                         DialogUtils.showToast(tip+ "成功")
+                        this.geTopData(this.cid)
                     } else {
                         DialogUtils.showToast(result.msg)
                     }
