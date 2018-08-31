@@ -7,7 +7,7 @@ import {
     TouchableOpacity,
     Image,
     Button,
-    ImageBackground,
+    ImageBackground, ScrollView, RefreshControl,
 } from 'react-native';
 import BaseComponent, { BaseStyles, mainColor, window_width } from "../BaseComponent";
 import NavigationBar from "../../common/NavigationBar";
@@ -22,6 +22,7 @@ export default class NumberHome extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
+            isRefresh: false,
             wepayPrice:"0.00",//当前价格
             assetsNum: 0.00,//   拥有wepay资产
             purseAddress: "njadnahdnqjeio123qdhsuydy891209ejh1d",//   钱包地址
@@ -34,16 +35,17 @@ export default class NumberHome extends BaseComponent {
         this._refreshData()
     }
 
-
     /**
     * 获取数据
     * @param {*} isRefesh  是否刷新
     * @param {*} pageIndex 
     */
    _refreshData() {
+       this.setState({isRefresh:true})
         this.url = BaseUrl.numberIndex(this.userInfo.sessionId)
         HttpUtils.getData(this.url)
             .then(result => {
+                this.setState({isRefresh:false})
                 if (result.code === 1) {
                    this.setState({
                      wepayPrice:result.data.currPrice,
@@ -71,11 +73,29 @@ export default class NumberHome extends BaseComponent {
                         color: "#fff"
                     }, () => this.transactionRecord())}
                 />
-
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                            //Android下只有一个 colors 是转圈的颜色
+                            colors={['#d11', '#000']}
+                            //ios 下 可以设置标题，转圈颜色，标题颜色
+                            title={'Loading...'}
+                            tintColor={'#d11'}
+                            titleColor={'#d11'}
+                            //刷新状态 false:隐藏，true:显示
+                            refreshing={this.state.isRefresh}
+                            //刷新触发的后执行的方法
+                            onRefresh={() =>  this._refreshData()}
+                        />
+                    }
+                    //onScroll={this._onScroll.bind(this)}
+                    scrollEventThrottle={50}
+                >
+                    <View style={{ backgroundColor: Colors.bgColor }}>
                 {/* top布局 */}
                 <View style={[{ alignItems: 'center', justifyContent: 'space-around', padding: 10, backgroundColor: mainColor }]}>
                     <Image source={require("../../../res/images/logo-d.png")} style={{ height: 70, width: 70, resizeMode: "stretch" }} />
-                    <Text style={{ fontSize: 15, color: "#fff", marginTop: 8, marginBottom: 10 }}>当前价格:￥{18.123131}</Text>
+                    <Text style={{ fontSize: 15, color: "#fff", marginTop: 8, marginBottom: 10 }}>当前价格:￥{this.state.wepayPrice}</Text>
                 </View>
 
                 <View style={{ marginTop: 10, backgroundColor: Colors.white, paddingLeft: 10, paddingBottom: 10, paddingRight: 10 }}>
@@ -130,6 +150,8 @@ export default class NumberHome extends BaseComponent {
                         onRefreshs={() => this._refreshData()}
                     />
                 </View>
+               </View>
+             </ScrollView>
             </View>
         );
     }

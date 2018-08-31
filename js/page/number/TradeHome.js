@@ -6,10 +6,10 @@ import {
     Image,
     ScrollView,
     Platform,
-    View, TextInput,Modal
+    View, TextInput, Modal, RefreshControl
 } from 'react-native';
 import BaseComponent, {mainColor, upDataUserInfo} from "../BaseComponent";
-import RefreshFlatList2 from "../../common/RefreshFlatList2"
+import RefreshFlatList from "../../common/RefreshFlatList"
 import Colors from "../../util/Colors"
 import {Button, Overlay} from 'teaset';
 import Echarts from 'native-echarts';
@@ -25,8 +25,10 @@ import Values from "../../model/CurrencyValues"
 export default class TradeHome extends BaseComponent {
     constructor(props) {
         super(props);
+
         const cid = this.props.navigation.state.params.cid
             this.state = {
+            isRefresh: false, //scrollview 的刷新按钮
             cid:cid,  //1.Wepay 2.比特币 3.莱特币  4.以太坊  5.狗狗币
             title:this.getTitleByCid(cid),
 
@@ -60,16 +62,21 @@ export default class TradeHome extends BaseComponent {
 
     componentDidMount() {
        // SplashScreen.hide();
+        this.refreshAllData()
+    }
+
+    refreshAllData(){
+        this.setState({isRefresh:true,})
         this.geTopData(this.cid)
         this._refreshData()
     }
 
     geTopData(){
-        DialogUtils.showLoading()
+        //DialogUtils.showLoading()
         let url = BaseUrl.coinDeal(this.userInfo.sessionId,this.cid)
         HttpUtils.getData(url)
             .then(result => {
-                DialogUtils.hideLoading()
+                this.setState({isRefresh:false,})
                 if (result.code === 1) {
                     //alert(JSON.stringify(result.data))
                     this.setState({
@@ -190,7 +197,24 @@ export default class TradeHome extends BaseComponent {
                         </View></TouchableOpacity>
 
                 </View>
-                <ScrollView>
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                            //Android下只有一个 colors 是转圈的颜色
+                            colors={['#d11', '#000']}
+                            //ios 下 可以设置标题，转圈颜色，标题颜色
+                            title={'Loading...'}
+                            tintColor={'#d11'}
+                            titleColor={'#d11'}
+                            //刷新状态 false:隐藏，true:显示
+                            refreshing={this.state.isRefresh}
+                            //刷新触发的后执行的方法
+                            onRefresh={() =>  this.refreshAllData()}
+                        />
+                    }
+                    //onScroll={this._onScroll.bind(this)}
+                    scrollEventThrottle={50}
+                >
                     <View style={{ backgroundColor: Colors.bgColor }}>
 
                         {/* 顶部布局  资产  余额*/}
@@ -300,10 +324,12 @@ export default class TradeHome extends BaseComponent {
                             </TouchableOpacity>
                         </View>
                         <View style={{ backgroundColor: Colors.bgColor }}>
-                            <RefreshFlatList2
+                            <RefreshFlatList
                                 ref={refList => this.refList = refList}
                                 renderItem={(items) => this._getItem(items)}
                                 onRefreshs={() => this._refreshData()}
+                                onLoadData={()=>this._onLoadData()}
+                                isDownLoad = {true}
                             />
                         </View>
                     </View>
@@ -540,7 +566,7 @@ export default class TradeHome extends BaseComponent {
 
     //刷新数据
     _refreshData() {
-        this.refList.refreshStar()
+        //this.refList.refreshStar()
         this.pageIndex = 1;
         this.getData(true)
     }
