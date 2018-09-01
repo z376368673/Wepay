@@ -142,7 +142,11 @@ export default class TradeHome extends BaseComponent {
             xAxis: {
                 type: 'category',
                 boundaryGap: false,
-                 data:this.state.xdata,
+                data:this.state.xdata,
+                // axisLabel:{
+                //     //showMinLabel: true,
+                //     showMaxLabel: true,
+                // },
             },
             yAxis: {
                 //offset:-String(min).length*2+5, //y轴偏移位置
@@ -172,7 +176,6 @@ export default class TradeHome extends BaseComponent {
                 name: this.state.title,
                 data: this.state.ydata,
                 type: 'line',
-                areaStyle: { color: "#d15", origin: "auto",opacity:0.5 }
             }]
         };
         return (
@@ -225,7 +228,7 @@ export default class TradeHome extends BaseComponent {
                             <TouchableOpacity
                                 activeOpacity={0.8} >
                                 <View style={{ flexDirection: 'column', alignItems: "center", width: Utils.getWidth() / 2 }}>
-                                    <Text style={{ fontSize: 16, color: '#fff' }}>Wepay资产</Text>
+                                    <Text style={{ fontSize: 16, color: '#fff' }}>{this.state.title}资产</Text>
                                     <Text style={{ fontSize: 16, color: '#fff' }}>{this.state.coinBalance}</Text>
                                 </View></TouchableOpacity>
                             <View style={{ height: 30, width: 0.5, backgroundColor: '#fff' }} />
@@ -554,6 +557,7 @@ export default class TradeHome extends BaseComponent {
                 .then(result => {
                     DialogUtils.hideLoading()
                     if (result.code === 1) {
+                        this.refList.delData(this.data.index)
                         let tip  = !this.state.activeIndex ? "购买" : "出售"
                         DialogUtils.showToast(tip+ "成功")
                         this.geTopData(this.cid)

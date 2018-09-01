@@ -86,7 +86,18 @@ export default class Wbao extends BaseComponent {
                     DialogUtils.showToast(result.msg)
                 }
             })
+    }
 
+    getImageBygrade(){
+        if (this.state.grade===1) {
+            return require("../../../res/images/g1.png")
+        }else  if (this.state.grade===2){
+                return require("../../../res/images/g2.png")
+        } else  if (this.state.grade===3){
+                return require("../../../res/images/g3.png")
+        } else {
+                return require("../../../res/images/g0.png")
+        }
     }
 
     render() {
@@ -99,8 +110,8 @@ export default class Wbao extends BaseComponent {
                 {/* top布局 */}
                 <View style={[{ alignItems: 'center', padding: 10, backgroundColor: Colors.mainColor }]}>
                     <View style={{ marginTop: 10, flexDirection: "row" }}>
-                        <Text>昨日收益 (余额)</Text>
-                        <Image source={require("../../../res/images/logo-d.png")} style={{ height: 15, width: 15, resizeMode: "stretch" }} />
+                        <Text>昨日收益 (余额) </Text>
+                        <Image source={this.getImageBygrade()} style={{ height: 15, width: 15, resizeMode: "stretch" }} />
                     </View>
                     <Text style={{ fontSize: 15, color: "#fff", marginTop: 10, }}>{this.state.yesterdayEarnings}</Text>
                 </View>

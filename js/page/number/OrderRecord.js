@@ -248,17 +248,17 @@ export default class OrderRecord extends BaseComponent {
             HttpUtils.getData(url)
                 .then(result => {
                     //alert(JSON.stringify(result))
+                    DialogUtils.hideLoading()
                     if (result.code === 1) {
                         this.refList.delData(data.index)
                         DialogUtils.showMsg("订单已取消")
-                        upDataUserInfo(this.props.AppStore)
                     } else if(result.code === 2||result.code === 4){
                         DialogUtils.showToast(result.msg)
                         this.goLogin(this.props.navigation)
                     } else {
                         DialogUtils.showToast(result.msg)
                     }
-                    DialogUtils.hideLoading()
+
                 })
 
         }

@@ -258,6 +258,10 @@ export default class YueOrIntegralRecord extends BaseComponent {
                 typeText = "退还保证金"
                 typeValue = "+" + yue
                 break;
+            case 26:
+                typeText = "商城返还"
+                typeValue = "+" + yue
+                break;
             case 31:
                 typeText = "(" + payId + ")转入"
                 typeValue = "+" + yue
