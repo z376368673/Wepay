@@ -1,6 +1,8 @@
-//const url = 'http://wp.wepay168.com/wepay'
+const url = 'http://wp.wepay168.com/wepay'  //正式服务器
 //const url = 'http://192.168.0.105:8081/wepay'
-const url = 'http://121.201.46.206/wepay'
+//const url = 'http://121.201.46.206/wepay'      //测试服务器
+//const url = 'http://103.206.121.128:8080/wepay'
+
 
 export default class BaseUrl {
 
@@ -8,7 +10,7 @@ export default class BaseUrl {
      * 登陆接口
      * 
      * @param {*} phone 
-     * @param {*} pwd 
+     * @param {*} pwd
      * 
      * @return 
             "userid": 26536,

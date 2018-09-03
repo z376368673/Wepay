@@ -35,6 +35,7 @@ export default class RefreshFlatList extends Component {
         },
         isDownLoad: false,
         minLength: 15,//最少要15条数据 才会显示底部加载更多，防止不满一页时 onLoadData 自动执行
+        defauValue:0.1,
     }
 
     refreshStar() {
@@ -112,6 +113,7 @@ export default class RefreshFlatList extends Component {
         return <View style={styles.container}>
             <FlatList
                 {...other}
+
                 //renderItem={other.renderItem}
                 //设置数据
                 data={this.state.dataArray}
@@ -134,7 +136,7 @@ export default class RefreshFlatList extends Component {
                 //定义加载更多控件
                 ListFooterComponent={() => this.getIndicator()}
                 //设置触发 onEndReached 的距离
-                onEndReachedThreshold={0.1}
+                onEndReachedThreshold={this.props.defauValue}
                 //触发加载更多的后执行的方法
                 onEndReached={() => this.state.isDownLoad ? onLoadData() : {}}
             />

@@ -55,6 +55,8 @@ import TranWepay from "../page/number/TranWepay"
 import ZhongChou from "../page/number/ZhongChou"
 import ZhongChouRecord from "../page/number/ZhongChouRecord"
 import TradeHome from "../page/number/TradeHome"
+import TradeHome1 from "../page/number/TradeHome1"
+
 import EchartsDemo from "../page/number/EchartsDemo"
 import CreateBSOrder from "../page/number/CreateBSOrder"
 import Wbao from "../page/number/Wbao"
@@ -101,6 +103,9 @@ export default AppNavigator = createStackNavigator({
     
     TradeHome: {//交易
         screen: TradeHome
+    },
+    TradeHome1: {//交易
+        screen: TradeHome1
     },
     TeadeRecord: {//交易记录
         screen: TeadeRecord

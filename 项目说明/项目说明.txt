@@ -11,6 +11,7 @@ cp 项目说明/index.js node_modules/react-native-camera/index.js
 在
 Wepay/node_modules/native-echarts/src/components/Echarts/index.js 
 修改：
+scalesPageToFit={Platform.OS==="ios"?false:true}
 source={Platform.OS==="ios"?require('./tpl.html'):{uri:"file:///android_asset/tpl.html"}}
 
 

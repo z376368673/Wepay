@@ -74,7 +74,7 @@ export default class BuyPage extends BaseComponent {
                   <View style={{ flexDirection: "row", backgroundColor: "#fff", paddingLeft: 10, paddingRight: 10 ,paddingTop:15}}>
                             {this.creatLabel("创建订单", { color: Colors.mainColor }, { flex: 1 }, ()=>this._menuClick(0))}
                             {this.creatLabel("未完成订单", { color: Colors.text3 }, { flex: 1, marginLeft: 15, marginRight: 15 }, ()=>this._menuClick(1))}
-                            {this.creatLabel("确认收款", { color: Colors.text3 }, { flex: 1 }, ()=>this._menuClick(2))}
+                            {this.creatLabel("确认打款", { color: Colors.text3 }, { flex: 1 }, ()=>this._menuClick(2))}
                         </View>
                         <View style={{ flexDirection: "row", backgroundColor: "#fff", paddingLeft: 10, paddingRight: 10 ,paddingTop:10,paddingBottom:15,marginBottom:12}}>
                             {this.creatLabel("已完成订单", { color: Colors.text3 }, { flex: 1 }, ()=>this._menuClick(3))}

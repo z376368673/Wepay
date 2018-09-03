@@ -159,6 +159,21 @@ export default class Utils {
         return false
     }
 
+    /**
+     * 截取小数点  num
+     * @param s
+     * @param num
+     * @returns {string}
+     */
+    static formatNumbers(s,num) {
+        var value = String(s)
+        value = value.substring(0, value.indexOf(".") + num + 1)
+        return value
+    }
+
+
+
+
     static formatDateTime(inputTime, symbol) {
         let sb = symbol ? symbol : '/'
         var date = new Date(inputTime);

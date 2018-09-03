@@ -26,17 +26,19 @@ import Values from "../../model/CurrencyValues"
 
 
 
-//Wepay交易
+//发布出售、购买订单
 
 export default class TradeHome extends BaseComponent {
     constructor(props) {
         super(props);
+        const cid = this.props.navigation.state.params.cid
+
         this.state = {
             wepayNum: Values.coinBalance, //Wepay资产
             yueNum:  Values.walletBalance, //余额
 
-            title:this.props.navigation.state.params.title,
-            cid: this.props.navigation.state.params.cid,
+            title:this.getTitleByCid(cid),
+            cid: cid,
             price: Values.coinPrice,
 
             myPrice:Values.coinPrice, //我的定价
@@ -46,7 +48,25 @@ export default class TradeHome extends BaseComponent {
         this.userInfo = this.getUserInfo();
 
     }
+    getTitleByCid(cid){
+        let title
+        if (cid===2){
+            title = "比特币"
 
+        } else  if (cid===3){
+            title = "莱特币"
+
+        }else  if (cid===4){
+            title = "以太坊"
+
+        }else  if (cid===5){
+            title = "狗狗币"
+
+        }else {
+            title = "Wepay"
+        }
+        return title ;
+    }
     componentDidMount() {
         this._refreshData()
     }
@@ -84,7 +104,7 @@ export default class TradeHome extends BaseComponent {
                             <TouchableOpacity
                                 activeOpacity={0.8} >
                                 <View style={{ flexDirection: 'column', alignItems: "center", width: width / 2 }}>
-                                    <Text style={{ fontSize: 16, color: '#fff' }}>Wepay资产</Text>
+                                    <Text style={{ fontSize: 16, color: '#fff' }}>{this.state.title}资产</Text>
                                     <Text style={{ fontSize: 16, color: '#fff' }}>{this.state.wepayNum}</Text>
                                 </View></TouchableOpacity>
                             <View style={{ height: 30, width: 0.5, backgroundColor: '#fff' }} />
@@ -111,7 +131,7 @@ export default class TradeHome extends BaseComponent {
                                     placeholderTextColor={'#666'}
                                     underlineColorAndroid='transparent'
                                     keyboardType={"numeric"}
-                                    editable={true}
+                                    editable={false}
                                     value={this.state.myPrice}
                                     onChangeText={(text) => {
                                         this.setState({ myPrice: Utils.chkCurrency(text,4) })
@@ -122,7 +142,7 @@ export default class TradeHome extends BaseComponent {
                                         style={{width: 150, marginTop: -5 }}
                                         maximumTrackTintColor={Colors.mainColor}
                                         minimumTrackTintColor={Colors.mainColor}
-                                        minimumValue={-20} maximumValue={20}
+                                        minimumValue={-10} maximumValue={10}
                                         //value={Number(this.state.myPrice)}
                                         onValueChanges={(value)=>{
                                             const num = this.state.price+this.state.price*value/100

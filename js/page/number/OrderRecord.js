@@ -68,13 +68,13 @@ export default class OrderRecord extends BaseComponent {
                         style={{
                             borderColor: Colors.r1,
                             borderWidth: 1,
-                            borderTopLeftRadius: 24,
-                            borderBottomLeftRadius: 24,
+                            borderTopLeftRadius: 20,
+                            borderBottomLeftRadius: 20,
                             justifyContent: "center",
                             alignItems: "center",
                             backgroundColor: activeIndex ? Colors.white : Colors.red,
                             paddingLeft: 35,paddingRight: 25,
-                             paddingTop:12,paddingBottom:12
+                             paddingTop:10,paddingBottom:10
                         }}>
                         <Text style={{
                             fontSize: 16,color: activeIndex ? Colors.red : Colors.white
@@ -86,14 +86,14 @@ export default class OrderRecord extends BaseComponent {
                         style={{
                             borderColor: Colors.r1,
                             borderWidth: 1,
-                            borderTopRightRadius: 24,
-                            borderBottomRightRadius: 24,
+                            borderTopRightRadius: 20,
+                            borderBottomRightRadius: 20,
                             justifyContent: "center",
                             alignItems: "center",
                             backgroundColor: activeIndex ? Colors.red : Colors.white,
                             paddingRight: 35,
                             paddingLeft: 25,
-                            paddingTop:12,paddingBottom:12
+                            paddingTop:10,paddingBottom:10
                         }}>
                         <Text style={{
                             fontSize: 16, color: activeIndex ? Colors.white : Colors.red

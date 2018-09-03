@@ -6,7 +6,7 @@ import {
     Image,
     ScrollView,
     Platform,
-    View, TextInput, Modal, RefreshControl, StatusBar
+    View, TextInput, Modal, RefreshControl
 } from 'react-native';
 import BaseComponent, {mainColor, upDataUserInfo} from "../BaseComponent";
 import RefreshFlatList from "../../common/RefreshFlatList"
@@ -22,7 +22,7 @@ import Values from "../../model/CurrencyValues"
 
 //交易中心首页
 
-export default class TradeHome extends BaseComponent {
+export default class TradeHome1 extends BaseComponent {
     constructor(props) {
         super(props);
 
@@ -57,7 +57,7 @@ export default class TradeHome extends BaseComponent {
         this.oneHour = [];
         this.fiveHour = [];
         this.dateLine = [];
-        this.isLoading = true;
+
     }
 
     componentDidMount() {
@@ -129,35 +129,7 @@ export default class TradeHome extends BaseComponent {
     setModalVisible(visible) {
         this.setState({ modalVisible: visible });
     }
-    /**
-     * scrollview滑动的时候
-     * @private
-     */
-    _onScroll(event) {
-        if(this.state.loadMore){
-            return;
-        }
-        let y = event.nativeEvent.contentOffset.y;
-        let height = event.nativeEvent.layoutMeasurement.height;
-        let contentHeight = event.nativeEvent.contentSize.height;
-        console.log('offsetY-->' + y);
-        console.log('height-->' + height);
-        console.log('contentHeight-->' + contentHeight);
-        if(y+height>=contentHeight-20&&this.isLoading){
-            this.isLoading = false
-             this._onLoadData()
-        }
-    }
-
-    static defaultProps = {
-        statusBar: {
-            statusBar: 'light-content',
-            hide: false,
-            translucent: false,
-            backgroundColor: '#48b1a3',
-        },
-    }
-    render() {
+    creatHeadView(){
         let { activeIndex } = this.state;
         // 指定图表的配置项和数据
         var min =  Math.min.apply(Math, this.state.ydata);
@@ -192,7 +164,7 @@ export default class TradeHome extends BaseComponent {
             },
             grid: { //设置折线图与周边的距离
                 left: 45,
-                 right:20,
+                right:20,
                 // top:10,
                 // bottom:10,
             },
@@ -206,16 +178,128 @@ export default class TradeHome extends BaseComponent {
             }]
         };
 
-        let status = <View style={{ height: Platform.OS === 'ios' ? 20 : 0,backgroundColor: '#48b1a3'}}>
-            <StatusBar {...this.props.statusBar}/>
-        </View>
+        return (
+            <View style={{ backgroundColor: Colors.bgColor }}>
 
+                {/* 顶部布局  资产  余额*/}
+                <View style={[{
+                    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around',
+                    padding: 10, backgroundColor: mainColor
+                }]}>
+                    <TouchableOpacity
+                        activeOpacity={0.8} >
+                        <View style={{ flexDirection: 'column', alignItems: "center", width: Utils.getWidth() / 2 }}>
+                            <Text style={{ fontSize: 16, color: '#fff' }}>{this.state.title}资产</Text>
+                            <Text style={{ fontSize: 16, color: '#fff' }}>{this.state.coinBalance}</Text>
+                        </View></TouchableOpacity>
+                    <View style={{ height: 30, width: 0.5, backgroundColor: '#fff' }} />
+                    <TouchableOpacity activeOpacity={0.8}>
+                        <View style={{ flexDirection: 'column', alignItems: "center", width: Utils.getWidth() / 2 }}>
+                            <Text style={{ fontSize: 16, color: '#fff' }}>余  额</Text>
+                            <Text style={{ fontSize: 16, color: '#fff' }}>{this.state.walletBalance}</Text>
+                        </View></TouchableOpacity>
+                </View>
+                <View style={{ padding: 15, flexDirection: "row", backgroundColor: Colors.white }}>
+                    <View style={{ flexDirection: "row", flex: 1, justifyContent: "center" }}>
+                        <Text style={{ fontSize: 14, color: Colors.text8, }}>当前价格</Text>
+                        <Text style={{ fontSize: 14, color: Colors.black, }}>{this.state.coinPrice}</Text>
+                    </View>
+                    <View style={{ flexDirection: "row", flex: 1, justifyContent: "center" }}>
+                        <Text style={{ fontSize: 14, color: Colors.text8, }}>高</Text>
+                        <Text style={{ fontSize: 14, color: Colors.black, }}>{this.state.maxPrice}</Text>
+                    </View>
+                    <View style={{ flexDirection: "row", flex: 1, justifyContent: "center" }}>
+                        <Text style={{ fontSize: 14, color: Colors.text8, }}>低</Text>
+                        <Text style={{ fontSize: 14, color: Colors.black, }}>{this.state.minPrice}</Text>
+                    </View>
+                </View>
+
+                <View style={{ flexDirection: "row", alignItems: "center", paddingTop: 15, paddingBottom: 15, backgroundColor: Colors.white, marginTop: 1 }}>
+
+                    <TouchableOpacity onPress={() => this.onClick(1)} style={{ flex: 1 }}>
+                        <View style={{ alignItems: "center", justifyContent: "center" }}>
+                            <Image source={require("../../../res/images/fabuchushou.png")} style={{ height: 40, width: 40, }} />
+                            <Text style={{ color: this.state.selectIndex === 0 ? Colors.mainColor : Colors.text6, fontSize: 13, marginTop: 5 }}>发布出售订单</Text>
+                        </View></TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.onClick(2)} style={{ flex: 1 }}>
+                        <View style={{ alignItems: "center", justifyContent: "center" }}>
+                            <Image source={require("../../../res/images/fabugoumai.png")} style={{ height: 40, width: 40, }} />
+                            <Text style={{ color: this.state.selectIndex === 1 ? Colors.mainColor : Colors.text6, fontSize: 13, marginTop: 5 }}>发布购买订单</Text>
+                        </View></TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.onClick(3)} style={{ flex: 1 }}>
+                        <View style={{ alignItems: "center", justifyContent: "center", }}>
+                            <Image source={require("../../../res/images/dingdan-shu.png")} style={{ height: 40, width: 40, }} />
+                            <Text style={{ color: this.state.selectIndex === 2 ? Colors.mainColor : Colors.text6, fontSize: 13, marginTop: 5 }}>订单</Text>
+                        </View></TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.onClick(4)} style={{ flex: 1 }}>
+                        <View style={{ alignItems: "center", justifyContent: "center", }}>
+                            <Image source={require("../../../res/images/jiaoyijilu-shu.png")} style={{ height: 40, width: 40, }} />
+                            <Text style={{ color: this.state.selectIndex === 2 ? Colors.mainColor : Colors.text6, fontSize: 13, marginTop: 5 }}>交易记录</Text>
+                        </View></TouchableOpacity>
+                </View>
+                <View style={{ backgroundColor: Colors.bgColor, height: 10 }} />
+                {/* 折线统计图 */}
+                <View style={{ flexDirection: "row", backgroundColor: Colors.white }}>
+                    <Text style={{
+                        borderColor: Colors.blue1, flex: 1, padding: 10, textAlign: "center", borderWidth: 0.5,
+                        backgroundColor: this.state.echartsType === 0 ? Colors.blue1 : Colors.white,
+                        color: this.state.echartsType !== 0 ? Colors.blue1 : Colors.white
+                    }}
+                          onPress={() => this.magicType(0)}
+                    >一小时</Text>
+                    <Text style={{
+                        borderColor: Colors.blue1, flex: 1, padding: 10, textAlign: "center", borderWidth: 0.5,
+                        backgroundColor: this.state.echartsType === 1 ? Colors.blue1 : Colors.white,
+                        color: this.state.echartsType !== 1 ? Colors.blue1 : Colors.white
+                    }}
+                          onPress={() => this.magicType(1)}
+                    >5小时</Text>
+                    <Text style={{
+                        borderColor: Colors.blue1, flex: 1, padding: 10, textAlign: "center", borderWidth: 0.5,
+                        backgroundColor: this.state.echartsType === 2 ? Colors.blue1 : Colors.white,
+                        color: this.state.echartsType !== 2 ? Colors.blue1 : Colors.white
+                    }}
+                          onPress={() => this.magicType(2)}
+                    >日线</Text>
+                </View>
+                {/* 折线统计图 */}
+                <View style={{ marginTop: -50, zIndex: -1, backgroundColor: Colors.white }}>
+                    <Echarts option={options} height={240} width={Utils.getWidth()} />
+                </View>
+
+                <View style={{ flexDirection: "row", backgroundColor: Colors.bgColor, justifyContent: "center", padding: 10, marginTop: -30 }}>
+                    <TouchableOpacity
+                        onPress={() => this.selectIndex(0)}
+                        style={{
+                            borderColor: Colors.r1, borderWidth: 1, borderTopLeftRadius: 20, borderBottomLeftRadius: 20,
+                            justifyContent: "center", alignItems: "center", backgroundColor: activeIndex ? Colors.white : Colors.red,
+                            paddingLeft:35,paddingRight:20,paddingTop:10,paddingBottom:10
+                        }}>
+                        <Text style={{ color: activeIndex ? Colors.red : Colors.white }}>购买</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => this.selectIndex(1)}
+                        style={{
+                            borderColor: Colors.r1, borderWidth: 1, borderTopRightRadius: 20, borderBottomRightRadius: 20,
+                            justifyContent: "center", alignItems: "center", backgroundColor: activeIndex ? Colors.red : Colors.white,
+                            paddingLeft:20,paddingRight:35,paddingTop:10,paddingBottom:10
+                        }} >
+                        <Text style={{ color: activeIndex ? Colors.white : Colors.red }}>出售</Text>
+                    </TouchableOpacity>
+                </View>
+
+            </View>
+        )
+    }
+
+
+    render() {
         return (
             <View style={styles.container}>
-                {status}
+
                 <View style={{
                     flexDirection: "row", justifyContent: "center", alignItems: "center",
-                    backgroundColor: Colors.mainColor, height: 45,
+                    backgroundColor: Colors.mainColor, height: 45, marginTop: Platform.OS === "ios" ? 20 : 0
                 }}>
                     <TouchableOpacity
                         style={[{ paddingRight: 20, paddingTop: 10, paddingBottom: 10, position: "absolute", left: 10 },]}
@@ -232,145 +316,17 @@ export default class TradeHome extends BaseComponent {
                         </View></TouchableOpacity>
 
                 </View>
-                <ScrollView
-                    refreshControl={
-                        <RefreshControl
-                            //Android下只有一个 colors 是转圈的颜色
-                            colors={['#d11', '#000']}
-                            //ios 下 可以设置标题，转圈颜色，标题颜色
-                            title={'Loading...'}
-                            tintColor={'#d11'}
-                            titleColor={'#d11'}
-                            //刷新状态 false:隐藏，true:显示
-                            refreshing={this.state.isRefresh}
-                            //刷新触发的后执行的方法
-                            onRefresh={() =>  this.refreshAllData()}
-                        />
-                    }
-                    //onScroll={this._onScroll.bind(this)}
-                    scrollEventThrottle={50}
-                    onScroll={this._onScroll.bind(this)}
-                >
-                    <View style={{ backgroundColor: Colors.bgColor }}>
+                <View style={{ backgroundColor: Colors.bgColor }}>
+                    <RefreshFlatList
+                        ref={refList => this.refList = refList}
+                        renderItem={(items) => this._getItem(items)}
+                        onRefreshs={() => this._refreshData()}
+                        onLoadData={()=>this._onLoadData()}
+                        isDownLoad = {true}
+                       // ListHeaderComponent={this.creatHeadView()}
+                    />
+                </View>
 
-                        {/* 顶部布局  资产  余额*/}
-                        <View style={[{
-                            flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around',
-                            padding: 10, backgroundColor: mainColor
-                        }]}>
-                            <TouchableOpacity
-                                activeOpacity={0.8} >
-                                <View style={{ flexDirection: 'column', alignItems: "center", width: Utils.getWidth() / 2 }}>
-                                    <Text style={{ fontSize: 16, color: '#fff' }}>{this.state.title}资产</Text>
-                                    <Text style={{ fontSize: 16, color: '#fff' }}>{this.state.coinBalance}</Text>
-                                </View></TouchableOpacity>
-                            <View style={{ height: 30, width: 0.5, backgroundColor: '#fff' }} />
-                            <TouchableOpacity activeOpacity={0.8}>
-                                <View style={{ flexDirection: 'column', alignItems: "center", width: Utils.getWidth() / 2 }}>
-                                    <Text style={{ fontSize: 16, color: '#fff' }}>余  额</Text>
-                                    <Text style={{ fontSize: 16, color: '#fff' }}>{this.state.walletBalance}</Text>
-                                </View></TouchableOpacity>
-                        </View>
-                        <View style={{ padding: 15, flexDirection: "row", backgroundColor: Colors.white }}>
-                            <View style={{ flexDirection: "row", flex: 1, justifyContent: "center" }}>
-                                <Text style={{ fontSize: 14, color: Colors.text8, }}>当前价格</Text>
-                                <Text style={{ fontSize: 14, color: Colors.black, }}>{this.state.coinPrice}</Text>
-                            </View>
-                            <View style={{ flexDirection: "row", flex: 1, justifyContent: "center" }}>
-                                <Text style={{ fontSize: 14, color: Colors.text8, }}>高</Text>
-                                <Text style={{ fontSize: 14, color: Colors.black, }}>{this.state.maxPrice}</Text>
-                            </View>
-                            <View style={{ flexDirection: "row", flex: 1, justifyContent: "center" }}>
-                                <Text style={{ fontSize: 14, color: Colors.text8, }}>低</Text>
-                                <Text style={{ fontSize: 14, color: Colors.black, }}>{this.state.minPrice}</Text>
-                            </View>
-                        </View>
-
-                        <View style={{ flexDirection: "row", alignItems: "center", paddingTop: 15, paddingBottom: 15, backgroundColor: Colors.white, marginTop: 1 }}>
-
-                            <TouchableOpacity onPress={() => this.onClick(1)} style={{ flex: 1 }}>
-                                <View style={{ alignItems: "center", justifyContent: "center" }}>
-                                    <Image source={require("../../../res/images/fabuchushou.png")} style={{ height: 40, width: 40, }} />
-                                    <Text style={{ color: this.state.selectIndex === 0 ? Colors.mainColor : Colors.text6, fontSize: 13, marginTop: 5 }}>发布出售订单</Text>
-                                </View></TouchableOpacity>
-                            <TouchableOpacity onPress={() => this.onClick(2)} style={{ flex: 1 }}>
-                                <View style={{ alignItems: "center", justifyContent: "center" }}>
-                                    <Image source={require("../../../res/images/fabugoumai.png")} style={{ height: 40, width: 40, }} />
-                                    <Text style={{ color: this.state.selectIndex === 1 ? Colors.mainColor : Colors.text6, fontSize: 13, marginTop: 5 }}>发布购买订单</Text>
-                                </View></TouchableOpacity>
-                            <TouchableOpacity onPress={() => this.onClick(3)} style={{ flex: 1 }}>
-                                <View style={{ alignItems: "center", justifyContent: "center", }}>
-                                    <Image source={require("../../../res/images/dingdan-shu.png")} style={{ height: 40, width: 40, }} />
-                                    <Text style={{ color: this.state.selectIndex === 2 ? Colors.mainColor : Colors.text6, fontSize: 13, marginTop: 5 }}>订单</Text>
-                                </View></TouchableOpacity>
-                            <TouchableOpacity onPress={() => this.onClick(4)} style={{ flex: 1 }}>
-                                <View style={{ alignItems: "center", justifyContent: "center", }}>
-                                    <Image source={require("../../../res/images/jiaoyijilu-shu.png")} style={{ height: 40, width: 40, }} />
-                                    <Text style={{ color: this.state.selectIndex === 2 ? Colors.mainColor : Colors.text6, fontSize: 13, marginTop: 5 }}>交易记录</Text>
-                                </View></TouchableOpacity>
-                        </View>
-                        <View style={{ backgroundColor: Colors.bgColor, height: 10 }} />
-                        {/* 折线统计图 */}
-                        <View style={{ flexDirection: "row", backgroundColor: Colors.white }}>
-                            <Text style={{
-                                borderColor: Colors.blue1, flex: 1, padding: 10, textAlign: "center", borderWidth: 0.5,
-                                backgroundColor: this.state.echartsType === 0 ? Colors.blue1 : Colors.white,
-                                color: this.state.echartsType !== 0 ? Colors.blue1 : Colors.white
-                            }}
-                                onPress={() => this.magicType(0)}
-                            >一小时</Text>
-                            <Text style={{
-                                borderColor: Colors.blue1, flex: 1, padding: 10, textAlign: "center", borderWidth: 0.5,
-                                backgroundColor: this.state.echartsType === 1 ? Colors.blue1 : Colors.white,
-                                color: this.state.echartsType !== 1 ? Colors.blue1 : Colors.white
-                            }}
-                                onPress={() => this.magicType(1)}
-                            >5小时</Text>
-                            <Text style={{
-                                borderColor: Colors.blue1, flex: 1, padding: 10, textAlign: "center", borderWidth: 0.5,
-                                backgroundColor: this.state.echartsType === 2 ? Colors.blue1 : Colors.white,
-                                color: this.state.echartsType !== 2 ? Colors.blue1 : Colors.white
-                            }}
-                                onPress={() => this.magicType(2)}
-                            >日线</Text>
-                        </View>
-                        {/* 折线统计图 */}
-                        <View style={{ marginTop: -50, zIndex: -1, backgroundColor: Colors.white }}>
-                            <Echarts option={options} height={240} width={Utils.getWidth()} />
-                        </View>
-
-                        <View style={{ flexDirection: "row", backgroundColor: Colors.bgColor, justifyContent: "center", padding: 10, marginTop: -30 }}>
-                            <TouchableOpacity
-                                onPress={() => this.selectIndex(0)}
-                                style={{
-                                    borderColor: Colors.r1, borderWidth: 1, borderTopLeftRadius: 20, borderBottomLeftRadius: 20,
-                                    justifyContent: "center", alignItems: "center", backgroundColor: activeIndex ? Colors.white : Colors.red,
-                                    paddingLeft:35,paddingRight:20,paddingTop:10,paddingBottom:10
-                                }}>
-                                <Text style={{ color: activeIndex ? Colors.red : Colors.white }}>购买</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                onPress={() => this.selectIndex(1)}
-                                style={{
-                                    borderColor: Colors.r1, borderWidth: 1, borderTopRightRadius: 20, borderBottomRightRadius: 20,
-                                    justifyContent: "center", alignItems: "center", backgroundColor: activeIndex ? Colors.red : Colors.white,
-                                    paddingLeft:20,paddingRight:35,paddingTop:10,paddingBottom:10
-                                }} >
-                                <Text style={{ color: activeIndex ? Colors.white : Colors.red }}>出售</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={{ backgroundColor: Colors.bgColor,}}>
-                            <RefreshFlatList
-                                ref={refList => this.refList = refList}
-                                renderItem={(items) => this._getItem(items)}
-                                onRefreshs={() => this._refreshData()}
-                                onLoadData={()=>this._onLoadData()}
-                                isDownLoad = {true}
-                                defauValue={0}
-                            />
-                        </View>
-                    </View>
-                </ScrollView>
                 <Modal
                     animationType="fade"
                     transparent={true}
@@ -518,11 +474,14 @@ export default class TradeHome extends BaseComponent {
         this.setState({ echartsType: i })
         this.getEchartsData(i)
     }
+    indedd = 1
     //购买 出售 订单
     selectIndex(index) {
         this.setState({ activeIndex: index })
         this.activeIndex = index;
         this._refreshData()
+        this.indedd += 1
+        alert(this.indedd)
     }
 
     /**
@@ -559,7 +518,7 @@ export default class TradeHome extends BaseComponent {
 
                 <View style={{ flexDirection: 'column', justifyContent: "center", alignItems:"flex-end",marginLeft: 10, marginRight: 10 }}>
                     <Text
-                        style={{ color: Colors.blue, fontSize: 16, textAlign: "right" }}>￥ {data.item.dprice}</Text>
+                        style={{ color: Colors.blue, fontSize: 16, textAlign: "right" }}>{data.item.dprice}</Text>
                     <Text
                         onPress={()=>{
                             this.data = data
@@ -605,7 +564,6 @@ export default class TradeHome extends BaseComponent {
     //刷新数据
     _refreshData() {
         //this.refList.refreshStar()
-        this.isLoading = true
         this.pageIndex = 1;
         this.getData(true)
     }
@@ -624,18 +582,13 @@ export default class TradeHome extends BaseComponent {
         HttpUtils.getData(this.url)
             .then(result => {
                 if (result.code === 1) {
-                   //  alert(JSON.stringify(result.data))
+                     //alert(JSON.stringify(result.data))
                     if (isRefesh) {
                         this.refList.setData(result.data)
                         if (result.data.length < 1) {
                             DialogUtils.showToast("暂无记录")
                         }
                     } else {
-                        if (result.data.length < 1) {
-                            this.isLoading = false
-                        }else {
-                            this.isLoading = true
-                        }
                         this.refList.addData(result.data)
                     }
                     this.pageIndex += 1

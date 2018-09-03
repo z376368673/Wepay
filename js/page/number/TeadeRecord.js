@@ -123,7 +123,7 @@ export default class TeadeRecord extends BaseComponent {
                         color: Colors.text3,
                         flex: 1,
                         textAlign: "center"
-                    }}>{data.item.num+"\n"}{cname}</Text>
+                    }}>{data.item.num+"\n"}</Text>
                 </View>
                 <View style={{flexDirection: "row", alignItems: "center", width: width / 5}}>
                     <Text style={{fontSize: 14, color: Colors.text3, flex: 1, textAlign: "center"}}>{data.item.tprice}</Text>
