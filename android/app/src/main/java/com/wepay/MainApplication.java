@@ -3,6 +3,7 @@ package com.wepay;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.dylanvann.fastimage.FastImageViewPackage;
 import com.lwansbrough.RCTCamera.RCTCameraPackage;
 import com.reactlibrary.RNSyanImagePickerPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
@@ -37,6 +38,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new FastImageViewPackage(),
             new RCTCameraPackage(),
             new VectorIconsPackage(),
             new RNSyanImagePickerPackage(),
