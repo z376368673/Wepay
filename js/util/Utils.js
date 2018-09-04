@@ -167,7 +167,9 @@ export default class Utils {
      */
     static formatNumbers(s,num) {
         var value = String(s)
-        value = value.substring(0, value.indexOf(".") + num + 1)
+        if (value.indexOf(".")>=0){
+            value = value.substring(0, value.indexOf(".") + num + 1)
+        }
         return value
     }
 

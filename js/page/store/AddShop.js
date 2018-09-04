@@ -164,6 +164,7 @@ export default class AddShop extends BaseComponent {
                                 placeholderTextColor={'#999'}
                                 underlineColorAndroid='transparent'
                                 keyboardType={"default"}
+                                value={this.state.shopName}
                                 maxLength={12}
                                 onChangeText={(text) => this.setState({ shopName: text })} />
                         </View>

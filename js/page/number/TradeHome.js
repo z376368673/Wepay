@@ -164,7 +164,11 @@ export default class TradeHome extends BaseComponent {
         var options = {
             //点击某一个点的数据的时候，显示出悬浮窗
             tooltip: {
-                trigger: 'axis'
+                show: true,
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
             },
             xAxis: {
                 type: 'category',
