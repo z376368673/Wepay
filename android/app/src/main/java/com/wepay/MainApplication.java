@@ -15,6 +15,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import java.util.Arrays;
 import java.util.List;
@@ -61,6 +62,8 @@ public class MainApplication extends Application implements ReactApplication {
 
   @Override
   public void onCreate() {
+    //腾讯的日志收集器  和SDKInitializer 冲突了 错误 build.gradle 中的 ndk 代码
+    CrashReport.initCrashReport(getApplicationContext(), "d03e0bc48b", true);
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
   }

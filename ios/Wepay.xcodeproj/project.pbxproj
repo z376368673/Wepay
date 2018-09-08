@@ -14,10 +14,10 @@
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		00E356F31AD99517003FC87E /* WepayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* WepayTests.m */; };
 		046FA61021180F1100D770A9 /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 046FA5EC21180E3B00D770A9 /* libRCTCameraRoll.a */; };
+		04829FD62143B2DE008ACA40 /* libFastImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 04829FD52143B2D3008ACA40 /* libFastImage.a */; };
 		04A05FBE2122848800C46C6E /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 04A05FBC2122848800C46C6E /* assets */; };
 		04A05FBF2122848800C46C6E /* index.ios.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 04A05FBD2122848800C46C6E /* index.ios.jsbundle */; };
 		04C3B6F820F347DF00896097 /* TZImagePickerController.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 04C3B6D120F347DF00896097 /* TZImagePickerController.bundle */; };
-		04D9FEF32103359F00742A2C /* Images-2.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04D9FEF22103359F00742A2C /* Images-2.xcassets */; };
 		04E048C1210478AF0005E3BC /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		0B0A8A2DF5E84A8ABF0FF4A0 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C20EC66ECC9145CEB5D2EFA3 /* Octicons.ttf */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
@@ -148,6 +148,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 58B5115D1A9E6B3D00147676;
 			remoteInfo = RCTCameraRoll;
+		};
+		04829FD42143B2D3008ACA40 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 04829FCF2143B2D3008ACA40 /* FastImage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A287971D1DE0C0A60081BDFA;
+			remoteInfo = FastImage;
 		};
 		04C7BDC220EF842400E649D7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -406,11 +413,11 @@
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* WepayTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WepayTests.m; sourceTree = "<group>"; };
 		046FA5DE21180E3A00D770A9 /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
+		04829FCF2143B2D3008ACA40 /* FastImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FastImage.xcodeproj; path = "../node_modules/react-native-fast-image/ios/FastImage.xcodeproj"; sourceTree = "<group>"; };
 		04A05FBC2122848800C46C6E /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = bundle/assets; sourceTree = "<group>"; };
 		04A05FBD2122848800C46C6E /* index.ios.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = index.ios.jsbundle; path = bundle/index.ios.jsbundle; sourceTree = "<group>"; };
 		04A05FC02122E4EC00C46C6E /* Wepay.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Wepay.entitlements; path = Wepay/Wepay.entitlements; sourceTree = "<group>"; };
 		04C3B6D120F347DF00896097 /* TZImagePickerController.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = TZImagePickerController.bundle; path = "../node_modules/react-native-syan-image-picker/ios/TZImagePickerController/TZImagePickerController.bundle"; sourceTree = "<group>"; };
-		04D9FEF22103359F00742A2C /* Images-2.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = "Images-2.xcassets"; path = "Wepay/Images-2.xcassets"; sourceTree = "<group>"; };
 		074669B514AD441E8F44EE19 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
@@ -472,6 +479,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04829FD62143B2DE008ACA40 /* libFastImage.a in Frameworks */,
 				046FA61021180F1100D770A9 /* libRCTCameraRoll.a in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				04E048C1210478AF0005E3BC /* libRCTAnimation.a in Frameworks */,
@@ -622,6 +630,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		04829FD02143B2D3008ACA40 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				04829FD52143B2D3008ACA40 /* libFastImage.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		04C7BD9920EF842000E649D7 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
@@ -685,7 +701,6 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
-				04D9FEF22103359F00742A2C /* Images-2.xcassets */,
 			);
 			name = Wepay;
 			sourceTree = "<group>";
@@ -745,6 +760,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				04829FCF2143B2D3008ACA40 /* FastImage.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -971,6 +987,10 @@
 					ProjectRef = 5363B015C38943CA8ECB4F08 /* CodePush.xcodeproj */;
 				},
 				{
+					ProductGroup = 04829FD02143B2D3008ACA40 /* Products */;
+					ProjectRef = 04829FCF2143B2D3008ACA40 /* FastImage.xcodeproj */;
+				},
+				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
 					ProjectRef = 00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */;
 				},
@@ -1129,6 +1149,13 @@
 			fileType = archive.ar;
 			path = libRCTCameraRoll.a;
 			remoteRef = 046FA5EB21180E3B00D770A9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		04829FD52143B2D3008ACA40 /* libFastImage.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFastImage.a;
+			remoteRef = 04829FD42143B2D3008ACA40 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		04C7BDC320EF842400E649D7 /* libRNSyanImagePicker.a */ = {
@@ -1386,7 +1413,6 @@
 				04C3B6F820F347DF00896097 /* TZImagePickerController.bundle in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				04D9FEF32103359F00742A2C /* Images-2.xcassets in Resources */,
 				FAA2BD9C77F441CCBF484426 /* Entypo.ttf in Resources */,
 				61119AFC457A4D27A5CAA8C8 /* EvilIcons.ttf in Resources */,
 				9B6EF25A8EFB40D7964D877F /* Feather.ttf in Resources */,

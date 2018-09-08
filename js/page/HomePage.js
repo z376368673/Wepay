@@ -8,6 +8,7 @@ import {
     TouchableOpacity,
     RefreshControl,
     StatusBar,
+    Platform
 } from 'react-native';
 import BaseComponent, { BaseStyles, integralRelease, upDataUserInfo } from "./BaseComponent";
 import ViewUtils from "../util/ViewUtils";
@@ -21,6 +22,7 @@ import UserInfo from '../model/UserInfo';
 import SplashScreen from "react-native-splash-screen"
 import { observer, inject } from 'mobx-react';
 import gcj02towgs84 from "../util/location"
+import codePush from "react-native-code-push";
 const screen_width = Utils.getWidth();
 
 @inject('AppStore') @observer
@@ -37,6 +39,7 @@ export default class HomePage extends BaseComponent {
         SplashScreen.hide();
         this.getBanner();
         this.showRedPacket();
+
     }
 
     setImgToBanner(bannerArray) {

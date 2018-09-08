@@ -7,7 +7,7 @@ import {
     Text,
     View,
     ActivityIndicator,
-    TextInput,
+    TextInput, Platform,
 } from 'react-native';
 import {Overlay, Toast, ActionSheet, Theme, Label, Button} from "teaset";
 import codePush from "react-native-code-push"
@@ -283,7 +283,7 @@ export default class DialogUtils {
             .then((update) => {
                 if (!update) {
                     //热更新后添加这个代码 不然貌似热更新会自动回滚
-                    codePush.sync()
+                    Platform.OS ==="ios"? {}:codePush.sync()
                     DialogUtils.showToast("已是最新版本")
                 } else {
                     codePush.sync({
