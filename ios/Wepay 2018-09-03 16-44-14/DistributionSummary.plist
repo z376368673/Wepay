@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Wepay.ipa</key>
+	<array>
+		<dict>
+			<key>architectures</key>
+			<array>
+				<string>armv7</string>
+				<string>arm64</string>
+			</array>
+			<key>certificate</key>
+			<dict>
+				<key>SHA1</key>
+				<string>9C80BB371416EB8EE2D06A804D16FBEC82FD17FB</string>
+				<key>dateExpires</key>
+				<string>2019/8/9</string>
+				<key>type</key>
+				<string>iOS Distribution</string>
+			</dict>
+			<key>entitlements</key>
+			<dict>
+				<key>application-identifier</key>
+				<string>8DKJELWVCF.org.reactjs.native.Wepay</string>
+				<key>com.apple.developer.team-identifier</key>
+				<string>8DKJELWVCF</string>
+				<key>get-task-allow</key>
+				<false/>
+				<key>keychain-access-groups</key>
+				<array>
+					<string>8DKJELWVCF.org.reactjs.native.Wepay</string>
+				</array>
+			</dict>
+			<key>name</key>
+			<string>Wepay.app</string>
+			<key>profile</key>
+			<dict>
+				<key>UUID</key>
+				<string>64115a3d-d266-495f-9ff8-c0612c622f3f</string>
+				<key>name</key>
+				<string>iOS Team Ad Hoc Provisioning Profile: org.reactjs.native.Wepay</string>
+			</dict>
+			<key>team</key>
+			<dict>
+				<key>id</key>
+				<string>8DKJELWVCF</string>
+				<key>name</key>
+				<string>jian yang</string>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>
