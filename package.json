@@ -9,7 +9,8 @@
     "test": "jest",
     "bundle-ios": "node node_modules/react-native/local-cli/cli.js bundle --entry-file index.js --platform ios --dev false --bundle-output ./ios/bundle/index.ios.jsbundle --assets-dest ./ios/bundle",
     "bundle-android": "cd android && ./gradlew clean && ./gradlew assembleRelease",
-    "release-android": "react-native run-android --variant=release"
+    "release-android": "react-native run-android --variant=release",
+    "iosx": "react-native run-ios --simulator 'iPhone X'"
   },
   "dependencies": {
     "GitHubTrending": "^2.0.0",
