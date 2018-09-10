@@ -107,10 +107,10 @@ android {
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 24
-        versionName "1.2.5"
+        versionName "1.2.6"
 
         ndk {
-            abiFilters "armeabi-v7a", "x86"
+            abiFilters "armeabi-v7a", "x86",'armeabi'
         }
         //图片选择器添加的
         vectorDrawables.useSupportLibrary = true
@@ -126,6 +126,13 @@ android {
 
     signingConfigs {
         release {
+            storeFile file("Rn_wepay.keystore")
+            storePassword "wepaywepay"
+            keyAlias "wepay"
+            keyPassword "wepaywepay"
+        }
+
+        debug {
             storeFile file("Rn_wepay.keystore")
             storePassword "wepaywepay"
             keyAlias "wepay"
@@ -162,6 +169,12 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-fast-image')
+
+    compile 'com.facebook.fresco:animated-gif:0.11.0'  //需要GIF动画支持添加本行语句
+    compile 'com.facebook.fresco:webpsupport:0.11.0'  //需要WebP格式支持添加本行语句
+    compile 'com.facebook.fresco:animated-webp:0.11.0'  //需要WebP动画支持添加本行语句
+
     implementation project(':react-native-camera')
     implementation project(':react-native-vector-icons')
     implementation project(':react-native-splash-screen')
@@ -169,8 +182,11 @@ dependencies {
     implementation project(':react-native-syan-image-picker')
     implementation project(':react-native-code-push')
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation "com.android.support:appcompat-v7:26.0.2"
+   // implementation "com.android.support:appcompat-v7:26.0.2"
     implementation "com.facebook.react:react-native:+"  // From node_modules
+
+    compile 'com.tencent.bugly:crashreport:latest.release' //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
+    compile 'com.tencent.bugly:nativecrashreport:latest.release' //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
 
 }
 

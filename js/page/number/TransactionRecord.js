@@ -61,9 +61,7 @@ export default class TransactionRecord extends BaseComponent {
     }
 
     render() {
-        const { navigation } = this.props;
-        let { justifyItem, activeIndex } = this.state;
-        let barItems = this.barItems;
+        let { activeIndex } = this.state;
         return (
             <View style={BaseStyles.container_column}>
                 <NavigationBar
@@ -93,11 +91,11 @@ export default class TransactionRecord extends BaseComponent {
     }
 
     renderItem(data) {
-        return <View style={{ padding: 15,marginTop:1 }}>
-            <Text style={{ fontSize: 15, color: Colors.text3 }}>转出 5000.0 Wepay</Text>
-            <View style={{ flexDirection: "row" }}>
-                <Text style={{ fontSize: 14, color: Colors.text6, flex: 1 }}>转出 5000.0 Wepay</Text>
-                <Text style={{ fontSize: 15, color: Colors.r1 }}>与 xxxx 完成交易</Text>
+        return <View style={{ padding: 15,marginTop:1 ,backgroundColor:Colors.white}}>
+            <Text style={{ fontSize: 15, color: Colors.text3 }}>{this.state.activeIndex===0?"转出":"转入"} {data.item.getNums} Wepay</Text>
+            <View style={{ flexDirection: "row",marginTop:10 }}>
+                <Text style={{ fontSize: 14, color: Colors.text6, flex: 1 }}>{Utils.formatDateTime(data.item.getTime*1000)}</Text>
+                <Text style={{ fontSize: 15, color: Colors.r1 }}>与 {data.item.userName} 完成交易</Text>
             </View>
         </View>
     }
@@ -119,10 +117,10 @@ export default class TransactionRecord extends BaseComponent {
      * @param {*} pageIndex 
      */
     getData(isRefesh) {
-        if (this.activeIndex === 0) { //卖出 未选择付款人
-            this.url = BaseUrl.getOutUndoneUnselectedUrl(this.userInfo.sessionId, this.pageIndex)
-        } else if (this.activeIndex === 1) {//卖出 已选择付款人
-            this.url = BaseUrl.getOutUndoneSelectedUrl(this.userInfo.sessionId, this.pageIndex)
+        if (this.activeIndex === 0) { //转出
+            this.url = BaseUrl.tradingRecord(this.userInfo.sessionId, this.pageIndex,this.activeIndex +1)
+        } else if (this.activeIndex === 1) {//转入
+            this.url = BaseUrl.tradingRecord(this.userInfo.sessionId, this.pageIndex,this.activeIndex +1)
         }
 
         HttpUtils.getData(this.url)
@@ -139,7 +137,7 @@ export default class TransactionRecord extends BaseComponent {
                     }
                     this.pageIndex += 1
 
-                } else if (result.code === 2) {
+                } else if (result.code === 2||result.code === 4) {
                     DialogUtils.showToast(result.msg)
                     this.goLogin(this.props.navigation)
                 } else {

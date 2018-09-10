@@ -54,6 +54,15 @@ import TransactionRecord from "../page/number/TransactionRecord"
 import TranWepay from "../page/number/TranWepay"
 import ZhongChou from "../page/number/ZhongChou"
 import ZhongChouRecord from "../page/number/ZhongChouRecord"
+import TradeHome from "../page/number/TradeHome"
+import TradeHome1 from "../page/number/TradeHome1"
+
+import EchartsDemo from "../page/number/EchartsDemo"
+import CreateBSOrder from "../page/number/CreateBSOrder"
+import Wbao from "../page/number/Wbao"
+import TranWB from "../page/number/TranWB"
+import OrderRecord from "../page/number/OrderRecord"
+import TeadeRecord from "../page/number/TeadeRecord"
 
 
 
@@ -85,6 +94,34 @@ export default AppNavigator = createStackNavigator({
     ZhongChouRecord: {//众筹项目记录
         screen: ZhongChouRecord
     },
+    Wbao: {//W宝
+        screen: Wbao
+    },
+    TranWB: {//W宝 转出 转入 锁定
+        screen: TranWB
+    },
+    
+    TradeHome: {//交易
+        screen: TradeHome
+    },
+    TradeHome1: {//交易
+        screen: TradeHome1
+    },
+    TeadeRecord: {//交易记录
+        screen: TeadeRecord
+    },
+
+    CreateBSOrder: {//发布购买卖出订单
+        screen: CreateBSOrder
+    },
+    OrderRecord: {//订单记录
+        screen: OrderRecord
+    },
+
+    EchartsDemo: {//统计图
+        screen: EchartsDemo
+    },
+
     SettingView: {//设置
         screen: SettingView
     },
@@ -232,8 +269,10 @@ export default AppNavigator = createStackNavigator({
     },
     
 }, {
-      initialRouteName: 'LoginPage', // 默认显示界面
-    //initialRouteName: 'TranWepay', // 默认显示界面
+     initialRouteName: 'LoginPage', // 默认显示界面
+     //initialRouteName: 'TradeHome', // 默认显示界面
+    //initialRouteName: 'EchartsDemo', // 默认显示界面
+
     mode: 'card',
     navigationOptions: {
         header: null,

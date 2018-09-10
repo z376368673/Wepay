@@ -9,7 +9,7 @@ import Utils from '../../util/Utils';
 import DialogUtils from '../../util/DialogUtils';
 import BaseUrl from '../../util/BaseUrl';
 import HttpUtils from '../../util/HttpUtils';
-
+import FastImage from 'react-native-fast-image'
 /**
  * 商品详情
  */
@@ -34,6 +34,10 @@ export default class ShopDetails extends BaseComponent {
         this.shopId =  this.props.navigation.state.params.shopId
         this.getShopDetail(this.shopId)
     }
+
+    componentWillUnmount() {
+           // this.state = null;
+    }
     /**
      * 获取商品信息 by id 
      */
@@ -43,11 +47,12 @@ export default class ShopDetails extends BaseComponent {
             .then(result => {
                 if (result.code === 1) {
                     //alert(JSON.stringify(result.data))
+                    //console.warn(JSON.stringify(result.data))
                     this.setState({
                         data: result.data,
                         coverPlan: { uri: this.getImgUrl(result.data.coverPlan) },
                     })
-                } else if (result.code === 2) {
+                } else if (result.code === 2||result.code === 4) {
                     DialogUtils.showToast(result.msg)
                     this.goLogin(this.props.navigation)
                 } else {
@@ -56,7 +61,36 @@ export default class ShopDetails extends BaseComponent {
             })
 
     }
+    /**
+     * 加载失败
+     * @param {*} error
+     */
+    handleImageErrored(error){
+        alert("加载失败："+JSON.stringify(error.error))
+        console.warn(error)
+    }
 
+    /**
+     * 加载结束
+     */
+    onLoadStart () {
+        DialogUtils.showLoading("图片加载中")
+        // if (undefined !== this.backgroundColorAnimated) this.backgroundColorAnimated.stop()
+    }
+    /**
+     * 加载结束
+     */
+    onLoadEnd () {
+        DialogUtils.hideLoading()
+        // if (undefined !== this.backgroundColorAnimated) this.backgroundColorAnimated.stop()
+    }
+
+    /**
+     * 加载成功
+     */
+    handleImageLoaded () {
+        alert("加载成功：")
+    }
     render() {
         return (
             <View style={BaseStyles.container_column}>
@@ -69,12 +103,18 @@ export default class ShopDetails extends BaseComponent {
                         <TouchableOpacity 
                           activeOpacity={1}
                          >
-                            <Image
+                            <FastImage
                                 style={{
                                     flex: 1, width: window_width, height: window_height / 3 * 1.7,
                                     backgroundColor: "#fff", resizeMode: "cover"
                                 }}
                                 source={this.state.coverPlan}
+                                resizeMode={FastImage.resizeMode.cover}
+
+                                // onLoadStart={this.onLoadStart.bind(this)}
+                                // onLoadEnd={this.onLoadEnd.bind(this)}
+                                // onLoad={this.handleImageLoaded.bind(this)}
+                                // onError={this.handleImageErrored.bind(this)}
                             /></TouchableOpacity>
                         <View style={{ flexDirection: 'row', padding: 10, backgroundColor: "#fff" }}>
                             <Text

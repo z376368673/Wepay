@@ -70,7 +70,7 @@ export default class CreatOrder extends BaseComponent {
                     DialogUtils.showMsg("购买成功")
                     upDataUserInfo(this.props.AppStore)
                     //this.props.navigation.goBack()
-                }  else if(result.code === 2){
+                }  else if(result.code === 2||result.code === 4){
                     DialogUtils.showToast(result.msg)
                     this.goLogin(this.props.navigation)
                 }else {
@@ -117,7 +117,8 @@ export default class CreatOrder extends BaseComponent {
                     shopImage: {uri: this.getImgUrl(this.info.imgHead)},
                     shopData:result.data
                 })
-            }else if (result.code === 2) {
+            }else if (result.code === 2||result.code === 4) {
+                DialogUtils.showToast(result.msg)
                 this.goLogin(this.props.navigation)
             }
         })

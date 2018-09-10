@@ -11,13 +11,12 @@ export default class HttpUtils {
             fetch(url)
                 .then(response => response.json())
                 .then(result => {
-                    console.log(JSON.stringify(result))
+                   // console.log(JSON.stringify(result))
                     resolve(result);
                 })
                 .catch(error => {
-                   reject(error);
                    this.errorMsg(error)
-                   DialogUtils.hideLoading()
+                   reject(error);
                 })
         })
     }
@@ -27,8 +26,9 @@ export default class HttpUtils {
      * @param {*} error 
      */
     static errorMsg(error ){
+        DialogUtils.hideLoading()
         //console.error(error.message)
-        console.warn(error.message)
+       // console.warn(error.message)
         var message  = JSON.stringify(error.message)
         if(message.startsWith("Network")&&message.endsWith("failed")){
             DialogUtils.showToast("网络异常，请检查网络")

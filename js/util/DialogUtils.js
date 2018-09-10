@@ -7,9 +7,14 @@ import {
     Text,
     View,
     ActivityIndicator,
+    TextInput, Platform,
 } from 'react-native';
-import { Overlay, Toast, ActionSheet } from "teaset";
+import {Overlay, Toast, ActionSheet, Theme, Label, Button} from "teaset";
 import codePush from "react-native-code-push"
+import Colors from "./Colors";
+import Utils from "./Utils";
+import {mainColor} from "../page/BaseComponent";
+import PassWordInput,{PayInfoView} from "../common/PassNumInput";
 
 export default class DialogUtils {
 
@@ -62,6 +67,8 @@ export default class DialogUtils {
         );
         Overlay.show(overlayView);
     }
+
+
 
 
     /**
@@ -216,6 +223,7 @@ export default class DialogUtils {
                 style={{ alignItems: 'center', justifyContent: 'center', padding: 40 }}
                 type={"zoomIn"}//动画效果
                 modal={true}//点击任意区域消失 
+                overlayOpacity={0}
                 ref={v => this.MsgView = v}
             >
                 <View style={{
@@ -275,7 +283,7 @@ export default class DialogUtils {
             .then((update) => {
                 if (!update) {
                     //热更新后添加这个代码 不然貌似热更新会自动回滚
-                    codePush.sync()
+                    Platform.OS ==="ios"? {}:codePush.sync()
                     DialogUtils.showToast("已是最新版本")
                 } else {
                     codePush.sync({
@@ -285,7 +293,7 @@ export default class DialogUtils {
                             //要显示的更新通知的标题. Defaults to “Update available”.
                             title: '更新',
                             //强制更新时，更新通知. Defaults to “An update is available that must be installed.”.
-                            mandatoryUpdateMessage: '发现新的更新，请您安装最新版本',
+                            mandatoryUpdateMessage: '发现新的更新，请您安装最新版本', 
                             //强制更新的按钮文字. 默认 to “Continue”.
                             mandatoryContinueButtonLabel: '更新',
                             //非强制更新时，取消按钮文字. Defaults to “Ignore”.
@@ -293,7 +301,7 @@ export default class DialogUtils {
                             //非强制更新时，确认文字. Defaults to “Install”.
                             optionalInstallButtonLabel: "安装",
                             //更新说明的前缀。 默认是” Description: “
-                            // descriptionPrefix: '更新内容：\n', 
+                           // descriptionPrefix: '更新内容：\n', 
                             descriptionPrefix: '  \n',
                             //非强制更新时，更新通知. Defaults to “An update is available. Would you like to install it?”.
                             optionalUpdateMessage: "发现新的更新，您是否要安装最新版本"
@@ -307,8 +315,9 @@ export default class DialogUtils {
                     });
                 }
             });
-
     }
+
+
 
 
 }

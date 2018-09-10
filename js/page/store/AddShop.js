@@ -9,6 +9,7 @@ import Utils from '../../util/Utils';
 import DialogUtils from '../../util/DialogUtils';
 import HttpUtils from '../../util/HttpUtils';
 import BaseUrl from '../../util/BaseUrl';
+import EditText from "../../common/EditText";
 
 /**
  * 添加商品 / 编辑修改商品
@@ -156,13 +157,14 @@ export default class AddShop extends BaseComponent {
                         <View style={styles.itemView}>
                             <Text style={styles.itemText}>
                                 商品名称</Text>
-                            <TextInput
+                            <EditText
                                 style={styles.itemTextInput}
                                 placeholder={'请输入商品名称'}
                                 defaultValue={this.state.shopName}
                                 placeholderTextColor={'#999'}
                                 underlineColorAndroid='transparent'
                                 keyboardType={"default"}
+                                value={this.state.shopName}
                                 maxLength={12}
                                 onChangeText={(text) => this.setState({ shopName: text })} />
                         </View>
@@ -186,8 +188,7 @@ export default class AddShop extends BaseComponent {
                                 元</Text>
                         </View>
                         <View style={styles.itemView}>
-                            <Text style={styles.itemText}>
-                                库存数量</Text>
+                            <Text style={styles.itemText}>库存数量</Text>
                             <TextInput
                                 style={[styles.itemTextInput,{width:60}]}
                                 placeholder={'请输入库存数量'}
@@ -198,52 +199,31 @@ export default class AddShop extends BaseComponent {
                                 value={this.state.shopNum+""}
                                 onChangeText={(text) => {
                                     const newText = text.replace(/[^\d]+/, '0')
-                                    this.setState({ shopNum: newText })}} 
-                                />
-                                 <Text style={[styles.itemText,{marginLeft:10}]}>
-                                件</Text>
+                                    this.setState({ shopNum: newText })}} />
+                                 <Text style={[styles.itemText,{marginLeft:10}]}>件</Text>
                         </View>
                         <View style={{ flexDirection: 'row', padding: 10}}>
-                            <Text style={{
-                                alignSelf: "center",
-                                color: '#333',
-                                fontSize: 14,
-                            }}>*请点击下图上传商品图片</Text>
+                            <Text style={{ alignSelf: "center", color: '#333',fontSize: 14,}}> *请点击下图上传商品图片</Text>
                         </View>
                         <View style={[styles.itemView,{flex:1}]}>
                         <TouchableOpacity
-                         onPress={() => this.handleAsyncSelectPhoto(false, false)}
-                        ><Image
+                         onPress={() => this.handleAsyncSelectPhoto(false, false)}><Image
                          style={{flex:1,width:240,height:170,backgroundColor:"#fff"}}
-                         source={this.state.shopImage}
-                        /></TouchableOpacity>
+                         source={this.state.shopImage}/></TouchableOpacity>
                         </View>
                         <TouchableOpacity
                             activeOpacity={0.8}
                             style={{
-                                height: 45,
-                                marginTop: 30,
-                                marginLeft: 15,
-                                marginRight: 15,
-                                marginBottom: 50,
-                                borderRadius: 8,
-                                justifyContent: 'center',
-                                alignItems: 'center',
+                                height: 45, marginTop: 30,marginLeft: 15,
+                                marginRight: 15, marginBottom: 50, borderRadius: 8,
+                                justifyContent: 'center', alignItems: 'center',
                                 backgroundColor: mainColor,
-                            }}
-                            onPress={() => this.onClicks("add")}
-                            >
-                            <Text style={{
-                                alignSelf: "center",
-                                color: '#FFF',
-                                fontSize: 20,
-                            }}>确认{this.type==="add"?"添加":"修改"}</Text>
+                            }} onPress={() => this.onClicks("add")}>
+                            <Text style={{alignSelf: "center",color: '#FFF', fontSize: 20,}}>确认{this.type==="add"?"添加":"修改"}</Text>
                         </TouchableOpacity>
-
                     </View>
                 </ScrollView>
             </View>
-
         );
     }
 }

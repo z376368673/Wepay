@@ -64,7 +64,7 @@ export default class BankCardList extends BaseComponent {
                 //alert(JSON.stringify(result))
                 if(result.code===1){
                     this.refList.setData(result.data)
-                }else if (result.code === 2) {
+                }else if (result.code === 2||result.code === 4) {
                     DialogUtils.showToast(result.msg)
                     this.goLogin(this.props.navigation)
                 }else{

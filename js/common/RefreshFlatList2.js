@@ -86,6 +86,7 @@ export default class RefreshFlatList extends Component {
                 data={this.state.dataArray}
                 keyExtractor={(item, index) => index.toString()}
                 //  renderItem={(items) => this.props.renderRow(items)}
+
                 refreshControl={
                     <RefreshControl
                         //Android下只有一个 colors 是转圈的颜色

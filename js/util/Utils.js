@@ -107,8 +107,75 @@ export default class Utils {
         obj = obj.replace(/\.{2,}/g, ".");
         //保证.只出现一次，而不能出现两次以上 
         obj = obj.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+         //newText =  new Number(newText).toFixed(2)
+        if(obj.indexOf(".")>=0&&obj.length-obj.indexOf(".")>2){
+            obj = new Number(obj).toFixed(2)
+        }
         return obj;
     }
+    static chkCurrency(obj,num) { //方法1
+        obj = obj.replace(/[^\d.]/g, "");
+        //必须保证第一位为数字而不是. 
+        obj = obj.replace(/^\./g, "");
+        //保证只有出现一个.而没有多个. 
+        obj = obj.replace(/\.{2,}/g, ".");
+        //保证.只出现一次，而不能出现两次以上 
+        obj = obj.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+        if(obj.indexOf(".")>=0&&obj.length-obj.indexOf(".")>num){
+            obj = new Number(obj).toFixed(num)
+        }
+        return obj;
+    }
+    /**
+     * 格式化小数点保留位数
+     * @param {*} str  数字
+     * @param {*} num  保留小数位
+     */
+    static formatNumBer(str,num){
+       return new Number(str).toFixed(num)?new Number(str).toFixed(num):0
+    }
+    /**
+     * 检测是否是数字 包含小数点
+     * @param {*} str 
+     * @param {*} num 小数位
+     */
+    static regNumber(str){
+        let regPrice =/^[0-9]+.?[0-9]*$/
+        if (regPrice.test(str)) {
+            return true
+        }
+        return false
+    }
+
+    /** 
+     * 检测是否是2位小数    比如 regNumber(0.21234) 返回 false    regNumber(0.24) 返回 true  
+     * @param {*} num 
+     */
+    static regPrice(num){
+        let regPrice = /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/
+        if (regPrice.test(num)) {
+            return true
+        }
+        return false
+    }
+
+    /**
+     * 截取小数点  num
+     * @param s
+     * @param num
+     * @returns {string}
+     */
+    static formatNumbers(s,num) {
+        var value = String(s)
+        if (value.indexOf(".")>=0){
+            value = value.substring(0, value.indexOf(".") + num + 1)
+        }
+        return value
+    }
+
+
+
+
     static formatDateTime(inputTime, symbol) {
         let sb = symbol ? symbol : '/'
         var date = new Date(inputTime);
@@ -125,6 +192,25 @@ export default class Utils {
         second = second < 10 ? ('0' + second) : second;
         return y + sb + m + sb + d + ' ' + h + ':' + minute + ':' + second;
     }
+
+
+    static formatDateGetHour(inputTime) {
+        let sb =  '/'
+        var date = new Date(inputTime);
+        var y = date.getFullYear();
+        var m = date.getMonth() + 1;
+        m = m < 10 ? ('0' + m) : m;
+        var d = date.getDate();
+        d = d < 10 ? ('0' + d) : d;
+        var h = date.getHours();
+        h = h < 10 ? ('0' + h) : h;
+        var minute = date.getMinutes();
+        var second = date.getSeconds();
+        minute = minute < 10 ? ('0' + minute) : minute;
+        second = second < 10 ? ('0' + second) : second;
+        return  h + ':' + minute
+    }
+
 
     /**
      *   获取省市区数据

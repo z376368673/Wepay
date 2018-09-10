@@ -7,7 +7,7 @@ import {
     TouchableOpacity,
     Image,
     Button,
-    ImageBackground,
+    ImageBackground, ScrollView, RefreshControl,
 } from 'react-native';
 import BaseComponent, { BaseStyles, mainColor, window_width } from "../BaseComponent";
 import NavigationBar from "../../common/NavigationBar";
@@ -22,9 +22,11 @@ export default class NumberHome extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
-            assetsNum: 0.00,//   wepay资产
+            isRefresh: false,
+            wepayPrice:"0.00",//当前价格
+            assetsNum: 0.00,//   拥有wepay资产
             purseAddress: "njadnahdnqjeio123qdhsuydy891209ejh1d",//   钱包地址
-
+            coinVos:[],  // 货币信息集合
         }
         this.userInfo = this.getUserInfo();
     }
@@ -33,37 +35,25 @@ export default class NumberHome extends BaseComponent {
         this._refreshData()
     }
 
-    //刷新数据
-    _refreshData() {
-        this.refList.refreshStar()
-        this.pageIndex = 1;
-        this.getData(true)
-    }
-    //加载更多数据
-    _onLoadData() {
-        this.getData(false)
-    }
-
     /**
     * 获取数据
     * @param {*} isRefesh  是否刷新
     * @param {*} pageIndex 
     */
-    getData(isRefesh) {
-        this.url = BaseUrl.getMyStoreShop(this.userInfo.sessionId, this.pageIndex)
+   _refreshData() {
+       this.setState({isRefresh:true})
+        this.url = BaseUrl.numberIndex(this.userInfo.sessionId)
         HttpUtils.getData(this.url)
             .then(result => {
+                this.setState({isRefresh:false})
                 if (result.code === 1) {
-                    if (isRefesh) {
-                        this.refList.setData(result.data)
-                        if (result.data.length < 1) {
-                            DialogUtils.showToast("暂无商品")
-                        }
-                    } else {
-                        this.refList.addData(result.data)
-                    }
-                    this.pageIndex += 1
-                } else if (result.code === 2) {
+                   this.setState({
+                     wepayPrice:result.data.currPrice,
+                     wepayNum:result.data.num,
+                     purseAddress:result.data.walletAddress
+                   })
+                   this.refList.setData(result.data.coinVos)
+                } else if (result.code === 2||result.code === 4) {
                     DialogUtils.showToast(result.msg)
                     this.goLogin(this.props.navigation)
                 } else {
@@ -79,35 +69,53 @@ export default class NumberHome extends BaseComponent {
                     title='数字资产'
                     navigation={this.props.navigation}
                     rightView={NavigationBar.getRightStyle_Text('交易记录', {
-                        fontSize: 16,
+                        fontSize: 15,
                         color: "#fff"
                     }, () => this.transactionRecord())}
                 />
-
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                            //Android下只有一个 colors 是转圈的颜色
+                            colors={['#d11', '#000']}
+                            //ios 下 可以设置标题，转圈颜色，标题颜色
+                            title={'Loading...'}
+                            tintColor={'#d11'}
+                            titleColor={'#d11'}
+                            //刷新状态 false:隐藏，true:显示
+                            refreshing={this.state.isRefresh}
+                            //刷新触发的后执行的方法
+                            onRefresh={() =>  this._refreshData()}
+                        />
+                    }
+                    //onScroll={this._onScroll.bind(this)}
+                    scrollEventThrottle={50}
+                >
+                    <View style={{ backgroundColor: Colors.bgColor }}>
                 {/* top布局 */}
                 <View style={[{ alignItems: 'center', justifyContent: 'space-around', padding: 10, backgroundColor: mainColor }]}>
                     <Image source={require("../../../res/images/logo-d.png")} style={{ height: 70, width: 70, resizeMode: "stretch" }} />
-                    <Text style={{ fontSize: 15, color: "#fff", marginTop: 8, marginBottom: 10 }}>当前价格:￥{18.123131}</Text>
+                    <Text style={{ fontSize: 15, color: "#fff", marginTop: 8, marginBottom: 10 }}>当前价格:￥{this.state.wepayPrice}</Text>
                 </View>
 
                 <View style={{ marginTop: 10, backgroundColor: Colors.white, paddingLeft: 10, paddingBottom: 10, paddingRight: 10 }}>
                     <View style={{ flexDirection: "row", alignItems: "center", marginTop: 10 }}>
                         <View style={{ backgroundColor: Colors.y1, width: 8, height: 8 }} />
-                        <Text style={{ color: Colors.text6, fontSize: 16, marginLeft: 5 }}>Wepay资产</Text>
-                        <Text style={{ color: Colors.text3, fontSize: 16, marginLeft: 10 }}>{this.state.assetsNum}</Text>
+                        <Text style={{ color: Colors.text6, fontSize: 15, marginLeft: 5 }}>Wepay资产</Text>
+                        <Text style={{ color: Colors.text3, fontSize: 15, marginLeft: 10 }}>{this.state.wepayNum}</Text>
                     </View>
                     <View style={{ flexDirection: "row", alignItems: "center", marginTop: 10 }}>
                         <View style={{ backgroundColor: Colors.r1, width: 8, height: 8 }} />
-                        <Text style={{ color: Colors.text6, fontSize: 16, marginLeft: 5 }}>钱包地址</Text>
+                        <Text style={{ color: Colors.text6, fontSize: 15, marginLeft: 5 }}>钱包地址</Text>
                     </View>
-                    <Text style={{ color: Colors.text3, fontSize: 16, marginTop: 5 }}>{this.state.purseAddress}</Text>
+                    <Text style={{ color: Colors.text3, fontSize: 14, marginTop: 5 }}>{this.state.purseAddress}</Text>
                     <View style={{ marginTop: 8, backgroundColor: Colors.gray, height: 0.5 }} />
                     <TouchableOpacity style={{ borderColor: Colors.red, borderRadius: 5, borderWidth: 0.5, height: 30, width: 80, justifyContent: "center", alignItems: "center", position: "absolute", right: 20, top: 30, }}
                         onPress={() => {
                             Clipboard.setString(this.state.purseAddress);
                             DialogUtils.showToast("已复制到剪贴板")
                         }}>
-                        <Text style={{ color: Colors.red, fontSize: 16 }}>复制地址</Text>
+                        <Text style={{ color: Colors.red, fontSize: 13 }}>复制地址</Text>
                     </TouchableOpacity>
 
                     <View style={{ flexDirection: "row", alignItems: "center", marginTop: 10, }}>
@@ -138,11 +146,12 @@ export default class NumberHome extends BaseComponent {
                 <View style={{ flex: 1, backgroundColor: "#f1f1f1", marginTop: 10, }}>
                     <RefreshFlatList
                         ref={refList => this.refList = refList}
-                        isDownLoad={true}
                         renderItem={(items) => this._getBuyOrSellItem(items)}
                         onRefreshs={() => this._refreshData()}
                     />
                 </View>
+               </View>
+             </ScrollView>
             </View>
         );
     }
@@ -153,21 +162,43 @@ export default class NumberHome extends BaseComponent {
      * @private
      */
     _getBuyOrSellItem(data) {
-
-        return <View style={{ padding: 10, backgroundColor: Colors.white }}>
-            <View style={{ flexDirection: "row" }}>
-                <View style={{ backgroundColor: Colors.y1, width: 8, height: 8 }} />
-                <Text style={{ color: Colors.text3, fontSize: 16, marginLeft: 5 }}>Wepay资产</Text>
+         let cid = data.item?data.item.cid:1
+         var name = "Wepay"
+         var color = Colors.y1
+         if(cid===2){
+            name = "比特币"
+            color = Colors.r1
+         }else if(cid===3){
+            name = "莱特币"
+            color = Colors.r2
+         }else if(cid===4){
+            name = "以太坊"
+            color = Colors.b1
+         }else if(cid===5){
+            name = "狗狗币"
+            color = Colors.z1
+         }else {
+            name = "Wepay"
+            color = Colors.y1
+         }
+        return <View style={{ padding: 10, backgroundColor: Colors.white,marginTop:1 }}>
+            <View style={{ flexDirection: "row",alignItems:"center" }}>
+                <View style={{ backgroundColor: color, width: 8, height: 8 }} />
+                <Text style={{ color: Colors.text3, fontSize: 16, marginLeft: 5 }}>{data.item.coinName}</Text>
             </View>
             <View style={{ flexDirection: "row",marginTop:5}}>
-                <Text style={{ color: Colors.text3, fontSize: 15, marginLeft: 5, flex: 1 }}>0.0000</Text>
-                <Text style={{ color: Colors.text3, fontSize: 15, marginLeft: 5, flex: 1 }}>18.3000</Text>
-                <TouchableOpacity style={{ flex: 1, justifyContent: "center", alignItems: "center", padding: 5, backgroundColor: Colors.y1 }}>
+                <Text style={{ color: Colors.text3, fontSize: 15, marginLeft: 5, flex: 1 }}>{data.item.num}</Text>
+                <Text style={{ color: Colors.text3, fontSize: 15, marginLeft: 5, flex: 1 }}>{data.item.coinPrice}</Text>
+                <TouchableOpacity
+                    onPress={()=>{
+                        this.props.navigation.navigate('TradeHome',{cid:cid})
+                    }}
+                    style={{ flex: 1, justifyContent: "center", alignItems: "center", padding: 5, backgroundColor: Colors.y1 }}>
                     <Text style={{ color: Colors.white, fontSize: 14, }}>余额交易</Text>
                 </TouchableOpacity>
             </View>
             <View style={{ flexDirection: "row" ,marginTop:5}}>
-                <Text style={{ color: Colors.text6, fontSize: 14, marginLeft: 5, flex: 1 }}>Wepay</Text>
+                <Text style={{ color: Colors.text6, fontSize: 14, marginLeft: 5, flex: 1 }}>{data.item.coinName}</Text>
                 <Text style={{ color: Colors.text6, fontSize: 14, marginLeft: 5, flex: 1 }}>当前价格</Text>
                 <TouchableOpacity style={{ flex: 1, justifyContent: "center", alignItems: "center", padding: 5, backgroundColor: Colors.mainColor }}>
                     <Text style={{ color: Colors.white, fontSize: 14, }}>现金交易</Text>
@@ -190,8 +221,10 @@ export default class NumberHome extends BaseComponent {
                 this.props.navigation.navigate('ZhongChou');
                 break;
             case 3://W宝
+            this.props.navigation.navigate('Wbao');
                 break;
             case 4://交易
+                this.props.navigation.navigate('TradeHome',{cid:1});
                 break;
         }
     }

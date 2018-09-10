@@ -13,6 +13,10 @@ import Utils from '../util/Utils';
 import BaseUrl from '../util/BaseUrl';
 import UserInfo from '../model/UserInfo';
 import DialogUtils from '../util/DialogUtils';
+import FastImage from 'react-native-fast-image'
+
+
+
 //订单公用类（相当于Fragment）
 const window_w = Utils.getWidth();
 export const KEYS = [""]
@@ -85,7 +89,7 @@ export default class StoreCommon extends BaseComponent {
                         this.refList.addData(result.data)
                     }
                     this.pageIndex += 1
-                } else if (result.code === 2) {
+                } else if (result.code === 2||result.code === 4) {
                     DialogUtils.showToast(result.msg)
                     this.goLogin(this.props.navigation)
                 } else {
@@ -135,9 +139,11 @@ export default class StoreCommon extends BaseComponent {
                 activeOpacity={0.8}
                 style={{ width: window_w / 2 - 4, height: window_w / 2, }}
                 onPress={(item) => this.goDetails(data.item)}>
-                <Image
+                <FastImage
                     style={{ width: window_w / 2 - 4, height: window_w / 2, }}
-                    source={{ uri: this.getImgUrl(data.item.coverPlan) }} />
+                    source={{ uri: this.getImgUrl(data.item.coverPlan) }}
+                    resizeMode={FastImage.resizeMode.cover}
+                />
             </TouchableOpacity>
 
             <View style={{ flexDirection: 'column', padding: 5, height: 60, justifyContent: "center", alignContent: "center" }}>
@@ -200,7 +206,7 @@ export default class StoreCommon extends BaseComponent {
             <View style={{ flexDirection: 'column', flex: 1, marginLeft: 10, }}>
                 <Text
                     style={{ color: "#333333", fontSize: 18 }}>{data.item ? data.item.shopName : "name"}</Text>
-                <View style={{ flexDirection: "", marginTop: 5, flexDirection: "column" }}>
+                <View style={{ marginTop: 5, flexDirection: "column" }}>
                     <Text style={{
                         color: "#888",
                         fontSize: 15,

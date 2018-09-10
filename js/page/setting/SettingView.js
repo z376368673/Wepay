@@ -45,7 +45,7 @@ export default class SettingView extends BaseComponent {
                     this.setState({
                         newMessage: this.info.newMessage,
                     })
-                } else if (result.code === 2) {
+                } else if (result.code === 2||result.code === 4) {
                     DialogUtils.showToast(result.msg)
                     this.goLogin(this.props.navigation)
                 } else {
@@ -272,7 +272,7 @@ export default class SettingView extends BaseComponent {
                         <View style={[BaseStyles.container_center, { marginTop: 12 }]} />
                         {ViewUtils.getSettingItem1(require('../../../res/images/tousujianyi.png'), '投诉建议', false,
                             () => this.onClicks("Complaint"))}
-                        {ViewUtils.getSettingItem(require('../../../res/images/banben.png'), '版本检测', '1.2.5',
+                        {ViewUtils.getSettingItem(require('../../../res/images/banben.png'), '版本检测', '1.2.6',
                             () => this.onClicks("version"))}
                         {ViewUtils.getSettingItem1(require('../../../res/images/guanyu.png'), '关于', false,
                             () => this.onClicks("about"))}

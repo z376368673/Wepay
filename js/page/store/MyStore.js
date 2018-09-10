@@ -82,7 +82,7 @@ export default class MyStore extends BaseComponent {
                         this.refList.addData(result.data)
                     }
                     this.pageIndex += 1
-                } else if (result.code === 2) {
+                } else if (result.code === 2||result.code === 4) {
                     DialogUtils.showToast(result.msg)
                     this.goLogin(this.props.navigation)
                 } else {
@@ -139,15 +139,11 @@ export default class MyStore extends BaseComponent {
 
                 {/* 收益布局*/}
                 <View style={[{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-around',
-                    padding: 10,
-                    backgroundColor: mainColor
+                    flexDirection: 'row',alignItems: 'center',justifyContent: 'space-around',
+                    padding: 10, backgroundColor: mainColor
                 }]}>
                     <TouchableOpacity
-                        activeOpacity={0.8}
-                    >
+                        activeOpacity={0.8} >
                         <View style={{ flexDirection: 'column', alignItems: "center" }}>
                             <Text style={{ fontSize: 16, color: '#fff' }}>￥{this.state.todayEarnings}</Text>
                             <Text style={{ fontSize: 16, color: '#fff' }}>今日收益</Text>
@@ -161,6 +157,7 @@ export default class MyStore extends BaseComponent {
                             <Text style={{ fontSize: 16, color: '#fff' }}>总收益</Text>
                         </View></TouchableOpacity>
                 </View>
+
                 <View style={{ flex: 1, backgroundColor: "#f1f1f1" }}>
                     <RefreshFlatList
                         ref={refList => this.refList = refList}

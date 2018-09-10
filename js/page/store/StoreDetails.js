@@ -19,6 +19,7 @@ import ViewUtils from '../../util/ViewUtils';
 import RefreshFlatList from "../../common/RefreshFlatList"
 import DialogUtils from '../../util/DialogUtils';
 import ShopDetails from './ShopDetails';
+import FastImage from "react-native-fast-image";
 
 //商铺详情
 const window_w = Utils.getWidth();
@@ -60,7 +61,7 @@ export default class StroeDetails extends BaseComponent {
                         shopPhone: this.info.shopPhone,
                         imgHead: { uri: this.getImgUrl(this.info.imgHead) },
                     })
-                }else if (result.code === 2) {
+                }else if (result.code === 2||result.code === 4) {
                     DialogUtils.showToast(result.msg)
                     this.goLogin(this.props.navigation)
                 } else {
@@ -139,9 +140,11 @@ export default class StroeDetails extends BaseComponent {
                 activeOpacity={0.8}
                 style={{ width: window_w / 2 - 4, height: window_w / 2, }}
                 onPress={(item) => this.goDetails(data.item)}>
-                <Image
+                <FastImage
                     style={{ width: window_w / 2 - 4, height: window_w / 2, }}
-                    source={{ uri: this.getImgUrl(data.item.coverPlan) }} />
+                    source={{ uri: this.getImgUrl(data.item.coverPlan) }}
+                    resizeMode={FastImage.resizeMode.cover}
+                />
             </TouchableOpacity>
 
             <View style={{ flexDirection: "column", padding: 5, height: 60, justifyContent: "center", alignContent: "center" }}>

@@ -5,9 +5,9 @@ import {
     View,
     TextInput,
     TouchableOpacity,
-    Image,
+    Image, Platform,
 } from 'react-native';
-import BaseComponent, { BaseStyles, mainColor, window_width } from "../BaseComponent";
+import BaseComponent, { BaseStyles, mainColor } from "../BaseComponent";
 import NavigationBar from "../../common/NavigationBar";
 import HttpUtils from '../../util/HttpUtils';
 import BaseUrl from '../../util/BaseUrl';
@@ -15,12 +15,10 @@ import DialogUtils from '../../util/DialogUtils';
 import AsySorUtils from "../../dao/AsySorUtils"
 import { inject, observer } from 'mobx-react';
 import UserInfo from '../../model/UserInfo';
-import ViewUtils from '../../util/ViewUtils';
 import SplashScreen from "react-native-splash-screen"
-import PassWordInput from '../../common/PassNumInput';
 import Colors from '../../util/Colors';
-import codePush from "react-native-code-push"
-import HomePage from '../HomePage';
+import Utils from "../../util/Utils";
+import codePush from "react-native-code-push";
 /**
  * 登陆页面
  */
@@ -43,6 +41,8 @@ export default class LoginPage extends BaseComponent {
                 })
             }
         })
+        //热更新后添加这个代码 不然貌似热更新会自动回滚
+        //Platform.OS ==="ios"? {}:codePush.sync()
     }
     render() {
         return (
@@ -142,16 +142,15 @@ export default class LoginPage extends BaseComponent {
             case 2://登陆
                //PassWordInput.showPassWordInput((safetyPwd) => alert(safetyPwd),"支付描述内容",100)
                // PassWordInput.showPassWordInput((safetyPwd) => alert(safetyPwd))
-               //DialogUtils.upDataApp()
-                
+                //DialogUtils.showPay()
+                //alert(Utils.formatNumbers("116.00",3))
                 if(this.state.text.length<1){
                     DialogUtils.showMsg("请输入UID或者手机号")
                 }else if(this.state.text.length<1){
                     DialogUtils.showMsg("请输入密码")
                 }else{
                     this.loginByPwd();
-                }
-               
+                 }
                 break
         }
     }

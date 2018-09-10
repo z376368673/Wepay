@@ -48,9 +48,8 @@ export default class SharedRecord extends BaseComponent {
                 <View style={{ height: 35, flexDirection: "row", alignItems: "center", margin: 5 }}>
                     <TextInput
                         style={[{
-                            borderRadius: 5, backgroundColor: "#fff",
-                            height: 35, flex: 1, fontSize: 13, color: '#333', backgroundColor: "#fff", padding: 5,
-                            borderColor: "#ccc",
+                            borderRadius: 5, height: 35, flex: 1, fontSize: 13, color: '#333',
+                            backgroundColor: "#fff", padding: 5, borderColor: "#ccc",
                         }]}
                         placeholder={'搜索UID/手机号码'}
                         //defaultValue={userName}
@@ -110,7 +109,7 @@ export default class SharedRecord extends BaseComponent {
                         this.refList.addData(result.data)
                     }
                     this.pageIndex += 1
-                }else if (result.code === 2) {
+                }else if (result.code === 2||result.code === 4) {
                     DialogUtils.showToast(result.msg)
                     this.goLogin(this.props.navigation)
                 } else {

@@ -122,7 +122,7 @@ export default class YueOrIntegralRecord extends BaseComponent {
                     }
                     this.pageIndex += 1
 
-                } else if (result.code === 2) {
+                } else if (result.code === 2||result.code === 4) {
                     DialogUtils.showToast(result.msg)
                     this.goLogin(this.props.navigation)
                 } else {
@@ -168,7 +168,7 @@ export default class YueOrIntegralRecord extends BaseComponent {
                             color: '#333',
                             fontSize: 13,
                             //当getType===0 时  当前余额或者积分 取得的 nowNums 其他的都是取nowNumsGet
-                        }}>{data.item.getType === 0 ? data.item.nowNums : data.item.nowNumsGet}</Text>
+                        }}>{data.item.getType === 0||data.item.getType === 4 ? data.item.nowNums : data.item.nowNumsGet}</Text>
                     </View>
                     <View style={{ justifyContent: "center", alignItems: 'center', width: width / 4 + 14, }}>
                         <Text style={{
@@ -199,19 +199,19 @@ export default class YueOrIntegralRecord extends BaseComponent {
                 typeValue = "+" + yue
                 break;
             case 3:
-                typeText = "Wepay币求购"
+                typeText = "货币求购"
                 typeValue = "-" + yue
                 break;
             case 4:
-                typeText = "Wepay币购买"
-                typeValue = "-" + data.item.nowNums
+                typeText = "货币购买"
+                typeValue = "-" +yue
                 break;
             case 5:
-                typeText = "Wepay币出售"
+                typeText = "货币出售"
                 typeValue = "+" + yue
                 break;
             case 6:
-                typeText = "Wepay币\n取消求购"
+                typeText = "货币\n取消求购"
                 typeValue = "+" + yue
                 break;
             case 7:
@@ -256,6 +256,10 @@ export default class YueOrIntegralRecord extends BaseComponent {
                 break;
             case 25:
                 typeText = "退还保证金"
+                typeValue = "+" + yue
+                break;
+            case 26:
+                typeText = "商城返还"
                 typeValue = "+" + yue
                 break;
             case 31:
