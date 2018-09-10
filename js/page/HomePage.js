@@ -244,6 +244,10 @@ export default class HomePage extends BaseComponent {
                             {this._itemView(() => this.onClicks(4), require('../../res/images/maichu.png'), "余额卖出")}
                             {this._itemView(() => this.onClicks(5), require('../../res/images/shuzi.png'), "数字资产")}
                             {this._itemView(() => this.onClicks(6), require('../../res/images/shangcheng.png'), "超级商城")}
+                            {this._itemView(() => this.onClicks(7), require('../../res/images/gongyi.png'), "爱心公益")}
+                            {this._itemView(() => this.onClicks(8), require('../../res/images/youxi.png'), "游戏娱乐")}
+                            {this._itemView(() => this.onClicks(9), require('../../res/images/hudong.png'), "群员互动")}
+
                         </View>
                     </View>
                 </ScrollView></View>
@@ -282,6 +286,15 @@ export default class HomePage extends BaseComponent {
                 break;
             case 6://商城
                 this.props.navigation.navigate('StoreMall');
+                break;
+            case 7://爱心公益
+                DialogUtils.showToast("此模块正在升级中...")
+                break;
+            case 8://游戏娱乐
+                DialogUtils.showToast("此模块正在升级中...")
+                break;
+            case 9://群员互动
+                DialogUtils.showToast("此模块正在升级中...")
                 break;
             default://
                 break
