@@ -10,8 +10,8 @@ export default global.UserInfo = {
     sessionId:null,
     
     //经纬度 默认深圳的经纬度，
-    longitude:114.03, 
-    latitude:22.32,
+    longitude:114.122618,
+    latitude:22.540178,
     // "userid": 26536,
     // "account": "13923044417", 账号
     // "mobile": "13923044417", 手机号

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
     StyleSheet,
     Text,
@@ -9,95 +9,243 @@ import {
     Button,
     ImageBackground,
 } from 'react-native';
-import BaseComponent, { BaseStyles, mainColor, window_width } from "../BaseComponent";
+import BaseComponent, {BaseStyles} from "../BaseComponent";
 import NavigationBar from "../../common/NavigationBar";
-import HttpUtils from "../../util/HttpUtils";
-import BaseUrl from "../../util/BaseUrl";
-import { SegmentedBar, Drawer } from 'teaset';
 import Utils from '../../util/Utils';
 import StoreCommon from '../../common/StoreCommon';
+import ViewPager from '../../common/ViewPager';
+import HorizontalMenu from '../../common/HorizontalMenu';
 import SplashScreen from "react-native-splash-screen"
-import ViewUtils from '../../util/ViewUtils';
-import RefreshFlatList2 from '../../common/RefreshFlatList2';
+import Colors from "../../util/Colors";
+import RefreshFlatList from "../../common/RefreshFlatList";
+import BaseUrl from "../../util/BaseUrl";
+import UserInfo from "../../model/UserInfo";
+import HttpUtils from "../../util/HttpUtils";
+import DialogUtils from "../../util/DialogUtils";
+import FastImage from 'react-native-fast-image'
 
+const window_width = Utils.getWidth()
 //商城首页
 const window_w = Utils.getWidth();
 export default class StoreMall extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
-            text: '',
             activeIndex: 0,
-            typeArr:[]
         }
-        this.barItems = [
-            '商品列表',
-            '附近商家',
-        ];
+
+        this.userInfo = this.getUserInfo();
     }
+
     //界面加载完成
     componentDidMount() {
         SplashScreen.hide();
+        this._refreshData()
         //加载商品的分类
-       // this.getCateList();
+        // this.getCateList();
     }
-    onClickDelect(data) {
 
-    }
-    onSegmentedBarChange(index) {
-        if (index != this.state.activeIndex) {
-            this.setState({ activeIndex: index });
-        }
-    }
-    renderCustomItems() {
-        let { activeIndex } = this.state;
-        return this.barItems.map((item, index) => {
-            let isActive = index == activeIndex;
-            let tintColor = isActive ? mainColor : '#333';
-            return (
-                <View key={index} style={{ padding: 15, alignItems: 'center' }}>
-                    <Text style={{ fontSize: 17, color: tintColor, paddingTop: 4 }} >{item}</Text>
-                </View>
-            );
-        });
-    }
     render() {
-        let { activeIndex } = this.state;
         return (
-            <View style={[BaseStyles.container_column, { backgroundColor: "#f1f1f1" }]}>
+            <View style={[BaseStyles.container_column, {backgroundColor: "#f1f1f1"}]}>
                 <NavigationBar
                     title='购物中心'
                     navigation={this.props.navigation}
                     titleView={() => this.searchView()}
-                    rightView={NavigationBar.getRightStyle_View(require("../../../res/images/dingdan-shang.png"),()=>this.onClicks(1))}
-                   // rightView={this.getRightStyle_View()}
+                    //rightView={NavigationBar.getRightStyle_View(require("../../../res/images/dingdan-shang.png"),()=>this.onClicks(1))}
+                    rightView={this.getRightStyle_View()}
                 />
-                <SegmentedBar
-                    justifyItem={"fixed"}
-                    indicatorLineColor={mainColor}
-                    indicatorLineWidth={2}
-                    indicatorPositionPadding={5}
-                    activeIndex={activeIndex}
-                    onChange={index => this.onSegmentedBarChange(index)}
-                >
-                    {this.renderCustomItems()}
-                </SegmentedBar>
-                <View style={{ flex: 1, backgroundColor: "#f1f1f1",marginTop:12, }}>
-                    {this.state.activeIndex === 0 ? <StoreCommon navigation={this.props.navigation} tabLabel='商品列表' numColumns={2} {...this.props}/> : <View />}
-                    {this.state.activeIndex === 1 ? <StoreCommon navigation={this.props.navigation} tabLabel='附近商家' numColumns={1} {...this.props}/> : <View />}
+                <View style={{marginBottom: 5, flexDirection: "column"}}>
+                    <HorizontalMenu
+                        data={['全部', '餐饮', '生鲜']}
+                        titleStyle={{color: Colors.text3, fontSize: 16, marginLeft: 10, marginRight: 10}}
+                        activeTitleStyle={{color: Colors.mainColor, fontSize: 16, marginLeft: 10, marginRight: 10}}
+                        onSegmentedBarChange={(index, value) => {
+                            alert(index + value)
+                        }}/>
                 </View>
+                <View style={[BaseStyles.container_column, {backgroundColor: "#f1f1f1"}]}>
+                    <RefreshFlatList
+                        ref={refList => this.refList = refList}
+                        numColumns={2}
+                        onRefreshs={() => this._refreshData()}
+                        onLoadData={() => this._onLoadData()}
+                        isDownLoad={true}
+                        ListHeaderComponent={() => this._headView()}
+                        renderItem={(items) => this.numColumns === 1 ? this._getStoreMall(items) : this._getStore(items)}/>
+                </View>
+                {/*<StoreCommon navigation={this.props.navigation} tabLabel='商品列表' numColumns={2} {...this.props}/>*/}
             </View>
         );
     }
+
+    _headView() {
+        return <View style={{marginBottom: 5, flexDirection: "column", backgroundColor: Colors.white}}>
+            <ViewPager
+                height={Utils.getWidth() / 3}/>
+            <View style={{flexDirection: "row", padding: 10, justifyContent: "center"}}>
+                <TouchableOpacity
+                    activeOpacity={0.8}
+                    style={{flex: 1}}
+                    onPress={() => this.onClicks(101)}>
+                    <View style={{flex: 1, padding: 5, justifyContent: "center", alignItems: "center"}}>
+                        <Image source={require("../../../res/images/new_4.png")}
+                               style={{width: 40, height: 40}}
+                        />
+                        <Text style={{fontSize: 14, color: Colors.text3, marginTop: 8}}>新平尝鲜</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    activeOpacity={0.8}
+                    style={{flex: 1}}
+                    onPress={() => this.onClicks(102)}>
+                    <View style={{flex: 1, padding: 5, justifyContent: "center", alignItems: "center"}}>
+                        <Image source={require("../../../res/images/remen_4.png")}
+                               style={{width: 40, height: 40}}/>
+                        <Text style={{fontSize: 14, color: Colors.text3, marginTop: 8}}>热门爆款</Text>
+                    </View></TouchableOpacity>
+                <TouchableOpacity
+                    activeOpacity={0.8}
+                    style={{flex: 1}}
+                    onPress={() => this.onClicks(103)}>
+                    <View style={{flex: 1, padding: 5, justifyContent: "center", alignItems: "center"}}>
+                        <Image source={require("../../../res/images/shihui.png")}
+                               style={{width: 40, height: 40}}/>
+                        <Text style={{fontSize: 14, color: Colors.text3, marginTop: 8}}>实惠好货</Text>
+                    </View></TouchableOpacity>
+            </View>
+        </View>
+    }
+
+    //刷新数据
+    _refreshData() {
+        //获取经纬度 并赋值给全局变量
+        this.refList.refreshStar()
+        this.pageIndex = 1;
+        this.getData(true)
+    }
+
+    //加载更多数据
+    _onLoadData() {
+        this.getData(false)
+    }
+
+    /**
+     * 获取数据
+     * @param {*} isRefesh  是否刷新
+     * @param {*} pageIndex
+     */
+    getData(isRefesh) {
+        this.url = BaseUrl.getShopBySearch(this.userInfo.sessionId, this.pageIndex)
+        HttpUtils.getData(this.url)
+            .then(result => {
+                if (result.code === 1) {
+                    if (isRefesh) {
+                        this.refList.setData(result.data)
+                        if (result.data.length < 1) {
+                            DialogUtils.showToast("暂无数据")
+                        }
+                    } else {
+                        this.refList.addData(result.data)
+                    }
+                    this.pageIndex += 1
+                } else if (result.code === 2 || result.code === 4) {
+                    DialogUtils.showToast(result.msg)
+                    this.goLogin(this.props.navigation)
+                } else {
+                    DialogUtils.showToast(result.msg)
+                }
+            })
+
+    }
+
+    /** 商品
+     * 绘制itemView
+     * 3.1    id        商品id
+     3.2    goodsName        商品名称
+     3.3    goodsPrice        商品价格
+     3.4    goodsStock        商品库存
+     3.5    coverPlan        商品封面图
+     3.6    shopId        店铺id
+     * @param data
+     * @returns {*}
+     * @private
+     */
+    _getStore(data) {
+        return <View
+            style={{
+                backgroundColor: '#fff',
+                alignItems: 'center',
+                marginBottom: 4,
+                flexDirection: "column",
+                marginLeft: 2,
+                marginRight: 2,
+                maxWidth: window_width / 2 - 4,
+            }}>
+            <TouchableOpacity
+                activeOpacity={0.8}
+                style={{width: window_w / 2 - 4, height: window_w / 2,}}
+                onPress={(item) => this.goDetails(data.item)}>
+                <FastImage
+                    style={{width: window_w / 2 - 4, height: window_w / 2,}}
+                    source={{uri: this.getImgUrl(data.item.coverPlan)}}
+                    resizeMode={FastImage.resizeMode.cover}
+                />
+            </TouchableOpacity>
+
+            <View style={{
+                flexDirection: 'column',
+                padding: 5,
+                height: 60,
+                justifyContent: "center",
+                alignContent: "center"
+            }}>
+                <Text style={{color: "#333333", fontSize: 18,}} numberOfLines={1}>
+                    {data.item ? data.item.goodsName : "name"}</Text>
+
+                <View style={{flexDirection: 'row', marginTop: 5}}>
+                    <Text style={{
+                        color: "#d11",
+                        fontSize: 15,
+                    }}>￥{data.item.goodsPrice}</Text>
+                    <Text style={{
+                        color: "#888",
+                        fontSize: 15,
+                        marginLeft: 30,
+                    }}>库存:{data.item.goodsStock}</Text>
+                </View>
+            </View>
+        </View>
+    }
+
+    /**
+     * 去商品详情
+     * @param {*} item
+     */
+    goDetails(item) {
+        this.props.navigation.navigate('ShopDetails', {
+            shopId: item.id,
+        });
+    }
+
     searchView() {
-        return (<View style={{ flexDirection: "row", alignItems: "center" }}>
+        return (<View style={{flexDirection: "row", alignItems: "center", position: "absolute", left: 0}}>
             <TouchableOpacity
                 activeOpacity={0.8}
                 onPress={() => this.onClicks(2)}
-                style={{ justifyContent: "center", alignItems: "center" }}
+                style={{justifyContent: "center", alignItems: "center",}}
             >
-                <View style={{ marginLeft: 0, width: 245, backgroundColor: "#fff", height: 35, borderRadius: 18, flexDirection: "row", alignItems: "center" }}>
-                    <Image style={{ height: 30, width: 30, marginLeft: 10, padding: 5, }} source={require("../../../res/images/sousuo-shang.png")} />
+                <View style={{
+                    marginLeft: 0,
+                    width: 240,
+                    backgroundColor: "#fff",
+                    height: 35,
+                    borderRadius: 18,
+                    flexDirection: "row",
+                    alignItems: "center"
+                }}>
+                    <Image style={{height: 30, width: 30, marginLeft: 10, padding: 5,}}
+                           source={require("../../../res/images/sousuo-shang.png")}/>
 
                     <Text
                         style={[{
@@ -112,33 +260,51 @@ export default class StoreMall extends BaseComponent {
     //导航右边更多按钮
     getRightStyle_View() {
         return (
-            <View style={{ flexDirection: "row" }}>
+            <View style={{flexDirection: "row"}}>
                 <TouchableOpacity
-                    style={{ flexDirection: 'row', alignItems: 'center', }}
-                    onPress={() => this.leftDrawView()}
+                    style={{flexDirection: 'row', alignItems: 'center',}}
+                    onPress={() => this.onClicks(0)}
                 >
                     <Image
-                        style={{ width: 25, height: 25, padding: 5 }}
-                        source={require("../../../res/images/fenleisousuo.png")} />
+                        style={{width: 25, height: 25, padding: 5,marginRight:10,marginLeft:10}}
+                        source={require("../../../res/images/dianpu-3.png")}/>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={{ flexDirection: 'row', alignItems: 'center', }}
+                    style={{flexDirection: 'row', alignItems: 'center',}}
                     onPress={() => this.onClicks(1)}
                 >
                     <Image
-                        style={{ width: 25, height: 25, padding: 5, marginLeft: 10 }}
-                        source={require("../../../res/images/dingdan-shang.png")} />
+                        style={{width: 25, height: 25, padding: 5, marginLeft: 10}}
+                        source={require("../../../res/images/dingdan-shang.png")}/>
                 </TouchableOpacity>
             </View>)
     }
-    
+
     onClicks(index) {
         switch (index) {
-            case 1:
+            case 0://店铺列表
+                this.props.navigation.navigate('StoreList');
+                break;
+            case 1://我的订单
                 this.props.navigation.navigate('MyOrder');
                 break;
-            case 2:
+            case 2://搜索商品
                 this.props.navigation.navigate('SearchStore');
+                break;
+            case 101://新平尝鲜
+                this.props.navigation.navigate('ShopingType',{
+                    type:1
+                });
+                break;
+            case 102://热门爆款
+                this.props.navigation.navigate('ShopingType',{
+                    type:2
+                });
+                break;
+            case 103://实惠好货
+                this.props.navigation.navigate('ShopingType',{
+                    type:3
+                });
                 break;
             default:
                 break;

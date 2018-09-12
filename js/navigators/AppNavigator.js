@@ -47,6 +47,8 @@ import ShopDetails from "../page/store/ShopDetails";
 import StoreDetails from "../page/store/StoreDetails";
 import MyStoreOrder from "../page/store/MyStoreOrder";
 import CreatOrder from "../page/store/CreatOrder";
+import StoreList from "../page/store/StoreList";
+import ShopingType from "../page/store/ShopingType";
 import MyOrder from "../page/setting/MyOrder";
 import PassNumInput from "../common/PassNumInput";
 import NumberHome from "../page/number/NumberHome"
@@ -65,12 +67,11 @@ import OrderRecord from "../page/number/OrderRecord"
 import TeadeRecord from "../page/number/TeadeRecord"
 
 
-
 export default AppNavigator = createStackNavigator({
     // PassNumInput: {//密码输入
     //     screen: PassNumInput
     // },
-   
+
     LoginPage: {//登陆
         screen: LoginPage
     },
@@ -100,7 +101,7 @@ export default AppNavigator = createStackNavigator({
     TranWB: {//W宝 转出 转入 锁定
         screen: TranWB
     },
-    
+
     TradeHome: {//交易
         screen: TradeHome
     },
@@ -140,17 +141,24 @@ export default AppNavigator = createStackNavigator({
     MyStoreOrder: {//店铺订单
         screen: MyStoreOrder
     },
-    
+
     SharePage: {//分享好友
         screen: SharePage
     },
-   
+
     ShopDetails: {//商品详情
         screen: ShopDetails
     },
 
     CreatOrder: {//创建订单界面 支付界面
         screen: CreatOrder
+    },
+
+    StoreList: {//店铺列表
+        screen: StoreList
+    },
+    ShopingType: {//特类商品
+        screen: ShopingType
     },
     StoreDetails: {//店铺详情
         screen: StoreDetails
@@ -161,7 +169,7 @@ export default AppNavigator = createStackNavigator({
     MyStore: {//我的店铺
         screen: MyStore
     },
-   
+
     RegisterPage: {//注册
         screen: RegisterPage
     },
@@ -264,13 +272,13 @@ export default AppNavigator = createStackNavigator({
     },
     Welcome: {//欢迎页 
         screen: Welcome,
-        path:'app/homeTwo',//使用url导航时用到, 如 web app 和 Deep Linking
+        path: 'app/homeTwo',//使用url导航时用到, 如 web app 和 Deep Linking
         //navigationOptions: {}  // 此处设置了, 会覆盖组件内的`static navigationOptions`设置. 具体参数详见下文
     },
-    
+
 }, {
-     initialRouteName: 'LoginPage', // 默认显示界面
-     //initialRouteName: 'TradeHome', // 默认显示界面
+    initialRouteName: 'LoginPage', // 默认显示界面
+    //initialRouteName: 'TradeHome', // 默认显示界面
     //initialRouteName: 'EchartsDemo', // 默认显示界面
 
     mode: 'card',

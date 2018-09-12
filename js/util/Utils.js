@@ -72,10 +72,12 @@ export default class Utils {
                 // let longitude = JSON.stringify(location.coords.longitude);//精度
                 // let latitude = JSON.stringify(location.coords.latitude);//纬度 
                 callback(location.coords)
+                DialogUtils.showToast("定位成功")
             },
             (error) => {
-                DialogUtils.showToast("定位失败,请开启权限"+JSON.stringify(error))
-                console.warn(error.message)
+                error("定位失败,请开启权限")
+                //DialogUtils.showToast("定位失败,请开启权限"+JSON.stringify(error))
+              //  console.warn(error.message)
             },
             { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
         );
