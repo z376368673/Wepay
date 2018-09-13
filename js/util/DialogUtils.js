@@ -7,9 +7,9 @@ import {
     Text,
     View,
     ActivityIndicator,
-    TextInput, Platform,
+    TextInput, Platform, StatusBar,
 } from 'react-native';
-import {Overlay, Toast, ActionSheet, Theme, Label, Button} from "teaset";
+import {Overlay, Toast, ActionSheet, Theme, Label, Button, AlbumView} from "teaset";
 import codePush from "react-native-code-push"
 import Colors from "./Colors";
 import Utils from "./Utils";
@@ -317,6 +317,35 @@ export default class DialogUtils {
             });
     }
 
+
+
+
+   static onImagePress(images,index) {
+        //let pressView = view;
+       // pressView.measure((x, y, width, height, pageX, pageY) => {
+            let overlayView = (
+                <Overlay.PopView
+                    style={{backgroundColor:"reg(0,0,0)"}}
+                    containerStyle={{flex: 1}}
+                    overlayOpacity={1}
+                    //type='custom'
+                    //customBounds={{x: pageX, y: pageY, width, height}}
+                    ref={v => this.fullImageView = v}
+                >
+                    <AlbumView
+                        style={{flex: 1}}
+                        control={true}
+                        images={images}
+                        //thumbs={this.thumbs}
+                        defaultIndex={index}
+                        onPress={() => this.fullImageView && this.fullImageView.close()}
+                    />
+                    <StatusBar animated={false} hidden={true} />
+                </Overlay.PopView>
+            );
+            Overlay.show(overlayView);
+       // });
+    }
 
 
 

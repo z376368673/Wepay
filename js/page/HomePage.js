@@ -23,6 +23,7 @@ import SplashScreen from "react-native-splash-screen"
 import { observer, inject } from 'mobx-react';
 import gcj02towgs84 from "../util/location"
 import codePush from "react-native-code-push";
+import AdView from "../common/AdView";
 const screen_width = Utils.getWidth();
 
 @inject('AppStore') @observer
@@ -37,38 +38,9 @@ export default class HomePage extends BaseComponent {
     }
     componentDidMount() {
         SplashScreen.hide();
-        this.getBanner();
         this.showRedPacket();
-
     }
 
-    setImgToBanner(bannerArray) {
-        var views = []
-        bannerArray.forEach((element, index) => {
-            views.push(
-                <TouchableOpacity key={index.toString()} onPress={() => { }} activeOpacity={1}>
-                    <Image style={{ width: screen_width, height: screen_width / 4 }}
-                        resizeMode='cover' source={{ uri: this.getImgUrl(element.pic) }} />
-                </TouchableOpacity>)
-        });
-        return views;
-    }
-    /**
-     * 获取banner图片
-     */
-    getBanner() {
-        let url = BaseUrl.getBanner()
-        HttpUtils.getData(url)
-            .then(result => {
-                if (result.code === 1) {
-                    this.setState({
-                        bannerArray: result.data
-                    })
-                } else {
-                    DialogUtils.showToast(result.msg)
-                }
-            })
-    }
     _itemView(callback, img, text) {
         return <TouchableOpacity
 
@@ -231,12 +203,15 @@ export default class HomePage extends BaseComponent {
                                     </View></TouchableOpacity>
                             </View>
                         </View>
-                        <Carousel
-                            style={{ width: screen_width, height: screen_width / 4 }}
-                            control={() => { return <Carousel.Control /> }}
-                        >
-                            {this.setImgToBanner(this.state.bannerArray)}
-                        </Carousel>
+                        <AdView
+                            action={"home"}
+                            height={Utils.getWidth() / 4}/>
+                        {/*<Carousel*/}
+                            {/*style={{ width: screen_width, height: screen_width / 4 }}*/}
+                            {/*control={() => { return <Carousel.Control /> }}*/}
+                        {/*>*/}
+                            {/*{this.setImgToBanner(this.state.bannerArray)}*/}
+                        {/*</Carousel>*/}
                         <View style={[BaseStyles.container_row, { flexWrap: 'wrap', }]}>
                             {this._itemView(() => this.onClicks(1), require('../../res/images/zhuanchu.png'), "余额转出")}
                             {this._itemView(() => this.onClicks(2), require('../../res/images/zhuanru.png'), "余额转入")}

@@ -10,6 +10,7 @@ import DialogUtils from '../../util/DialogUtils';
 import HttpUtils from '../../util/HttpUtils';
 import BaseUrl from '../../util/BaseUrl';
 import EditText from "../../common/EditText";
+import RefreshFlatList from "../../common/RefreshFlatList";
 
 /**
  * 添加商品 / 编辑修改商品
@@ -91,38 +92,38 @@ export default class AddShop extends BaseComponent {
      * @param {*} photos
      */
     createImg(photos) {
-        let views = [];
+        let views = []
+        let imgs = []
         photos.map((photo, index) => {
             let source = {uri: photo.uri};
             if (photo.enableBase64) {
                 source = {uri: photo.base64};
             }
+            imgs.push(source)
             views.push(
-                <View style={{width: width_w, height: width_w, marginLeft: 10, marginTop: 10}}>
+                <View
+                    key={`image-${index}`}
+                    style={{width: width_w, height: width_w, marginLeft: 10, marginTop: 10}}>
                     <TouchableOpacity
                         style={{position: "absolute", zIndex: 1, right: -5, top: -5}}
                         onPress={() => {
                             this.state.photos.splice(index, 1)
                             let data = this.state.photos;
-                            this.setState({
-                                photos: data,
-                            })
+                            this.setState({ photos: data, })
                         }}>
                         <Image
-                            key={`close-${index}`}
                             style={{width: 15, height: 15,}}
                             source={require("../../../res/images/shanchu-4.png")}/>
                     </TouchableOpacity>
-
-                    <Image
-                        key={`image-${index}`}
-                        style={{
-                            width: width_w,
-                            height: width_w,
-                        }}
+                    <TouchableOpacity
+                       // onPress={() => DialogUtils.onImagePress(imgs, index)}
+                    >
+                        <Image
+                        ref={"img" + index}
+                        style={{width: width_w, height: width_w,}}
                         source={source}
                         resizeMode={"cover"}
-                    />
+                    /></TouchableOpacity>
                 </View>
             )
         })
@@ -231,22 +232,22 @@ export default class AddShop extends BaseComponent {
                                 value={this.state.shopName}
                                 maxLength={12}
                                 onChangeText={(text) => this.setState({shopName: text})}/>
-                        </View> <View style={styles.itemView}>
-                        <Text style={styles.itemText}>
-                            商品描述</Text>
-                        <EditText
-                            style={[{textAlignVertical: 'top', minHeight: 70}, styles.itemTextInput]}
-                            placeholder={'请输入商品名称'}
-                            defaultValue={this.state.shopName}
-                            placeholderTextColor={'#999'}
-                            underlineColorAndroid='transparent'
-                            keyboardType={"default"}
-                            multiline={true}
-                            numberOfLines={3}
-                            value={this.state.shopName}
-
-                            onChangeText={(text) => this.setState({shopName: text})}/>
-                    </View>
+                        </View>
+                        <View style={styles.itemView}>
+                            <Text style={styles.itemText}>
+                                商品描述</Text>
+                            <EditText
+                                style={[{textAlignVertical: 'top', minHeight: 70}, styles.itemTextInput]}
+                                placeholder={'请输入商品介绍...'}
+                                defaultValue={this.state.shopName}
+                                placeholderTextColor={'#999'}
+                                underlineColorAndroid='transparent'
+                                keyboardType={"default"}
+                                multiline={true}
+                                numberOfLines={3}
+                                value={this.state.shopName}
+                                onChangeText={(text) => this.setState({shopName: text})}/>
+                        </View>
                         <View style={styles.itemView}>
                             <Text style={styles.itemText}>
                                 商品价格</Text>
@@ -293,18 +294,15 @@ export default class AddShop extends BaseComponent {
                             {this.createImg(this.state.photos)}
                             {this.state.photos.length >= 6 ? null :
                                 <TouchableOpacity onPress={() => this.handleOpenImagePicker()}>
-                                    <Image style={{
-                                        alignSelf: "center",marginTop:10,
-                                        width: width_w, height: width_w,
-                                        marginLeft: 10, borderColor: "#ddd",
-                                        borderWidth: 0.5, resizeMode: "cover"
-                                    }}
-                                           source={require("../../../res/images/addimg.png")}
+                                    <Image
+                                        source={require("../../../res/images/addimg.png")}
+                                        style={{
+                                            alignSelf: "center", marginTop: 10,
+                                            width: width_w, height: width_w,
+                                            marginLeft: 10, borderColor: "#ddd",
+                                            borderWidth: 0.5, resizeMode: "cover"
+                                        }}
                                     /></TouchableOpacity>}
-                            {/*<TouchableOpacity*/}
-                            {/*onPress={() => this.handleAsyncSelectPhoto(false, false)}><Image*/}
-                            {/*style={{flex:1,width:240,height:170,backgroundColor:"#fff"}}*/}
-                            {/*source={this.state.shopImage}/></TouchableOpacity>*/}
                         </View>
                         <TouchableOpacity
                             activeOpacity={0.8}

@@ -13,7 +13,7 @@ import BaseComponent, {BaseStyles} from "../BaseComponent";
 import NavigationBar from "../../common/NavigationBar";
 import Utils from '../../util/Utils';
 import StoreCommon from '../../common/StoreCommon';
-import ViewPager from '../../common/ViewPager';
+import AdView from '../../common/AdView';
 import HorizontalMenu from '../../common/HorizontalMenu';
 import SplashScreen from "react-native-splash-screen"
 import Colors from "../../util/Colors";
@@ -81,7 +81,8 @@ export default class StoreMall extends BaseComponent {
 
     _headView() {
         return <View style={{marginBottom: 5, flexDirection: "column", backgroundColor: Colors.white}}>
-            <ViewPager
+            <AdView
+                action={"store"}
                 height={Utils.getWidth() / 3}/>
             <View style={{flexDirection: "row", padding: 10, justifyContent: "center"}}>
                 <TouchableOpacity

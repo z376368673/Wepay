@@ -1,15 +1,18 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View, ScrollView, Linking } from 'react-native';
+import {Image, StyleSheet, Text, TextInput, TouchableOpacity, View, ScrollView, Linking} from 'react-native';
 import AutoGrowingTextInput from '../../common/AutoGrowingTextInput';
 import NavigationBar from "../../common/NavigationBar";
-import BaseComponent, { BaseStyles, mainColor, window_width, window_height } from "../BaseComponent";
-import { PullPicker } from 'teaset';
+import ViewPager from "../../common/ViewPager";
+
+import BaseComponent, {BaseStyles, mainColor, window_width, window_height} from "../BaseComponent";
+import {PullPicker} from 'teaset';
 import SYImagePicker from 'react-native-syan-image-picker'
 import Utils from '../../util/Utils';
 import DialogUtils from '../../util/DialogUtils';
 import BaseUrl from '../../util/BaseUrl';
 import HttpUtils from '../../util/HttpUtils';
 import FastImage from 'react-native-fast-image'
+
 /**
  * 商品详情
  */
@@ -17,29 +20,31 @@ const width_w = Utils.getWidth() / 2 - 20;
 export default class ShopDetails extends BaseComponent {
     constructor(props) {
         super(props);
-            this.state = {
-                data: null,
-                coverPlan: null,
-            }
+        this.state = {
+            data: null,
+            coverPlan: null,
+        }
         this.navigation = this.props.navigation;
         this.userInfo = this.getUserInfo()
     }
-   
-    shouldComponentUpdate(){
-        this.shopId =  this.props.navigation.state.params.shopId
+
+    shouldComponentUpdate() {
+        this.shopId = this.props.navigation.state.params.shopId
         this.getShopDetail(this.shopId)
         return true
     }
+
     componentDidMount() {
-        this.shopId =  this.props.navigation.state.params.shopId
+        this.shopId = this.props.navigation.state.params.shopId
         this.getShopDetail(this.shopId)
     }
 
     componentWillUnmount() {
-           // this.state = null;
+        // this.state = null;
     }
+
     /**
-     * 获取商品信息 by id 
+     * 获取商品信息 by id
      */
     getShopDetail(shopId) {
         let url = BaseUrl.getShopDetail(this.userInfo.sessionId, shopId)
@@ -50,9 +55,9 @@ export default class ShopDetails extends BaseComponent {
                     //console.warn(JSON.stringify(result.data))
                     this.setState({
                         data: result.data,
-                        coverPlan: { uri: this.getImgUrl(result.data.coverPlan) },
+                        coverPlan: {uri: this.getImgUrl(result.data.coverPlan)},
                     })
-                } else if (result.code === 2||result.code === 4) {
+                } else if (result.code === 2 || result.code === 4) {
                     DialogUtils.showToast(result.msg)
                     this.goLogin(this.props.navigation)
                 } else {
@@ -61,36 +66,21 @@ export default class ShopDetails extends BaseComponent {
             })
 
     }
-    /**
-     * 加载失败
-     * @param {*} error
-     */
-    handleImageErrored(error){
-        alert("加载失败："+JSON.stringify(error.error))
-        console.warn(error)
+
+    itemView(data,index) {
+        return
+        <TouchableOpacity
+            style={{flex: 1,width: window_width, height: window_height / 3 * 1.7,backgroundColor:"#666"}}
+            activeOpacity={1}
+            onPress={()=>alert(data)}
+        >
+            <FastImage
+                style={{width: window_width, height: window_height / 3 * 1.7,  }}
+                source={data}
+                resizeMode={FastImage.resizeMode.cover}
+            /></TouchableOpacity>
     }
 
-    /**
-     * 加载结束
-     */
-    onLoadStart () {
-        DialogUtils.showLoading("图片加载中")
-        // if (undefined !== this.backgroundColorAnimated) this.backgroundColorAnimated.stop()
-    }
-    /**
-     * 加载结束
-     */
-    onLoadEnd () {
-        DialogUtils.hideLoading()
-        // if (undefined !== this.backgroundColorAnimated) this.backgroundColorAnimated.stop()
-    }
-
-    /**
-     * 加载成功
-     */
-    handleImageLoaded () {
-        alert("加载成功：")
-    }
     render() {
         return (
             <View style={BaseStyles.container_column}>
@@ -98,25 +88,15 @@ export default class ShopDetails extends BaseComponent {
                     title={this.state.data ? this.state.data.goodsName : "商品详情"}
                     navigation={this.props.navigation}
                 />
-                <ScrollView >
-                    <View style={[BaseStyles.container_column, { backgroundColor: "#f1f1f1" }]}>
-                        <TouchableOpacity 
-                          activeOpacity={1}
-                         >
-                            <FastImage
-                                style={{
-                                    flex: 1, width: window_width, height: window_height / 3 * 1.7,
-                                    backgroundColor: "#fff", resizeMode: "cover"
-                                }}
-                                source={this.state.coverPlan}
-                                resizeMode={FastImage.resizeMode.cover}
-
-                                // onLoadStart={this.onLoadStart.bind(this)}
-                                // onLoadEnd={this.onLoadEnd.bind(this)}
-                                // onLoad={this.handleImageLoaded.bind(this)}
-                                // onError={this.handleImageErrored.bind(this)}
-                            /></TouchableOpacity>
-                        <View style={{ flexDirection: 'row', padding: 10, backgroundColor: "#fff" }}>
+                <ScrollView>
+                    <View style={[BaseStyles.container_column, {backgroundColor: "#f1f1f1"}]}>
+                        <ViewPager
+                            data={[this.state.coverPlan,this.state.coverPlan,this.state.coverPlan]}
+                            height={window_height / 3 * 1.7}
+                            //itemView = {(data,index)=>this.itemView(data,index)}
+                            onChange={(index)=>{}}
+                        />
+                        <View style={{flexDirection: 'row', padding: 10, backgroundColor: "#fff"}}>
                             <Text
                                 style={{
                                     alignSelf: "center",
@@ -124,7 +104,7 @@ export default class ShopDetails extends BaseComponent {
                                     fontSize: 16,
                                 }}>{this.state.data ? this.state.data.goodsName : "0"}</Text>
                         </View>
-                        <View style={{ flexDirection: 'row', padding: 10, backgroundColor: "#fff" }}>
+                        <View style={{flexDirection: 'row', padding: 10, backgroundColor: "#fff"}}>
                             <Text style={{
                                 color: "#d11",
                                 fontSize: 18,
@@ -144,7 +124,11 @@ export default class ShopDetails extends BaseComponent {
                                 borderWidth: 1, borderColor: "#999", justifyContent: "center",
                                 alignItems: "center", margin: 15, backgroundColor: "#fff", borderRadius: 1000
                             }}>
-                            <Text style={{ fontSize: 18, color: "#333", padding: 8 }}>{this.state.data ? this.state.data.shopName : ""}</Text>
+                            <Text style={{
+                                fontSize: 18,
+                                color: "#333",
+                                padding: 8
+                            }}>{this.state.data ? this.state.data.shopName : ""}</Text>
                         </TouchableOpacity>
 
                         {/* <View style={{ flexDirection: 'row', padding: 10  ,backgroundColor:"#fff"}}>
@@ -170,10 +154,10 @@ export default class ShopDetails extends BaseComponent {
                     backgroundColor: "#fff",
                 }}>
                     <TouchableOpacity
-                        style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: "#fff", }}
+                        style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: "#fff",}}
                         activeOpacity={0.8}
                         onPress={() => this.callStore(this.state.data.phone)}>
-                        <View style={{ flex: 1, }}>
+                        <View style={{flex: 1,}}>
                             <Text style={{
                                 alignSelf: "center",
                                 color: '#333',
@@ -183,11 +167,11 @@ export default class ShopDetails extends BaseComponent {
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: "#d11", }}
+                        style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: "#d11",}}
                         activeOpacity={0.8}
                         onPress={() => this.buy()}
                     >
-                        <View style={{ flex: 1 }}>
+                        <View style={{flex: 1}}>
                             <Text style={{
                                 alignSelf: "center",
                                 color: '#FFF',
@@ -201,6 +185,7 @@ export default class ShopDetails extends BaseComponent {
 
         );
     }
+
     onClicks(type) {
         if (type === "sumbitApply") {
             this.props.navigation.navigate('MyStore');
@@ -210,6 +195,7 @@ export default class ShopDetails extends BaseComponent {
             });
         }
     }
+
     //打电话  联系商家 //暂时返回失败， 可能要真机测试才可以
     callStore(phone) {
         let url = 'tel: ' + phone;
@@ -222,6 +208,7 @@ export default class ShopDetails extends BaseComponent {
             }
         }).catch(err => DialogUtils.showToast('An error occurred', err));
     }
+
     /**
      * 购买
      */
