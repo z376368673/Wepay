@@ -12,6 +12,7 @@ import DialogUtils from '../../util/DialogUtils';
 import BaseUrl from '../../util/BaseUrl';
 import HttpUtils from '../../util/HttpUtils';
 import FastImage from 'react-native-fast-image'
+import Colors from "../../util/Colors";
 
 /**
  * 商品详情
@@ -88,8 +89,8 @@ export default class ShopDetails extends BaseComponent {
                     title={this.state.data ? this.state.data.goodsName : "商品详情"}
                     navigation={this.props.navigation}
                 />
-                <ScrollView>
-                    <View style={[BaseStyles.container_column, {backgroundColor: "#f1f1f1"}]}>
+                <ScrollView style={{flex:1}}>
+                    <View style={[BaseStyles.container_column, {backgroundColor: "#f1f1f1",}]}>
                         <ViewPager
                             data={[this.state.coverPlan,this.state.coverPlan,this.state.coverPlan]}
                             height={window_height / 3 * 1.7}
@@ -131,7 +132,7 @@ export default class ShopDetails extends BaseComponent {
                             {/*}}>{this.state.data ? this.state.data.shopName : ""}</Text>*/}
                         {/*</TouchableOpacity>*/}
 
-                        <View style={{  padding: 10  ,backgroundColor:"#fff",marginTop: 10,flex:1,marginBottom:70}}>
+                        <View style={{  padding: 10  ,backgroundColor:"#fff",marginTop: 10,flex:1,}}>
                             <Text
                                 style={{color: '#333',fontSize: 16,}}>
                                 商品详情:</Text>
@@ -144,30 +145,41 @@ export default class ShopDetails extends BaseComponent {
 
                 <View style={{
                     flexDirection: "row",
-                    height: 50,
-                    position: "absolute",
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
                     justifyContent: 'center',
                     alignItems: 'center',
                     backgroundColor: "#fff",
+                    marginBottom:Utils.isFullScreenPhone()?30:0,
                 }}>
                     <TouchableOpacity
                         style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: "#fff",}}
                         activeOpacity={0.8}
-                        onPress={() => this.callStore(this.state.data.phone)}>
-                        <View style={{flex: 1,}}>
+                        onPress={() => this.onClicks("store")}>
+                        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                            <Image source={require("../../../res/images/dianpu_1.png")}/>
                             <Text style={{
                                 alignSelf: "center",
                                 color: '#333',
-                                fontSize: 18,
-                                padding: 15,
+                                fontSize: 14,
+                                padding: 5,
+                            }}>店铺</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: "#fff",}}
+                        activeOpacity={0.8}
+                        onPress={() => this.callStore(this.state.data.phone)}>
+                        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                            <Image source={require("../../../res/images/lianxishangjia.png")}/>
+                            <Text style={{
+                                alignSelf: "center",
+                                color: '#333',
+                                fontSize: 14,
+                                padding: 5,
                             }}>联系商家</Text>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: "#d11",}}
+                        style={{flex: 1.5, justifyContent: 'center', alignItems: 'center', backgroundColor: "#d11",}}
                         activeOpacity={0.8}
                         onPress={() => this.buy()}
                     >

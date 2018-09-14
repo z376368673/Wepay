@@ -11,6 +11,11 @@ export default class Utils {
     static getHeight() {
         return require('Dimensions').get('window').height
     }
+    static  isFullScreenPhone(){
+       return this.getHeight()/this.getWidth()<18/10?false:true
+    }
+
+
     /**
      * 检查该Item是否被收藏
      * **/
