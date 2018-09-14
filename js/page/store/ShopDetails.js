@@ -117,28 +117,28 @@ export default class ShopDetails extends BaseComponent {
                             }}>库存:{this.state.data ? this.state.data.goodsStock : "0"}</Text>
                         </View>
 
-                        <TouchableOpacity
-                            activeOpacity={0.8}
-                            onPress={() => this.onClicks("store")}
-                            style={{
-                                borderWidth: 1, borderColor: "#999", justifyContent: "center",
-                                alignItems: "center", margin: 15, backgroundColor: "#fff", borderRadius: 1000
-                            }}>
-                            <Text style={{
-                                fontSize: 18,
-                                color: "#333",
-                                padding: 8
-                            }}>{this.state.data ? this.state.data.shopName : ""}</Text>
-                        </TouchableOpacity>
+                        {/*<TouchableOpacity*/}
+                            {/*activeOpacity={0.8}*/}
+                            {/*onPress={() => this.onClicks("store")}*/}
+                            {/*style={{*/}
+                                {/*borderWidth: 1, borderColor: "#999", justifyContent: "center",*/}
+                                {/*alignItems: "center", margin: 15, backgroundColor: "#fff", borderRadius: 1000*/}
+                            {/*}}>*/}
+                            {/*<Text style={{*/}
+                                {/*fontSize: 18,*/}
+                                {/*color: "#333",*/}
+                                {/*padding: 8*/}
+                            {/*}}>{this.state.data ? this.state.data.shopName : ""}</Text>*/}
+                        {/*</TouchableOpacity>*/}
 
-                        {/* <View style={{ flexDirection: 'row', padding: 10  ,backgroundColor:"#fff"}}>
+                        <View style={{  padding: 10  ,backgroundColor:"#fff",marginTop: 10,flex:1,marginBottom:70}}>
                             <Text
-                                style={{
-                                    alignSelf: "center",
-                                    color: '#333',
-                                    fontSize: 16,
-                                }}>商品详情</Text>
-                        </View> */}
+                                style={{color: '#333',fontSize: 16,}}>
+                                商品详情:</Text>
+                            <Text
+                                style={{ color: '#333',fontSize: 16,lineHeight:28}}>
+                                商品详情商品详情商品详情商品商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情</Text>
+                        </View>
                     </View>
                 </ScrollView>
 
