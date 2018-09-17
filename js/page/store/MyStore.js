@@ -280,11 +280,14 @@ export default class MyStore extends BaseComponent {
         this.props.navigation.navigate('MyStoreOrder');
     }
     addShop() {
-        this.props.navigation.navigate('AddShop');
+        this.props.navigation.navigate('AddShop',{
+            refresh:()=>this._refreshData(),
+        });
     }
     editShop(data) {
         this.props.navigation.navigate('AddShop', {
             data: data,
+            refresh:()=>this._refreshData(),
         });
     }
 }

@@ -46,7 +46,7 @@ export default class AdView extends BaseComponent {
         if (this.props.action=="home"){
             this. url = BaseUrl.getBanner()
         } else  if (this.props.action=="store"){
-            this. url = BaseUrl.getBanner()
+            this. url = BaseUrl.getMallBanner()
         }
         HttpUtils.getData(this.url)
             .then(result => {
@@ -64,13 +64,36 @@ export default class AdView extends BaseComponent {
         var views = []
         bannerArray.forEach((element, index) => {
             views.push(
-                <TouchableOpacity key={index.toString()} onPress={() => { }} activeOpacity={1}>
+                <TouchableOpacity key={index.toString()} onPress={() => this.onClick(element)} activeOpacity={1}>
                     <Image style={{ width:this.props.width, height: this.props.height }}
                            resizeMode='cover' source={{ uri: this.getImgUrl(element.pic) }} />
                 </TouchableOpacity>)
         });
         return views;
     }
+
+    onClick(data){
+        let type = data.bannerType?data.bannerType:-1
+        switch (type) {
+            case 1:
+                this.props.navigation.navigate('BusinessUnion');
+                break
+            case 2:
+                this.props.navigation.navigate('StroeDetails',{
+                    storeId:data.shopId?data.shopId:0
+                });
+                break
+            case 3:
+                this.props.navigation.navigate('ShopDetails',{
+                    shopId:data.goodsId?data.goodsId:0
+                });
+                break
+            default:
+                break
+        }    
+
+    }
+
 
     render() {
         return (

@@ -204,6 +204,7 @@ export default class HomePage extends BaseComponent {
                             </View>
                         </View>
                         <AdView
+                            {...this.props}
                             action={"home"}
                             height={Utils.getWidth() / 4}/>
                         {/*<Carousel*/}

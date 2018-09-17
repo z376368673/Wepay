@@ -44,7 +44,9 @@ export default class ViewPager extends BaseComponent {
 
     itemView(data,index){
       let view =  this.props.itemView?this.props.itemView:
-        <TouchableOpacity key={index.toString()} onPress={() => { alert(data)}} activeOpacity={1}>
+        <TouchableOpacity key={index.toString()} onPress={() => {
+
+        }} activeOpacity={1}>
             <Image style={{ width:this.props.width, height: this.props.height }}
                    resizeMode='cover' source={data} />
         </TouchableOpacity>

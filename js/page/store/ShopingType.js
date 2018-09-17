@@ -38,7 +38,7 @@ export default class ShopingType extends BaseComponent {
     getTitleByType(type){
             switch (type) {
                 case 1:
-                    this.title = "新平尝鲜"
+                    this.title = "新品尝鲜"
                     break
                 case 2:
                     this.title = "热门爆款"
@@ -71,7 +71,7 @@ export default class ShopingType extends BaseComponent {
     * @param {*} pageIndex 
     */
     getData(isRefesh) {
-        this.url = BaseUrl.getShopBySearch(this.userInfo.sessionId, this.pageIndex)
+        this.url = BaseUrl.getShopByType(this.userInfo.sessionId, this.pageIndex,this.Type)
         //alert(JSON.stringify(this.url))
         HttpUtils.getData(this.url)
             .then(result => {
@@ -110,6 +110,7 @@ export default class ShopingType extends BaseComponent {
                     ref={refList => this.refList = refList}
                     isDownLoad ={true}
                     numColumns={2}
+                    minLength={10}
                     onRefreshs={() => this._refreshData()}
                     onLoadData={() => this._onLoadData()}
                     renderItem={(items) =>  this._getStore(items)} />

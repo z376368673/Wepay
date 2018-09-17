@@ -17,6 +17,7 @@ import {
     ViewPropTypes,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Utils from "../util/Utils";
 
 //定义Bar的高度
 const NAV_HEIGHT_ANDROID = 50;
@@ -182,7 +183,7 @@ export default class NavigationBar extends Component {
 
 const styles = StyleSheet.create({
     statusBar: {
-        height: Platform.OS === 'ios' ? STATUS_HEIGHT : 0,
+        height: Platform.OS === 'ios' ? Utils.isFullScreenPhone()?STATUS_HEIGHT+10: STATUS_HEIGHT:Utils.isFullScreenPhone()?10:0,
     },
 
     navBar: {

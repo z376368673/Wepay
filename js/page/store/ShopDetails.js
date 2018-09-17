@@ -23,7 +23,7 @@ export default class ShopDetails extends BaseComponent {
         super(props);
         this.state = {
             data: null,
-            coverPlan: null,
+            coverPlan: [],
         }
         this.navigation = this.props.navigation;
         this.userInfo = this.getUserInfo()
@@ -54,9 +54,11 @@ export default class ShopDetails extends BaseComponent {
                 if (result.code === 1) {
                     //alert(JSON.stringify(result.data))
                     //console.warn(JSON.stringify(result.data))
+                    let pic = [result.data.coverPlan,result.data.goodsPic2,result.data.goodsPic3,
+                        result.data.goodsPic4,result.data.goodsPic5,result.data.goodsPic6]
                     this.setState({
                         data: result.data,
-                        coverPlan: {uri: this.getImgUrl(result.data.coverPlan)},
+                        coverPlan: this.picToUri(pic),
                     })
                 } else if (result.code === 2 || result.code === 4) {
                     DialogUtils.showToast(result.msg)
@@ -65,9 +67,18 @@ export default class ShopDetails extends BaseComponent {
                     DialogUtils.showToast(result.msg)
                 }
             })
-
     }
 
+    picToUri(pic){
+        let uri = []
+        pic.map((value,index)=>{
+            if (value.length>=1){
+                uri.push({uri:this.getImgUrl(value)})
+            }
+        })
+        // alert(JSON.stringify(uri))
+        return uri
+    }
     itemView(data,index) {
         return
         <TouchableOpacity
@@ -92,7 +103,7 @@ export default class ShopDetails extends BaseComponent {
                 <ScrollView style={{flex:1}}>
                     <View style={[BaseStyles.container_column, {backgroundColor: "#f1f1f1",}]}>
                         <ViewPager
-                            data={[this.state.coverPlan,this.state.coverPlan,this.state.coverPlan]}
+                            data={this.state.coverPlan}
                             height={window_height / 3 * 1.7}
                             //itemView = {(data,index)=>this.itemView(data,index)}
                             onChange={(index)=>{}}
@@ -138,7 +149,8 @@ export default class ShopDetails extends BaseComponent {
                                 商品详情:</Text>
                             <Text
                                 style={{ color: '#333',fontSize: 16,lineHeight:28}}>
-                                商品详情商品详情商品详情商品商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情商品详情</Text>
+                                {this.state.data?this.state.data.describe:"暂无详情"}
+                                </Text>
                         </View>
                     </View>
                 </ScrollView>

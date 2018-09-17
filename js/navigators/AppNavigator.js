@@ -40,6 +40,9 @@ import RegisterPage from "../page/setting/RegisterPage";
 import LoginPage from "../page/setting/LoginPage";
 import ApplyStore from "../page/store/ApplyStore";
 import MyStore from "../page/store/MyStore";
+import BusinessUnion from "../page/store/BusinessUnion";
+import BusinessUnionInfo from "../page/store/BusinessUnionInfo";
+import ApplyBusiness from "../page/store/ApplyBusiness";
 import AddShop from "../page/store/AddShop";
 import StoreMall from "../page/store/StoreMall";
 import SearchStore from "../page/store/SearchStore";
@@ -168,6 +171,15 @@ export default AppNavigator = createStackNavigator({
     },
     MyStore: {//我的店铺
         screen: MyStore
+    },
+    BusinessUnion: {//商家联盟
+        screen: BusinessUnion
+    },
+    BusinessUnionInfo: {//商家联盟
+        screen: BusinessUnionInfo
+    },
+    ApplyBusiness: {//申请成为代理
+        screen: ApplyBusiness
     },
 
     RegisterPage: {//注册

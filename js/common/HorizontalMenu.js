@@ -19,10 +19,11 @@ export const KEYS = [""]
 export default class HorizontalMenu extends BaseComponent {
     constructor(props) {
         super(props);
-        this.barScrollItems = this.props.data?this.props.data:['全部'];
+        //this.barScrollItems = this.props.data?this.props.data:['全部'];
         this.state = {
             activeIndex: 0,
             animated: true,
+            //barScrollItems:this.props.data?this.props.data:['全部']
         };
     }
 
@@ -54,8 +55,8 @@ export default class HorizontalMenu extends BaseComponent {
     }
     render() {
         let {animated, activeIndex} = this.state;
-        let {titleStyle, activeTitleStyle, style }= this.props;
-        let barScrollItems = this.barScrollItems;
+        let {titleStyle, activeTitleStyle, style , data }= this.props;
+        let barScrollItems =data;
         return (
             <View style={[{height: 45}]}  >
                 <SegmentedBar

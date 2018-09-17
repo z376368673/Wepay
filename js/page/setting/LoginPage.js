@@ -29,6 +29,7 @@ export default class LoginPage extends BaseComponent {
         this.state = {
             text: '',
             pwd: '',
+            appVersion:"1.2.7"
         }
     }
     componentDidMount() {
@@ -160,7 +161,7 @@ export default class LoginPage extends BaseComponent {
      */
     loginByPwd()   {
         DialogUtils.showLoading("");
-        let url = BaseUrl.loginUrl(this.state.text, this.state.pwd)
+        let url = BaseUrl.loginUrl(this.state.text, this.state.pwd,this.state.appVersion)
         HttpUtils.getData(url)
             .then(result => {
                 DialogUtils.hideLoading()

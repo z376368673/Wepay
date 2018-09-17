@@ -13,8 +13,8 @@ import EditText from "../../common/EditText";
  * 添加商品 / 编辑修改商品
  */
 const width_w = Utils.getWidth() / 3 - 20;
-
-export default class AddShop extends BaseComponent {
+const editPhotos = new Map();
+export default class EditShop extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -29,15 +29,11 @@ export default class AddShop extends BaseComponent {
         this.navigation = this.props.navigation;
         this.params = this.props.navigation.state.params;
         this.data = this.params ? this.params.data : null;
-        this.type = "add"
         this.actionIndex = -1
-        this.editPhotos = new Map();
     }
-
     componentDidMount() {
         // alert(JSON.stringify(this.data))
         if (this.data) {
-            this.type = "edit"
             let pic = [this.data.item.coverPlan,this.data.item.goodsPic2,this.data.item.goodsPic3,
                 this.data.item.goodsPic4,this.data.item.goodsPic5,this.data.item.goodsPic6]
             this.setState({
@@ -48,8 +44,6 @@ export default class AddShop extends BaseComponent {
                 shopImage: this.picToUri(pic)
             })
             //alert(this.data.item.goodsName)
-        }else {
-            this.type = "add"
         }
     }
 
@@ -60,7 +54,7 @@ export default class AddShop extends BaseComponent {
                 uri.push({uri:this.getImgUrl(value)})
             }
         })
-       // alert(JSON.stringify(uri))
+        alert(JSON.stringify(uri))
         return uri
     }
 
@@ -73,31 +67,15 @@ export default class AddShop extends BaseComponent {
             console.log(err, photos);
             if (!err) {
                 let index =  this.actionIndex >-1?this.actionIndex :-1
-                if (index>-1){//当index大于-1的时候 表示选择照片
-                    if (this.type==="edit"){
-                        this.state.shopImage.splice(index, 1,photos[0])
-                        let p = this.state.shopImage
-                        this.setState({ shopImage: p,})
-                    }else {
-                        this.state.photos.splice(index, 1,photos[0])
-                        let p =  this.state.photos
-                        this.setState({ photos: p,})
-                    }
-                    this.editPhotos.set(index,photos[0])
-                }else {//当index小于等于-1的时候 表示添加照片
-
-                    if (this.type==="edit"){ //编辑的时候 修改的是 shopImage
-
-                        let size =  this.state.shopImage.length
-                        this. editPhotos.set(size,photos[0])
-
-                        let p =  this.state.shopImage.concat(photos)
-                        this.setState({ shopImage: p,})
-                    } else { //添加的时候 修改的是 photos
-                        let p =  this.state.photos.concat(photos)
-                        this.setState({ photos: p,})
-                    }
+                if (index>-1){
+                    this.state.photos.splice(index, 1)
+                    editPhotos.set(index,photos[0])
+                }else {
+                    let size =  editPhotos.size
+                     editPhotos.set(size,photos[0])
                 }
+                let p =  this.state.photos.concat(photos)
+                this.setState({ photos: p,})
             }
         })
     };
@@ -107,7 +85,6 @@ export default class AddShop extends BaseComponent {
      * @param {*} photos
      */
     createImg(photos) {
-        //alert("add:"+photos)
         let views = []
         let imgs = []
         photos.map((photo, index) => {
@@ -117,50 +94,29 @@ export default class AddShop extends BaseComponent {
             }
             imgs.push(source)
             views.push(
-                this.getImgView(source,index)
-            )
-        })
-        return views
-    }
-
-    getImgView(photo,index){
-     return   <View
-            key={`image-${index}`}
-            style={{width: width_w, height: width_w, marginLeft: 10, marginTop: 10}}>
-            {/*<TouchableOpacity*/}
-            {/*style={{position: "absolute", zIndex: 1, right: -5, top: -5}}*/}
-            {/*onPress={() => {*/}
-            {/*this.state.photos.splice(index, 1)*/}
-            {/*let data = this.state.photos;*/}
-            {/*this.setState({ photos: data, })*/}
-            {/*}}>*/}
-            {/*<Image*/}
-            {/*style={{width: 15, height: 15,}}*/}
-            {/*source={require("../../../res/images/shanchu-4.png")}/>*/}
-            {/*</TouchableOpacity>*/}
-            <TouchableOpacity
-                onPress={() => this.handleOpenImagePicker(index)}
-            ><Image
-                ref={"img" + index}
-                style={{width: width_w, height: width_w,}}
-                source={photo}
-                resizeMode={"cover"}
-            /></TouchableOpacity>
-        </View>
-    }
-
-    /**
-     * 创建ImagView 显示图片
-     * @param {*} photos
-     */
-    createImgByuri(photos) {
-       // alert("edit:"+photos)
-        let views = []
-        let imgs = []
-        photos.map((photo, index) => {
-            imgs.push(photo)
-            views.push(
-               this.getImgView(photo,index)
+                <View
+                    key={`image-${index}`}
+                    style={{width: width_w, height: width_w, marginLeft: 10, marginTop: 10}}>
+                    {/*<TouchableOpacity*/}
+                        {/*style={{position: "absolute", zIndex: 1, right: -5, top: -5}}*/}
+                        {/*onPress={() => {*/}
+                            {/*this.state.photos.splice(index, 1)*/}
+                            {/*let data = this.state.photos;*/}
+                            {/*this.setState({ photos: data, })*/}
+                        {/*}}>*/}
+                        {/*<Image*/}
+                            {/*style={{width: 15, height: 15,}}*/}
+                            {/*source={require("../../../res/images/shanchu-4.png")}/>*/}
+                    {/*</TouchableOpacity>*/}
+                    <TouchableOpacity
+                       onPress={() => this.handleOpenImagePicker(index)}
+                    ><Image
+                        ref={"img" + index}
+                        style={{width: width_w, height: width_w,}}
+                        source={source}
+                        resizeMode={"cover"}
+                    /></TouchableOpacity>
+                </View>
             )
         })
         return views
@@ -212,7 +168,6 @@ export default class AddShop extends BaseComponent {
             },
             this.state.photos, (result) => {
                 if (result.code === 1) {
-                    this.props.navigation.state.params.refresh()
                     DialogUtils.showMsg("添加商品成功", "知道了", () => {
                         this.props.navigation.goBack()
                     });
@@ -231,15 +186,11 @@ export default class AddShop extends BaseComponent {
         /** sessionId   contents  file */
         let editps = []
         let editIndexs = []
-        this.editPhotos.forEach(function(value, index,){
-            //editIndexs+=index+","
+        editPhotos.forEach(function(value, index,){
             editIndexs.push(index)
             editps.push(value)
         })
-        // if (editIndexs.indexOf(",")>=0) {
-        //     editIndexs =   editIndexs.substring(0,editIndexs.length-1)
-        // }
-        //alert(editIndexs)
+        alert(editIndexs.toString()+"   "+editps.toString())
         HttpUtils.uploadImage(url,
             {
                 sessionId: this.userInfo.sessionId,
@@ -248,11 +199,10 @@ export default class AddShop extends BaseComponent {
                 goodsPrice: this.state.shopPrice,
                 goodsStock: this.state.shopNum,
                 describe: this.state.describe,
-                nums: editIndexs.toString(),
+                nums: editIndexs,
             },
             editps, (result) => {
                 if (result.code === 1) {
-                    this.props.navigation.state.params.refresh()
                     DialogUtils.showMsg("编辑商品成功", "知道了", () => {
                         this.props.navigation.goBack()
                     });
@@ -287,16 +237,16 @@ export default class AddShop extends BaseComponent {
                         </View>
                         <View style={styles.itemView}>
                             <Text style={styles.itemText}>
-                                商品描述</Text>123456789
+                                商品描述</Text>
                             <EditText
                                 style={[{textAlignVertical: 'top', minHeight: 70}, styles.itemTextInput]}
-                                placeholder={'请输入商品介绍(限150字以内)...'}
+                                placeholder={'请输入商品介绍(限80字以内)...'}
                                 placeholderTextColor={'#999'}
                                 underlineColorAndroid='transparent'
                                 keyboardType={"default"}
                                 multiline={true}
                                 numberOfLines={3}
-                                maxLength={150}
+                                maxLength={80}
                                 value={this.state.describe+""}
                                 onChangeText={(text) => this.setState({describe: text})}/>
                         </View>
@@ -342,8 +292,8 @@ export default class AddShop extends BaseComponent {
                             }}> *上传商品主图,最多6张(默认第一张为封面图)</Text>
                         </View>
                         <View style={[{flexWrap: "wrap", flexDirection: "row", padding: 10}]}>
-                            {this.state.shopImage.length>0?this.createImgByuri(this.state.shopImage) :this.createImg(this.state.photos)}
-                            {this.state.photos.length >= 6 ||this.state.shopImage.length>=6 ? null :
+                            {this.createImg(this.state.photos)}
+                            {this.state.photos.length >= 6 ? null :
                                 <TouchableOpacity onPress={() => this.handleOpenImagePicker()}>
                                     <Image
                                         source={require("../../../res/images/addimg.png")}

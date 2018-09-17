@@ -144,8 +144,9 @@ export default class DialogUtils {
      * 关闭加载动画
      */
     static hideLoading() {
-        if (this.loadingView)
+        if (this.loadingView){
             this.loadingView.close();
+        }
     }
     /**
      * 底部弹出选择框
@@ -316,8 +317,6 @@ export default class DialogUtils {
                 }
             });
     }
-
-
 
 
    static onImagePress(images,index) {

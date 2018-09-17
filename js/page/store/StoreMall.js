@@ -32,17 +32,47 @@ export default class StoreMall extends BaseComponent {
         super(props);
         this.state = {
             activeIndex: 0,
+            typeTitle:["全部"],
         }
-
         this.userInfo = this.getUserInfo();
+        this.typeTitleData =[]
+        this.typeId = 0;
+
     }
 
     //界面加载完成
     componentDidMount() {
-        SplashScreen.hide();
+        SplashScreen.hide()
         this._refreshData()
+        this.getCateList()
         //加载商品的分类
         // this.getCateList();
+    }
+    /**
+     * 获取商品分类
+     */
+    getCateList() {
+        let url = BaseUrl.getCateList()
+        HttpUtils.getData(url)
+            .then(result => {
+                if (result.code === 1) {
+                    //alert(JSON.stringify(result.data))
+                    this.typeTitleData = result.data
+                    this.setState({
+                        typeTitle:this.getTypeName(result.data),
+                    })
+                }
+            })
+    }
+
+    getTypeName(data){
+        let nameArr = []
+        data.map((value,index)=>{
+            nameArr.push(value.name)
+        })
+         nameArr =  ["全部"].concat(nameArr)
+        // alert(nameArr.toString())
+        return nameArr;
     }
 
     render() {
@@ -57,22 +87,29 @@ export default class StoreMall extends BaseComponent {
                 />
                 <View style={{marginBottom: 5, flexDirection: "column"}}>
                     <HorizontalMenu
-                        data={['全部', '餐饮', '生鲜']}
+                        data={this.state.typeTitle}
                         titleStyle={{color: Colors.text3, fontSize: 16, marginLeft: 10, marginRight: 10}}
                         activeTitleStyle={{color: Colors.mainColor, fontSize: 16, marginLeft: 10, marginRight: 10}}
                         onSegmentedBarChange={(index, value) => {
-                            alert(index + value)
+                            if (index){
+                                this.typeId = this.typeTitleData[index-1].id
+                            }else {
+                                this.typeId = 0
+                            }
+                            this._refreshData()
+                            //alert(index + value)
                         }}/>
                 </View>
                 <View style={[BaseStyles.container_column, {backgroundColor: "#f1f1f1"}]}>
                     <RefreshFlatList
                         ref={refList => this.refList = refList}
                         numColumns={2}
+                        minLength={10}
                         onRefreshs={() => this._refreshData()}
                         onLoadData={() => this._onLoadData()}
                         isDownLoad={true}
                         ListHeaderComponent={() => this._headView()}
-                        renderItem={(items) => this.numColumns === 1 ? this._getStoreMall(items) : this._getStore(items)}/>
+                        renderItem={(items) =>  this._getStore(items)}/>
                 </View>
                 {/*<StoreCommon navigation={this.props.navigation} tabLabel='商品列表' numColumns={2} {...this.props}/>*/}
             </View>
@@ -137,7 +174,8 @@ export default class StoreMall extends BaseComponent {
      * @param {*} pageIndex
      */
     getData(isRefesh) {
-        this.url = BaseUrl.getShopBySearch(this.userInfo.sessionId, this.pageIndex)
+        this.url = BaseUrl.getHomeShop(this.userInfo.sessionId, this.pageIndex,this.typeId)
+        alert(this.url)
         HttpUtils.getData(this.url)
             .then(result => {
                 if (result.code === 1) {
