@@ -74,19 +74,24 @@ export default class AdView extends BaseComponent {
 
     onClick(data){
         let type = data.bannerType?data.bannerType:-1
+       // alert(type)
         switch (type) {
             case 1:
-                this.props.navigation.navigate('BusinessUnion');
-                break
-            case 2:
+                alert(type)
                 this.props.navigation.navigate('StroeDetails',{
                     storeId:data.shopId?data.shopId:0
                 });
+                break
+            case 2:
+                this.props.navigation.navigate('BusinessUnion');
                 break
             case 3:
                 this.props.navigation.navigate('ShopDetails',{
                     shopId:data.goodsId?data.goodsId:0
                 });
+                break
+            case 4:
+
                 break
             default:
                 break

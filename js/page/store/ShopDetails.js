@@ -148,8 +148,8 @@ export default class ShopDetails extends BaseComponent {
                                 style={{color: '#333',fontSize: 16,}}>
                                 商品详情:</Text>
                             <Text
-                                style={{ color: '#333',fontSize: 16,lineHeight:28}}>
-                                {this.state.data?this.state.data.describe:"暂无详情"}
+                                style={{ color: '#555',fontSize: 15,lineHeight:28}}>
+                                {this.state.data?this.state.data.describe?this.state.data.describe:"此商品暂无详情":"此商品暂无详情"}
                                 </Text>
                         </View>
                     </View>
@@ -163,7 +163,7 @@ export default class ShopDetails extends BaseComponent {
                     marginBottom:Utils.isFullScreenPhone()?30:0,
                 }}>
                     <TouchableOpacity
-                        style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: "#fff",}}
+                        style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: "#fff",paddingTop: 8}}
                         activeOpacity={0.8}
                         onPress={() => this.onClicks("store")}>
                         <View style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -177,7 +177,7 @@ export default class ShopDetails extends BaseComponent {
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: "#fff",}}
+                        style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: "#fff",paddingTop: 8}}
                         activeOpacity={0.8}
                         onPress={() => this.callStore(this.state.data.phone)}>
                         <View style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -191,7 +191,7 @@ export default class ShopDetails extends BaseComponent {
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        style={{flex: 1.5, justifyContent: 'center', alignItems: 'center', backgroundColor: "#d11",}}
+                        style={{flex: 1.5, justifyContent: 'center', alignItems: 'center', backgroundColor: "#d11",paddingTop: 3}}
                         activeOpacity={0.8}
                         onPress={() => this.buy()}
                     >

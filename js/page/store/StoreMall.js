@@ -119,6 +119,7 @@ export default class StoreMall extends BaseComponent {
     _headView() {
         return <View style={{marginBottom: 5, flexDirection: "column", backgroundColor: Colors.white}}>
             <AdView
+                {...this.props}
                 action={"store"}
                 height={Utils.getWidth() / 3}/>
             <View style={{flexDirection: "row", padding: 10, justifyContent: "center"}}>
@@ -175,7 +176,7 @@ export default class StoreMall extends BaseComponent {
      */
     getData(isRefesh) {
         this.url = BaseUrl.getHomeShop(this.userInfo.sessionId, this.pageIndex,this.typeId)
-        alert(this.url)
+        //alert(this.url)
         HttpUtils.getData(this.url)
             .then(result => {
                 if (result.code === 1) {
