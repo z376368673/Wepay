@@ -21,10 +21,12 @@ import ViewUtils from '../../util/ViewUtils';
 import RefreshFlatList from "../../common/RefreshFlatList"
 import DialogUtils from '../../util/DialogUtils';
 import UserInfo from "../../model/UserInfo";
+import FastImage from "react-native-fast-image";
+import Colors from "../../util/Colors";
 
 //商铺列表
 
-const window_w = Utils.getWidth();
+const window_w = Utils.getWidth()/3-10;
 export default class StoreList extends BaseComponent {
     constructor(props) {
         super(props);
@@ -41,12 +43,12 @@ export default class StoreList extends BaseComponent {
         // 每次进入商城 刷新获取一下经纬度
        // this._refreshData()
         Utils.getLocation((coords) => {
-                UserInfo.longitude = coords.longitude
-                UserInfo.latitude = coords.latitude
+                this.longitude = coords.longitude
+                this.latitude = coords.latitude
                 this._refreshData()
             },
             (error)=>{
-                DialogUtils.showToast(error)
+                DialogUtils.showToast(error+"")
                 this._refreshData()
             }
         )
@@ -70,7 +72,7 @@ export default class StoreList extends BaseComponent {
     getData(isRefesh) {
         this.url = BaseUrl.getStoreList(this.userInfo.sessionId,
             this.pageIndex, this.longitude, this.latitude)
-        //alert(JSON.stringify(this.url))
+       // alert(JSON.stringify(this.url))
         HttpUtils.getData(this.url)
             .then(result => {
                 //alert(JSON.stringify(result))
@@ -108,6 +110,7 @@ export default class StoreList extends BaseComponent {
                 <RefreshFlatList
                     ref={refList => this.refList = refList}
                     isDownLoad ={true}
+                    minLength={10}
                     onRefreshs={() => this._refreshData()}
                     onLoadData={() => this._onLoadData()}
                     renderItem={(items) =>  this._getStoreMall(items)} />
@@ -136,11 +139,11 @@ export default class StoreList extends BaseComponent {
         } else {
             distance = data.item.distance + "米"
         }
-        return <View
+        return <View style={{marginBottom: 8,}}><View
             style={{
                 backgroundColor: '#fff',
                 alignItems: 'center',
-                marginBottom: 8,
+
                 flexDirection: 'row',
                 padding: 10
             }}>
@@ -184,6 +187,44 @@ export default class StoreList extends BaseComponent {
                 </TouchableOpacity>
             </View>
         </View>
+            <View style={{backgroundColor:Colors.lineColor,height:0.5}}></View>
+            <View style={{flexDirection:"row",backgroundColor:"#fff",padding:10}}>
+                {this.getShopImg(data.item)}
+            </View>
+        </View>
+    }
+
+    getShopImg(data){
+        let views = []
+        data.shopGoods.forEach((value,index)=>{
+            let img = {uri: this.getImgUrl(value.coverPlan)}
+            views.push(
+                <TouchableOpacity
+                    key={index+""}
+                    activeOpacity={0.8}
+                    style={{width: window_w , height: window_w,marginLeft:2,marginRight:2,borderRadius:10}}
+                    onPress={() => this.goDetails(value)}
+                >
+                    <FastImage
+                        style={{width: window_w , height: window_w ,borderRadius:10}}
+                        source={img}
+                        resizeMode={FastImage.resizeMode.cover}
+                    />
+                </TouchableOpacity>
+            )
+        })
+        return views
+    }
+
+    /**
+     * 去商品详情
+     * @param {*} item
+     */
+    goDetails(item) {
+        //alert(JSON.stringify(item))
+        this.props.navigation.navigate('ShopDetails', {
+            shopId: item.goodsId,
+        });
     }
     onComeInStore(data) {
         this.props.navigation.navigate('StoreDetails', {

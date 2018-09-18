@@ -12,7 +12,7 @@ export default class Utils {
         return require('Dimensions').get('window').height
     }
     static  isFullScreenPhone(){
-       return this.getHeight()/this.getWidth()<18/10?false:true
+       return this.getHeight()/this.getWidth()<18/10&&Platform.OS==="ios"?false:true
     }
 
 
@@ -79,8 +79,8 @@ export default class Utils {
                 callback(location.coords)
                 DialogUtils.showToast("定位成功")
             },
-            (error) => {
-                error("定位失败,请开启权限")
+            ()=> {
+               error("定位失败,请开启权限")
                 //DialogUtils.showToast("定位失败,请开启权限"+JSON.stringify(error))
               //  console.warn(error.message)
             },

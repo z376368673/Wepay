@@ -35,6 +35,7 @@ export default class AdView extends BaseComponent {
     //界面加载完成
     componentDidMount() {
        this.getData()
+
     }
 
     /**
@@ -48,6 +49,7 @@ export default class AdView extends BaseComponent {
         } else  if (this.props.action=="store"){
             this. url = BaseUrl.getMallBanner()
         }
+       // alert(this. url )
         HttpUtils.getData(this.url)
             .then(result => {
                 if (result.code === 1) {

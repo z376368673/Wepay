@@ -18,6 +18,8 @@ export default class AddShop extends BaseComponent {
     constructor(props) {
         super(props);
         this.state = {
+            goodsId:"",
+            goodsStatus:"",//商品状态1.未上架，2.已上架
             shopName: "",
             shopPrice: "",
             shopNum: "",
@@ -41,6 +43,8 @@ export default class AddShop extends BaseComponent {
             let pic = [this.data.item.coverPlan,this.data.item.goodsPic2,this.data.item.goodsPic3,
                 this.data.item.goodsPic4,this.data.item.goodsPic5,this.data.item.goodsPic6]
             this.setState({
+                goodsStatus:this.data.item.goodsStatus,
+                goodsId:this.data.item.id,
                 shopName: this.data.item.goodsName,
                 shopPrice: this.data.item.goodsPrice,
                 shopNum: this.data.item.goodsStock,
@@ -127,17 +131,6 @@ export default class AddShop extends BaseComponent {
      return   <View
             key={`image-${index}`}
             style={{width: width_w, height: width_w, marginLeft: 10, marginTop: 10}}>
-            {/*<TouchableOpacity*/}
-            {/*style={{position: "absolute", zIndex: 1, right: -5, top: -5}}*/}
-            {/*onPress={() => {*/}
-            {/*this.state.photos.splice(index, 1)*/}
-            {/*let data = this.state.photos;*/}
-            {/*this.setState({ photos: data, })*/}
-            {/*}}>*/}
-            {/*<Image*/}
-            {/*style={{width: 15, height: 15,}}*/}
-            {/*source={require("../../../res/images/shanchu-4.png")}/>*/}
-            {/*</TouchableOpacity>*/}
             <TouchableOpacity
                 onPress={() => this.handleOpenImagePicker(index)}
             ><Image
@@ -166,11 +159,40 @@ export default class AddShop extends BaseComponent {
         return views
     }
 
+    /**
+     * 删除商品
+     */
+    onDelete(){
+        //alert(JSON.stringify(this.state.photos))
+       deleShop=()=>{
+           let url = BaseUrl.deleteShopUrl(this.userInfo.sessionId,this.state.goodsId)
+           alert(url)
+           /** sessionId   contents  file */
+           HttpUtils.getData(url)
+               .then(result => {
+                   if (result.code === 1) {
+                       this.props.navigation.state.params.refresh()
+                       DialogUtils.showMsg("删除成功", "知道了", () => {
+                           this.props.navigation.goBack()
+                       });
+                   } else if (result.code === 2||result.code === 4) {
+                       DialogUtils.showToast(result.msg)
+                       this.goLogin(this.props.navigation)
+                   } else {
+                       DialogUtils.showToast(result.msg)
+                   }
+               })
+       }
+
+        DialogUtils.showPop("您确认要删除此商品",()=>deleShop(), ()=>{},"删除","取消")
+    }
 
     onClicks() {
         if (this.type == "add") {
             if (this.state.shopName.length < 1) {
                 DialogUtils.showMsg("请输入商品名称");
+            } else if (this.state.describe.length < 10) {
+                DialogUtils.showMsg("请输入商品描述(至少10个字)");
             } else if (this.state.shopPrice.length < 1) {
                 DialogUtils.showMsg("请输入商品价格");
             } else if (this.state.shopNum.length < 1) {
@@ -184,6 +206,8 @@ export default class AddShop extends BaseComponent {
         } else {
             if (this.state.shopName.length < 1) {
                 DialogUtils.showMsg("请输入商品名称");
+            } else if (this.state.describe.length < 10) {
+                DialogUtils.showMsg("请输入商品描述(至少10个字)");
             } else if (this.state.shopPrice.length < 1) {
                 DialogUtils.showMsg("请输入商品价格");
             } else if (this.state.shopNum.length < 1) {
@@ -287,7 +311,7 @@ export default class AddShop extends BaseComponent {
                         </View>
                         <View style={styles.itemView}>
                             <Text style={styles.itemText}>
-                                商品描述</Text>123456789
+                                商品描述</Text>
                             <EditText
                                 style={[{textAlignVertical: 'top', minHeight: 70}, styles.itemTextInput]}
                                 placeholder={'请输入商品介绍(限150字以内)...'}
@@ -359,7 +383,7 @@ export default class AddShop extends BaseComponent {
                             activeOpacity={0.8}
                             style={{
                                 height: 45, marginTop: 30, marginLeft: 15,
-                                marginRight: 15, marginBottom: 50, borderRadius: 8,
+                                marginRight: 15, marginBottom: 20, borderRadius: 8,
                                 justifyContent: 'center', alignItems: 'center',
                                 backgroundColor: mainColor,
                             }} onPress={() => this.onClicks("add")}>
@@ -369,6 +393,20 @@ export default class AddShop extends BaseComponent {
                                 fontSize: 20,
                             }}>确认{this.type === "add" ? "添加" : "修改"}</Text>
                         </TouchableOpacity>
+                        {this.type === "edit"&&this.state.goodsStatus== "1" ?<TouchableOpacity
+                            activeOpacity={0.8}
+                            style={{
+                                height: 45,  marginLeft: 15,
+                                marginRight: 15, marginBottom: 50, borderRadius: 8,
+                                justifyContent: 'center', alignItems: 'center',
+                                backgroundColor: mainColor,
+                            }} onPress={() => this.onDelete()}>
+                            <Text style={{
+                                alignSelf: "center",
+                                color: '#FFF',
+                                fontSize: 20,
+                            }}>删除商品</Text>
+                        </TouchableOpacity>:null}
                     </View>
                 </ScrollView>
             </View>

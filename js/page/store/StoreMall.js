@@ -131,7 +131,7 @@ export default class StoreMall extends BaseComponent {
                         <Image source={require("../../../res/images/new_4.png")}
                                style={{width: 40, height: 40}}
                         />
-                        <Text style={{fontSize: 14, color: Colors.text3, marginTop: 8}}>新平尝鲜</Text>
+                        <Text style={{fontSize: 14, color: Colors.text3, marginTop: 8}}>新品尝鲜</Text>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity

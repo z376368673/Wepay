@@ -29,7 +29,7 @@ export default class LoginPage extends BaseComponent {
         this.state = {
             text: '',
             pwd: '',
-            appVersion:"1.2.7"
+            appVersion:"1.2.8"
         }
     }
     componentDidMount() {
@@ -43,7 +43,7 @@ export default class LoginPage extends BaseComponent {
             }
         })
         //热更新后添加这个代码 不然貌似热更新会自动回滚
-        //Platform.OS ==="ios"? {}:codePush.sync()
+        Platform.OS ==="ios"? {}:codePush.sync()
     }
     render() {
         return (

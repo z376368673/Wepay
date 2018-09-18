@@ -129,10 +129,10 @@ export default class BusinessUnion extends BaseComponent {
                     <TouchableOpacity
                         activeOpacity={0.8}
                         style={{
+                            flex:1,
                             height: 45,
                             marginTop: 20,
-                            marginLeft: 15,
-                            marginRight: 15,
+                            marginRight: 25,
                             borderRadius: 8,
                             justifyContent: 'center',
                             alignItems: 'center',
@@ -144,7 +144,8 @@ export default class BusinessUnion extends BaseComponent {
                             alignSelf: "center",
                             color: '#FFF',
                             fontSize: 16,
-                        }}> 申请成为代理 </Text>
+                           // status: 2,//用户当前状态（是否是代理）1.可申请，2.未达到条件，3.正在审核，4已经是代理
+                        }}> {this.state.status==4?"查看代理信息":"申请成为代理"}</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -167,7 +168,7 @@ export default class BusinessUnion extends BaseComponent {
                         fontSize: 14, numberOfLines: 1, ellipsizeMode: "tail"
                     }}> {this.state.address ? this.state.address : "请选择区域"} </Text>
                 </TouchableOpacity>
-                <EditText
+                <TextInput
                     style={[{
                         height: 35,
                         width: 90,
@@ -183,11 +184,12 @@ export default class BusinessUnion extends BaseComponent {
                     placeholder={'请输入镇名'}
                     placeholderTextColor={Colors.text8}
                     underlineColorAndroid='transparent'
-                    value={this.state.townName + ""}
-                    maxLength={12}
-                    onChangeText={(text) => {
-                        this.setState({townName: text})
-                    }}
+                    // defaultValue={this.state.townName}
+                    // //value={this.state.townName}
+                    maxLength={8}
+                    // onChangeText={(text) => {
+                    //     this.setState({townName: text})
+                    // }}
                 />
                 <TouchableOpacity
                     onPress={()=>this.onClicks(2)}

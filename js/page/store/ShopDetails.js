@@ -17,7 +17,7 @@ import Colors from "../../util/Colors";
 /**
  * 商品详情
  */
-const width_w = Utils.getWidth() / 2 - 20;
+const width_w = Utils.getWidth();
 export default class ShopDetails extends BaseComponent {
     constructor(props) {
         super(props);
@@ -31,7 +31,7 @@ export default class ShopDetails extends BaseComponent {
 
     shouldComponentUpdate() {
         this.shopId = this.props.navigation.state.params.shopId
-        this.getShopDetail(this.shopId)
+        //this.getShopDetail(this.shopId)
         return true
     }
 
@@ -54,8 +54,8 @@ export default class ShopDetails extends BaseComponent {
                 if (result.code === 1) {
                     //alert(JSON.stringify(result.data))
                     //console.warn(JSON.stringify(result.data))
-                    let pic = [result.data.coverPlan,result.data.goodsPic2,result.data.goodsPic3,
-                        result.data.goodsPic4,result.data.goodsPic5,result.data.goodsPic6]
+                    let pic = [result.data.coverPlan, result.data.goodsPic2, result.data.goodsPic3,
+                        result.data.goodsPic4, result.data.goodsPic5, result.data.goodsPic6]
                     this.setState({
                         data: result.data,
                         coverPlan: this.picToUri(pic),
@@ -69,28 +69,28 @@ export default class ShopDetails extends BaseComponent {
             })
     }
 
-    picToUri(pic){
+    picToUri(pic) {
         let uri = []
-        pic.map((value,index)=>{
-            if (value.length>=1){
-                uri.push({uri:this.getImgUrl(value)})
+        pic.map((value, index) => {
+            if (value.length >= 1) {
+                uri.push(value)
             }
         })
         // alert(JSON.stringify(uri))
         return uri
     }
-    itemView(data,index) {
-        return
-        <TouchableOpacity
-            style={{flex: 1,width: window_width, height: window_height / 3 * 1.7,backgroundColor:"#666"}}
-            activeOpacity={1}
-            onPress={()=>alert(data)}
-        >
+
+    itemView(data, index) {
+        return  <TouchableOpacity
+            //key={index.toString()}
+            onPress={() => {
+            }}
+            activeOpacity={0.8}>
             <FastImage
-                style={{width: window_width, height: window_height / 3 * 1.7,  }}
-                source={data}
-                resizeMode={FastImage.resizeMode.cover}
-            /></TouchableOpacity>
+                style={{width:width_w, height: width_w+80}}
+                //source={{uri:this.getImgUrl(data)}}
+            source={require("../../../res/images/lianmeng-bg.png")}/>
+        </TouchableOpacity>
     }
 
     render() {
@@ -100,14 +100,11 @@ export default class ShopDetails extends BaseComponent {
                     title={this.state.data ? this.state.data.goodsName : "商品详情"}
                     navigation={this.props.navigation}
                 />
-                <ScrollView style={{flex:1}}>
+                <ScrollView style={{flex: 1}}>
                     <View style={[BaseStyles.container_column, {backgroundColor: "#f1f1f1",}]}>
                         <ViewPager
-                            data={this.state.coverPlan}
-                            height={window_height / 3 * 1.7}
-                            //itemView = {(data,index)=>this.itemView(data,index)}
-                            onChange={(index)=>{}}
-                        />
+                           data={this.state.coverPlan}
+                           height={width_w}  />
                         <View style={{flexDirection: 'row', padding: 10, backgroundColor: "#fff"}}>
                             <Text
                                 style={{
@@ -130,27 +127,27 @@ export default class ShopDetails extends BaseComponent {
                         </View>
 
                         {/*<TouchableOpacity*/}
-                            {/*activeOpacity={0.8}*/}
-                            {/*onPress={() => this.onClicks("store")}*/}
-                            {/*style={{*/}
-                                {/*borderWidth: 1, borderColor: "#999", justifyContent: "center",*/}
-                                {/*alignItems: "center", margin: 15, backgroundColor: "#fff", borderRadius: 1000*/}
-                            {/*}}>*/}
-                            {/*<Text style={{*/}
-                                {/*fontSize: 18,*/}
-                                {/*color: "#333",*/}
-                                {/*padding: 8*/}
-                            {/*}}>{this.state.data ? this.state.data.shopName : ""}</Text>*/}
+                        {/*activeOpacity={0.8}*/}
+                        {/*onPress={() => this.onClicks("store")}*/}
+                        {/*style={{*/}
+                        {/*borderWidth: 1, borderColor: "#999", justifyContent: "center",*/}
+                        {/*alignItems: "center", margin: 15, backgroundColor: "#fff", borderRadius: 1000*/}
+                        {/*}}>*/}
+                        {/*<Text style={{*/}
+                        {/*fontSize: 18,*/}
+                        {/*color: "#333",*/}
+                        {/*padding: 8*/}
+                        {/*}}>{this.state.data ? this.state.data.shopName : ""}</Text>*/}
                         {/*</TouchableOpacity>*/}
 
-                        <View style={{  padding: 10  ,backgroundColor:"#fff",marginTop: 10,flex:1,}}>
+                        <View style={{padding: 10, backgroundColor: "#fff", marginTop: 10, flex: 1,}}>
                             <Text
-                                style={{color: '#333',fontSize: 16,}}>
+                                style={{color: '#333', fontSize: 16,}}>
                                 商品详情:</Text>
                             <Text
-                                style={{ color: '#555',fontSize: 15,lineHeight:28}}>
-                                {this.state.data?this.state.data.describe?this.state.data.describe:"此商品暂无详情":"此商品暂无详情"}
-                                </Text>
+                                style={{color: '#555', fontSize: 15, lineHeight: 28}}>
+                                {this.state.data ? this.state.data.describe ? this.state.data.describe : "此商品暂无详情" : "此商品暂无详情"}
+                            </Text>
                         </View>
                     </View>
                 </ScrollView>
@@ -160,10 +157,16 @@ export default class ShopDetails extends BaseComponent {
                     justifyContent: 'center',
                     alignItems: 'center',
                     backgroundColor: "#fff",
-                    marginBottom:Utils.isFullScreenPhone()?30:0,
+                    marginBottom: Utils.isFullScreenPhone() ? 15 : 0,
                 }}>
                     <TouchableOpacity
-                        style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: "#fff",paddingTop: 8}}
+                        style={{
+                            flex: 1,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backgroundColor: "#fff",
+                            paddingTop: 8
+                        }}
                         activeOpacity={0.8}
                         onPress={() => this.onClicks("store")}>
                         <View style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -177,7 +180,13 @@ export default class ShopDetails extends BaseComponent {
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: "#fff",paddingTop: 8}}
+                        style={{
+                            flex: 1,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backgroundColor: "#fff",
+                            paddingTop: 8
+                        }}
                         activeOpacity={0.8}
                         onPress={() => this.callStore(this.state.data.phone)}>
                         <View style={{justifyContent: 'center', alignItems: 'center'}}>
@@ -191,7 +200,13 @@ export default class ShopDetails extends BaseComponent {
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        style={{flex: 1.5, justifyContent: 'center', alignItems: 'center', backgroundColor: "#d11",paddingTop: 3}}
+                        style={{
+                            flex: 1.5,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backgroundColor: "#d11",
+                            paddingTop: 3
+                        }}
                         activeOpacity={0.8}
                         onPress={() => this.buy()}
                     >
