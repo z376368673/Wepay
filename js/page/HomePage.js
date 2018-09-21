@@ -153,67 +153,64 @@ export default class HomePage extends BaseComponent {
                                     UID:{this.props.AppStore.userInfo.userid}</Text>
                                 </View></TouchableOpacity>
 
-                            {/* 余额积分布局*/}
-                            <View style={[BaseStyles.container_row, {
-                                alignItems: 'center',
-                                justifyContent: 'space-around',
-                                padding: 10,
-                                backgroundColor: Colors.white,
-                                borderRadius: 20,
-                                height: 100,
-                                marginLeft: 15,
-                                marginRight: 15,
-                                width: Utils.getWidth() - 30,
-                                position: "absolute",
-                                bottom: -50,
-                            }]}>
-                                <TouchableOpacity
-                                    activeOpacity={0.8}
-                                    onPress={() => this.onClicks(13)}
-                                >
-                                    <View style={{flexDirection: 'column', alignItems: "center"}}>
-                                        <Text style={{
-                                            fontSize: 16,
-                                            color: Colors.mainColor
-                                        }}>￥{this.props.AppStore.userInfo.cangkuNum}</Text>
-                                        <Text style={{fontSize: 16, color: Colors.text3, marginTop: 10}}>余额</Text>
-                                    </View></TouchableOpacity>
+                        </View>
 
-                                {/*扫描二维码布局*/}
-                                <TouchableOpacity
-                                    activeOpacity={1}
-                                    onPress={() => this.onClicks(12)}
-                                ><View
-                                    style={[BaseStyles.container_column, {
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                    }]}>
-                                    <Image
-                                        style={{width: 60, height: 60, marginLeft: 2, }}
-                                        source={require('../../res/images/saoma.png')}
-                                    />
+                        {/* 余额积分布局*/}
+                        <View style={[BaseStyles.container_row, {
+                            alignItems: 'center',
+                            justifyContent: 'space-around',
+                            padding: 10,
+                            backgroundColor: Colors.white,
+                            borderRadius: 20,
+                            height: 100,
+                            marginLeft: 15,
+                            marginRight: 15,
+                            width: Utils.getWidth() - 30,
+                            //position: "absolute",
+                            zIndex:1,
+                            marginTop:-50
+                            // top: -50,
+                        }]}>
+                            <TouchableOpacity
+                                activeOpacity={0.8}
+                                onPress={() => this.onClicks(13)}
+                            >
+                                <View style={{flexDirection: 'column', alignItems: "center"}}>
+                                    <Text style={{
+                                        fontSize: 16,
+                                        color: Colors.mainColor
+                                    }}>￥{this.props.AppStore.userInfo.cangkuNum}</Text>
+                                    <Text style={{fontSize: 16, color: Colors.text3, marginTop: 10}}>余额</Text>
                                 </View></TouchableOpacity>
 
-                                <TouchableOpacity
-                                    activeOpacity={0.8}
-                                    onPress={() => this.onClicks(14)}
-                                >
-                                    <View style={{flexDirection: 'column', alignItems: "center"}}>
-                                        <Text style={{
-                                            fontSize: 16,
-                                            color: Colors.mainColor
-                                        }}>￥{this.props.AppStore.userInfo.fengmiNum}</Text>
-                                        <Text style={{fontSize: 16, color: Colors.text3, marginTop: 10}}>积分</Text>
-                                    </View></TouchableOpacity>
-                            </View>
+                            {/*扫描二维码布局*/}
+                            <TouchableOpacity
+                                activeOpacity={1}
+                                onPress={() => this.onClicks(12)}
+                            ><View
+                                style={[BaseStyles.container_column, {
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }]}>
+                                <Image
+                                    style={{width: 60, height: 60, marginLeft: 2, }}
+                                    source={require('../../res/images/saoma.png')}
+                                />
+                            </View></TouchableOpacity>
+
+                            <TouchableOpacity
+                                activeOpacity={0.8}
+                                onPress={() => this.onClicks(14)}
+                            >
+                                <View style={{flexDirection: 'column', alignItems: "center"}}>
+                                    <Text style={{
+                                        fontSize: 16,
+                                        color: Colors.mainColor
+                                    }}>￥{this.props.AppStore.userInfo.fengmiNum}</Text>
+                                    <Text style={{fontSize: 16, color: Colors.text3, marginTop: 10}}>积分</Text>
+                                </View></TouchableOpacity>
                         </View>
-                        {/*<Carousel*/}
-                        {/*style={{ width: screen_width, height: screen_width / 4 }}*/}
-                        {/*control={() => { return <Carousel.Control /> }}*/}
-                        {/*>*/}
-                        {/*{this.setImgToBanner(this.state.bannerArray)}*/}
-                        {/*</Carousel>*/}
-                        <View style={[BaseStyles.container_row, {flexWrap: 'wrap', marginTop: 60}]}>
+                        <View style={[BaseStyles.container_row, {flexWrap: 'wrap', marginTop: 10}]}>
                             {this._itemView(() => this.onClicks(2), require('../../res/images/zhuanru.png'), "收款")}
                             {this._itemView(() => this.onClicks(1), require('../../res/images/zhuanchu.png'), "转账")}
                             {this._itemView(() => this.onClicks(5), require('../../res/images/shuzi.png'), "数字资产")}
