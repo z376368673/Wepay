@@ -1,6 +1,5 @@
-const url = 'http://wp.wepay168.com/wepay'  //正式服务器
-//const url = 'http://192.168.0.10:8081/wepay'
-//const url = 'http://121.201.46.206/wepay'      //测试服务器
+//const url = 'http://wp.wepay168.com/wepay'  //正式服务器
+const url = 'http://192.168.0.10:8081/tot'      //测试服务器
 //const url = 'http://103.206.121.128:8080/wepay'
 
 
@@ -11,6 +10,8 @@ export default class BaseUrl {
      *
      * @param {*} phone
      * @param {*} pwd
+     *
+     * post
      *
      * @return
         "userid": 26536,
@@ -27,8 +28,8 @@ export default class BaseUrl {
      "fengmiNum": 501.996,
      "todayReleas": 1.004
      */
-    static loginUrl(phone, pwd,appVersion) {
-        return url + "/user/login?account=" + phone + "&password=" + pwd+ "&appVersion=" + appVersion
+    static loginUrl() {
+        return url + "/member/logging"
     }
 
     /**
@@ -119,7 +120,7 @@ export default class BaseUrl {
      * @return  1
      */
     static updateUserName(sessionId, userName) {
-        return url + "/user/updateUserName?sessionId=" + sessionId + "&userName=" + userName;
+        return url + "/member/updateUserName?sessionId=" + sessionId + "&userName=" + userName;
     }
 
     /**
@@ -130,7 +131,7 @@ export default class BaseUrl {
      "data": 537461
      */
     static getVerificationCodeUrl(mobile) {
-        return url + "/user/sendCode?mobile=" + mobile
+        return url + "/member/sendCode?mobile=" + mobile
     }
 
     /**
@@ -145,7 +146,7 @@ export default class BaseUrl {
      * @return  1
      */
     static getRegisterUrl() {
-        return url + "/user/register"
+        return url + "/member/register"
     }
 
     /**
@@ -180,7 +181,7 @@ export default class BaseUrl {
      * @return  1
      */
     static getForgotPwdUrl() {
-        return url + "/user/forgotPwd"
+        return url + "/member/forgotPwd"
     }
 
     /**
@@ -192,7 +193,7 @@ export default class BaseUrl {
      * @return  1
      */
     static getForgotPayPwdUrl() {
-        return url + "/user/forgotPayPwd"
+        return url + "/member/forgotPayPwd"
     }
 
     /**
@@ -205,7 +206,7 @@ export default class BaseUrl {
      * @return  1
      */
     static getUpdatePayPwdUrl() {
-        return url + "/user/updatePayPwd"
+        return url + "/member/updatePayPwd"
     }
 
     /**
@@ -218,7 +219,7 @@ export default class BaseUrl {
      * @return  1
      */
     static getUpdateLoginPwdUrl() {
-        return url + "/user/updateLoginPwd"
+        return url + "/member/updateLoginPwd"
     }
 
     /**
@@ -260,9 +261,11 @@ export default class BaseUrl {
      * @param {*} cardNumber 银行卡号
      * @param {*} isDefault 是否默认绑定 0  是  ， 1  不是
      *
+     * post
+     *
      */
-    static addBankCardUrl(sessionId, cardId, holdName, openCard, cardNumber, isDefault) {
-        return url + "/bank/addBank?sessionId=" + sessionId + "&cardId=" + cardId + "&holdName=" + holdName + "&openCard=" + openCard + "&cardNumber=" + cardNumber + "&isDefault=" + isDefault;
+    static addBankCardUrl() {
+        return url + "/bank/addBank"
     }
 
     /**

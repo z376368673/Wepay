@@ -44,9 +44,9 @@ export default class ViewUtils {
             { flexDirection: 'row', backgroundColor: "#fff", padding: 10 }]}>
                 <Image source={img}
                     style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: 20,
+                        width: 30,
+                        height: 30,
+                        borderRadius: 15,
                         marginLeft: 10
                     }} />
                 <Text style={{ color: "#333", fontSize: 16, marginLeft: 10, flex: 1 }}>{text} </Text>
@@ -78,9 +78,9 @@ export default class ViewUtils {
             { flexDirection: 'row', backgroundColor: "#fff", padding: 10 }]}>
                 <Image source={img}
                     style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: 20,
+                        width: 30,
+                        height: 30,
+                        borderRadius: 15,
                         marginLeft: 10
                     }} />
                 <Text style={{ color: "#333", fontSize: 16, marginLeft: 10, flex: 1 }}>{text} </Text>

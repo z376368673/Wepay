@@ -13,6 +13,7 @@ import DialogUtils from '../../util/DialogUtils';
 import CountDownView from '../../common/CountDownView';
 import BaseUrl from '../../util/BaseUrl';
 import HttpUtils from '../../util/HttpUtils';
+import Colors from "../../util/Colors";
 
 
 /**
@@ -47,24 +48,36 @@ export default class ModifyPassWord extends BaseComponent {
         }
     }
     sumbit(){
+        DialogUtils.showLoading();
         if(this.state.type==0){
             this.url = BaseUrl.getForgotPwdUrl()
+            HttpUtils.postData(this.url,
+                {mobile:this.state.phone,newPwd:this.state.pwdAgain})
+                .then(result => {
+                    if (result.code===1) {
+                        DialogUtils.showToast("修改成功")
+                        this.props.navigation.goBack()
+                    }else{
+                        DialogUtils.showToast(result.msg)
+                    }
+                    DialogUtils.hideLoading()
+                })
         }else{
             this.url = BaseUrl.getForgotPayPwdUrl()
+            HttpUtils.postData(this.url,
+                {sessionId:this.getUserInfo().sessionId,
+                    mobile:this.state.phone,newPwd:this.state.pwdAgain})
+                .then(result => {
+                    if (result.code===1) {
+                        DialogUtils.showToast("修改成功")
+                        this.props.navigation.goBack()
+                    }else{
+                        DialogUtils.showToast(result.msg)
+                    }
+                    DialogUtils.hideLoading()
+                })
         }
-        DialogUtils.showLoading();
         //+"?mobile="+this.state.phone+"&newPwd="+this.state.pwdAgain
-        HttpUtils.postData(this.url,
-            {mobile:this.state.phone,newPwd:this.state.pwdAgain})
-        .then(result => {
-            if (result.code===1) {
-                DialogUtils.showToast("修改成功")
-                this.props.navigation.goBack()
-            }else{
-                DialogUtils.showToast(result.msg)
-            }
-            DialogUtils.hideLoading()
-        })
     }
 
     render() {
@@ -78,7 +91,7 @@ export default class ModifyPassWord extends BaseComponent {
                     <TextInput
                         style={styles.itemTextInput}
                         placeholder={'请输入手机号码'}
-                        placeholderTextColor={'#fff'}
+                        placeholderTextColor={Colors.blue_66}
                         underlineColorAndroid='transparent'
                         keyboardType="numeric"
                         value={this.state.phone}
@@ -92,7 +105,7 @@ export default class ModifyPassWord extends BaseComponent {
                     <TextInput
                         style={styles.itemTextInput}
                         placeholder={'请输入验证码'}
-                        placeholderTextColor={'#fff'}
+                        placeholderTextColor={Colors.blue_66}
                         underlineColorAndroid='transparent'
                         keyboardType='numeric'
                         onChangeText={(text) => this.setState({code: text})}/>
@@ -107,7 +120,7 @@ export default class ModifyPassWord extends BaseComponent {
                         style={styles.itemTextInput}
                         placeholder={'请设置新密码'}
                         //defaultValue={userName}
-                        placeholderTextColor={'#fff'}
+                        placeholderTextColor={Colors.blue_66}
                         underlineColorAndroid='transparent'
                         secureTextEntry={true}
                         keyboardType={this.state.type === 0 ? "default" : "numeric"}
@@ -123,7 +136,7 @@ export default class ModifyPassWord extends BaseComponent {
                         style={styles.itemTextInput}
                         placeholder={'确认新密码'}
                         //defaultValue={userName}
-                        placeholderTextColor={'#fff'}
+                        placeholderTextColor={Colors.blue_66}
                         secureTextEntry={true}
                         underlineColorAndroid='transparent'
                         keyboardType={this.state.type === 0 ? "default" : "numeric"}
@@ -170,7 +183,7 @@ export const styles = StyleSheet.create({
     itemView: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: "#469c92",
+        backgroundColor: Colors.lineColor,
         borderRadius: 3,
         borderColor: "#fff",
         paddingLeft: 15,
@@ -184,6 +197,6 @@ export const styles = StyleSheet.create({
     itemTextInput: {
         flex: 1,
         fontSize: 15,
-        color: '#fff',
+        color: Colors.text3,
     }
 });

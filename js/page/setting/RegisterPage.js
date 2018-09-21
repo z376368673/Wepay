@@ -14,6 +14,7 @@ import BaseUrl from '../../util/BaseUrl';
 import DialogUtils from '../../util/DialogUtils';
 import HttpUtils from '../../util/HttpUtils';
 import CountDownView from '../../common/CountDownView';
+import Colors from "../../util/Colors";
 
 /**
  * 注册页面
@@ -104,7 +105,7 @@ export default class RegisterPage extends BaseComponent {
         return (
             <View style={[BaseStyles.container_column, { backgroundColor: mainColor }]}>
                 <NavigationBar
-                    title={"Wepay用户注册"}
+                    title={"用户注册"}
                     navigation={this.props.navigation}
                 />
 
@@ -113,7 +114,7 @@ export default class RegisterPage extends BaseComponent {
                         {...this.props}
                         style={styles.itemTextInput}
                         placeholder={'请输入您的昵称'}
-                        placeholderTextColor={'#fff'}
+                        placeholderTextColor={Colors.blue_66}
                         underlineColorAndroid='transparent'
                         //keyboardType={"default"}
                         onChangeText={(text) => this.setState({ nickName: text })} />
@@ -123,7 +124,7 @@ export default class RegisterPage extends BaseComponent {
                         style={styles.itemTextInput}
                         placeholder={'请输入手机号码'}
                         defaultValue={this.state.phone}
-                        placeholderTextColor={'#fff'}
+                        placeholderTextColor={Colors.blue_66}
                         underlineColorAndroid='transparent'
                         //keyboardType={"default"}
                         value={this.state.phone}
@@ -137,7 +138,7 @@ export default class RegisterPage extends BaseComponent {
                     <TextInput
                         style={styles.itemTextInput}
                         placeholder={'请输入验证码'}
-                        placeholderTextColor={'#fff'}
+                        placeholderTextColor={Colors.blue_66}
                         underlineColorAndroid='transparent'
                         //keyboardType={"default"}
                         onChangeText={(text) => this.setState({ code: text })} />
@@ -153,7 +154,7 @@ export default class RegisterPage extends BaseComponent {
                         style={styles.itemTextInput}
                         placeholder={'请输入密码'}
                         //defaultValue={userName}
-                        placeholderTextColor={'#fff'}
+                        placeholderTextColor={Colors.blue_66}
                         underlineColorAndroid='transparent'
                         secureTextEntry={true}
                         keyboardType={"default"}
@@ -165,7 +166,7 @@ export default class RegisterPage extends BaseComponent {
                         style={styles.itemTextInput}
                         placeholder={'再次输入密码'}
                         //defaultValue={userName}
-                        placeholderTextColor={'#fff'}
+                        placeholderTextColor={Colors.blue_66}
                         secureTextEntry={true}
                         underlineColorAndroid='transparent'
                         keyboardType={"default"}
@@ -176,7 +177,7 @@ export default class RegisterPage extends BaseComponent {
                         style={styles.itemTextInput}
                         placeholder={'请输入推荐人手机号码'}
                         //defaultValue={userName}
-                        placeholderTextColor={'#fff'}
+                        placeholderTextColor={Colors.blue_66}
                         underlineColorAndroid='transparent'
                         keyboardType={"numeric"}
                         value={this.state.recommendPhone}
@@ -190,7 +191,7 @@ export default class RegisterPage extends BaseComponent {
                         style={styles.itemTextInput}
                         placeholder={'请输入交易密码（纯数字）'}
                         //defaultValue={userName}
-                        placeholderTextColor={'#fff'}
+                        placeholderTextColor={Colors.blue_66}
                         underlineColorAndroid='transparent'
                         keyboardType={"numeric"}
                         value={this.state.paymentPwd}
@@ -237,7 +238,7 @@ export const styles = StyleSheet.create({
     itemView: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: "#469c92",
+        backgroundColor: Colors.lineColor,
         borderRadius: 3,
         borderColor: "#fff",
         height: 50,
@@ -251,6 +252,6 @@ export const styles = StyleSheet.create({
     itemTextInput: {
         flex: 1,
         fontSize: 15,
-        color: '#fff',
+        color: Colors.text3,
     }
 });

@@ -18,6 +18,7 @@ import user from '../model/UserInfo';
 import UserInfo from '../model/UserInfo';
 //重置路由 首先导入NavigationActions
 import { NavigationActions, StackActions } from 'react-navigation';
+import Colors from "../util/Colors";
 
 export default class BaseComponent extends Component {
     constructor(props) {
@@ -77,10 +78,10 @@ export default class BaseComponent extends Component {
     getCallBackValue = (params) => this.setState(params)
     //获取图片拼接的地址，有些图片不需要拼接
     getImgUrl() {
-        return "http://wepay.hxksky.com/"
+        return "http://tot.hxksky.com/"
     }
     getImgUrl(imgName) {
-        return "http://wepay.hxksky.com/" + imgName
+        return "http://tot.hxksky.com/" + imgName
     }
     getSharedUrl(userId) {
         return "http://wp.wepay168.com/wepay/share?userId=" + userId
@@ -95,7 +96,7 @@ export default class BaseComponent extends Component {
 }
 const qrcodetext = "567309251673029316273928";
 const { height, width } = Dimensions.get('window');
-export const mainColor = '#48b1a3';
+export const mainColor = Colors.mainColor;
 export const window_height = height;
 export const window_width = width;
 //更新用户信息  想办法更新全局的 用户信息

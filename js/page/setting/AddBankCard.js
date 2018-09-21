@@ -62,9 +62,17 @@ export default class AddBankCard extends BaseComponent {
     }
 
     addBankCard() {
-        let url = BaseUrl.addBankCardUrl(this.userInfo.sessionId,
-            this.state.bankCardId, this.state.userName, this.state.bankBranch, this.state.bankNum, this.state.isDefault)
-        HttpUtils.getData(url)
+        let url = BaseUrl.addBankCardUrl()
+        //sessionId, cardId, holdName, openCard, cardNumber, isDefault
+        HttpUtils.postData(url,
+            {   sessionId:this.userInfo.sessionId,
+                cardId:this.state.bankCardId,
+                holdName:this.state.userName,
+                openCard:this.state.bankBranch,
+                cardNumber:this.state.bankNum,
+                isDefault:this.state.isDefault,
+            })
+       // HttpUtils.getData(url)
             .then(result => {
                 //alert(JSON.stringify(result))
                 if (result.code === 1) {

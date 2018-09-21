@@ -88,14 +88,14 @@ export default class SharePage extends BaseComponent {
                             //position: 'relative', top: 90,
                             position: "absolute", bottom: 30,
                             fontSize: 16,
-                        }}>分享Wepay</Text>
+                        }}>分享TOT</Text>
                 </View>
 
                 <TouchableOpacity
                     onPress={() => { this.onClicks(1) }}
                     style={{ alignSelf: "center", position: "absolute", zIndex: 1, bottom: 115 }}>
                     <Text style={{ color: '#FFF', fontSize: 16, borderColor: "#fff", borderBottomWidth: 1, }}>
-                        复制Wepay下载地址</Text>
+                        复制TOT下载地址</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity

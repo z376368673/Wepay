@@ -225,8 +225,11 @@ export default class SettingView extends BaseComponent {
                                     style={styles.headImg} />
                                 <View style={{ flex: 1, marginLeft: 10 ,justifyContent:"center"}}>
 
+                                    <Text style={{ color: "#333", fontSize: 16, }}>
+                                        {this.props.AppStore.userInfo.account}
+                                    </Text>
 
-                                    <View style={{ flexDirection: "row",marginTop:10 }}>
+                                    <View style={{ flexDirection: "row",marginTop:5 }}>
                                         <Text style={{ color: "#333", fontSize: 16, }}>
                                             UID:{this.props.AppStore.userInfo.userid}
                                         </Text>
@@ -234,8 +237,6 @@ export default class SettingView extends BaseComponent {
                                             style={{ height: 16, width: 16, marginLeft: 5 }} /> : null}
                                     </View>
 
-
-                                    {ViewUtils.getCreditView(this.props.AppStore.userInfo.userCredit, 16, 15, "#333")}
                                 </View>
                                 <Text style={{ color: "#666", fontSize: 16, marginRight: 10 }}>
                                     更换头像
@@ -260,7 +261,7 @@ export default class SettingView extends BaseComponent {
                         <View style={[BaseStyles.container_center, { marginTop: 12 }]} />
                         {ViewUtils.getSettingItem1(require('../../../res/images/gonggao.png'), '公告', true,
                             () => this.onClicks("notice"))}
-                        {ViewUtils.getSettingItem1(require('../../../res/images/gonggao.png'), '个人消息',
+                        {ViewUtils.getSettingItem1(require('../../../res/images/gerenxiaoxi.png'), '个人消息',
                             this.state.newMessage === 1 ? true : false, () => this.onClicks("geren"))}
 
                         <View style={[BaseStyles.container_center, { marginTop: 12 }]} />

@@ -15,6 +15,7 @@ import HttpUtils from "../../util/HttpUtils";
 import BaseUrl from "../../util/BaseUrl";
 import RefreshFlatList from "../../common/RefreshFlatList"
 import DialogUtils from '../../util/DialogUtils';
+import Colors from "../../util/Colors";
 //我的店铺
 
 export default class MyStore extends BaseComponent {
@@ -131,32 +132,79 @@ export default class MyStore extends BaseComponent {
                 <NavigationBar
                     title='我的店铺'
                     navigation={this.props.navigation}
-                    rightView={NavigationBar.getRightStyle_Text('订单', {
-                        fontSize: 16,
-                        color: "#fff"
-                    }, () => this.myorder())}
                 />
 
                 {/* 收益布局*/}
-                <View style={[{
-                    flexDirection: 'row',alignItems: 'center',justifyContent: 'space-around',
-                    padding: 10, backgroundColor: mainColor
-                }]}>
-                    <TouchableOpacity
-                        activeOpacity={0.8} >
-                        <View style={{ flexDirection: 'column', alignItems: "center" }}>
-                            <Text style={{ fontSize: 16, color: '#fff' }}>￥{this.state.todayEarnings}</Text>
-                            <Text style={{ fontSize: 16, color: '#fff' }}>今日收益</Text>
-                        </View></TouchableOpacity>
-                    <View style={{ height: 30, width: 0.5, backgroundColor: '#fff' }} />
-                    <TouchableOpacity
-                        activeOpacity={0.8}
-                    >
-                        <View style={{ flexDirection: 'column', alignItems: "center" }}>
-                            <Text style={{ fontSize: 16, color: '#fff' }}>￥{this.state.totalRevenue}</Text>
-                            <Text style={{ fontSize: 16, color: '#fff' }}>总收益</Text>
-                        </View></TouchableOpacity>
+                <View style={{flexDirection:"row"}}>
+
+                    <View style={[{
+                        flexDirection: 'row',alignItems: 'center',justifyContent: 'space-around',
+                        padding: 10, backgroundColor:Colors.white,margin: 10,borderRadius:10,
+                        height:80,flex:1
+                    }]}>
+                        <TouchableOpacity
+                            activeOpacity={0.8} >
+                            <View style={{ flexDirection: 'column', alignItems: "center" }}>
+                                <Text style={{ fontSize: 17, color: Colors.mainColor }}>{this.state.todayEarnings}</Text>
+                                <Text style={{ fontSize: 14, color: Colors.text6,marginTop:5 }}>今日收益</Text>
+                            </View></TouchableOpacity>
+                        <View style={{ height: 30, width: 0.5, backgroundColor: Colors.lineColor }} />
+                        <TouchableOpacity
+                            activeOpacity={0.8}
+                        >
+                            <View style={{ flexDirection: 'column', alignItems: "center" }}>
+                                <Text style={{ fontSize: 17, color: Colors.mainColor}}>{this.state.totalRevenue}</Text>
+                                <Text style={{ fontSize: 14, color: Colors.text6,marginTop:5 }}>总收益</Text>
+                            </View></TouchableOpacity>
+                    </View>
+                    <View style={{justifyContent:"center",alignItems:"center"}}>
+                        <TouchableOpacity
+                            activeOpacity={0.8}
+                            style={{
+                                height:30,
+                                marginRight:10,
+                                marginTop:10,
+                                borderRadius:5,
+                                paddingLeft:10,
+                                paddingRight:10,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                backgroundColor:mainColor,
+                            }}
+                            onPress={()=>this.addShop()}
+                        >
+                            <Text style={{
+                                alignSelf: "center",
+                                color: '#FFF',
+                                fontSize: 16,
+                            }}> 添加商品 </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            activeOpacity={0.8}
+                            style={{
+                                height:30,
+                                marginRight:10,
+                                marginTop:10,
+                                marginBottom:10,
+                                paddingLeft:10,
+                                paddingRight:10,
+                                borderRadius:5,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                backgroundColor:mainColor,
+                            }}
+                            onPress={()=>this.myorder()}
+                        >
+                            <Text style={{
+                                alignSelf: "center",
+                                color: '#FFF',
+                                fontSize: 16,
+                            }}> 店铺订单 </Text>
+                        </TouchableOpacity>
+                    </View>
+
                 </View>
+
 
                 <View style={{ flex: 1, backgroundColor: "#f1f1f1" }}>
                     <RefreshFlatList
@@ -166,11 +214,6 @@ export default class MyStore extends BaseComponent {
                         onRefreshs={() => this._refreshData()}
                     />
                 </View>
-                <TouchableOpacity onPress={() => this.addShop()}>
-                    <View style={{ flexDirection: "row", backgroundColor: mainColor, height: 48, justifyContent: "center", alignItems: "center" }}>
-                        <Text style={{ fontSize: 20, color: "#fff" }}>+ </Text><Text style={{ fontSize: 15, color: "#fff" }}>添加商品</Text>
-                    </View>
-                </TouchableOpacity>
             </View>
         );
     }

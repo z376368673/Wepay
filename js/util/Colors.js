@@ -1,7 +1,7 @@
 export default  Colors={
 
     bgColor:"#f1f1f1",
-    mainColor:"#48b1a3",
+    mainColor:"#E8355F",
     white:"#fff",
     black:"#000",
     text3:"#333",

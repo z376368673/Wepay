@@ -29,7 +29,7 @@ export default class AboutOur extends BaseComponent {
                 <ScrollView style={{ marginBottom: 100 }}>
                     <View style={{ margin:15 }}>
                         <Text style={styles.title}>
-                            全球顶尖的区块链技术团队，Wepay支付结合市场八大优势，融入成一个系统，实现完全去中心化，会员间点对点流通，打造全球跨境支付平台以及全球数字货币交易平台。
+                            全球顶尖的区块链技术团队，TOT支付结合市场八大优势，融入成一个系统，实现完全去中心化，会员间点对点流通，打造全球跨境支付平台以及全球数字货币交易平台。
                     </Text>
                         <View style={{ flexDirection: "row", marginTop: 8, }}>
                             <Text style={styles.redText}>1. </Text>
@@ -68,7 +68,7 @@ export default class AboutOur extends BaseComponent {
                             <Text style={styles.text}>消费返利（落地商家扫码支付）</Text>
                         </View>
                         <View style={{ flexDirection: "row", marginTop: 8, }}>
-                            <Text style={styles.redText}>● Wepay的核心 </Text>
+                            <Text style={styles.redText}>● TOT的核心 </Text>
                         </View>
                         <Text style={styles.title}>
                             基于区链块分布式智能合约技术，实现货币的去中心化、点对点无损无痕流通，让流通产生价值，让快速流通增加哈希算力，最终加速价值的释放。名词释意：
@@ -79,7 +79,7 @@ export default class AboutOur extends BaseComponent {
                         </View>
                         <View style={{ flexDirection: "row", marginTop: 8, }}>
                             <Text style={styles.redText}>【积分】：</Text>
-                            <Text style={styles.text}>余额每流通（转出、支付）一次，Wepay系统会赠送80%的积分，积分是余额流通产生的价值。。</Text>
+                            <Text style={styles.text}>余额每流通（转出、支付）一次，TOT系统会赠送80%的积分，积分是余额流通产生的价值。。</Text>
                         </View>
                         <View style={{ flexDirection: "row", marginTop: 8, }}>
                             <Text style={styles.redText}>【转出】：</Text>
@@ -99,17 +99,17 @@ export default class AboutOur extends BaseComponent {
                         </View>
 
                         <View style={{ flexDirection: "row", marginTop: 8, }}>
-                            <Text style={styles.redText}>● Wepay资产</Text>
+                            <Text style={styles.redText}>● TOT资产</Text>
                         </View>
                         <Text style={styles.title}>
-                            基于区快链技术，OPEN COIN开源算法开发的数字加密货币，运用此算法的数字加密货币还有谷歌公司投资的瑞波币。Wepay数字资产总发行量3.65亿，首发1000万，剩余3.55亿由Wepay钱包用户通过流通增加算力挖取
+                            基于区快链技术，OPEN COIN开源算法开发的数字加密货币，运用此算法的数字加密货币还有谷歌公司投资的瑞波币。TOT数字资产总发行量3.65亿，首发1000万，剩余3.55亿由TOT钱包用户通过流通增加算力挖取
                     </Text>
 
                         <View style={{ flexDirection: "row", marginTop: 8, }}>
                             <Text style={styles.redText}>● 分享</Text>
                         </View>
                         <Text style={styles.text}>
-                            分享链接或二维码，推广给其他用户使用。通过分享，被分享者在使用Wepay的过程能加速分享者的积分释放速度。使用规则；
+                            分享链接或二维码，推广给其他用户使用。通过分享，被分享者在使用TOT的过程能加速分享者的积分释放速度。使用规则；
                     </Text>
                         <View style={{ flexDirection: "row", marginTop: 8, }}>
                             <Text style={styles.redText}>● 转出规则</Text>
@@ -135,7 +135,7 @@ export default class AboutOur extends BaseComponent {
                             <Text style={styles.redText}>● 加速释放规则</Text>
                         </View>
                         <Text style={styles.text}>
-                            用户积分按2‰的速度释放积分到余额，在用户不断分享其他用户使用Wepay钱包的情况下，其他用户的转账流通额度和速度可加速其积分释放速度，用户积分释放的速度将有可能是10%、20%、50%、100%。
+                            用户积分按2‰的速度释放积分到余额，在用户不断分享其他用户使用TOT钱包的情况下，其他用户的转账流通额度和速度可加速其积分释放速度，用户积分释放的速度将有可能是10%、20%、50%、100%。
                     </Text>
 
                         <View style={{ flexDirection: "row", marginTop: 8, }}>

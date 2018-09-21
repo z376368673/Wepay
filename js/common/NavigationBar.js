@@ -18,6 +18,7 @@ import {
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Utils from "../util/Utils";
+import Colors from "../util/Colors";
 
 //定义Bar的高度
 const NAV_HEIGHT_ANDROID = 50;
@@ -54,13 +55,13 @@ export default class NavigationBar extends Component {
         hide: false,
         props: null,
         style: {
-            backgroundColor: '#48b1a3',
+            backgroundColor: Colors.mainColor,
         },
         statusBar: {
             statusBar: 'light-content',
             hide: false,
             translucent: false,
-            backgroundColor: '#48b1a3',
+            backgroundColor: Colors.mainColor
         },
     }
 

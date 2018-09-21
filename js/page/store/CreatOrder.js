@@ -212,7 +212,7 @@ export default class CreatOrder extends BaseComponent {
 
                               {/* 支付方式       */}
                              <View style={{ flexDirection: 'row', padding: 15, backgroundColor: "#fff",marginTop:10, }}>
-                            <Text style={{ color: "#333", fontSize: 16, }} numberOfLines={1} >支付方式:wepay支付(余额{this.props.AppStore.userInfo.cangkuNum})</Text>
+                            <Text style={{ color: "#333", fontSize: 16, }} numberOfLines={1} >支付方式:TOT支付(余额{this.props.AppStore.userInfo.cangkuNum})</Text>
                             </View>   
 
                     </View>

@@ -92,16 +92,19 @@ export default class NumberHome extends BaseComponent {
                     scrollEventThrottle={50}
                 >
                     <View style={{ backgroundColor: Colors.bgColor }}>
+                        <Image
+                            style={{position:"absolute"}}
+                            source={require('../../../res/images/shuzizichai-bg.png')}/>
                 {/* top布局 */}
-                <View style={[{ alignItems: 'center', justifyContent: 'space-around', padding: 10, backgroundColor: mainColor }]}>
-                    <Image source={require("../../../res/images/logo-d.png")} style={{ height: 70, width: 70, resizeMode: "stretch" }} />
-                    <Text style={{ fontSize: 15, color: "#fff", marginTop: 8, marginBottom: 10 }}>当前价格:￥{this.state.wepayPrice}</Text>
+                <View style={[{ alignItems: 'center', justifyContent: 'space-around', padding: 10,}]}>
+                    <Image source={require("../../../res/images/tot-shu.png")} style={{ height: 70, width: 70, resizeMode: "stretch" }} />
+                    <Text style={{ fontSize: 15, color: "#fff", marginTop: 8, marginBottom: 30 }}>当前价格:￥{this.state.wepayPrice}</Text>
                 </View>
 
-                <View style={{ marginTop: 10, backgroundColor: Colors.white, paddingLeft: 10, paddingBottom: 10, paddingRight: 10 }}>
+                <View style={{ marginTop: -15, backgroundColor: Colors.white, paddingLeft: 10, paddingBottom: 10, paddingRight: 10,borderRadius:15, }}>
                     <View style={{ flexDirection: "row", alignItems: "center", marginTop: 10 }}>
                         <View style={{ backgroundColor: Colors.y1, width: 8, height: 8 }} />
-                        <Text style={{ color: Colors.text6, fontSize: 15, marginLeft: 5 }}>Wepay资产</Text>
+                        <Text style={{ color: Colors.text6, fontSize: 15, marginLeft: 5 }}>TOT资产</Text>
                         <Text style={{ color: Colors.text3, fontSize: 15, marginLeft: 10 }}>{this.state.wepayNum}</Text>
                     </View>
                     <View style={{ flexDirection: "row", alignItems: "center", marginTop: 10 }}>
@@ -130,11 +133,11 @@ export default class NumberHome extends BaseComponent {
                                 <Image source={require("../../../res/images/zhongchou.png")} style={{ height: 50, width: 50, }} />
                                 <Text style={{ color: Colors.text3, fontSize: 15, marginTop: 5 }}>众筹</Text>
                             </View></TouchableOpacity>
-                        <TouchableOpacity onPress={() => this.onClick(3)} style={{ flex: 1 }}>
-                            <View style={{ alignItems: "center", justifyContent: "center", }}>
-                                <Image source={require("../../../res/images/wbao.png")} style={{ height: 50, width: 50, }} />
-                                <Text style={{ color: Colors.text3, fontSize: 15, marginTop: 5 }}>W宝</Text>
-                            </View></TouchableOpacity>
+                        {/*<TouchableOpacity onPress={() => this.onClick(3)} style={{ flex: 1 }}>*/}
+                            {/*<View style={{ alignItems: "center", justifyContent: "center", }}>*/}
+                                {/*<Image source={require("../../../res/images/wbao.png")} style={{ height: 50, width: 50, }} />*/}
+                                {/*<Text style={{ color: Colors.text3, fontSize: 15, marginTop: 5 }}>W宝</Text>*/}
+                            {/*</View></TouchableOpacity>*/}
                         <TouchableOpacity onPress={() => this.onClick(4)} style={{ flex: 1 }}>
                             <View style={{ alignItems: "center", justifyContent: "center" }}>
                                 <Image source={require("../../../res/images/jiaoyi.png")} style={{ height: 50, width: 50, }} />
@@ -163,7 +166,7 @@ export default class NumberHome extends BaseComponent {
      */
     _getBuyOrSellItem(data) {
          let cid = data.item?data.item.cid:1
-         var name = "Wepay"
+         var name = "TOT"
          var color = Colors.y1
          if(cid===2){
             name = "比特币"
@@ -178,7 +181,7 @@ export default class NumberHome extends BaseComponent {
             name = "狗狗币"
             color = Colors.z1
          }else {
-            name = "Wepay"
+            name = "TOT"
             color = Colors.y1
          }
         return <View style={{ padding: 10, backgroundColor: Colors.white,marginTop:1 }}>

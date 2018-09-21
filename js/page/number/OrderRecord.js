@@ -155,7 +155,7 @@ export default class OrderRecord extends BaseComponent {
     }
 
     renderItem(data) {
-        var cname = "wepay"
+        var cname = "TOT"
          if(data.item.cid===2){
             cname = "比特币"
         }else  if(data.item.cid===3){
@@ -165,7 +165,7 @@ export default class OrderRecord extends BaseComponent {
         }else  if(data.item.cid===5){
             cname = "狗狗币"
         }else {
-            cname = "wepay"
+            cname = "TOT"
         }
         let view1 =
             <View style={{
@@ -348,7 +348,7 @@ export default class OrderRecord extends BaseComponent {
                         <Text
                             onPress={() => {
                                 this.view.close()
-                                this.selectCid(1,"Wepay")
+                                this.selectCid(1,"TOT")
                             }}
 
                             style={{ fontSize: 14, color: Colors.text3, paddingLeft: 20, paddingRight: 20, paddingTop: 10, paddingBottom: 10 }}>

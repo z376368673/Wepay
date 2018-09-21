@@ -12,6 +12,8 @@ import ZhuanChuNext from "../page/ZhuanChuNext";
 
 import TranMoneyRecord from "../page/TranMoneyRecord";
 import SharedRecord from "../page/SharedRecord";
+import JiHuo from "../page/JiHuo";
+import JiHuoNext from "../page/JiHuoNext";
 import BuyPage from "../page/BuyPage";
 import SellPage from "../page/SellPage";
 import ExcIntegral from "../page/ExcIntegral";
@@ -216,6 +218,15 @@ export default AppNavigator = createStackNavigator({
     SharedRecord: { //分享记录
         screen: SharedRecord
     },
+
+    JiHuo: { //激活
+        screen: JiHuo
+    },
+
+    JiHuoNext: { //激活
+        screen: JiHuoNext
+    },
+
     ExcIntegral: {//兑换积分
         screen: ExcIntegral
     },

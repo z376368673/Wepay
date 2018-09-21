@@ -29,10 +29,10 @@ export default class TradeHome1 extends BaseComponent {
         const cid = this.props.navigation.state.params.cid
             this.state = {
             isRefresh: false, //scrollview 的刷新按钮
-            cid:cid,  //1.Wepay 2.比特币 3.莱特币  4.以太坊  5.狗狗币
+            cid:cid,  //1.TOT 2.比特币 3.莱特币  4.以太坊  5.狗狗币
             title:this.getTitleByCid(cid),
 
-            coinBalance: "0.00", //Wepay资产
+            coinBalance: "0.00", //TOT资产
             walletBalance: "0.00", //余额
 
             coinPrice:"0.00",//当前价格
@@ -351,7 +351,7 @@ export default class TradeHome1 extends BaseComponent {
                                 value={this.data?this.data.item.num+"":"1"}
                                 maxLength={10}
                             />
-                            <Text  style={{fontSize:15,color:Colors.text6, alignSelf:"center"}}>Wepay</Text>
+                            <Text  style={{fontSize:15,color:Colors.text6, alignSelf:"center"}}>TOT</Text>
                         </View>
                         <View style={{backgroundColor:Colors.red,height: 1,width: Utils.getWidth()-80}}></View>
 
@@ -603,7 +603,7 @@ export default class TradeHome1 extends BaseComponent {
     }
 
     //选择币种  cid 各种货币id
-    //1.Wepay 2.比特币 3.莱特币  4.以太坊  5.狗狗币
+    //1.TOT 2.比特币 3.莱特币  4.以太坊  5.狗狗币
     selectCid(cid,title){
         this.cid = cid
         this.setState({cid:cid, title :title})
@@ -648,7 +648,7 @@ export default class TradeHome1 extends BaseComponent {
                         <Text
                             onPress={() => {
                                 this.view.close()
-                                this.selectCid(1,"Wepay")
+                                this.selectCid(1,"TOT")
                             }}
                             style={{ fontSize: 14, color: Colors.text3, paddingLeft: 20, paddingRight: 20, paddingTop: 10, paddingBottom: 10 }}>
                             Wepay</Text>
@@ -705,7 +705,7 @@ export default class TradeHome1 extends BaseComponent {
          title = "狗狗币"
 
      }else {
-          title = "Wepay"
+          title = "TOT"
      }
      return title ;
  }

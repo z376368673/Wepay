@@ -122,37 +122,6 @@ export default class StoreMall extends BaseComponent {
                 {...this.props}
                 action={"store"}
                 height={Utils.getWidth() / 3}/>
-            <View style={{flexDirection: "row", padding: 10, justifyContent: "center"}}>
-                <TouchableOpacity
-                    activeOpacity={0.8}
-                    style={{flex: 1}}
-                    onPress={() => this.onClicks(101)}>
-                    <View style={{flex: 1, padding: 5, justifyContent: "center", alignItems: "center"}}>
-                        <Image source={require("../../../res/images/new_4.png")}
-                               style={{width: 40, height: 40}}
-                        />
-                        <Text style={{fontSize: 14, color: Colors.text3, marginTop: 8}}>新品尝鲜</Text>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    activeOpacity={0.8}
-                    style={{flex: 1}}
-                    onPress={() => this.onClicks(102)}>
-                    <View style={{flex: 1, padding: 5, justifyContent: "center", alignItems: "center"}}>
-                        <Image source={require("../../../res/images/remen_4.png")}
-                               style={{width: 40, height: 40}}/>
-                        <Text style={{fontSize: 14, color: Colors.text3, marginTop: 8}}>热门爆款</Text>
-                    </View></TouchableOpacity>
-                <TouchableOpacity
-                    activeOpacity={0.8}
-                    style={{flex: 1}}
-                    onPress={() => this.onClicks(103)}>
-                    <View style={{flex: 1, padding: 5, justifyContent: "center", alignItems: "center"}}>
-                        <Image source={require("../../../res/images/shihui.png")}
-                               style={{width: 40, height: 40}}/>
-                        <Text style={{fontSize: 14, color: Colors.text3, marginTop: 8}}>实惠好货</Text>
-                    </View></TouchableOpacity>
-            </View>
         </View>
     }
 
@@ -330,21 +299,6 @@ export default class StoreMall extends BaseComponent {
                 break;
             case 2://搜索商品
                 this.props.navigation.navigate('SearchStore');
-                break;
-            case 101://新平尝鲜
-                this.props.navigation.navigate('ShopingType',{
-                    type:1
-                });
-                break;
-            case 102://热门爆款
-                this.props.navigation.navigate('ShopingType',{
-                    type:2
-                });
-                break;
-            case 103://实惠好货
-                this.props.navigation.navigate('ShopingType',{
-                    type:3
-                });
                 break;
             default:
                 break;

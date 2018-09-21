@@ -103,7 +103,7 @@ android {
         jumboMode true
     }
     defaultConfig {
-        applicationId "com.wepay"
+        applicationId "com.wepay1"
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 27

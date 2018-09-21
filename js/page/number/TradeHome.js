@@ -154,7 +154,7 @@ export default class TradeHome extends BaseComponent {
             statusBar: 'light-content',
             hide: false,
             translucent: false,
-            backgroundColor: '#48b1a3',
+            backgroundColor: Colors.mainColor,
         },
     }
     render() {
@@ -210,7 +210,7 @@ export default class TradeHome extends BaseComponent {
             }]
         };
 
-        let status = <View style={{ height: Platform.OS === 'ios' ? 20 : 0,backgroundColor: '#48b1a3'}}>
+        let status = <View style={{ height: Platform.OS === 'ios' ? 20 : 0,backgroundColor: Colors.mainColor}}>
             <StatusBar {...this.props.statusBar}/>
         </View>
 
@@ -756,7 +756,7 @@ export default class TradeHome extends BaseComponent {
          title = "狗狗币"
 
      }else {
-          title = "Wepay"
+          title = "TOT"
      }
      return title ;
  }

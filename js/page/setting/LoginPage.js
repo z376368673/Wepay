@@ -29,7 +29,7 @@ export default class LoginPage extends BaseComponent {
         this.state = {
             text: '',
             pwd: '',
-            appVersion:"1.2.8"
+            appVersion:"1.0.1"
         }
     }
     componentDidMount() {
@@ -47,13 +47,16 @@ export default class LoginPage extends BaseComponent {
     }
     render() {
         return (
-            <View style={[BaseStyles.container_column, { backgroundColor: mainColor }]}>
+            <View style={[BaseStyles.container_column, { backgroundColor: Colors.mainColor }]}>
                 <NavigationBar
-                    title={"Wepay用户登陆"}
+                    title={"用户登陆"}
                     navigation={this.props.navigation}
                 />
+                <Image
+                    style={{position:"absolute"}}
+                    source={require('../../../res/images/denglu-bg.png')}/>
                 <View style={{height:150,justifyContent:"center",alignItems:"center"}}>
-                <Image source={require('../../../res/images/logo-d.png')}/>
+                <Image source={require('../../../res/images/denglu-logo.png')}/>
                 </View>
                 
                 <View style={styles.itemView}>
@@ -86,7 +89,7 @@ export default class LoginPage extends BaseComponent {
                     <TouchableOpacity onPress={() => this.onClicks(1)} style={{ height: 50, justifyContent: 'center' }}>
                         <Text style={{
                             fontSize: 15,
-                            color: "#f82929",
+                            color: Colors.white,
                             marginLeft:25,
                         }}>忘记密码?</Text>
                     </TouchableOpacity>
@@ -94,7 +97,7 @@ export default class LoginPage extends BaseComponent {
                     <TouchableOpacity onPress={() => this.onClicks(0)} style={{ flex: 1, height: 50, justifyContent:"center",alignItems:"flex-end" }}>
                         <Text style={{
                             fontSize: 15,
-                            color: "#fff",
+                            color: Colors.mainColor,
                             marginRight: 20
                         }}>注 册</Text>
                     </TouchableOpacity>
@@ -161,8 +164,13 @@ export default class LoginPage extends BaseComponent {
      */
     loginByPwd()   {
         DialogUtils.showLoading("");
-        let url = BaseUrl.loginUrl(this.state.text, this.state.pwd,this.state.appVersion)
-        HttpUtils.getData(url)
+        let url = BaseUrl.loginUrl()
+        HttpUtils.postData(url,{
+            account:this.state.text,
+            password:this.state.pwd,
+            appVersion:this.state.appVersion,
+        })
+        // HttpUtils.getData(url)
             .then(result => {
                 DialogUtils.hideLoading()
                 if (result.code === 1) {
@@ -197,7 +205,7 @@ export const styles = StyleSheet.create({
     itemView: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: "#469c92",
+        backgroundColor: Colors.lineColor,
         borderRadius: 3,
         borderColor: "#fff",
         paddingLeft: 15,
@@ -211,6 +219,6 @@ export const styles = StyleSheet.create({
     itemTextInput: {
         flex: 1,
         fontSize: 15,
-        color: '#fff',
+        color: Colors.text3,
     }
 });

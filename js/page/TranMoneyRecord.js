@@ -13,6 +13,7 @@ import HttpUtils from "../util/HttpUtils";
 import RefreshFlatList from "../common/RefreshFlatList";
 import BaseUrl from '../util/BaseUrl';
 import DialogUtils from '../util/DialogUtils';
+import Colors from "../util/Colors";
 
 /**
  * 转出 转入 记录
@@ -135,7 +136,7 @@ export default class TranMoneyRecord extends BaseComponent {
 
                     <View style={{ flexDirection: 'column',justifyContent:"center",flex: 2, marginLeft: 10,marginRight:10 }}>
                         <Text
-                            style={{ color: "#48b1a3", fontSize: 16,textAlign:"right"}}>{this.tranType==="out"? "-":"+"}{data.item.getNums}</Text>
+                            style={{ color:Colors.mainColor, fontSize: 16,textAlign:"right"}}>{this.tranType==="out"? "-":"+"}{data.item.getNums}</Text>
                         
                         <Text style={{color: "#888", fontSize: 13, marginTop:5,textAlign:"right"}}
                                 numberOfLines={1}>{Utils.formatDateTime(data.item.getTime*1000)}</Text>

@@ -63,7 +63,7 @@ export default class TradeHome extends BaseComponent {
             title = "狗狗币"
 
         }else {
-            title = "Wepay"
+            title = "TOT"
         }
         return title ;
     }
@@ -265,7 +265,7 @@ export default class TradeHome extends BaseComponent {
                         <Text
                             onPress={() => {
                                 this.view.close()
-                                this.selectCid(1,"Wepay")
+                                this.selectCid(1,"TOT")
                             }}
 
                             style={{ fontSize: 14, color: Colors.text3, paddingLeft: 20, paddingRight: 20, paddingTop: 10, paddingBottom: 10 }}>
