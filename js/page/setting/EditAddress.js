@@ -168,32 +168,42 @@ export default class EditAddress extends BaseComponent {
      */
     addAddress() {
         if (this.addrssInfo === null) {
-            this.url = BaseUrl.putAddress(
-                this.userInfo.sessionId,
-                this.userInfo.userid,
-                this.state.name,
-                this.state.phone,
-                this.state.province,
-                this.state.city,
-                this.state.area,
-                this.state.address,
-                this.state.isDefault)
+            this.url = BaseUrl.putAddress()
+           // sessionId, memberId, name, telephone, provinceId, cityId, countryId, address, zt
+            HttpUtils.postData(this.url,{
+                sessionId:this.userInfo.sessionId,
+                memberId:this.userInfo.userid,
+                name:this.state.name,
+                telephone:this.state.phone,
+                provinceId:this.state.province,
+                cityId:this.state.city,
+                countryId:this.state.area,
+                address:this.state.address,
+                zt:this.state.isDefault
+            }).then(result => {
+                    //alert(JSON.stringify(result))
+                    if (result.code === 1) {
+                        let tip = this.addrssInfo === null ? "添加地址成功" : "修改地址成功"
+                        DialogUtils.showToast(tip)
+                        this.props.navigation.goBack()
+                        this.params.editCallBack()
+                    } else {
+                        DialogUtils.showToast(result.msg)
+                    }
+                })
         } else {
-            this.url = BaseUrl.editAddress(
-                this.userInfo.sessionId,
-                this.addrssInfo.addressId,
-                this.userInfo.userid,
-                this.state.name,
-                this.state.phone,
-                this.state.province,
-                this.state.city,
-                this.state.area,
-                this.state.address,
-                this.state.isDefault)
-        }
-        //alert(JSON.stringify(this.state.name))
-        HttpUtils.getData(this.url)
-            .then(result => {
+            this.url = BaseUrl.editAddress()
+            HttpUtils.postData(this.url,{
+                sessionId:this.userInfo.sessionId,
+                memberId:this.userInfo.userid,
+                name:this.state.name,
+                telephone:this.state.phone,
+                provinceId:this.state.province,
+                cityId:this.state.city,
+                countryId:this.state.area,
+                address:this.state.address,
+                zt:this.state.isDefault
+            }).then(result => {
                 //alert(JSON.stringify(result))
                 if (result.code === 1) {
                     let tip = this.addrssInfo === null ? "添加地址成功" : "修改地址成功"
@@ -204,6 +214,7 @@ export default class EditAddress extends BaseComponent {
                     DialogUtils.showToast(result.msg)
                 }
             })
+        }
     }
     showPCAlist() {
         Picker.init({

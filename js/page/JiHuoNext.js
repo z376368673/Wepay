@@ -32,14 +32,15 @@ export default class JiHuoNext extends BaseComponent {
        
     }
      /**
-     * 积分兑换
+     * 激活用户
      */
     creditsExchange(safetyPwd){
         DialogUtils.showLoading()
-        let url =  BaseUrl.creditsExchange()
+         let url = BaseUrl.activateUser()
         HttpUtils.postData(url,{
             sessionId: this.props.AppStore.userInfo.sessionId,
-            exchangeMoney: this.state.exchangeMoney,
+            activateNum: this.state.exchangeMoney,
+            activateId: this.props.navigation.state.params.id,
             safetyPwd: safetyPwd,
         })
         .then(result => {
@@ -47,7 +48,7 @@ export default class JiHuoNext extends BaseComponent {
             if (result.code===1) {
                DialogUtils.showToast("激活成功")
                upDataUserInfo(this.props.AppStore)
-               this.props.navigation.navigate('HomePage');
+                this.props.navigation.goBack();
             } else if(result.code === 2||result.code === 4){
                 DialogUtils.showToast(result.msg)
                 this.goLogin(this.props.navigation)
@@ -58,30 +59,19 @@ export default class JiHuoNext extends BaseComponent {
      
     }
 
-     //  获取兑换的积分  
+     //  激活
      getExchangeIntegral() {
-        DialogUtils.showLoading()
-        let url = BaseUrl.getExchangeIntegral(this.props.AppStore.userInfo.sessionId,this.state.exchangeMoney)
-        console.warn(url)
-        HttpUtils.getData(url)
-            .then(result => {
-                DialogUtils.hideLoading()
-                if (result.code === 1) {
-                    PassWordInput.showPassWordInput((safetyPwd)=>{
-                        this.creditsExchange(safetyPwd)
-                     },"实际获得积分",result.data)
-                } else {
-                    DialogUtils.showToast(result.msg)
-                }
-            })
+         PassWordInput.showPassWordInput((safetyPwd)=>{
+             this.creditsExchange(safetyPwd)
+         },"激活支出",this.state.exchangeMoney)
+
     }
     render() {
         return (
             <View style={[BaseStyles.container_column, {backgroundColor: "#f1f1f1"}]}>
                 <NavigationBar
-                    title='激活'
+                    title={'激活'}
                     navigation={this.props.navigation}
-
                 />
 
                 {/* 余额积分布局*/}
@@ -158,11 +148,10 @@ export default class JiHuoNext extends BaseComponent {
     onClicks(index) {
         switch (index) {
             case "sumbit"://确定兑换
-            if(this.state.exchangeMoney<100||this.state.exchangeMoney%100!==0){
-                DialogUtils.showMsg("请输入大于等于100的整数倍")
+            if(this.state.exchangeMoney<200){
+                DialogUtils.showMsg("激活数量（最低200）,请输入不小于200的数")
             }else{
                 this.getExchangeIntegral()
-               
             }
                 break;
             default:

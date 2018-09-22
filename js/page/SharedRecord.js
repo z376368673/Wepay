@@ -74,7 +74,7 @@ export default class SharedRecord extends BaseComponent {
                     <RefreshFlatList
                         ref={refList => this.refList = refList}
                         renderItem={(items) => this._getItem(items)}
-                        // isDownLoad={true}
+                        isDownLoad={true}
                         onRefreshs={() => this._refreshData()}
                         onLoadData={() => this._onLoadData()}
                     />

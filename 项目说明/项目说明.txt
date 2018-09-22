@@ -43,7 +43,7 @@ react-native run-android --variant=release
 
 
 
-热更新发布 Wepay-IOS Wepay-Android  (忘记当时注册填了什么)
+热更新发布 TOT-ios TOT-android  (忘记当时注册填了什么)
 
 code-push login 登陆
 code-push loout 注销

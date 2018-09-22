@@ -1,5 +1,5 @@
-//const url = 'http://wp.wepay168.com/wepay'  //正式服务器
-const url = 'http://192.168.0.10:8081/tot'      //测试服务器
+const url = 'www.tot168.com'  //正式服务器
+//const url = 'http://192.168.0.10:8081/tot'      //测试服务器
 //const url = 'http://103.206.121.128:8080/wepay'
 
 
@@ -48,7 +48,7 @@ export default class BaseUrl {
      * @param {*} sessionId
      */
     static getuserInfoUrl(sessionId) {
-        return url + "/user/userCenter?sessionId=" + sessionId;
+        return url + "/member/userCenter?sessionId=" + sessionId;
     }
 
     /**
@@ -109,7 +109,7 @@ export default class BaseUrl {
 
      */
     static getUserInfoBy(sessionId) {
-        return url + "/user/getIndexUser?sessionId=" + sessionId
+        return url + "/member/getIndexUser?sessionId=" + sessionId
     }
 
     /**
@@ -157,7 +157,7 @@ export default class BaseUrl {
      * file    是    File图片文件    file
      */
     static getUpdataHeadUrl() {
-        return url + "/user/updateImgHead"
+        return url + "/member/updateImgHead"
     }
 
     /**
@@ -385,17 +385,11 @@ export default class BaseUrl {
      * @param {*} countryId   区/县
      * @param {*} address   详细地址
      * @param {*} zt
+     *
+     * post
      */
-    static putAddress(sessionId, memberId, name, telephone, provinceId, cityId, countryId, address, zt) {
-        return url + "/address/add?sessionId=" + sessionId
-            + "&memberId=" + memberId
-            + "&name=" + name
-            + "&telephone=" + telephone
-            + "&provinceId=" + provinceId
-            + "&cityId=" + cityId
-            + "&countryId=" + countryId
-            + "&address=" + address
-            + "&zt=" + zt;
+    static putAddress() {
+        return url + "/address/add?"
     }
 
     /**
@@ -411,18 +405,11 @@ export default class BaseUrl {
      * @param {*} countryId   区/县
      * @param {*} address   详细地址
      * @param {*} zt
+     * post
      */
-    static editAddress(sessionId, addressId, memberId, name, telephone, provinceId, cityId, countryId, address, zt) {
-        return url + "/address/update?sessionId=" + sessionId
-            + "&addressId=" + addressId
-            + "&memberId=" + memberId
-            + "&name=" + name
-            + "&telephone=" + telephone
-            + "&provinceId=" + provinceId
-            + "&cityId=" + cityId
-            + "&countryId=" + countryId
-            + "&address=" + address
-            + "&zt=" + zt;
+    static editAddress() {
+        return url + "/address/update?"
+
     }
 
     /**
@@ -457,7 +444,7 @@ export default class BaseUrl {
      3.6    imgHead        用户头像
      */
     static shareRecord(sessionId, pageIndex, keyword) {
-        return url + "/user/shareRecord?sessionId=" + sessionId
+        return url + "/member/shareRecord?sessionId=" + sessionId
             + "&pageIndex=" + pageIndex
             + "&keyword=" + keyword
     }
@@ -481,7 +468,7 @@ export default class BaseUrl {
      */
 
     static getUserBy(sessionId, account) {
-        return url + "/tranMoney/getUser?sessionId=" + sessionId + "&account=" + account
+        return url + "/eft/getUser?sessionId=" + sessionId + "&account=" + account
     }
 
 
@@ -493,12 +480,13 @@ export default class BaseUrl {
      * @param {*} getId   收入方id
      * @param {*} getNums    转出数
      * @param {*} mobile   手机后4位
+     * @param {*} currency 是	  币种,0.人民币，1.美元	Int
      * @param {*} safetyPwd       交易密码
      *
      * @returns code 1,0
      */
     static tranOutMoney() {
-        return url + "/store/outMoney"
+        return url + "/wallet/outMoney"
     }
 
 
@@ -519,7 +507,7 @@ export default class BaseUrl {
      // 3.8    imgHead        对方头像（需要添加前缀如：如http://tz.hxksky.com/wepay/upload/
      */
     static getOutRecord(sessionId, pageIndex) {
-        return url + "/tranMoney/outRecord?sessionId=" + sessionId
+        return url + "/eft/outRecord?sessionId=" + sessionId
             + "&pageIndex=" + pageIndex;
     }
 
@@ -531,7 +519,7 @@ export default class BaseUrl {
      * 返回参数与转出一样
      */
     static getInRecord(sessionId, pageIndex) {
-        return url + "/tranMoney/inRecord?sessionId=" + sessionId
+        return url + "/eft/inRecord?sessionId=" + sessionId
             + "&pageIndex=" + pageIndex;
     }
 
@@ -544,7 +532,7 @@ export default class BaseUrl {
      * 请求方式:POST
      */
     static creditsExchange() {
-        return url + "/store/creditsExchange?"
+        return url + "/wallet/creditsExchange?"
     }
 
     /**
@@ -567,7 +555,7 @@ export default class BaseUrl {
      * @param {*} pageIndex
      */
     static getExchangeRecord(sessionId, pageIndex) {
-        return url + "/tranMoney/exchangeRecord?sessionId=" + sessionId
+        return url + "/eft/exchangeRecord?sessionId=" + sessionId
             + "&pageIndex=" + pageIndex;
     }
 
@@ -577,7 +565,7 @@ export default class BaseUrl {
      * @param {*} pageIndex
      */
     static getExchangeRecordJ(sessionId, pageIndex) {
-        return url + "/tranMoney/integralRecord?sessionId=" + sessionId
+        return url + "/eft/integralRecord?sessionId=" + sessionId
             + "&pageIndex=" + pageIndex;
     }
 
@@ -587,7 +575,7 @@ export default class BaseUrl {
      * @param {*} pageIndex
      */
     static getExchangeRecordY(sessionId, pageIndex) {
-        return url + "/tranMoney/balanceRecord?sessionId=" + sessionId
+        return url + "/eft/balanceRecord?sessionId=" + sessionId
             + "&pageIndex=" + pageIndex;
     }
 
@@ -997,7 +985,7 @@ export default class BaseUrl {
      * @returns code  1,0
      */
     static integralRelease(sessionId) {
-        return url + "/store/integralRelease?sessionId=" + sessionId;
+        return url + "/wallet/integralRelease?sessionId=" + sessionId;
     }
 
 
@@ -1365,6 +1353,19 @@ export default class BaseUrl {
      */
     static updateOrderStatus(sessionId, id, orderStatus) {
         return url + "/order/updateStatus?sessionId=" + sessionId + "&orderId=" + id + "&orderStatus=" + orderStatus;
+    }
+
+
+    /**取消商城订单
+     *
+     * @param {*} sessionId
+     * @param {*} orderId          订单id
+     *
+     * post
+     *
+     */
+    static cancelShopOrder() {
+        return url + "/order/cancel"
     }
 
 
@@ -1765,6 +1766,40 @@ export default class BaseUrl {
     static agency(sessionId) {
         return url + "/engoy/agency?sessionId=" + sessionId
 
+    }
+
+
+    /**
+     * 激活首页
+     * @param {*} sessionId
+     * @param {*} pageIndex
+     1	code	是	状态码
+     2	msg	是	错误信息
+     3	data	是	数据
+     3.1	userName		用户昵称
+     3.2	phone		用户手机号
+     3.3	activate		激活状态 1.已激活，0.未激活
+     3.4	userId		用户id
+     */
+    static activateList(sessionId, pageIndex, keyword) {
+        return url + "/activate/index?sessionId=" + sessionId
+            + "&pageIndex=" + pageIndex
+            + "&keyword=" + keyword
+    }
+
+
+    /**
+     * 激活
+     1	sessionId 是	用户标识	string
+     2	activateNum 是	激活数量	double
+     3	safetyPwd	是	交易密码	String
+     4	activateId	是	激活id	int
+     * 请求方式:POST
+     *
+     * @returns data 实际获得积分 , "data": 720
+     */
+    static activateUser() {
+        return url + "/activate/activate"
     }
 
 }

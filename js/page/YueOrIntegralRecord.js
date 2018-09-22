@@ -266,6 +266,10 @@ export default class YueOrIntegralRecord extends BaseComponent {
                 typeText = "(" + payId + ")转入"
                 typeValue = "+" + yue
                 break;
+            case 32:
+                typeText = "激活扣除"
+                typeValue = "-" + yue
+                break;
         }
         return [typeText, typeValue];
     }
@@ -300,6 +304,9 @@ export default class YueOrIntegralRecord extends BaseComponent {
                 break;
             case 30:
                 typeText = "转出获得"
+                break;
+            case 33:
+                typeText = "激活获得"
                 break;
         }
         if (jifen > 0) {

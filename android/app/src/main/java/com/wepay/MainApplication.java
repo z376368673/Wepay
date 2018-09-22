@@ -45,7 +45,7 @@ public class MainApplication extends Application implements ReactApplication {
             new RNSyanImagePickerPackage(),
             new SplashScreenReactPackage(),
             new PickerViewPackage(),
-            new CodePush("v-5TDPSESydQj-n9alBgCVEab3Mefdf2b04e-456b-420f-8acd-58a99c8306be", getApplicationContext(), BuildConfig.DEBUG)
+            new CodePush("Ypu_6i-rmXebsfSjiOmfLPQEDeknfdf2b04e-456b-420f-8acd-58a99c8306be", getApplicationContext(), BuildConfig.DEBUG)
       );
     }
 

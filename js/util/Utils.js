@@ -12,7 +12,11 @@ export default class Utils {
         return require('Dimensions').get('window').height
     }
     static  isFullScreenPhone(){
-       return this.getHeight()/this.getWidth()<18/10&&Platform.OS==="ios"?false:true
+        let isFull=  this.getHeight()/this.getWidth()<18/10?false:true
+           if (isFull&&Platform.OS==="ios"){
+               return true
+        }
+        return false
     }
 
 

@@ -149,6 +149,35 @@ export default class OrderCommon extends BaseComponent {
     }
 
 
+    //取消订单
+    cancelOrder(data) {
+        let conten = "您确认要取消订单？"
+        cancelOrder = () => {
+            DialogUtils.showLoading()
+            let url = BaseUrl.cancelShopOrder(this.userInfo.sessionId, data.item.id)
+            HttpUtils.postData(url,{
+                sessionId:this.userInfo.sessionId,
+                orderId:data.item.id,
+            })
+                .then(result => {
+                    DialogUtils.hideLoading()
+                    if (result.code === 1) {
+                        DialogUtils.showToast("订单已取消")
+                        upDataUserInfo(this.props.AppStore)
+                        this.refList.delData(data.index)
+                    } else if (result.code === 2||result.code === 4) {
+                        DialogUtils.showToast(result.msg)
+                        this.goLogin(this.props.navigation)
+                    }else {
+                        DialogUtils.showToast(result.msg)
+                    }
+                })
+        }
+        DialogUtils.showPop(conten, () => cancelOrder(), null, "取消订单", "我在想想")
+    }
+
+
+
     _getOrder1(data) {
         //订单时间
         let orderDate1 = <Text style={{ color: "#888", fontSize: 13,  marginTop: 5, }}
@@ -190,6 +219,21 @@ export default class OrderCommon extends BaseComponent {
                             }}>
                             <Text style={{ color: "#666", fontSize: 13, }}>联系商家</Text>
                         </TouchableOpacity>
+                        {
+                            this.orderStatus === 1 ?
+                                <TouchableOpacity
+                                    onPress={() => this.cancelOrder(data, 3)}
+                                    style={{
+                                        borderRadius: 18, backgroundColor: mainColor, height: 30,
+                                        justifyContent: "center", alignItems: "center", marginRight: 10,
+                                        paddingLeft: 9, paddingRight: 9, paddingTop: 5, paddingBottom: 5,
+                                        marginLeft: 15,
+                                    }}>
+                                    <Text style={{ color: "#fff", fontSize: 13, }} >取消订单</Text>
+                                </TouchableOpacity>
+                                :null
+                        }
+
                         {
                             this.orderStatus === 2 ?
                             <TouchableOpacity
