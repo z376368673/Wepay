@@ -103,11 +103,11 @@ android {
         jumboMode true
     }
     defaultConfig {
-        applicationId "com.wepay1"
+        applicationId "com.wepay2"
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 27
-        versionName "1.2.7"
+        versionName "1.0.1"
 
         ndk {
             abiFilters "armeabi-v7a", "x86",'armeabi'

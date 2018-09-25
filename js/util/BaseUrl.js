@@ -1,4 +1,4 @@
-const url = 'www.tot168.com'  //正式服务器
+const url = 'http://www.tot168.com/tot'  //正式服务器
 //const url = 'http://192.168.0.10:8081/tot'      //测试服务器
 //const url = 'http://103.206.121.128:8080/wepay'
 

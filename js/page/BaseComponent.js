@@ -84,7 +84,7 @@ export default class BaseComponent extends Component {
         return "http://tot.hxksky.com/" + imgName
     }
     getSharedUrl(userId) {
-        return "http://wp.wepay168.com/wepay/share?userId=" + userId
+        return "http://www.tot168.com/tot/share?userId=" + userId
     }
 
     setQRcode(text) {
