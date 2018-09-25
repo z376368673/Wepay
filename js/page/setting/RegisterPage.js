@@ -50,6 +50,7 @@ export default class RegisterPage extends BaseComponent {
         HttpUtils.postData(this.url,
             {
                 mobile: this.state.phone,
+                code:this.state.code,
                 username: this.state.nickName,
                 referrer: this.state.recommendPhone,
                 loginPwd: this.state.pwdAgain,
@@ -74,8 +75,8 @@ export default class RegisterPage extends BaseComponent {
                     DialogUtils.showMsg("请输入昵称")
                 } else if (this.state.phone.length !== 11) {
                     DialogUtils.showMsg("请输入11位手机号")
-                } else if (this.state.code!=this.state.sms) {
-                    DialogUtils.showMsg("验证码不正确")
+                } else if (this.state.code.length < 6) {
+                    DialogUtils.showMsg("请输入6位验证码")
                 } else if (this.state.pwd.length  < 6) {
                     DialogUtils.showMsg("请输入6位以上的密码")
                 } else if (this.state.pwd != this.state.pwdAgain) {

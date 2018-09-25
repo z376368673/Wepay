@@ -29,7 +29,7 @@ export default class LoginPage extends BaseComponent {
         this.state = {
             text: '',
             pwd: '',
-            appVersion:"1.2.8"
+            appVersion:"1.2.9"
         }
     }
     componentDidMount() {

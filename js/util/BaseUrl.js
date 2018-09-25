@@ -1,5 +1,5 @@
-const url = 'http://wp.wepay168.com/wepay'  //正式服务器
-//const url = 'http://192.168.0.10:8081/wepay'
+//const url = 'http://wp.wepay168.com/wepay'  //正式服务器
+const url = 'http://192.168.0.10:8081/wepay'
 //const url = 'http://121.201.46.206/wepay'      //测试服务器
 //const url = 'http://103.206.121.128:8080/wepay'
 
