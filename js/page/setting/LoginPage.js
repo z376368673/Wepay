@@ -43,7 +43,8 @@ export default class LoginPage extends BaseComponent {
             }
         })
         //热更新后添加这个代码 不然貌似热更新会自动回滚
-        Platform.OS ==="ios"? {}:codePush.sync()
+        codePush.sync()
+        //Platform.OS ==="ios"? {}:codePush.sync()
     }
     render() {
         return (
@@ -53,8 +54,10 @@ export default class LoginPage extends BaseComponent {
                     navigation={this.props.navigation}
                 />
                 <Image
-                    style={{position:"absolute"}}
-                    source={require('../../../res/images/denglu-bg.png')}/>
+                    style={{position:"absolute",width:Utils.getWidth()}}
+                    source={require('../../../res/images/denglu-bg-2.png')}
+                    resizeMode={"cover"}
+                    />
                 <View style={{height:150,justifyContent:"center",alignItems:"center"}}>
                 <Image source={require('../../../res/images/denglu-logo.png')}/>
                 </View>

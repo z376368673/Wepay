@@ -16,6 +16,7 @@ import BaseUrl from "../../util/BaseUrl";
 import RefreshFlatList from "../../common/RefreshFlatList"
 import DialogUtils from '../../util/DialogUtils';
 import Colors from "../../util/Colors"
+import Utils from "../../util/Utils";
 //数字资产
 
 export default class NumberHome extends BaseComponent {
@@ -93,7 +94,8 @@ export default class NumberHome extends BaseComponent {
                 >
                     <View style={{ backgroundColor: Colors.bgColor }}>
                         <Image
-                            style={{position:"absolute"}}
+                            style={{position:"absolute",width:Utils.getWidth()}}
+                            resizeMode={"cover"}
                             source={require('../../../res/images/shuzizichai-bg.png')}/>
                 {/* top布局 */}
                 <View style={[{ alignItems: 'center', justifyContent: 'space-around', padding: 10,}]}>

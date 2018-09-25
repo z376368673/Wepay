@@ -92,7 +92,7 @@ export default class TransactionRecord extends BaseComponent {
 
     renderItem(data) {
         return <View style={{ padding: 15,marginTop:1 ,backgroundColor:Colors.white}}>
-            <Text style={{ fontSize: 15, color: Colors.text3 }}>{this.state.activeIndex===0?"转出":"转入"} {data.item.getNums} Wepay</Text>
+            <Text style={{ fontSize: 15, color: Colors.text3 }}>{this.state.activeIndex===0?"转出":"转入"} {data.item.getNums} TOT</Text>
             <View style={{ flexDirection: "row",marginTop:10 }}>
                 <Text style={{ fontSize: 14, color: Colors.text6, flex: 1 }}>{Utils.formatDateTime(data.item.getTime*1000)}</Text>
                 <Text style={{ fontSize: 15, color: Colors.r1 }}>与 {data.item.userName} 完成交易</Text>

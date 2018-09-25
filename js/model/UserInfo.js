@@ -25,7 +25,7 @@ export default global.UserInfo = {
     // "cangkuNum": 14.2282, //余额
     // "fengmiNum": 501.996, //积分
     // "todayReleas": 1.004, //可释放奖金
-
+    //isVip		是否VIP 1.是，0不是
 
 
 }

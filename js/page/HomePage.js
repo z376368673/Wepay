@@ -63,7 +63,7 @@ export default class HomePage extends BaseComponent {
     }
 
     _StatusBar(statusBarColor) {
-        return <View style={{height: 20, backgroundColor: statusBarColor}}>
+        return <View style={{height: Platform.OS==="ios"?0:20, backgroundColor: statusBarColor}}>
             <StatusBar
                 animated={true} //指定状态栏的变化是否应以动画形式呈现。目前支持这几种样式：backgroundColor, barStyle和hidden
                 hidden={false}  //是否隐藏状态栏。
@@ -111,6 +111,24 @@ export default class HomePage extends BaseComponent {
     }
 
     render() {
+        var isShow = false
+        let useGradeView
+         if (this.props.AppStore.userInfo.useGrade===0){
+             //useGradeView = require("")
+             isShow = false
+         }else if (this.props.AppStore.userInfo.useGrade===1) {
+             useGradeView = require("../../res/images/yixin.png")
+             isShow = true
+         }else if (this.props.AppStore.userInfo.useGrade===2) {
+             useGradeView = require("../../res/images/erxin.png")
+             isShow = true
+         }else if (this.props.AppStore.userInfo.useGrade===3) {
+             useGradeView = require("../../res/images/sanxin.png")
+             isShow = true
+         }else {
+             //useGradeView = require()
+             isShow = false
+         }
         return (
             <View style={BaseStyles.container_column}>
                 {this._StatusBar(Colors.mainColor)}
@@ -135,24 +153,42 @@ export default class HomePage extends BaseComponent {
                     <View style={BaseStyles.container_column}>
 
                         <View style={styles.container_top}>
+                            <Image
+                                style={{position:"absolute",width:Utils.getWidth()}}
+                                resizeMode={"cover"}
+                                source={require('../../res/images/zhuye-bg.png')}
+                            />
                             {/*顶部 用户信息布局*/}
                             <TouchableOpacity
                                 activeOpacity={1}
                                 onPress={() => this.onClicks(11)}
                             >
                                 <View
-                                    style={[BaseStyles.container_column, {alignItems: 'center', margin:50,}]}
+                                    style={[BaseStyles.container_column, {alignItems: 'center', margin:50, paddingTop:Platform.OS==="ios"?20:0}]}
                                 >
-                                    <Image source={{uri: this.getImgUrl(this.props.AppStore.userInfo.imgHead)}}
-                                           style={styles.headImg}/>
+                                    {this.props.AppStore.userInfo.isVip==1?
+                                        <Image source={require("../../res/images/VIP.png")}
+
+                                               style={{ width: 55,
+                                                   height: 55,
+                                                   marginBottom: -25,
+                                                   zIndex:1,
+                                               }}/>
+                                        :null}
+
+                                        <Image source={{uri: this.getImgUrl(this.props.AppStore.userInfo.imgHead)}}
+                                               style={styles.headImg}/>
+                                    <View style={{marginTop:5,flexDirection:"row"}}>
+                                        <Text
+                                            style={[styles.text,{marginTop:5, }]}>
+                                            {this.props.AppStore.userInfo.username}</Text>
+                                        {isShow?<Image source={useGradeView}
+                                                       style={{ width: 25, height: 25,marginLeft:3}}/>:null}
+                                    </View>
                                     <Text
-                                        style={[styles.text,{marginTop:5, fontWeight:"900"}]}>
-                                    {this.props.AppStore.userInfo.username}</Text>
-                                    <Text
-                                        style={[styles.text,{marginTop:5, fontWeight:"900"}]}>
+                                        style={[styles.text,{marginTop:5,fontWeight:"800"}]}>
                                     UID:{this.props.AppStore.userInfo.userid}</Text>
                                 </View></TouchableOpacity>
-
                         </View>
 
                         {/* 余额积分布局*/}

@@ -224,7 +224,7 @@ export default class TeadeRecord extends BaseComponent {
                             }}
 
                             style={{ fontSize: 14, color: Colors.text3, paddingLeft: 20, paddingRight: 20, paddingTop: 10, paddingBottom: 10 }}>
-                            Wepay</Text>
+                            TOT</Text>
                         <View style={{ backgroundColor: Colors.lineColor, height: 0.5 }} />
                         <Text
                             onPress={() => {
@@ -264,7 +264,7 @@ export default class TeadeRecord extends BaseComponent {
         });
     }
     //选择币种  cid 各种货币id
-    //1.Wepay 2.比特币 3.莱特币  4.以太坊  5.狗狗币
+    //1.TOT 2.比特币 3.莱特币  4.以太坊  5.狗狗币
     selectCid(cid,title){
         this.cid = cid
         this._refreshData()

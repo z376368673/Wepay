@@ -333,7 +333,7 @@ export default class AddShop extends BaseComponent {
                                 placeholderTextColor={'#999'}
                                 underlineColorAndroid='transparent'
                                 keyboardType={"numeric"}
-                                maxLength={12}
+                                maxLength={7}
                                 value={this.state.shopPrice + ""}
                                 onChangeText={(text) => {
                                     this.setState({shopPrice: Utils.chkPrice(text)})
@@ -350,7 +350,7 @@ export default class AddShop extends BaseComponent {
                                 placeholderTextColor={'#999'}
                                 underlineColorAndroid='transparent'
                                 keyboardType={"numeric"}
-                                maxLength={12}
+                                maxLength={6}
                                 value={this.state.shopNum + ""}
                                 onChangeText={(text) => {
                                     const newText = text.replace(/[^\d]+/, '0')

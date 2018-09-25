@@ -43,7 +43,7 @@ export default class TranWepay extends BaseComponent {
                         color: '#333',
                         fontSize: 16,
                         width: 80,
-                    }}>Wepay</Text>
+                    }}>TOT</Text>
                     <TextInput
                         style={{ height: 40, flex: 1, fontSize: 16, color: '#333', marginLeft: 8 }}
                         placeholder={'请输入转出数量(如有小数保留2位)'}

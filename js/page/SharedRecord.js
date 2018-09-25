@@ -41,7 +41,7 @@ export default class SharedRecord extends BaseComponent {
         return (
             <View style={[BaseStyles.container_column, { backgroundColor: "#f1f1f1" }]}>
                 <NavigationBar
-                    title={this.tranType === "分享记录"}
+                    title={"分享记录" }
                     navigation={this.props.navigation}
                 />
 
@@ -170,9 +170,9 @@ export default class SharedRecord extends BaseComponent {
                         <Text
                             style={{
                                 color: "#fff", fontSize: 14,
-                                backgroundColor: this.getGradeStyle(data.item.useGrade)[0], 
+                                backgroundColor: this.getGradeStyle(data.item)[0],
                                 paddingLeft: 10, paddingRight: 10, paddingTop: 5, paddingBottom: 5,
-                            }}>{this.getGradeStyle(data.item.useGrade)[1] }</Text>
+                            }}>{this.getGradeStyle(data.item)[1] }</Text>
 
                         <Text style={{ color: "#888", fontSize: 13, marginTop: 5, textAlign: "right" }}
                             numberOfLines={1}>{Utils.formatDateTime(data.item.regDate * 1000)}</Text>
@@ -182,7 +182,10 @@ export default class SharedRecord extends BaseComponent {
         }
     }
 
-    getGradeStyle(useGrade) {
+
+    getGradeStyle(data) {
+        let useGrade = data.useGrade;
+        let isVip =  data.isVip
         var color;
         var text;
         switch (useGrade) {
@@ -192,17 +195,21 @@ export default class SharedRecord extends BaseComponent {
                 break
             case 1:
                 color = Colors.green
-                text = "普通会员"
+                text = "一星会员"
                 break
             case 2:
                 color = Colors.blue
-                text = "五星会员"
+                text = "二星会员"
                 break
             case 3:
                 color = Colors.red
-                text = "VIP"
+                text = "三星会员"
                 break
+        }
+        if(isVip==1){
+            text = "VIP会员"
         }
         return [color,text]
     }
+
 }
