@@ -272,7 +272,7 @@ export default class SettingView extends BaseComponent {
                         <View style={[BaseStyles.container_center, { marginTop: 12 }]} />
                         {ViewUtils.getSettingItem1(require('../../../res/images/tousujianyi.png'), '投诉建议', false,
                             () => this.onClicks("Complaint"))}
-                        {ViewUtils.getSettingItem(require('../../../res/images/banben.png'), '版本检测', '1.2.9',
+                        {ViewUtils.getSettingItem(require('../../../res/images/banben.png'), '版本检测', '1.2.8',
                             () => this.onClicks("version"))}
                         {ViewUtils.getSettingItem1(require('../../../res/images/guanyu.png'), '关于', false,
                             () => this.onClicks("about"))}

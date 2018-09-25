@@ -29,7 +29,7 @@ export default class LoginPage extends BaseComponent {
         this.state = {
             text: '',
             pwd: '',
-            appVersion:"1.2.9"
+            appVersion:"1.2.8"
         }
     }
     componentDidMount() {
@@ -43,7 +43,8 @@ export default class LoginPage extends BaseComponent {
             }
         })
         //热更新后添加这个代码 不然貌似热更新会自动回滚
-        Platform.OS ==="ios"? {}:codePush.sync()
+        codePush.sync()
+       // Platform.OS ==="ios"? {}:codePush.sync()
     }
     render() {
         return (
@@ -54,8 +55,13 @@ export default class LoginPage extends BaseComponent {
                 />
                 <View style={{height:150,justifyContent:"center",alignItems:"center"}}>
                 <Image source={require('../../../res/images/logo-d.png')}/>
+                    <Text style={{
+                        fontSize: 15,
+                        color: "#fff",
+                        marginTop:8,
+                    }}>版本号:{this.state.appVersion}</Text>
                 </View>
-                
+
                 <View style={styles.itemView}>
                 <Image style={{height:30,width:30,resizeMode:"stretch",marginRight:10}} 
                        source={require('../../../res/images/user.png')}/>
