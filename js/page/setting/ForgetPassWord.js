@@ -35,11 +35,11 @@ export default class ModifyPassWord extends BaseComponent {
     onClicks(type) {
         switch (type) {
             case 1://确定
-                if(this.state.code!=this.state.sms){
-                    DialogUtils.showMsg("验证码不正确")
-                }else if(this.state.pwd.length<6){
+                if (this.state.code.length < 6) {
+                    DialogUtils.showMsg("请输入6位验证码")
+                } else if (this.state.pwd.length < 6) {
                     DialogUtils.showMsg("密码不能小于6位")
-                }else if(this.state.pwd!==this.state.pwdAgain){
+                } else if (this.state.pwd !== this.state.pwdAgain) {
                     DialogUtils.showMsg("两次密码不相等,请重新输入")
                 }else{
                     this.sumbit()
@@ -47,37 +47,46 @@ export default class ModifyPassWord extends BaseComponent {
                 break
         }
     }
-    sumbit(){
-        DialogUtils.showLoading();
-        if(this.state.type==0){
+    sumbit() {
+        if (this.state.type == 0) {
             this.url = BaseUrl.getForgotPwdUrl()
-            HttpUtils.postData(this.url,
-                {mobile:this.state.phone,newPwd:this.state.pwdAgain})
+            DialogUtils.showLoading();
+            //+"?mobile="+this.state.phone+"&newPwd="+this.state.pwdAgain
+            HttpUtils.postData(this.url, {
+                mobile: this.state.phone,
+                code: this.state.code,
+                newPwd: this.state.pwdAgain
+            })
                 .then(result => {
-                    if (result.code===1) {
+                    if (result.code === 1) {
                         DialogUtils.showToast("修改成功")
                         this.props.navigation.goBack()
-                    }else{
+                    } else {
                         DialogUtils.showToast(result.msg)
                     }
                     DialogUtils.hideLoading()
                 })
-        }else{
+        } else {
             this.url = BaseUrl.getForgotPayPwdUrl()
-            HttpUtils.postData(this.url,
-                {sessionId:this.getUserInfo().sessionId,
-                    mobile:this.state.phone,newPwd:this.state.pwdAgain})
+            DialogUtils.showLoading();
+            //+"?mobile="+this.state.phone+"&newPwd="+this.state.pwdAgain
+            HttpUtils.postData(this.url, {
+                sessionId:this.getUserInfo().sessionId,
+                mobile: this.state.phone,
+                code: this.state.code,
+                newPwd: this.state.pwdAgain
+            })
                 .then(result => {
-                    if (result.code===1) {
+                    if (result.code === 1) {
                         DialogUtils.showToast("修改成功")
                         this.props.navigation.goBack()
-                    }else{
+                    } else {
                         DialogUtils.showToast(result.msg)
                     }
                     DialogUtils.hideLoading()
                 })
         }
-        //+"?mobile="+this.state.phone+"&newPwd="+this.state.pwdAgain
+
     }
 
     render() {

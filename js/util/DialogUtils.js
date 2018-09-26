@@ -233,7 +233,7 @@ export default class DialogUtils {
                     marginTop: -150, paddingBottom: 50,
                 }}>
                     <Image source={require("../../res/images/hongbao.png")} />
-                    <Text style={{ flex: 1, fontSize: 25, color: "#d11", position: "absolute", paddingBottom: 50 }}>{new Number(text).toFixed(2)}元</Text>
+                    <Text style={{ flex: 1, fontSize: 25, color: "#f9f900", position: "absolute", paddingBottom: 50 }}>{new Number(text).toFixed(2)}元</Text>
                     <View style={{
                         justifyContent: "center", alignItems: "center",
                         flexDirection: "row", position: "absolute", bottom: 0, zIndex: 1
@@ -284,7 +284,7 @@ export default class DialogUtils {
             .then((update) => {
                 if (!update) {
                     //热更新后添加这个代码 不然貌似热更新会自动回滚
-                    Platform.OS ==="ios"? {}:codePush.sync()
+                    //Platform.OS ==="ios"? {}:codePush.sync()
                     DialogUtils.showToast("已是最新版本")
                 } else {
                     codePush.sync({

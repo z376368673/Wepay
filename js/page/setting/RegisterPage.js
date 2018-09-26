@@ -36,12 +36,12 @@ export default class RegisterPage extends BaseComponent {
     }
 
     shouldComponentUpdate(nextProps){
-        return Platform.OS !== 'ios' || (this.props.value === nextProps.value &&  
-               (nextProps.defaultValue == undefined || nextProps.defaultValue == '' )) || 
+        return Platform.OS !== 'ios' || (this.props.value === nextProps.value &&
+               (nextProps.defaultValue == undefined || nextProps.defaultValue == '' )) ||
                (this.props.defaultValue === nextProps.defaultValue &&  (nextProps.value == undefined || nextProps.value == '' ));
-      
+
       }
-  
+
     /**
      * 注册
      */
@@ -51,6 +51,7 @@ export default class RegisterPage extends BaseComponent {
         HttpUtils.postData(this.url,
             {
                 mobile: this.state.phone,
+                code:this.state.code,
                 username: this.state.nickName,
                 referrer: this.state.recommendPhone,
                 loginPwd: this.state.pwdAgain,
@@ -75,8 +76,8 @@ export default class RegisterPage extends BaseComponent {
                     DialogUtils.showMsg("请输入昵称")
                 } else if (this.state.phone.length !== 11) {
                     DialogUtils.showMsg("请输入11位手机号")
-                } else if (this.state.code!=this.state.sms) {
-                    DialogUtils.showMsg("验证码不正确")
+                } else if (this.state.code.length < 6) {
+                    DialogUtils.showMsg("请输入6位验证码")
                 } else if (this.state.pwd.length  < 6) {
                     DialogUtils.showMsg("请输入6位以上的密码")
                 } else if (this.state.pwd != this.state.pwdAgain) {
@@ -130,7 +131,7 @@ export default class RegisterPage extends BaseComponent {
                         value={this.state.phone}
                         onChangeText={(text) => {
                             const newText = text.replace(/[^\d]+/, '0')
-                            this.setState({ phone: newText })}} 
+                            this.setState({ phone: newText })}}
                       />
                 </View>
 
@@ -183,7 +184,7 @@ export default class RegisterPage extends BaseComponent {
                         value={this.state.recommendPhone}
                         onChangeText={(text) => {
                             const newText = text.replace(/[^\d]+/, '0')
-                            this.setState({ recommendPhone: newText })}} 
+                            this.setState({ recommendPhone: newText })}}
                          />
                 </View>
                 <View style={styles.itemView}>
@@ -197,7 +198,7 @@ export default class RegisterPage extends BaseComponent {
                         value={this.state.paymentPwd}
                         onChangeText={(text) => {
                             const newText = text.replace(/[^\d]+/, '0')
-                            this.setState({ paymentPwd: newText })}} 
+                            this.setState({ paymentPwd: newText })}}
                        />
                 </View>
 
@@ -225,7 +226,7 @@ export default class RegisterPage extends BaseComponent {
         );
     }
 
-   
+
 
 }
 export const styles = StyleSheet.create({

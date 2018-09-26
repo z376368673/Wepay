@@ -236,7 +236,7 @@ export default class SettingView extends BaseComponent {
                                         {/*{this.props.AppStore.userInfo.useGrade === 3 ? <Image source={require("../../../res/images/huangguan.png")}*/}
                                             {/*style={{ height: 16, width: 16, marginLeft: 5 }} /> : null}*/}
                                     </View>
-
+                                    
                                 </View>
                                 <Text style={{ color: "#666", fontSize: 16, marginRight: 10 }}>
                                     更换头像
@@ -273,7 +273,7 @@ export default class SettingView extends BaseComponent {
                         <View style={[BaseStyles.container_center, { marginTop: 12 }]} />
                         {ViewUtils.getSettingItem1(require('../../../res/images/tousujianyi.png'), '投诉建议', false,
                             () => this.onClicks("Complaint"))}
-                        {ViewUtils.getSettingItem(require('../../../res/images/banben.png'), '版本检测', '1.2.7',
+                        {ViewUtils.getSettingItem(require('../../../res/images/banben.png'), '版本检测', '1.0.2',
                             () => this.onClicks("version"))}
                         {ViewUtils.getSettingItem1(require('../../../res/images/guanyu.png'), '关于', false,
                             () => this.onClicks("about"))}
