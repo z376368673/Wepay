@@ -27,8 +27,8 @@ export default class BaseUrl {
      "fengmiNum": 501.996,
      "todayReleas": 1.004
      */
-    static loginUrl(phone, pwd,appVersion) {
-        return url + "/user/login?account=" + phone + "&password=" + pwd+ "&appVersion=" + appVersion
+    static loginUrl() {
+        return url + "/user/login"
     }
 
     /**

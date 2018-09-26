@@ -5,7 +5,7 @@ import {
     View,
     TextInput,
     TouchableOpacity,
-    Image, Platform,
+    Image, Platform,Linking
 } from 'react-native';
 import BaseComponent, { BaseStyles, mainColor } from "../BaseComponent";
 import NavigationBar from "../../common/NavigationBar";
@@ -55,11 +55,11 @@ export default class LoginPage extends BaseComponent {
                 />
                 <View style={{height:150,justifyContent:"center",alignItems:"center"}}>
                 <Image source={require('../../../res/images/logo-d.png')}/>
-                    <Text style={{
-                        fontSize: 15,
-                        color: "#fff",
-                        marginTop:8,
-                    }}>版本号:{this.state.appVersion}</Text>
+                    {/*<Text style={{*/}
+                        {/*fontSize: 15,*/}
+                        {/*color: "#fff",*/}
+                        {/*marginTop:8,*/}
+                    {/*}}>版本号:{this.state.appVersion}</Text>*/}
                 </View>
 
                 <View style={styles.itemView}>
@@ -167,8 +167,13 @@ export default class LoginPage extends BaseComponent {
      */
     loginByPwd()   {
         DialogUtils.showLoading("");
-        let url = BaseUrl.loginUrl(this.state.text, this.state.pwd,this.state.appVersion)
-        HttpUtils.getData(url)
+        let url = BaseUrl.loginUrl()
+        HttpUtils.postData(url,{
+            account:this.state.text,
+            password:this.state.pwd,
+            appVersion:this.state.appVersion,
+        })
+        // HttpUtils.getData(url)
             .then(result => {
                 DialogUtils.hideLoading()
                 if (result.code === 1) {
@@ -185,13 +190,29 @@ export default class LoginPage extends BaseComponent {
                    // this.props.navigation.navigate('HomePage');
                     this.goHome(this.props.navigation)
                    // this.props.navigator.push({name: HomePage,reset:true});
-                } else {
+                } else  if (result.code === 21){
+                    //DialogUtils.showToast(result.msg)
+                    DialogUtils.showPop("发现新版本，请及时下载，否则无法正常使用",()=>{
+                        contactBaidu(result.msg)
+                    },()=>{},"更新版本","取消")
+                }else{
                     DialogUtils.showToast(result.msg)
                 }
                 
             })
     }
 
+}
+
+//调用本地浏览器打开网页
+export const contactBaidu = (url) => {
+    Linking.canOpenURL(url).then(supported => {
+        if (!supported) {
+            DialogUtils.showToast("An error occurred:" + url)
+        } else {
+            return Linking.openURL(url);
+        }
+    }).catch(err => console.error('An error occurred', url));
 }
 export const styles = StyleSheet.create({
     container_center: {
