@@ -195,6 +195,7 @@ export default class EditAddress extends BaseComponent {
             this.url = BaseUrl.editAddress()
             HttpUtils.postData(this.url,{
                 sessionId:this.userInfo.sessionId,
+                addressId:this.addrssInfo.addressId,
                 memberId:this.userInfo.userid,
                 name:this.state.name,
                 telephone:this.state.phone,

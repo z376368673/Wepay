@@ -251,7 +251,7 @@ var PassWordInput = {
                         value={"1"}
                         maxLength={10}
                     />
-                    <Text  style={{fontSize:15,color:Colors.text6, alignSelf:"center"}}>Wepay</Text>
+                    <Text  style={{fontSize:15,color:Colors.text6, alignSelf:"center"}}>TOT</Text>
                 </View>
                 <View style={{backgroundColor:Colors.red,height: 1,width: Utils.getWidth()-80}}></View>
 
@@ -265,7 +265,7 @@ var PassWordInput = {
                         keyboardType={"numeric"}
                         maxLength={12}
                     />
-                    <Text  style={{fontSize:15,color:Colors.text6, alignSelf:"center"}}>Wepay</Text>
+                    <Text  style={{fontSize:15,color:Colors.text6, alignSelf:"center"}}>TOT</Text>
                 </View>
                 <View style={{backgroundColor:Colors.red,height: 1,width: Utils.getWidth()-80}}></View>
 
@@ -295,7 +295,7 @@ var PassWordInput = {
                         editable={false}
                         maxLength={12}
                     />
-                    <Text  style={{fontSize:15,color:Colors.text6, alignSelf:"center"}}>Wepay</Text>
+                    <Text  style={{fontSize:15,color:Colors.text6, alignSelf:"center"}}>TOT</Text>
                 </View>
                 <View style={{backgroundColor:Colors.red,height: 1,width: Utils.getWidth()-80}}></View>
 
@@ -306,7 +306,7 @@ var PassWordInput = {
                 </TouchableOpacity>
                 <Button title='确认交易' onPress={() =>
                     PassWordInput.showPassWordInput((safetyPwd)=>{
-                    },"出售1 wepay,单价:18.31","18.31")} />
+                    },"出售1 TOT,单价:18.31","18.31")} />
 
             </View>
         )}

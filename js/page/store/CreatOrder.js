@@ -37,6 +37,7 @@ export default class CreatOrder extends BaseComponent {
     componentDidMount() {
         this.getAddress();
         this.getStoreDetail()
+        counter.set(1)
     }
 
     onPay() {
@@ -164,7 +165,7 @@ export default class CreatOrder extends BaseComponent {
              }}>-</Text>
              <Text style={{fontSize:16,color:"#333",marginLeft:15,marginRight:15}}>{counter.get()}</Text>
               <Text style={{fontSize:18,color:"#333",borderWidth:1,borderColor:"#aaa",backgroundColor:"#aaa",paddingLeft:8,paddingRight:8}} onPress={()=>{
-                  if(counter.get()<=this.data.goodsStock){
+                  if(counter.get()<this.data.goodsStock){
                     counter.set(counter.get() + 1);
                  }
              }}>+</Text>

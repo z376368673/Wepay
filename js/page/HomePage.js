@@ -186,7 +186,7 @@ export default class HomePage extends BaseComponent {
                                                        style={{ width: 25, height: 25,marginLeft:3}}/>:null}
                                     </View>
                                     <Text
-                                        style={[styles.text,{marginTop:5,fontWeight:"800"}]}>
+                                        style={[styles.text,{marginTop:5}]}>
                                     UID:{this.props.AppStore.userInfo.userid}</Text>
                                 </View></TouchableOpacity>
                         </View>

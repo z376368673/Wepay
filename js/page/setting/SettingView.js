@@ -233,8 +233,8 @@ export default class SettingView extends BaseComponent {
                                         <Text style={{ color: "#333", fontSize: 16, }}>
                                             UID:{this.props.AppStore.userInfo.userid}
                                         </Text>
-                                        {this.props.AppStore.userInfo.useGrade === 3 ? <Image source={require("../../../res/images/huangguan.png")}
-                                            style={{ height: 16, width: 16, marginLeft: 5 }} /> : null}
+                                        {/*{this.props.AppStore.userInfo.useGrade === 3 ? <Image source={require("../../../res/images/huangguan.png")}*/}
+                                            {/*style={{ height: 16, width: 16, marginLeft: 5 }} /> : null}*/}
                                     </View>
 
                                 </View>

@@ -544,7 +544,7 @@ export default class BaseUrl {
      * @returns data 实际获得积分 , "data": 720
      */
     static getExchangeIntegral(sessionId, exchangeMoney) {
-        return url + "/store/actualGetIntegral?sessionId=" + sessionId
+        return url + "/wallet/actualGetIntegral?sessionId=" + sessionId
             + "&exchangeMoney=" + exchangeMoney;
     }
 
@@ -1388,26 +1388,6 @@ export default class BaseUrl {
     }
 
 
-    /**
-     * 获取转出-获取转出记录
-     * @param {*} sessionId
-     * @param {*} pageIndex
-     *  // 1    code    是    状态码
-     // 2    msg    是    错误信息
-     // 3    data    是    数据(code=1返回集合数据)
-     // 3.1    id        转出记录id
-     // 3.2    payId        支付人id
-     // 3.3    getId        对方id
-     // 3.4    getNums        转账总金额
-     // 3.5    getTime        转账时间
-     // 3.6    getType        类型 0-转账
-     // 3.7    username        对方用户名
-     // 3.8    imgHead        对方头像（需要添加前缀如：如http://tz.hxksky.com/wepay/upload/
-     */
-    static getOutRecord(sessionId, pageIndex) {
-        return url + "/tranMoney/outRecord?sessionId=" + sessionId
-            + "&pageIndex=" + pageIndex;
-    }
 
 
     //数字货币
