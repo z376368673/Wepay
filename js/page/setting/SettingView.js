@@ -16,6 +16,7 @@ import Utils from '../../util/Utils';
 import HttpUtils from '../../util/HttpUtils';
 import BaseUrl from '../../util/BaseUrl';
 import { inject, observer } from 'mobx-react';
+import AsySorUtils from "../../dao/AsySorUtils";
 
 @inject('AppStore') @observer
 export default class SettingView extends BaseComponent {
@@ -200,6 +201,8 @@ export default class SettingView extends BaseComponent {
                 this.props.navigation.navigate('AboutOur');
                 break
             case 66://退出登录
+                //异步保存到本地文件
+                AsySorUtils.saveAccountPwd(["", ""])
                 this.goLogin(this.props.navigation)
                 break
         }
