@@ -60,10 +60,6 @@ export default class AboutOur extends BaseComponent {
                             <Text style={styles.text}>资产证券化(最高释放完再复投)</Text>
                         </View>
                         <View style={{ flexDirection: "row", marginTop: 8, }}>
-                            <Text style={styles.redText}>6. </Text>
-                            <Text style={styles.text}> 数字资产(低进高出炒币)</Text>
-                        </View>
-                        <View style={{ flexDirection: "row", marginTop: 8, }}>
                             <Text style={styles.redText}>8. </Text>
                             <Text style={styles.text}>消费返利（落地商家扫码支付）</Text>
                         </View>
@@ -75,7 +71,7 @@ export default class AboutOur extends BaseComponent {
                     </Text>
                         <View style={{ flexDirection:"row", marginTop: 8, }}>
                             <Text style={styles.redText}>【余额】：</Text>
-                            <Text style={styles.text}>法定货币现金，也可以称之为现金币，简称钱。</Text>
+                            <Text style={styles.text}>法定货币现金，也可以称之为现金币。</Text>
                         </View>
                         <View style={{ flexDirection: "row", marginTop: 8, }}>
                             <Text style={styles.redText}>【积分】：</Text>
