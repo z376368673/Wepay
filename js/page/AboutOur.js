@@ -98,7 +98,7 @@ export default class AboutOur extends BaseComponent {
                             <Text style={styles.redText}>● TOT资产</Text>
                         </View>
                         <Text style={styles.title}>
-                            基于区快链技术，OPEN COIN开源算法开发的数字加密货币，运用此算法的数字加密货币还有谷歌公司投资的瑞波币。TOT数字资产总发行量2.1亿，首发1000万，剩余3.55亿由TOT钱包用户通过流通增加算力挖取
+                            基于区快链技术，OPEN COIN开源算法开发的数字加密货币，运用此算法的数字加密货币还有谷歌公司投资的瑞波币。TOT数字资产总发行量2.1亿，首发1000万，剩余2亿由TOT钱包用户通过流通增加算力挖取
                     </Text>
 
                         <View style={{ flexDirection: "row", marginTop: 8, }}>
